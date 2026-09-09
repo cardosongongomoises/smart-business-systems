@@ -20,7 +20,7 @@ export function Footer() {
               negócio.
             </p>
             <p className="mt-4 text-xs font-semibold tracking-wider text-primary uppercase">
-              Angola • Lusofonia • Digital First
+              Malanje / Angola • Lusofonia • Digital First
             </p>
           </div>
 

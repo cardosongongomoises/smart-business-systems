@@ -175,7 +175,7 @@ export function Contact() {
                         Localização
                       </p>
                       <p className="mt-1 text-sm font-bold text-foreground">
-                        Angola • Lusofonia • Digital First
+                        Malanje / Angola • Lusofonia • Digital First
                       </p>
                     </div>
                   </div>
