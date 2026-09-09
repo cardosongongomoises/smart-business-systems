@@ -1,11 +1,23 @@
 import { useState } from "react";
-import { Search, Bot, Bell, Sparkles, RefreshCw, Plus, SlidersHorizontal } from "lucide-react";
+import {
+  Search,
+  Bot,
+  Bell,
+  Sparkles,
+  RefreshCw,
+  Plus,
+  SlidersHorizontal,
+  PanelLeftClose,
+  PanelLeftOpen,
+} from "lucide-react";
 
 interface TopbarProps {
   onOpenNewLead: () => void;
   onSimulateIncomingLead: () => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
+  isSidebarCollapsed?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 export function OperationsTopbar({
@@ -13,6 +25,8 @@ export function OperationsTopbar({
   onSimulateIncomingLead,
   searchQuery,
   onSearchChange,
+  isSidebarCollapsed,
+  onToggleSidebar,
 }: TopbarProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -23,8 +37,24 @@ export function OperationsTopbar({
 
   return (
     <header className="h-[70px] border-b border-[#252C38] bg-[#0E121A]/90 backdrop-blur-md px-6 flex items-center justify-between gap-4 sticky top-0 z-20">
-      {/* Left: Section and Global Status */}
-      <div className="flex items-center gap-4">
+      {/* Left: Sidebar Toggle, Section and Global Status */}
+      <div className="flex items-center gap-3.5">
+        {onToggleSidebar && (
+          <button
+            type="button"
+            onClick={onToggleSidebar}
+            title={isSidebarCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
+            aria-label={isSidebarCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
+            className="size-9 rounded-[8px] border border-[#252C38] bg-[#151A23] flex items-center justify-center text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/60 transition-colors shrink-0 shadow-sm cursor-pointer"
+          >
+            {isSidebarCollapsed ? (
+              <PanelLeftOpen className="size-4 text-[#3B82F6]" />
+            ) : (
+              <PanelLeftClose className="size-4" />
+            )}
+          </button>
+        )}
+
         <div>
           <h1 className="text-base font-bold tracking-tight text-[#F5F7FA]">Centro de Operações</h1>
           <p className="text-[11px] text-[#A7B0BF]">

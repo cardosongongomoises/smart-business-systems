@@ -25,6 +25,26 @@ export function OperationsCenter() {
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "todos">("todos");
   const [searchQuery, setSearchQuery] = useState("");
   const [isNewLeadModalOpen, setIsNewLeadModalOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("sbs_sidebar_collapsed") === "true";
+    }
+    return false;
+  });
+
+  const handleToggleSidebar = () => {
+    setIsSidebarCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem("sbs_sidebar_collapsed", String(next));
+        } catch {
+          // Ignore localStorage errors
+        }
+      }
+      return next;
+    });
+  };
 
   // Active chats count
   const activeChatsCount = useMemo(() => {
@@ -252,11 +272,13 @@ export function OperationsCenter() {
 
   return (
     <div className="flex h-screen w-full bg-[#080A0F] text-[#F5F7FA] font-sans antialiased overflow-hidden">
-      {/* 1. Left Sidebar (Fixed 240px) */}
+      {/* 1. Left Sidebar (Collapsible 240px / 72px) */}
       <OperationsSidebar
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
         activeChatsCount={activeChatsCount}
+        isCollapsed={isSidebarCollapsed}
+        onToggleCollapse={handleToggleSidebar}
       />
 
       {/* Main Content Area */}
@@ -267,6 +289,8 @@ export function OperationsCenter() {
           onSimulateIncomingLead={handleSimulateIncomingLead}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
+          isSidebarCollapsed={isSidebarCollapsed}
+          onToggleSidebar={handleToggleSidebar}
         />
 
         {/* Views Router */}
