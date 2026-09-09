@@ -1,5 +1,3 @@
-import { Lock } from "lucide-react";
-
 export function Footer() {
   return (
     <footer className="border-t border-border/60 bg-surface/30 pt-7 pb-2 sm:pt-8 sm:pb-2.5">
@@ -118,17 +116,7 @@ export function Footer() {
 
         <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-2 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>© 2026 Agentes Digital. Todos os direitos reservados.</p>
-          <div className="flex items-center gap-4">
-            <p>Sistemas Digitais que trabalham 24/7.</p>
-            <a
-              href="/admin"
-              className="text-muted-foreground/40 hover:text-muted-foreground transition-colors flex items-center gap-1 text-[11px]"
-              title="Acesso Administrativo ao Centro de Operações"
-            >
-              <Lock className="size-3" />
-              <span>Acesso Restrito</span>
-            </a>
-          </div>
+          <p>Sistemas Digitais que trabalham 24/7.</p>
         </div>
       </div>
     </footer>
