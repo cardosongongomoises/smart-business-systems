@@ -31,7 +31,7 @@ interface SidebarProps {
   activeChatsCount: number;
 }
 
-export function OperationsSidebar({ currentTab, onSelectTab, activeChatsCount = 3 }: SidebarProps) {
+export function OperationsSidebar({ currentTab, onSelectTab, activeChatsCount = 4 }: SidebarProps) {
   const menuItems: Array<{
     id: ActiveTab;
     label: string;
@@ -45,14 +45,7 @@ export function OperationsSidebar({ currentTab, onSelectTab, activeChatsCount = 
       id: "conversations",
       label: "Conversas IA",
       icon: MessageSquareCode,
-      badge: activeChatsCount,
-      badgeColor: "violet",
-    },
-    {
-      id: "system_prompt",
-      label: "Prompt de Sistema",
-      icon: Bot,
-      badge: "v3.2",
+      badge: activeChatsCount || 4,
       badgeColor: "violet",
     },
     { id: "clients", label: "Clientes", icon: Briefcase },

@@ -7,6 +7,13 @@ import { LeadsList } from "./LeadsList";
 import { LeadDetailPanel } from "./LeadDetailPanel";
 import { NewLeadModal } from "./NewLeadModal";
 import { SystemPromptView } from "./SystemPromptView";
+import { DashboardView } from "./DashboardView";
+import { ConversationsView } from "./ConversationsView";
+import { ClientsView } from "./ClientsView";
+import { SchedulesView } from "./SchedulesView";
+import { AutomationsView } from "./AutomationsView";
+import { ReportsView } from "./ReportsView";
+import { SettingsView } from "./SettingsView";
 import { initialLeads, initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
@@ -14,7 +21,7 @@ import { toast } from "sonner";
 export function OperationsCenter() {
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(initialLeads[0]?.id || null);
-  const [currentTab, setCurrentTab] = useState<ActiveTab>("leads");
+  const [currentTab, setCurrentTab] = useState<ActiveTab>("dashboard");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "todos">("todos");
   const [searchQuery, setSearchQuery] = useState("");
   const [isNewLeadModalOpen, setIsNewLeadModalOpen] = useState(false);
@@ -262,23 +269,26 @@ export function OperationsCenter() {
           onSearchChange={setSearchQuery}
         />
 
-        {/* Scrollable Dashboard Body */}
-        {currentTab === "system_prompt" ? (
-          <SystemPromptView currentLead={selectedLead} />
-        ) : (
+        {/* Views Router */}
+        {currentTab === "dashboard" && (
+          <DashboardView
+            leads={leads}
+            onSelectLead={setSelectedLeadId}
+            onNavigateTab={setCurrentTab}
+            onOpenNewLead={() => setIsNewLeadModalOpen(true)}
+          />
+        )}
+
+        {currentTab === "leads" && (
           <div className="flex-1 overflow-y-auto flex flex-col">
             {/* Top Metrics & Journey Funnel */}
             <div className="p-6 pb-2 space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
-              {/* Row of Metric Cards */}
               <MetricsRow metrics={initialMetrics} />
-
-              {/* Visual Funnel */}
               <FunnelOverview stages={funnelStages} />
             </div>
 
-            {/* CRM Main Columns (Center: Leads List, Right: Lead Detail) */}
+            {/* CRM Main Columns */}
             <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
-              {/* Center Column: Leads List */}
               <LeadsList
                 leads={filteredLeads}
                 selectedLeadId={selectedLead?.id || null}
@@ -290,7 +300,6 @@ export function OperationsCenter() {
                 onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
               />
 
-              {/* Right Column: Lead Detail Panel */}
               <LeadDetailPanel
                 lead={selectedLead}
                 onUpdateStatus={handleUpdateStatus}
@@ -301,6 +310,32 @@ export function OperationsCenter() {
             </div>
           </div>
         )}
+
+        {currentTab === "conversations" && (
+          <ConversationsView
+            leads={leads}
+            selectedLeadId={selectedLead?.id || null}
+            onSelectLead={setSelectedLeadId}
+            onAddMessage={handleAddMessage}
+            onToggleAiStatus={handleToggleAiStatus}
+          />
+        )}
+
+        {currentTab === "clients" && (
+          <ClientsView leads={leads} onOpenNewLead={() => setIsNewLeadModalOpen(true)} />
+        )}
+
+        {currentTab === "schedules" && (
+          <SchedulesView leads={leads} onSelectLead={setSelectedLeadId} />
+        )}
+
+        {currentTab === "automations" && <AutomationsView />}
+
+        {currentTab === "reports" && <ReportsView leads={leads} />}
+
+        {currentTab === "settings" && <SettingsView onNavigateTab={setCurrentTab} />}
+
+        {currentTab === "system_prompt" && <SystemPromptView currentLead={selectedLead} />}
       </div>
 
       {/* Modal: New Manual Lead */}
