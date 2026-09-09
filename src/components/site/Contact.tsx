@@ -23,6 +23,7 @@ const serviceOptions = [
 export function Contact() {
   const [nome, setNome] = useState("");
   const [empresa, setEmpresa] = useState("");
+  const [areaAtuacao, setAreaAtuacao] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [servico, setServico] = useState("Website");
@@ -35,9 +36,10 @@ export function Contact() {
       `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
       `*Nome:* ${nome}\n` +
       `*Empresa:* ${empresa || "Não informada"}\n` +
+      `*Área que a sua empresa atua:* ${areaAtuacao || "Não informada"}\n` +
       `*Telefone/WhatsApp:* ${telefone}\n` +
       `*E-mail:* ${email || "Não informado"}\n` +
-      `*Serviço de interesse:* ${servico}\n` +
+      `*Serviço que você pretende:* ${servico}\n` +
       `*Mensagem:* ${mensagem || "Sem mensagem adicional"}`;
 
     const link = whatsappLink(text);
@@ -266,25 +268,43 @@ export function Contact() {
                       </div>
                     </div>
 
-                    <div>
-                      <label
-                        htmlFor="servico"
-                        className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
-                      >
-                        Serviço de interesse
-                      </label>
-                      <select
-                        id="servico"
-                        value={servico}
-                        onChange={(e) => setServico(e.target.value)}
-                        className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none"
-                      >
-                        {serviceOptions.map((opt) => (
-                          <option key={opt} value={opt} className="bg-surface text-foreground">
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label
+                          htmlFor="areaAtuacao"
+                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                        >
+                          Área que a sua empresa atua
+                        </label>
+                        <input
+                          id="areaAtuacao"
+                          type="text"
+                          value={areaAtuacao}
+                          onChange={(e) => setAreaAtuacao(e.target.value)}
+                          placeholder="Ex: Saúde, Comércio, Imobiliário..."
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="servico"
+                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                        >
+                          Serviço que você pretende
+                        </label>
+                        <select
+                          id="servico"
+                          value={servico}
+                          onChange={(e) => setServico(e.target.value)}
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none"
+                        >
+                          {serviceOptions.map((opt) => (
+                            <option key={opt} value={opt} className="bg-surface text-foreground">
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
                     <div>
