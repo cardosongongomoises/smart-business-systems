@@ -1,0 +1,297 @@
+import { useState, useMemo } from "react";
+import { OperationsSidebar, ActiveTab } from "./OperationsSidebar";
+import { OperationsTopbar } from "./OperationsTopbar";
+import { MetricsRow } from "./MetricsRow";
+import { FunnelOverview } from "./FunnelOverview";
+import { LeadsList } from "./LeadsList";
+import { LeadDetailPanel } from "./LeadDetailPanel";
+import { NewLeadModal } from "./NewLeadModal";
+import { initialLeads, initialMetrics, funnelStages } from "./mockData";
+import { Lead, LeadStatus, ChatMessage } from "./types";
+import { toast } from "sonner";
+
+export function OperationsCenter() {
+  const [leads, setLeads] = useState<Lead[]>(initialLeads);
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(initialLeads[0]?.id || null);
+  const [currentTab, setCurrentTab] = useState<ActiveTab>("leads");
+  const [statusFilter, setStatusFilter] = useState<LeadStatus | "todos">("todos");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isNewLeadModalOpen, setIsNewLeadModalOpen] = useState(false);
+
+  // Active chats count
+  const activeChatsCount = useMemo(() => {
+    return leads.filter((l) => l.aiProcessingStatus === "ativo").length;
+  }, [leads]);
+
+  // Filtered Leads
+  const filteredLeads = useMemo(() => {
+    return leads.filter((lead) => {
+      // Tab filter
+      if (currentTab === "conversations" && lead.aiProcessingStatus !== "ativo") {
+        return false;
+      }
+      if (currentTab === "schedules" && lead.appointments.length === 0) {
+        return false;
+      }
+      if (currentTab === "clients" && lead.status !== "convertido") {
+        return false;
+      }
+
+      // Status filter
+      if (statusFilter !== "todos" && lead.status !== statusFilter) {
+        return false;
+      }
+
+      // Search query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchName = lead.name.toLowerCase().includes(q);
+        const matchCompany = lead.company.toLowerCase().includes(q);
+        const matchPhone = lead.phone.toLowerCase().includes(q);
+        const matchEmail = lead.email.toLowerCase().includes(q);
+        const matchPackage = lead.packageInterest.toLowerCase().includes(q);
+        return matchName || matchCompany || matchPhone || matchEmail || matchPackage;
+      }
+
+      return true;
+    });
+  }, [leads, currentTab, statusFilter, searchQuery]);
+
+  // Selected Lead object
+  const selectedLead = useMemo(() => {
+    return leads.find((l) => l.id === selectedLeadId) || filteredLeads[0] || null;
+  }, [leads, selectedLeadId, filteredLeads]);
+
+  // Handlers
+  const handleUpdateStatus = (leadId: string, newStatus: LeadStatus) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          const updatedActivities = [
+            {
+              id: `act-${Date.now()}`,
+              type: "status_change" as const,
+              title: `Status alterado para ${newStatus.toUpperCase()}`,
+              description: `Atualizado pelo operador comercial`,
+              timestamp: "Agora mesmo",
+            },
+            ...lead.activities,
+          ];
+          return { ...lead, status: newStatus, activities: updatedActivities };
+        }
+        return lead;
+      }),
+    );
+    toast.success(`Status atualizado para: ${newStatus.toUpperCase()}`);
+  };
+
+  const handleAddMessage = (leadId: string, message: ChatMessage) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          return {
+            ...lead,
+            lastActive: "há 1m",
+            conversation: [...lead.conversation, message],
+          };
+        }
+        return lead;
+      }),
+    );
+  };
+
+  const handleAddNote = (leadId: string, noteText: string) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          return {
+            ...lead,
+            notes: [
+              {
+                id: `note-${Date.now()}`,
+                author: "Operador Comercial",
+                text: noteText,
+                createdAt: "Agora mesmo",
+              },
+              ...lead.notes,
+            ],
+          };
+        }
+        return lead;
+      }),
+    );
+    toast.success("Nota gravada com sucesso!");
+  };
+
+  const handleToggleAiStatus = (leadId: string) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          const nextStatus = lead.aiProcessingStatus === "ativo" ? "escalado" : "ativo";
+          return {
+            ...lead,
+            aiProcessingStatus: nextStatus,
+          };
+        }
+        return lead;
+      }),
+    );
+  };
+
+  const handleCreateLead = (newLead: Lead) => {
+    setLeads((prev) => [newLead, ...prev]);
+    setSelectedLeadId(newLead.id);
+    toast.success(`Lead criado: ${newLead.name}`);
+  };
+
+  const handleSimulateIncomingLead = () => {
+    const randomNames = [
+      "Eng. Manuel Antunes",
+      "Dra. Teresa Figueiredo",
+      "Tiago Penedo",
+      "Marta Vasconcelos",
+    ];
+    const randomCompanies = [
+      "Antunes Construções & Projetos",
+      "Consultório Dra. Teresa",
+      "Penedo Logística",
+      "Arquitetura Contemporânea Lisboa",
+    ];
+    const pickedName = randomNames[Math.floor(Math.random() * randomNames.length)];
+    const pickedCompany = randomCompanies[Math.floor(Math.random() * randomCompanies.length)];
+
+    const simulatedLead: Lead = {
+      id: `lead-sim-${Date.now()}`,
+      name: pickedName,
+      company: pickedCompany,
+      role: "Diretor Geral",
+      phone: `+351 9${Math.floor(10000000 + Math.random() * 89999999)}`,
+      email: `${pickedName.toLowerCase().replace(/\s+/g, ".")}@gmail.com`,
+      channel: "whatsapp",
+      status: "qualificado",
+      packageInterest: "Domínio IA",
+      aiQualified: true,
+      qualificationScore: 92,
+      estimatedValue: "€ 4.500",
+      firstContactAt: "Agora mesmo",
+      lastActive: "Agora mesmo",
+      aiProcessingStatus: "ativo",
+      appointments: [],
+      notes: [
+        {
+          id: `sim-note-${Date.now()}`,
+          author: "IA Auto-Analyst",
+          text: "Lead recebido via WhatsApp. IA qualificou com interesse imediato em automatizar respostas fora de expediente.",
+          createdAt: "Agora mesmo",
+        },
+      ],
+      activities: [
+        {
+          id: `sim-act-${Date.now()}`,
+          type: "capture",
+          title: "Mensagem recebida no WhatsApp",
+          description: "Entrada pelo número oficial da Agentes Digital",
+          timestamp: "Agora mesmo",
+        },
+        {
+          id: `sim-act-2-${Date.now()}`,
+          type: "ai_qualification",
+          title: "IA Qualificou Automaticamente",
+          description: "Score 92/100 atribuído em 42ms",
+          timestamp: "Agora mesmo",
+        },
+      ],
+      conversation: [
+        {
+          id: `sim-m-1-${Date.now()}`,
+          sender: "client",
+          text: "Boa tarde! Gostaria de saber como funciona a implementação de um agente de IA para a minha empresa.",
+          timestamp: new Date().toLocaleTimeString("pt-PT", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        },
+        {
+          id: `sim-m-2-${Date.now()}`,
+          sender: "ai",
+          text: `Olá ${pickedName.split(" ")[0]}! Que excelente iniciativa. O nosso agente de IA integra-se ao seu WhatsApp em menos de 10 dias, assumindo o primeiro atendimento e agendamento de reuniões. Posso agendar uma demonstração personalizada?`,
+          timestamp: new Date().toLocaleTimeString("pt-PT", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        },
+      ],
+    };
+
+    setLeads((prev) => [simulatedLead, ...prev]);
+    setSelectedLeadId(simulatedLead.id);
+    toast.success(`⚡ Novo Lead WhatsApp recebido: ${pickedName}`, {
+      description: `${pickedCompany} • Score IA 92/100`,
+    });
+  };
+
+  return (
+    <div className="flex h-screen w-full bg-[#080A0F] text-[#F5F7FA] font-sans antialiased overflow-hidden">
+      {/* 1. Left Sidebar (Fixed 240px) */}
+      <OperationsSidebar
+        currentTab={currentTab}
+        onSelectTab={setCurrentTab}
+        activeChatsCount={activeChatsCount}
+      />
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Topbar */}
+        <OperationsTopbar
+          onOpenNewLead={() => setIsNewLeadModalOpen(true)}
+          onSimulateIncomingLead={handleSimulateIncomingLead}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+
+        {/* Scrollable Dashboard Body */}
+        <div className="flex-1 overflow-y-auto flex flex-col">
+          {/* Top Metrics & Journey Funnel */}
+          <div className="p-6 pb-2 space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
+            {/* Row of Metric Cards */}
+            <MetricsRow metrics={initialMetrics} />
+
+            {/* Visual Funnel */}
+            <FunnelOverview stages={funnelStages} />
+          </div>
+
+          {/* CRM Main Columns (Center: Leads List, Right: Lead Detail) */}
+          <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
+            {/* Center Column: Leads List */}
+            <LeadsList
+              leads={filteredLeads}
+              selectedLeadId={selectedLead?.id || null}
+              onSelectLead={setSelectedLeadId}
+              statusFilter={statusFilter}
+              onChangeStatusFilter={setStatusFilter}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
+            />
+
+            {/* Right Column: Lead Detail Panel */}
+            <LeadDetailPanel
+              lead={selectedLead}
+              onUpdateStatus={handleUpdateStatus}
+              onAddMessage={handleAddMessage}
+              onAddNote={handleAddNote}
+              onToggleAiStatus={handleToggleAiStatus}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Modal: New Manual Lead */}
+      <NewLeadModal
+        isOpen={isNewLeadModalOpen}
+        onClose={() => setIsNewLeadModalOpen(false)}
+        onCreateLead={handleCreateLead}
+      />
+    </div>
+  );
+}

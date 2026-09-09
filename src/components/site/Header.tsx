@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, ShieldCheck } from "lucide-react";
 import { CTA } from "@/lib/site-config";
 
 const links = [
@@ -58,15 +58,24 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Primary CTA */}
-        <div className="hidden lg:block">
+        {/* Primary CTA & Hub Operações */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a
+            href="/operacoes"
+            className="inline-flex h-[40px] items-center justify-center gap-1.5 rounded-[8px] border border-[#8B5CF6]/40 bg-[#8B5CF6]/10 px-3.5 text-xs font-semibold text-[#C084FC] transition-all hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/60"
+            title="Acessar o Centro de Operações da Agentes Digital"
+          >
+            <ShieldCheck className="size-3.5 text-[#8B5CF6]" />
+            <span>Centro de Operações</span>
+          </a>
+
           <a
             href={CTA.specialist}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-5 text-sm font-semibold text-white transition-all hover:bg-[#2563EB] active:scale-[0.98]"
+            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white transition-all hover:bg-[#2563EB] active:scale-[0.98]"
           >
-            Falar com especialista <ArrowRight className="size-4" />
+            Falar com especialista <ArrowRight className="size-3.5" />
           </a>
         </div>
 
@@ -96,6 +105,14 @@ export function Header() {
                 {l.label}
               </a>
             ))}
+            <a
+              href="/operacoes"
+              onClick={() => setOpen(false)}
+              className="border-b border-[#252C38] py-3 text-sm font-semibold text-[#8B5CF6] flex items-center justify-between"
+            >
+              <span>Centro de Operações</span>
+              <ShieldCheck className="size-4 text-[#8B5CF6]" />
+            </a>
           </nav>
           <a
             href={CTA.specialist}

@@ -1,0 +1,678 @@
+import { useState } from "react";
+import {
+  Phone,
+  Mail,
+  Building2,
+  Calendar,
+  MessageSquare,
+  Bot,
+  UserCheck,
+  Send,
+  ExternalLink,
+  Edit3,
+  Clock,
+  Sparkles,
+  ArrowUpRight,
+  ShieldCheck,
+  CheckCircle2,
+  PlusCircle,
+  FileText,
+  Video,
+} from "lucide-react";
+import { Lead, LeadStatus, ChatMessage, LeadNote } from "./types";
+
+interface LeadDetailPanelProps {
+  lead: Lead | null;
+  onUpdateStatus: (leadId: string, newStatus: LeadStatus) => void;
+  onAddMessage: (leadId: string, message: ChatMessage) => void;
+  onAddNote: (leadId: string, noteText: string) => void;
+  onToggleAiStatus: (leadId: string) => void;
+}
+
+type DetailTab = "overview" | "chat" | "schedules" | "notes" | "activity";
+
+export function LeadDetailPanel({
+  lead,
+  onUpdateStatus,
+  onAddMessage,
+  onAddNote,
+  onToggleAiStatus,
+}: LeadDetailPanelProps) {
+  const [activeTab, setActiveTab] = useState<DetailTab>("overview");
+  const [newNoteInput, setNewNoteInput] = useState("");
+  const [customReplyInput, setCustomReplyInput] = useState("");
+  const [isTypingAi, setIsTypingAi] = useState(false);
+
+  if (!lead) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-[#667085] bg-[#080A0F]">
+        <Bot className="size-12 mb-3 text-[#252C38]" />
+        <p className="text-sm font-semibold text-[#A7B0BF]">Nenhum lead selecionado</p>
+        <p className="text-xs text-[#667085]">
+          Selecione um lead da lista lateral para visualizar a telemetria completa.
+        </p>
+      </div>
+    );
+  }
+
+  const handleSendReply = (sender: "ai" | "human") => {
+    if (!customReplyInput.trim()) return;
+
+    const newMessage: ChatMessage = {
+      id: `msg-${Date.now()}`,
+      sender,
+      text: customReplyInput.trim(),
+      timestamp: new Date().toLocaleTimeString("pt-PT", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    onAddMessage(lead.id, newMessage);
+    setCustomReplyInput("");
+  };
+
+  const handleSimulateAiResponse = () => {
+    setIsTypingAi(true);
+    setTimeout(() => {
+      setIsTypingAi(false);
+      const aiReply: ChatMessage = {
+        id: `msg-${Date.now()}`,
+        sender: "ai",
+        text: `Olá ${lead.name.split(" ")[0]}! Estou a rever o seu processo para o plano ${lead.packageInterest}. Tem disponibilidade para alinharmos os detalhes hoje às 17h?`,
+        timestamp: new Date().toLocaleTimeString("pt-PT", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
+      onAddMessage(lead.id, aiReply);
+    }, 900);
+  };
+
+  const handleSaveNote = () => {
+    if (!newNoteInput.trim()) return;
+    onAddNote(lead.id, newNoteInput.trim());
+    setNewNoteInput("");
+  };
+
+  const initials = lead.name
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  const statusOptions: Array<{ id: LeadStatus; label: string; color: string }> = [
+    { id: "novo", label: "Novo", color: "text-[#3B82F6]" },
+    { id: "qualificado", label: "Qualificado", color: "text-[#8B5CF6]" },
+    { id: "agendado", label: "Agendado", color: "text-[#F59E0B]" },
+    { id: "convertido", label: "Convertido", color: "text-[#22C55E]" },
+    { id: "perdido", label: "Perdido", color: "text-[#EF4444]" },
+  ];
+
+  return (
+    <div className="flex-1 flex flex-col h-full bg-[#080A0F] overflow-y-auto">
+      {/* Top Header */}
+      <div className="p-6 border-b border-[#252C38] bg-[#0E121A]/80 flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="size-13 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-sm font-bold text-[#3B82F6] shadow-sm">
+              {initials}
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-lg font-bold text-[#F5F7FA] tracking-tight">{lead.name}</h2>
+                {lead.aiQualified && (
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#C084FC] border border-[#8B5CF6]/30">
+                    <Sparkles className="size-3 text-[#8B5CF6]" />
+                    Score {lead.qualificationScore}/100
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-[#A7B0BF] mt-0.5">
+                {lead.role} • {lead.company}
+              </p>
+            </div>
+          </div>
+
+          {/* Status Changer & Quick Actions */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="relative">
+              <select
+                value={lead.status}
+                onChange={(e) => onUpdateStatus(lead.id, e.target.value as LeadStatus)}
+                className="h-9 px-3 text-xs font-semibold rounded-[8px] bg-[#151A23] border border-[#252C38] text-[#F5F7FA] cursor-pointer focus:outline-none focus:border-[#3B82F6] transition-colors uppercase tracking-wider"
+              >
+                {statusOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    Status: {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <a
+              href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E]/40 bg-[#22C55E]/10 px-3 text-xs font-semibold text-[#22C55E] hover:bg-[#22C55E]/20 transition-colors"
+            >
+              <Phone className="size-3.5" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Quick Contact & Metadata Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-[#252C38]/60 text-xs">
+          <div className="flex items-center gap-2 text-[#A7B0BF]">
+            <Phone className="size-3.5 text-[#667085]" />
+            <span className="text-[#F5F7FA] font-mono">{lead.phone}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[#A7B0BF] truncate">
+            <Mail className="size-3.5 text-[#667085]" />
+            <span className="text-[#F5F7FA] truncate">{lead.email}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[#A7B0BF]">
+            <Building2 className="size-3.5 text-[#667085]" />
+            <span className="text-[#F5F7FA] font-semibold">{lead.packageInterest}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[#A7B0BF]">
+            <Clock className="size-3.5 text-[#667085]" />
+            <span>
+              Valor Est.: <strong className="text-[#22C55E]">{lead.estimatedValue}</strong>
+            </span>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-2 border-b border-[#252C38] -mb-6 pt-1">
+          {[
+            { id: "overview" as DetailTab, label: "Overview" },
+            {
+              id: "chat" as DetailTab,
+              label: "Conversa IA",
+              badge: lead.conversation.length,
+            },
+            {
+              id: "schedules" as DetailTab,
+              label: "Agendamentos",
+              badge: lead.appointments.length || undefined,
+            },
+            { id: "notes" as DetailTab, label: "Notas" },
+            { id: "activity" as DetailTab, label: "Atividade" },
+          ].map((item) => {
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveTab(item.id)}
+                className={`flex items-center gap-1.5 pb-3 text-xs font-semibold tracking-wide transition-colors border-b-2 px-1 ${
+                  isActive
+                    ? "text-[#3B82F6] border-[#3B82F6]"
+                    : "text-[#A7B0BF] border-transparent hover:text-[#F5F7FA]"
+                }`}
+              >
+                <span>{item.label}</span>
+                {item.badge !== undefined && (
+                  <span className="size-4.5 px-1 rounded-full text-[10px] font-bold bg-[#151A23] border border-[#252C38] text-[#8B5CF6]">
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tab Contents */}
+      <div className="p-6 space-y-6">
+        {/* OVERVIEW TAB */}
+        {activeTab === "overview" && (
+          <div className="space-y-6">
+            {/* Sobre o Lead */}
+            <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+              <h3 className="text-sm font-bold text-[#F5F7FA] pb-3 border-b border-[#252C38] flex items-center justify-between">
+                <span>Sobre o Lead</span>
+                <span className="text-[10px] text-[#667085] font-mono">ID: {lead.id}</span>
+              </h3>
+
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <span className="text-[#667085] block mb-1">Nome Completo</span>
+                  <p className="font-semibold text-[#F5F7FA]">{lead.name}</p>
+                </div>
+
+                <div>
+                  <span className="text-[#667085] block mb-1">Empresa & Cargo</span>
+                  <p className="font-semibold text-[#F5F7FA]">
+                    {lead.company} ({lead.role})
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[#667085] block mb-1">Telefone WhatsApp</span>
+                  <p className="font-semibold text-[#F5F7FA] font-mono">{lead.phone}</p>
+                </div>
+
+                <div>
+                  <span className="text-[#667085] block mb-1">E-mail Corporativo</span>
+                  <p className="font-semibold text-[#F5F7FA]">{lead.email}</p>
+                </div>
+
+                <div>
+                  <span className="text-[#667085] block mb-1">Canal de Origem</span>
+                  <p className="font-semibold text-[#3B82F6] uppercase tracking-wider">
+                    {lead.channel}
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[#667085] block mb-1">Primeiro Contacto</span>
+                  <p className="font-semibold text-[#F5F7FA]">{lead.firstContactAt}</p>
+                </div>
+              </div>
+
+              {/* Pacote de Interesse Tags */}
+              <div className="mt-5 pt-4 border-t border-[#252C38]">
+                <span className="text-xs text-[#667085] block mb-2">Pacote de Interesse</span>
+                <div className="flex flex-wrap gap-2">
+                  {(
+                    [
+                      "Presença Digital",
+                      "Profissional",
+                      "Autoridade Digital",
+                      "Domínio IA",
+                    ] as const
+                  ).map((pkg) => {
+                    const isSelected = lead.packageInterest === pkg;
+                    return (
+                      <span
+                        key={pkg}
+                        className={`px-3 py-1 rounded-[8px] text-xs font-semibold transition-colors ${
+                          isSelected
+                            ? "bg-[#3B82F6]/20 text-[#60A5FA] border border-[#3B82F6]/50 shadow-sm"
+                            : "bg-[#0E121A] text-[#667085] border border-[#252C38]"
+                        }`}
+                      >
+                        {pkg}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Conversa com Agente IA (Preview) */}
+            <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 shadow-[0_0_30px_-8px_rgba(139,92,246,0.25)]">
+              <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                <div className="flex items-center gap-2">
+                  <div className="size-7 rounded-[6px] bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 flex items-center justify-center text-[#8B5CF6]">
+                    <Bot className="size-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                      Conversa com Agente IA
+                    </h4>
+                    <p className="text-[10px] text-[#A7B0BF]">
+                      Resumo da sessão interativa via WhatsApp API
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("chat")}
+                  className="text-xs font-semibold text-[#8B5CF6] hover:text-[#C084FC] flex items-center gap-1"
+                >
+                  <span>Abrir Chat Completo</span>
+                  <ArrowUpRight className="size-3.5" />
+                </button>
+              </div>
+
+              {/* Chat snippet */}
+              <div className="mt-4 space-y-3">
+                {lead.conversation.slice(-3).map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender === "client" ? "justify-start" : "justify-end"}`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-[12px] p-3 text-xs ${
+                        msg.sender === "client"
+                          ? "bg-[#252C38] text-[#F5F7FA]"
+                          : "bg-[#3B82F6]/10 border border-[#3B82F6]/25 text-[#F5F7FA]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-1 text-[10px] text-[#A7B0BF]">
+                        <span className="font-semibold">
+                          {msg.sender === "client" ? lead.name : "Agente IA (Agentes Digital)"}
+                        </span>
+                        <span className="font-mono">{msg.timestamp}</span>
+                      </div>
+                      <p className="leading-relaxed">{msg.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Agendamentos Snippet */}
+            {lead.appointments.length > 0 && (
+              <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+                <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                  <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
+                    <Calendar className="size-4 text-[#3B82F6]" />
+                    Próximo Agendamento
+                  </h4>
+                  <span className="text-xs font-mono text-[#22C55E] font-semibold">
+                    {lead.appointments[0].status}
+                  </span>
+                </div>
+
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
+                  <div>
+                    <p className="text-xs font-bold text-[#F5F7FA]">{lead.appointments[0].title}</p>
+                    <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+                      {lead.appointments[0].dateFormatted} • {lead.appointments[0].timeFormatted}
+                    </p>
+                  </div>
+
+                  {lead.appointments[0].meetUrl && (
+                    <a
+                      href={lead.appointments[0].meetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+                    >
+                      <Video className="size-3.5" />
+                      <span>Abrir Google Meet</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CHAT TAB (Full AI Agent Conversation) */}
+        {activeTab === "chat" && (
+          <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 shadow-[0_0_30px_-8px_rgba(139,92,246,0.25)] flex flex-col min-h-[500px]">
+            {/* Telemetry Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-[#252C38]">
+              <div className="flex items-center gap-3">
+                <div className="size-8 rounded-[8px] bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 flex items-center justify-center text-[#8B5CF6]">
+                  <Bot className="size-4.5" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                    Conversa Ativa com Agente IA
+                  </h3>
+                  <p className="text-[10px] text-[#A7B0BF]">
+                    Canal: WhatsApp Business API • Latência média 42ms
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onToggleAiStatus(lead.id)}
+                  className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold border transition-all ${
+                    lead.aiProcessingStatus === "ativo"
+                      ? "border-[#3B82F6]/50 bg-[#3B82F6]/15 text-[#60A5FA]"
+                      : "border-[#F59E0B]/50 bg-[#F59E0B]/15 text-[#F59E0B]"
+                  }`}
+                >
+                  {lead.aiProcessingStatus === "ativo" ? (
+                    <span className="flex items-center gap-1.5">
+                      <span className="size-2 rounded-full bg-[#3B82F6] animate-pulse" />◌
+                      PROCESSANDO (IA)
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1.5">
+                      <UserCheck className="size-3.5" />↗ ATENDENTE HUMANO
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Chat Messages Stream */}
+            <div className="flex-1 py-4 space-y-3 overflow-y-auto">
+              {lead.conversation.map((msg) => {
+                const isClient = msg.sender === "client";
+                const isAI = msg.sender === "ai";
+
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex flex-col ${isClient ? "items-start" : "items-end"}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-[14px] p-3.5 text-xs shadow-sm transition-all duration-200 ${
+                        isClient
+                          ? "bg-[#252C38] text-[#F5F7FA] rounded-tl-sm"
+                          : isAI
+                            ? "bg-[#3B82F6]/10 border border-[#3B82F6]/30 text-[#F5F7FA] rounded-tr-sm"
+                            : "bg-[#8B5CF6]/15 border border-[#8B5CF6]/35 text-[#F5F7FA] rounded-tr-sm"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-1 text-[10px]">
+                        <span className="font-semibold text-[#A7B0BF] flex items-center gap-1">
+                          {isClient ? (
+                            lead.name
+                          ) : isAI ? (
+                            <>
+                              <Bot className="size-3 text-[#3B82F6]" /> Agente IA
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck className="size-3 text-[#8B5CF6]" /> Atendente Humano
+                            </>
+                          )}
+                        </span>
+                        <span className="font-mono text-[#667085]">{msg.timestamp}</span>
+                      </div>
+                      <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Typing indicator */}
+              {isTypingAi && (
+                <div className="flex items-end justify-end">
+                  <div className="rounded-[12px] bg-[#3B82F6]/15 border border-[#3B82F6]/30 px-3 py-2 text-xs text-[#93C5FD] flex items-center gap-1.5">
+                    <span className="size-1.5 rounded-full bg-[#3B82F6] animate-bounce" />
+                    <span className="size-1.5 rounded-full bg-[#3B82F6] animate-bounce [animation-delay:0.2s]" />
+                    <span className="size-1.5 rounded-full bg-[#3B82F6] animate-bounce [animation-delay:0.4s]" />
+                    <span className="text-[10px] ml-1">IA digitando resposta...</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Input & Quick AI Controls */}
+            <div className="pt-3 border-t border-[#252C38] flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-2 text-xs">
+                <button
+                  type="button"
+                  onClick={handleSimulateAiResponse}
+                  disabled={isTypingAi}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#8B5CF6] hover:text-[#C084FC] transition-colors"
+                >
+                  <Sparkles className="size-3 text-[#8B5CF6]" />
+                  <span>Gerar Resposta do Agente IA</span>
+                </button>
+
+                <span className="text-[10px] text-[#667085]">
+                  Pressione Enviar para responder como Operador
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={customReplyInput}
+                  onChange={(e) => setCustomReplyInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSendReply("human");
+                  }}
+                  placeholder="Escreva uma mensagem como Operador Humano..."
+                  className="flex-1 h-10 rounded-[8px] border border-[#252C38] bg-[#0E121A] px-3.5 text-xs text-[#F5F7FA] placeholder-[#667085] focus:outline-none focus:border-[#3B82F6]"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => handleSendReply("human")}
+                  className="h-10 px-4 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] flex items-center gap-1.5 transition-colors"
+                >
+                  <Send className="size-3.5" />
+                  <span>Enviar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* SCHEDULES TAB */}
+        {activeTab === "schedules" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+              <h3 className="text-sm font-bold text-[#F5F7FA]">
+                Agendamentos ({lead.appointments.length})
+              </h3>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+              >
+                <PlusCircle className="size-3.5" />
+                <span>Marcar Reunião</span>
+              </button>
+            </div>
+
+            {lead.appointments.length === 0 ? (
+              <div className="p-8 text-center rounded-[16px] border border-[#252C38] bg-[#151A23] text-[#667085]">
+                <Calendar className="size-8 mx-auto mb-2 opacity-50" />
+                <p className="text-xs">Nenhuma reunião agendada no momento.</p>
+              </div>
+            ) : (
+              lead.appointments.map((apt) => (
+                <div
+                  key={apt.id}
+                  className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="text-[10px] font-semibold tracking-wider text-[#8B5CF6] uppercase">
+                        {apt.type}
+                      </span>
+                      <h4 className="text-sm font-bold text-[#F5F7FA] mt-0.5">{apt.title}</h4>
+                      <p className="text-xs text-[#A7B0BF] mt-1 flex items-center gap-2">
+                        <span>📅 {apt.dateFormatted}</span>
+                        <span>⏰ {apt.timeFormatted}</span>
+                      </p>
+                    </div>
+
+                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30">
+                      {apt.status}
+                    </span>
+                  </div>
+
+                  {apt.meetUrl && (
+                    <div className="mt-4 pt-3 border-t border-[#252C38] flex items-center justify-between">
+                      <span className="text-xs text-[#667085] font-mono">
+                        Google Meet Link Ativo
+                      </span>
+                      <a
+                        href={apt.meetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#3B82F6] hover:underline"
+                      >
+                        Entrar na Sala <ExternalLink className="size-3" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* NOTES TAB */}
+        {activeTab === "notes" && (
+          <div className="space-y-4">
+            <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+              <h3 className="text-sm font-bold text-[#F5F7FA] mb-3">Nova Nota Comercial</h3>
+
+              <textarea
+                value={newNoteInput}
+                onChange={(e) => setNewNoteInput(e.target.value)}
+                placeholder="Insira detalhes sobre a proposta, dores do cliente ou alinhamentos internos..."
+                rows={3}
+                className="w-full rounded-[8px] border border-[#252C38] bg-[#080A0F] p-3 text-xs text-[#F5F7FA] placeholder-[#667085] focus:outline-none focus:border-[#3B82F6]"
+              />
+
+              <div className="mt-2.5 flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleSaveNote}
+                  className="px-4 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+                >
+                  Salvar Nota
+                </button>
+              </div>
+            </div>
+
+            {/* Notes List */}
+            <div className="space-y-3">
+              {lead.notes.map((note) => (
+                <div
+                  key={note.id}
+                  className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-4 text-xs"
+                >
+                  <div className="flex items-center justify-between pb-1.5 border-b border-[#252C38]/60 mb-2">
+                    <span className="font-semibold text-[#F5F7FA]">{note.author}</span>
+                    <span className="text-[10px] text-[#667085]">{note.createdAt}</span>
+                  </div>
+                  <p className="text-[#A7B0BF] leading-relaxed">{note.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ACTIVITY TIMELINE TAB */}
+        {activeTab === "activity" && (
+          <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+            <h3 className="text-sm font-bold text-[#F5F7FA] pb-3 border-b border-[#252C38]">
+              Atividade Recente & Auditoria
+            </h3>
+
+            <div className="mt-4 relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#252C38]">
+              {lead.activities.map((act) => (
+                <div key={act.id} className="relative group">
+                  <span className="absolute -left-6 top-0.5 size-3 rounded-full bg-[#3B82F6] ring-4 ring-[#151A23]" />
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-bold text-[#F5F7FA]">{act.title}</p>
+                      <span className="text-[10px] text-[#667085] font-mono">{act.timestamp}</span>
+                    </div>
+                    <p className="text-xs text-[#A7B0BF] mt-0.5">{act.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

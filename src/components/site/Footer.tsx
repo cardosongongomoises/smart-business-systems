@@ -102,6 +102,14 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href="/operacoes"
+                  className="text-[#8B5CF6] transition-colors hover:text-[#C084FC] flex items-center gap-1.5 font-medium"
+                >
+                  <span>Centro de Operações (Hub Interno)</span>
+                </a>
+              </li>
+              <li>
                 <span className="text-muted-foreground/80">Política de Privacidade</span>
               </li>
               <li>
