@@ -13,6 +13,7 @@ import {
   Radio,
   PanelLeftClose,
   PanelLeftOpen,
+  LogOut,
 } from "lucide-react";
 
 export type ActiveTab =
@@ -32,6 +33,7 @@ interface SidebarProps {
   activeChatsCount: number;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  onLogout?: () => void;
 }
 
 export function OperationsSidebar({
@@ -40,6 +42,7 @@ export function OperationsSidebar({
   activeChatsCount = 4,
   isCollapsed: controlledCollapsed,
   onToggleCollapse,
+  onLogout,
 }: SidebarProps) {
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const isCollapsed = controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed;
@@ -223,6 +226,31 @@ export function OperationsSidebar({
               </>
             )}
           </a>
+
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              title="Encerrar Sessão Administrativa"
+              className={`w-full mt-2 flex items-center ${
+                isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2"
+              } rounded-[8px] border border-[#EF4444]/20 bg-[#EF4444]/5 text-[11px] font-medium text-[#FCA5A5] hover:bg-[#EF4444]/15 hover:border-[#EF4444]/50 transition-colors relative group cursor-pointer`}
+            >
+              {!isCollapsed ? (
+                <>
+                  <span className="truncate">Encerrar Sessão</span>
+                  <LogOut className="size-3 text-[#EF4444] shrink-0" />
+                </>
+              ) : (
+                <>
+                  <LogOut className="size-4 text-[#EF4444]" />
+                  <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#FCA5A5] shadow-xl">
+                    Encerrar Sessão
+                  </div>
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
 

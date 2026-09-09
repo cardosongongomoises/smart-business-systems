@@ -9,6 +9,7 @@ import {
   SlidersHorizontal,
   PanelLeftClose,
   PanelLeftOpen,
+  LogOut,
 } from "lucide-react";
 
 interface TopbarProps {
@@ -18,6 +19,8 @@ interface TopbarProps {
   onSearchChange: (q: string) => void;
   isSidebarCollapsed?: boolean;
   onToggleSidebar?: () => void;
+  onLogout?: () => void;
+  adminEmail?: string;
 }
 
 export function OperationsTopbar({
@@ -27,6 +30,8 @@ export function OperationsTopbar({
   onSearchChange,
   isSidebarCollapsed,
   onToggleSidebar,
+  onLogout,
+  adminEmail,
 }: TopbarProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -123,17 +128,29 @@ export function OperationsTopbar({
           <RefreshCw className={`size-4 ${isRefreshing ? "animate-spin text-[#3B82F6]" : ""}`} />
         </button>
 
-        {/* Operator Badge */}
-        <div className="hidden xl:flex items-center gap-2.5 pl-2 border-l border-[#252C38]">
+        {/* Operator Badge & Logout */}
+        <div className="flex items-center gap-2.5 pl-2 border-l border-[#252C38]">
           <div className="size-8 rounded-full bg-[#3B82F6]/20 border border-[#3B82F6]/40 flex items-center justify-center text-xs font-bold text-[#3B82F6]">
-            OP
+            AD
           </div>
-          <div className="flex flex-col text-left">
+          <div className="hidden xl:flex flex-col text-left">
             <span className="text-xs font-semibold text-[#F5F7FA] leading-tight">
-              Equipa Operações
+              {adminEmail ? adminEmail.split("@")[0] : "Administrador"}
             </span>
             <span className="text-[10px] text-[#A7B0BF] leading-tight">Agentes Digital</span>
           </div>
+
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              title="Encerrar sessão administrativa"
+              aria-label="Encerrar sessão administrativa"
+              className="size-9 rounded-[8px] border border-[#252C38] bg-[#151A23] flex items-center justify-center text-[#A7B0BF] hover:text-[#EF4444] hover:border-[#EF4444]/40 hover:bg-[#EF4444]/10 transition-colors ml-1 cursor-pointer"
+            >
+              <LogOut className="size-4" />
+            </button>
+          )}
         </div>
       </div>
     </header>

@@ -17,8 +17,10 @@ import { SettingsView } from "./SettingsView";
 import { initialLeads, initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
+import { useAdminAuth } from "./AdminAuthGuard";
 
 export function OperationsCenter() {
+  const { logout, adminEmail } = useAdminAuth();
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(initialLeads[0]?.id || null);
   const [currentTab, setCurrentTab] = useState<ActiveTab>("dashboard");
@@ -279,6 +281,7 @@ export function OperationsCenter() {
         activeChatsCount={activeChatsCount}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={handleToggleSidebar}
+        onLogout={logout}
       />
 
       {/* Main Content Area */}
@@ -291,6 +294,8 @@ export function OperationsCenter() {
           onSearchChange={setSearchQuery}
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebar={handleToggleSidebar}
+          onLogout={logout}
+          adminEmail={adminEmail}
         />
 
         {/* Views Router */}
