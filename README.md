@@ -231,17 +231,16 @@ Ao lado direito do hero, criar uma representação visual de um sistema de IA tr
 Mostrar visualmente:
 
 NOVO CLIENTE
-      ↓
+↓
 WhatsApp
-      ↓
+↓
 AGENTE IA
-      ↓
+↓
 QUALIFICAÇÃO
-      ↓
+↓
 AGENDAMENTO
-      ↓
+↓
 CRM
-
 
 O visual deve parecer uma interface real de software.
 
@@ -296,7 +295,6 @@ QUALIFICAR
 AGENDAR
 ↓
 CONVERTER
-
 
 Explicar cada etapa.
 
@@ -827,21 +825,20 @@ Mostrar:
 IA
 │
 ├── Pergunta simples
-│       ↓
-│    Responde
+│ ↓
+│ Responde
 │
 ├── Agendamento
-│       ↓
-│    Agenda
+│ ↓
+│ Agenda
 │
 ├── Lead qualificado
-│       ↓
-│    CRM
+│ ↓
+│ CRM
 │
 └── Situação complexa
-        ↓
-   HUMANO
-
+↓
+HUMANO
 
 Mensagem:
 
@@ -1085,7 +1082,6 @@ amanhã às 10h ou 15h."
 
 ✓ REUNIÃO AGENDADA
 
-
 Essa seção deve ser altamente visual.
 
 11. ESTRATÉGIA DE COPY
@@ -1193,19 +1189,18 @@ Componentização modular.
 Estrutura:
 
 /components
-  Header
-  Hero
-  Problem
-  Journey
-  Services
-  AIAgent
-  Automation
-  Pricing
-  Comparison
-  FAQ
-  Contact
-  Footer
-
+Header
+Hero
+Problem
+Journey
+Services
+AIAgent
+Automation
+Pricing
+Comparison
+FAQ
+Contact
+Footer
 
 Criar componentes reutilizáveis.
 

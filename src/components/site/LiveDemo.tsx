@@ -3,7 +3,11 @@ import { Reveal } from "./Reveal";
 
 const timeline = [
   { tag: "09:41 • Novo contacto", text: "“Boa tarde, gostaria de marcar uma reunião.”", ia: false },
-  { tag: "🤖 Agente Digital", text: "“Olá! Será um prazer ajudá-lo. Qual serviço você procura?”", ia: true },
+  {
+    tag: "🤖 Agente Digital",
+    text: "“Olá! Será um prazer ajudá-lo. Qual serviço você procura?”",
+    ia: true,
+  },
   { tag: "Cliente", text: "“Consultoria.”", ia: false },
   {
     tag: "🤖 Agente Digital",

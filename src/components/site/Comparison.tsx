@@ -63,10 +63,7 @@ export function Comparison() {
                   <tr key={label} className="border-b border-border last:border-0">
                     <td className="p-4 text-sm font-medium">{label}</td>
                     {values.map((v, i) => (
-                      <td
-                        key={i}
-                        className={`p-4 text-center ${i === 1 ? "bg-primary/5" : ""}`}
-                      >
+                      <td key={i} className={`p-4 text-center ${i === 1 ? "bg-primary/5" : ""}`}>
                         <Cell value={v} />
                       </td>
                     ))}

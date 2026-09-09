@@ -1,0 +1,6 @@
+{
+  "name": "Smart Business Systems",
+  "description": "Agentes Digital - Websites, Inteligência Artificial, Automação e Sistemas Digitais para empresas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

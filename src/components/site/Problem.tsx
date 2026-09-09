@@ -30,12 +30,8 @@ export function Problem() {
         </Reveal>
         <Reveal delay={80}>
           <div className="mt-6 max-w-2xl space-y-3 text-muted-foreground">
-            <p>
-              Muitas empresas já têm bons serviços, bons profissionais e clientes interessados.
-            </p>
-            <p>
-              O problema é que o atendimento depende constantemente de alguém estar disponível.
-            </p>
+            <p>Muitas empresas já têm bons serviços, bons profissionais e clientes interessados.</p>
+            <p>O problema é que o atendimento depende constantemente de alguém estar disponível.</p>
           </div>
         </Reveal>
 
