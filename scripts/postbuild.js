@@ -33,6 +33,16 @@ function ensureDirs() {
     fs.mkdirSync(clientDir, { recursive: true });
     console.log("Created fallback dist and dist/client directories.");
   }
+
+  // Ensure public directory assets are copied to all distribution outputs
+  const publicDir = path.join(root, "public");
+  if (fs.existsSync(publicDir)) {
+    fs.cpSync(publicDir, distDir, { recursive: true });
+    fs.cpSync(publicDir, clientDir, { recursive: true });
+    if (fs.existsSync(outputPublicDir)) {
+      fs.cpSync(publicDir, outputPublicDir, { recursive: true });
+    }
+  }
 }
 
 ensureDirs();
