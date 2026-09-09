@@ -2,7 +2,7 @@ import { Lock } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-surface/30 py-16">
+    <footer className="border-t border-border/60 bg-surface/30 pt-7 pb-2 sm:pt-8 sm:pb-2.5">
       <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
@@ -116,7 +116,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-8 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
+        <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-2 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
           <p>© 2026 Agentes Digital. Todos os direitos reservados.</p>
           <div className="flex items-center gap-4">
             <p>Sistemas Digitais que trabalham 24/7.</p>

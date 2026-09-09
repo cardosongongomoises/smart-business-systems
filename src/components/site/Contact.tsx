@@ -32,15 +32,26 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (
+      !nome.trim() ||
+      !empresa.trim() ||
+      !telefone.trim() ||
+      !email.trim() ||
+      !areaAtuacao.trim() ||
+      !servico.trim() ||
+      !mensagem.trim()
+    ) {
+      return;
+    }
     const text =
       `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
-      `*Nome:* ${nome}\n` +
-      `*Empresa:* ${empresa || "Não informada"}\n` +
-      `*Área que a sua empresa atua:* ${areaAtuacao || "Não informada"}\n` +
-      `*Telefone/WhatsApp:* ${telefone}\n` +
-      `*E-mail:* ${email || "Não informado"}\n` +
-      `*Serviço que você pretende:* ${servico}\n` +
-      `*Mensagem:* ${mensagem || "Sem mensagem adicional"}`;
+      `*Nome:* ${nome.trim()}\n` +
+      `*Empresa:* ${empresa.trim()}\n` +
+      `*Telefone/WhatsApp:* ${telefone.trim()}\n` +
+      `*E-mail:* ${email.trim()}\n` +
+      `*Área que a sua empresa atua:* ${areaAtuacao.trim()}\n` +
+      `*Serviço que você pretende:* ${servico.trim()}\n` +
+      `*Mensagem:* ${mensagem.trim()}`;
 
     const link = whatsappLink(text);
     window.open(link, "_blank", "noopener,noreferrer");
@@ -219,11 +230,12 @@ export function Contact() {
                           htmlFor="empresa"
                           className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                         >
-                          Empresa
+                          Empresa *
                         </label>
                         <input
                           id="empresa"
                           type="text"
+                          required
                           value={empresa}
                           onChange={(e) => setEmpresa(e.target.value)}
                           placeholder="Nome da sua empresa"
@@ -255,11 +267,12 @@ export function Contact() {
                           htmlFor="email"
                           className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                         >
-                          E-mail
+                          E-mail *
                         </label>
                         <input
                           id="email"
                           type="email"
+                          required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="exemplo@empresa.com"
@@ -274,11 +287,12 @@ export function Contact() {
                           htmlFor="areaAtuacao"
                           className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                         >
-                          Área que a sua empresa atua
+                          Área que a sua empresa atua *
                         </label>
                         <input
                           id="areaAtuacao"
                           type="text"
+                          required
                           value={areaAtuacao}
                           onChange={(e) => setAreaAtuacao(e.target.value)}
                           placeholder="Ex: Saúde, Comércio, Imobiliário..."
@@ -290,10 +304,11 @@ export function Contact() {
                           htmlFor="servico"
                           className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                         >
-                          Serviço que você pretende
+                          Serviço que você pretende *
                         </label>
                         <select
                           id="servico"
+                          required
                           value={servico}
                           onChange={(e) => setServico(e.target.value)}
                           className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none"
@@ -312,11 +327,12 @@ export function Contact() {
                         htmlFor="mensagem"
                         className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
                       >
-                        Mensagem
+                        Mensagem *
                       </label>
                       <textarea
                         id="mensagem"
                         rows={4}
+                        required
                         value={mensagem}
                         onChange={(e) => setMensagem(e.target.value)}
                         placeholder="Descreva brevemente o seu desafio actual ou objectivo..."
