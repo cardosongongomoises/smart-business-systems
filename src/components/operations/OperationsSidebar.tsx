@@ -10,12 +10,15 @@ import {
   ExternalLink,
   ShieldCheck,
   Radio,
+  Bot,
+  Code2,
 } from "lucide-react";
 
 export type ActiveTab =
   | "dashboard"
   | "leads"
   | "conversations"
+  | "system_prompt"
   | "clients"
   | "schedules"
   | "automations"
@@ -43,6 +46,13 @@ export function OperationsSidebar({ currentTab, onSelectTab, activeChatsCount = 
       label: "Conversas IA",
       icon: MessageSquareCode,
       badge: activeChatsCount,
+      badgeColor: "violet",
+    },
+    {
+      id: "system_prompt",
+      label: "Prompt de Sistema",
+      icon: Bot,
+      badge: "v3.2",
       badgeColor: "violet",
     },
     { id: "clients", label: "Clientes", icon: Briefcase },

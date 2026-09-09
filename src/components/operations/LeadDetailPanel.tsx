@@ -18,8 +18,13 @@ import {
   PlusCircle,
   FileText,
   Video,
+  Code2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Lead, LeadStatus, ChatMessage, LeadNote } from "./types";
+import { generateAIAgentResponse } from "./aiAgentEngine";
+import { toast } from "sonner";
 
 interface LeadDetailPanelProps {
   lead: Lead | null;
@@ -42,6 +47,11 @@ export function LeadDetailPanel({
   const [newNoteInput, setNewNoteInput] = useState("");
   const [customReplyInput, setCustomReplyInput] = useState("");
   const [isTypingAi, setIsTypingAi] = useState(false);
+  const [expandedJsonIds, setExpandedJsonIds] = useState<Record<string, boolean>>({});
+
+  const toggleJsonExpand = (messageId: string) => {
+    setExpandedJsonIds((prev) => ({ ...prev, [messageId]: !prev[messageId] }));
+  };
 
   if (!lead) {
     return (
@@ -74,19 +84,47 @@ export function LeadDetailPanel({
 
   const handleSimulateAiResponse = () => {
     setIsTypingAi(true);
+
+    const clientMessages = lead.conversation.filter((m) => m.sender === "client");
+    const lastClientMessage = clientMessages[clientMessages.length - 1];
+    const incomingText =
+      lastClientMessage?.text || "Boa tarde, gostaria de saber mais sobre o serviço.";
+
     setTimeout(() => {
       setIsTypingAi(false);
+
+      const { replyText, metadata } = generateAIAgentResponse(
+        incomingText,
+        lead.conversation,
+        lead,
+      );
+
+      // Rule 7 Escalation Handling
+      if (metadata.escalate_to_human) {
+        toast.error("Regra 7 do System Prompt: Escalonamento para Humano", {
+          description:
+            "Pedido de desconto, insatisfação ou solicitação direta de atendente humano acionada.",
+        });
+        if (lead.aiProcessingStatus === "ativo") {
+          onToggleAiStatus(lead.id);
+        }
+      } else if (metadata.lead_update.status && metadata.lead_update.status !== lead.status) {
+        onUpdateStatus(lead.id, metadata.lead_update.status);
+      }
+
       const aiReply: ChatMessage = {
         id: `msg-${Date.now()}`,
         sender: "ai",
-        text: `Olá ${lead.name.split(" ")[0]}! Estou a rever o seu processo para o plano ${lead.packageInterest}. Tem disponibilidade para alinharmos os detalhes hoje às 17h?`,
+        text: replyText,
         timestamp: new Date().toLocaleTimeString("pt-PT", {
           hour: "2-digit",
           minute: "2-digit",
         }),
+        aiMetadata: metadata,
       };
+
       onAddMessage(lead.id, aiReply);
-    }, 900);
+    }, 700);
   };
 
   const handleSaveNote = () => {
@@ -284,23 +322,24 @@ export function LeadDetailPanel({
                 <div className="flex flex-wrap gap-2">
                   {(
                     [
-                      "Presença Digital",
-                      "Profissional",
-                      "Autoridade Digital",
-                      "Domínio IA",
+                      { name: "Presença", price: "Kz 125.000" },
+                      { name: "Profissional", price: "Kz 250.000 ⭐" },
+                      { name: "Autoridade", price: "Kz 450.000" },
+                      { name: "Domínio IA", price: "Kz 700.000" },
                     ] as const
                   ).map((pkg) => {
-                    const isSelected = lead.packageInterest === pkg;
+                    const isSelected = lead.packageInterest === pkg.name;
                     return (
                       <span
-                        key={pkg}
-                        className={`px-3 py-1 rounded-[8px] text-xs font-semibold transition-colors ${
+                        key={pkg.name}
+                        className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                           isSelected
                             ? "bg-[#3B82F6]/20 text-[#60A5FA] border border-[#3B82F6]/50 shadow-sm"
                             : "bg-[#0E121A] text-[#667085] border border-[#252C38]"
                         }`}
                       >
-                        {pkg}
+                        <span>{pkg.name}</span>
+                        <span className="text-[10px] font-mono opacity-80">({pkg.price})</span>
                       </span>
                     );
                   })}
@@ -480,6 +519,35 @@ export function LeadDetailPanel({
                         <span className="font-mono text-[#667085]">{msg.timestamp}</span>
                       </div>
                       <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+
+                      {/* AI Structured Telemetry Toggle */}
+                      {msg.aiMetadata && (
+                        <div className="mt-2.5 pt-2 border-t border-[#3B82F6]/20">
+                          <button
+                            type="button"
+                            onClick={() => toggleJsonExpand(msg.id)}
+                            className="inline-flex items-center gap-1.5 text-[10px] font-mono text-[#93C5FD] hover:text-white transition-colors"
+                          >
+                            <Code2 className="size-3 text-[#3B82F6]" />
+                            <span>
+                              {expandedJsonIds[msg.id]
+                                ? "Ocultar Payload JSON"
+                                : "Inspecionar Payload JSON (Backend)"}
+                            </span>
+                            {expandedJsonIds[msg.id] ? (
+                              <ChevronUp className="size-3" />
+                            ) : (
+                              <ChevronDown className="size-3" />
+                            )}
+                          </button>
+
+                          {expandedJsonIds[msg.id] && (
+                            <pre className="mt-1.5 p-2 rounded-[6px] bg-[#080A0F]/90 border border-[#252C38] text-[10px] font-mono text-[#60A5FA] overflow-x-auto">
+                              {JSON.stringify(msg.aiMetadata, null, 2)}
+                            </pre>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

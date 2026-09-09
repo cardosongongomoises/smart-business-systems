@@ -6,6 +6,7 @@ import { FunnelOverview } from "./FunnelOverview";
 import { LeadsList } from "./LeadsList";
 import { LeadDetailPanel } from "./LeadDetailPanel";
 import { NewLeadModal } from "./NewLeadModal";
+import { SystemPromptView } from "./SystemPromptView";
 import { initialLeads, initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
@@ -146,16 +147,16 @@ export function OperationsCenter() {
 
   const handleSimulateIncomingLead = () => {
     const randomNames = [
-      "Eng. Manuel Antunes",
-      "Dra. Teresa Figueiredo",
-      "Tiago Penedo",
-      "Marta Vasconcelos",
+      "Dra. Jandira Kuanza",
+      "Eng. Arnaldo Gaspar",
+      "Dr. Sebastião Luvumbo",
+      "Marta Tchissola",
     ];
     const randomCompanies = [
-      "Antunes Construções & Projetos",
-      "Consultório Dra. Teresa",
-      "Penedo Logística",
-      "Arquitetura Contemporânea Lisboa",
+      "Clínica Vida Talatona",
+      "Gaspar Logística & Distribuição Luanda",
+      "Luvumbo Advocacia Corporativa",
+      "Imobiliária Kilamba Prime",
     ];
     const pickedName = randomNames[Math.floor(Math.random() * randomNames.length)];
     const pickedCompany = randomCompanies[Math.floor(Math.random() * randomCompanies.length)];
@@ -165,14 +166,15 @@ export function OperationsCenter() {
       name: pickedName,
       company: pickedCompany,
       role: "Diretor Geral",
-      phone: `+351 9${Math.floor(10000000 + Math.random() * 89999999)}`,
-      email: `${pickedName.toLowerCase().replace(/\s+/g, ".")}@gmail.com`,
+      phone: `+244 9${Math.floor(20000000 + Math.random() * 79999999)}`,
+      email: `${pickedName.toLowerCase().replace(/\s+/g, ".")}@empresa.co.ao`,
+      location: "Luanda, Angola",
       channel: "whatsapp",
       status: "qualificado",
       packageInterest: "Domínio IA",
       aiQualified: true,
-      qualificationScore: 92,
-      estimatedValue: "€ 4.500",
+      qualificationScore: 94,
+      estimatedValue: "Kz 700.000",
       firstContactAt: "Agora mesmo",
       lastActive: "Agora mesmo",
       aiProcessingStatus: "ativo",
@@ -181,7 +183,7 @@ export function OperationsCenter() {
         {
           id: `sim-note-${Date.now()}`,
           author: "IA Auto-Analyst",
-          text: "Lead recebido via WhatsApp. IA qualificou com interesse imediato em automatizar respostas fora de expediente.",
+          text: "Lead recebido via WhatsApp. IA qualificou com interesse imediato no pacote Domínio IA para automação 24/7.",
           createdAt: "Agora mesmo",
         },
       ],
@@ -197,7 +199,7 @@ export function OperationsCenter() {
           id: `sim-act-2-${Date.now()}`,
           type: "ai_qualification",
           title: "IA Qualificou Automaticamente",
-          description: "Score 92/100 atribuído em 42ms",
+          description: "Score 94/100 atribuído em 38ms",
           timestamp: "Agora mesmo",
         },
       ],
@@ -214,19 +216,30 @@ export function OperationsCenter() {
         {
           id: `sim-m-2-${Date.now()}`,
           sender: "ai",
-          text: `Olá ${pickedName.split(" ")[0]}! Que excelente iniciativa. O nosso agente de IA integra-se ao seu WhatsApp em menos de 10 dias, assumindo o primeiro atendimento e agendamento de reuniões. Posso agendar uma demonstração personalizada?`,
+          text: "Boa tarde! Claro, com todo gosto. Para eu entender melhor: qual é o seu negócio ou em que área atua?",
           timestamp: new Date().toLocaleTimeString("pt-PT", {
             hour: "2-digit",
             minute: "2-digit",
           }),
+          aiMetadata: {
+            ai_intent: "qualificacao",
+            ai_confidence: 0.95,
+            lead_update: {
+              business_segment: null,
+              package_interest: null,
+              qualification_score: 65,
+              status: "novo",
+            },
+            escalate_to_human: false,
+          },
         },
       ],
     };
 
     setLeads((prev) => [simulatedLead, ...prev]);
     setSelectedLeadId(simulatedLead.id);
-    toast.success(`⚡ Novo Lead WhatsApp recebido: ${pickedName}`, {
-      description: `${pickedCompany} • Score IA 92/100`,
+    toast.success(`⚡ Novo Lead WhatsApp: ${pickedName}`, {
+      description: `${pickedCompany} • Score IA 94/100 (Kz 700.000)`,
     });
   };
 
@@ -250,40 +263,44 @@ export function OperationsCenter() {
         />
 
         {/* Scrollable Dashboard Body */}
-        <div className="flex-1 overflow-y-auto flex flex-col">
-          {/* Top Metrics & Journey Funnel */}
-          <div className="p-6 pb-2 space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
-            {/* Row of Metric Cards */}
-            <MetricsRow metrics={initialMetrics} />
+        {currentTab === "system_prompt" ? (
+          <SystemPromptView currentLead={selectedLead} />
+        ) : (
+          <div className="flex-1 overflow-y-auto flex flex-col">
+            {/* Top Metrics & Journey Funnel */}
+            <div className="p-6 pb-2 space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
+              {/* Row of Metric Cards */}
+              <MetricsRow metrics={initialMetrics} />
 
-            {/* Visual Funnel */}
-            <FunnelOverview stages={funnelStages} />
+              {/* Visual Funnel */}
+              <FunnelOverview stages={funnelStages} />
+            </div>
+
+            {/* CRM Main Columns (Center: Leads List, Right: Lead Detail) */}
+            <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
+              {/* Center Column: Leads List */}
+              <LeadsList
+                leads={filteredLeads}
+                selectedLeadId={selectedLead?.id || null}
+                onSelectLead={setSelectedLeadId}
+                statusFilter={statusFilter}
+                onChangeStatusFilter={setStatusFilter}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
+              />
+
+              {/* Right Column: Lead Detail Panel */}
+              <LeadDetailPanel
+                lead={selectedLead}
+                onUpdateStatus={handleUpdateStatus}
+                onAddMessage={handleAddMessage}
+                onAddNote={handleAddNote}
+                onToggleAiStatus={handleToggleAiStatus}
+              />
+            </div>
           </div>
-
-          {/* CRM Main Columns (Center: Leads List, Right: Lead Detail) */}
-          <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
-            {/* Center Column: Leads List */}
-            <LeadsList
-              leads={filteredLeads}
-              selectedLeadId={selectedLead?.id || null}
-              onSelectLead={setSelectedLeadId}
-              statusFilter={statusFilter}
-              onChangeStatusFilter={setStatusFilter}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
-            />
-
-            {/* Right Column: Lead Detail Panel */}
-            <LeadDetailPanel
-              lead={selectedLead}
-              onUpdateStatus={handleUpdateStatus}
-              onAddMessage={handleAddMessage}
-              onAddNote={handleAddNote}
-              onToggleAiStatus={handleToggleAiStatus}
-            />
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Modal: New Manual Lead */}

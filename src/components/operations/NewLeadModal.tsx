@@ -39,12 +39,12 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
       qualificationScore: autoAiQualify ? Math.floor(Math.random() * 20) + 80 : 50,
       estimatedValue:
         packageInterest === "Domínio IA"
-          ? "€ 4.500"
-          : packageInterest === "Autoridade Digital"
-            ? "€ 3.200"
+          ? "Kz 700.000"
+          : packageInterest === "Autoridade"
+            ? "Kz 450.000"
             : packageInterest === "Profissional"
-              ? "€ 1.950"
-              : "€ 950",
+              ? "Kz 250.000"
+              : "Kz 125.000",
       firstContactAt: "Agora mesmo",
       lastActive: "há 1m",
       aiProcessingStatus: "ativo",
@@ -204,10 +204,10 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
               onChange={(e) => setPackageInterest(e.target.value as Lead["packageInterest"])}
               className="w-full h-9 rounded-[8px] border border-[#252C38] bg-[#0E121A] px-3 text-[#F5F7FA] focus:outline-none focus:border-[#3B82F6]"
             >
-              <option value="Presença Digital">Presença Digital (Básico)</option>
-              <option value="Profissional">Profissional (Recomendado)</option>
-              <option value="Autoridade Digital">Autoridade Digital (Premium)</option>
-              <option value="Domínio IA">Domínio IA (Sistemas & Agentes)</option>
+              <option value="Presença">Presença (Kz 125.000)</option>
+              <option value="Profissional">Profissional ⭐ Mais Escolhido (Kz 250.000)</option>
+              <option value="Autoridade">Autoridade (Kz 450.000)</option>
+              <option value="Domínio IA">Domínio IA (Kz 700.000)</option>
             </select>
           </div>
 

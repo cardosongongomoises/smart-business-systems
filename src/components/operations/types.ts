@@ -2,12 +2,28 @@ export type LeadStatus = "novo" | "qualificado" | "agendado" | "convertido" | "p
 
 export type LeadChannel = "whatsapp" | "website" | "email" | "google";
 
+export type PackageInterestSlug =
+  "presenca" | "profissional" | "autoridade" | "dominio_ia" | "nao_definido";
+
+export interface AIStructuredOutput {
+  ai_intent: "qualificacao" | "agendamento" | "faq" | "escalonamento";
+  ai_confidence: number;
+  lead_update: {
+    business_segment: string | null;
+    package_interest: PackageInterestSlug | null;
+    qualification_score: number | null;
+    status: LeadStatus | null;
+  };
+  escalate_to_human: boolean;
+}
+
 export interface ChatMessage {
   id: string;
   sender: "client" | "ai" | "human";
   text: string;
   timestamp: string;
   sentiment?: "positive" | "neutral" | "urgent";
+  aiMetadata?: AIStructuredOutput;
 }
 
 export interface Appointment {
@@ -44,9 +60,10 @@ export interface Lead {
   role: string;
   phone: string;
   email: string;
+  location?: string;
   channel: LeadChannel;
   status: LeadStatus;
-  packageInterest: "Presença Digital" | "Profissional" | "Autoridade Digital" | "Domínio IA";
+  packageInterest: "Presença" | "Profissional" | "Autoridade" | "Domínio IA";
   aiQualified: boolean;
   qualificationScore: number; // 0-100
   estimatedValue: string;
