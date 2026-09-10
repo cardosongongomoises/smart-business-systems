@@ -149,11 +149,17 @@ export function OperationsCenter() {
     // Supabase Realtime: escuta atualizações e novos leads automaticamente
     const unsubscribe = subscribeToLeadsChanges(() => {
       loadLeads();
-      toast.info("Pipeline atualizado em tempo real via Supabase!");
+      toast.info("Novo lead recebido! Pipeline actualizado.");
     });
+
+    // Polling automático a cada 30 segundos como fallback ao Realtime
+    const pollInterval = setInterval(() => {
+      loadLeads();
+    }, 30000);
 
     return () => {
       unsubscribe();
+      clearInterval(pollInterval);
     };
   }, [loadLeads]);
 

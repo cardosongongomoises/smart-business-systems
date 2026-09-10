@@ -52,26 +52,8 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Grava todos os dados no Supabase (cada campo em sua tabela relacional)
-      const res = await submitContactForm({
-        nome,
-        empresa,
-        telefone,
-        email,
-        areaAtuacao,
-        servico,
-        mensagem,
-        canal: "website",
-      });
-
-      if (res.mode === "supabase") {
-        toast.success("Pedido registado no Supabase e encaminhado com sucesso!");
-      } else {
-        toast.success("Pedido registado no sistema com sucesso!");
-      }
-
-      // Prepara e abre o link de WhatsApp para atendimento direto
-      const text =
+      // Prepara o link de WhatsApp ANTES de chamar o Supabase, para não bloquear se houver demora
+      const waText =
         `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
         `*Nome:* ${nome.trim()}\n` +
         `*Empresa:* ${empresa.trim()}\n` +
@@ -81,9 +63,40 @@ export function Contact() {
         `*Serviço que você pretende:* ${servico.trim()}\n` +
         `*Mensagem:* ${mensagem.trim()}`;
 
-      const link = whatsappLink(text);
-      window.open(link, "_blank", "noopener,noreferrer");
-      setSubmitted(true);
+      const waLink = whatsappLink(waText);
+
+      // Grava no Supabase e abre o WhatsApp em paralelo
+      const [res] = await Promise.all([
+        submitContactForm({
+          nome,
+          empresa,
+          telefone,
+          email,
+          areaAtuacao,
+          servico,
+          mensagem,
+          canal: "website",
+        }),
+        // Pequeno delay para o browser não bloquear o popup do WhatsApp
+        new Promise<void>((resolve) => setTimeout(resolve, 100)),
+      ]);
+
+      // Abre o WhatsApp independentemente do resultado do Supabase
+      window.open(waLink, "_blank", "noopener,noreferrer");
+
+      if (res.success && res.mode === "supabase") {
+        toast.success("✅ Pedido registado no sistema! Entraremos em contacto brevemente.");
+        setSubmitted(true);
+      } else if (res.success) {
+        // Modo demo (offline) – ainda assim marca como enviado
+        toast.success("Pedido enviado! Entraremos em contacto brevemente.");
+        setSubmitted(true);
+      } else {
+        // Erro ao gravar no Supabase
+        console.error("Falha ao gravar no Supabase:", res.error);
+        toast.error("Erro ao registar o pedido. Por favor contacte-nos directamente pelo WhatsApp.");
+        setSubmitted(true); // Ainda marca como enviado pois o WhatsApp foi aberto
+      }
     } catch (err) {
       console.error("Erro ao enviar formulário:", err);
       toast.error("Ocorreu um erro ao processar o seu pedido. Tente novamente.");

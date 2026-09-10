@@ -98,25 +98,29 @@ export async function submitContactForm(data: ContactFormData): Promise<{
 
   // Se o Supabase estiver configurado no .env
   if (isSupabaseConfigured()) {
+    // Tentativa 1: Via RPC transacional (atómica e mais robusta)
+    const { data: rpcLeadId, error: rpcError } = await supabase.rpc("cadastrar_lead_formulario", {
+      p_nome: data.nome.trim(),
+      p_empresa: data.empresa.trim(),
+      p_telefone: data.telefone.trim(),
+      p_email: data.email.trim(),
+      p_area_atuacao: data.areaAtuacao.trim(),
+      p_servico: data.servico.trim(),
+      p_mensagem: data.mensagem.trim(),
+      p_canal: data.canal || "website",
+    });
+
+    if (!rpcError && rpcLeadId) {
+      console.log("[Supabase] Lead registado via RPC:", rpcLeadId);
+      return { success: true, leadId: String(rpcLeadId), mode: "supabase" };
+    }
+
+    if (rpcError) {
+      console.warn("[Supabase] RPC falhou, tentando inserção directa:", rpcError.message);
+    }
+
+    // Tentativa 2: Inserção directa (fallback da RPC)
     try {
-      // Tentativa 1: Via RPC transacional (mais rápida e atômica)
-      const { data: rpcLeadId, error: rpcError } = await supabase.rpc("cadastrar_lead_formulario", {
-        p_nome: data.nome.trim(),
-        p_empresa: data.empresa.trim(),
-        p_telefone: data.telefone.trim(),
-        p_email: data.email.trim(),
-        p_area_atuacao: data.areaAtuacao.trim(),
-        p_servico: data.servico.trim(),
-        p_mensagem: data.mensagem.trim(),
-        p_canal: data.canal || "website",
-      });
-
-      if (!rpcError && rpcLeadId) {
-        return { success: true, leadId: String(rpcLeadId), mode: "supabase" };
-      }
-
-      // Tentativa 2: Gravação tabela por tabela (cada campo em sua tabela dedicada)
-      // 1. Tabela mestre `leads`
       const { data: leadRow, error: leadError } = await supabase
         .from("leads")
         .insert({
@@ -137,54 +141,45 @@ export async function submitContactForm(data: ContactFormData): Promise<{
 
       const leadId = leadRow.id;
 
-      // 2. Gravar em cada tabela de campo correspondente
+      // Gravar em cada tabela de campo correspondente
       await Promise.all([
-        // Campo Nome
         supabase.from("lead_nomes").insert({
           lead_id: leadId,
           nome_completo: data.nome.trim(),
           cargo: "Responsável Comercial",
         }),
-        // Campo Empresa
         supabase.from("lead_empresas").insert({
           lead_id: leadId,
           nome_empresa: data.empresa.trim(),
           localizacao: "Angola",
         }),
-        // Campo Telefone / WhatsApp
         supabase.from("lead_telefones").insert({
           lead_id: leadId,
           numero_telefone: data.telefone.trim(),
           e_whatsapp: true,
         }),
-        // Campo E-mail
         supabase.from("lead_emails").insert({
           lead_id: leadId,
           endereco_email: data.email.trim(),
         }),
-        // Campo Área de Atuação
         supabase.from("lead_areas_atuacao").insert({
           lead_id: leadId,
           area_atuacao: data.areaAtuacao.trim(),
         }),
-        // Campo Serviço Pretendido
         supabase.from("lead_servicos").insert({
           lead_id: leadId,
           servico_pretendido: data.servico.trim(),
         }),
-        // Campo Mensagem
         supabase.from("lead_mensagens").insert({
           lead_id: leadId,
           conteudo_mensagem: data.mensagem.trim(),
         }),
-        // Atividade de captura
         supabase.from("lead_atividades").insert({
           lead_id: leadId,
           tipo: "capture",
           titulo: "Lead capturado no website",
           descricao: `Pedido de proposta para o serviço "${data.servico}" enviado por ${data.nome} (${data.empresa}).`,
         }),
-        // Conversa inicial
         supabase.from("lead_conversas").insert([
           {
             lead_id: leadId,
@@ -203,11 +198,12 @@ export async function submitContactForm(data: ContactFormData): Promise<{
         ]),
       ]);
 
+      console.log("[Supabase] Lead registado via inserção directa:", leadId);
       return { success: true, leadId, mode: "supabase" };
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      console.error("Erro ao persistir no Supabase:", msg);
-      // Fallback para cache local
+      console.error("[Supabase] Erro crítico ao persistir lead:", msg);
+      return { success: false, mode: "demo", error: msg };
     }
   }
 
