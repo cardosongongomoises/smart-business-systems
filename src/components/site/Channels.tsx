@@ -31,7 +31,10 @@ const channels = [
 
 export function Channels() {
   return (
-    <section id="canais" className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="canais"
+      className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
@@ -41,7 +44,8 @@ export function Channels() {
             Um atendimento corporativo que não dorme.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            Conecte sua empresa aos canais em que os clientes tomam decisões diárias de compra em Angola.
+            Conecte sua empresa aos canais em que os clientes tomam decisões diárias de compra em
+            Angola.
           </p>
         </Reveal>
 
@@ -53,11 +57,16 @@ export function Channels() {
                   <span className="inline-flex size-11 items-center justify-center rounded-[10px] border border-[#252C38] bg-[#0E121A] text-[#3B82F6]">
                     <c.icon className="size-5" aria-hidden="true" />
                   </span>
-                  <h3 className="mt-5 text-xl font-bold text-[#F5F7FA] tracking-tight">{c.title}</h3>
+                  <h3 className="mt-5 text-xl font-bold text-[#F5F7FA] tracking-tight">
+                    {c.title}
+                  </h3>
                   <p className="mt-2 text-sm leading-relaxed text-[#A7B0BF]">{c.desc}</p>
                   <ul className="mt-6 space-y-2.5">
                     {c.items.map((it) => (
-                      <li key={it} className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A7B0BF]">
+                      <li
+                        key={it}
+                        className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A7B0BF]"
+                      >
                         <Check className="size-3.5 text-[#3B82F6] shrink-0" aria-hidden="true" />
                         <span>{it}</span>
                       </li>

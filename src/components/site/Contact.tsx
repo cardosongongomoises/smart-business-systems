@@ -117,7 +117,9 @@ export function Contact() {
 
           <Reveal delay={160}>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#A7B0BF]">
-              Realizamos um diagnóstico minucioso da sua operação comercial para implementar o website corporativo, agente de inteligência artificial ou automações adequadas ao seu segmento em Angola.
+              Realizamos um diagnóstico minucioso da sua operação comercial para implementar o
+              website corporativo, agente de inteligência artificial ou automações adequadas ao seu
+              segmento em Angola.
             </p>
           </Reveal>
 
@@ -137,7 +139,8 @@ export function Contact() {
                 rel="noopener noreferrer"
                 className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-8 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6]"
               >
-                <Calendar className="size-4 text-[#3B82F6]" aria-hidden="true" /> Agendar diagnóstico gratuito
+                <Calendar className="size-4 text-[#3B82F6]" aria-hidden="true" /> Agendar
+                diagnóstico gratuito
               </a>
             </div>
             <p className="mt-4 text-xs text-[#667085]">Atendimento consultivo e sem compromisso.</p>
@@ -162,7 +165,8 @@ export function Contact() {
                   Inicie a modernização digital da sua organização.
                 </h2>
                 <p className="mt-4 text-base text-[#A7B0BF]">
-                  Envie o formulário técnico ao lado ou contacte-nos através dos canais de suporte oficial em Angola.
+                  Envie o formulário técnico ao lado ou contacte-nos através dos canais de suporte
+                  oficial em Angola.
                 </p>
               </Reveal>
 
@@ -228,7 +232,8 @@ export function Contact() {
               <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-7 sm:p-9 shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
                 <h3 className="text-xl font-bold text-[#F5F7FA]">Solicitar proposta executiva</h3>
                 <p className="mt-2 text-xs sm:text-sm text-[#A7B0BF]">
-                  Preencha as informações preliminares. Nossa equipa técnica entrará em contacto em menos de 24 horas úteis.
+                  Preencha as informações preliminares. Nossa equipa técnica entrará em contacto em
+                  menos de 24 horas úteis.
                 </p>
 
                 {submitted ? (
@@ -243,7 +248,8 @@ export function Contact() {
                       Solicitação registada com sucesso
                     </p>
                     <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#A7B0BF]">
-                      Os seus dados foram encaminhados com segurança. Um especialista da Agentes Digital entrará em contacto em breve.
+                      Os seus dados foram encaminhados com segurança. Um especialista da Agentes
+                      Digital entrará em contacto em breve.
                     </p>
                     <p className="mt-3 text-[11px] text-[#667085]">
                       O formulário será reiniciado automaticamente em instantes.
@@ -404,11 +410,13 @@ export function Contact() {
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Processando solicitação…
+                          <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Processando
+                          solicitação…
                         </>
                       ) : (
                         <>
-                          <Send className="size-4" aria-hidden="true" /> Enviar solicitação de proposta
+                          <Send className="size-4" aria-hidden="true" /> Enviar solicitação de
+                          proposta
                         </>
                       )}
                     </button>

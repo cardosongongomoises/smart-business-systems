@@ -98,30 +98,48 @@ export function Hero() {
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-6 text-sm font-semibold text-white transition-all hover:bg-[#2563EB] active:scale-[0.98]"
+                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-6 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
               >
-                Falar com especialista <ArrowRight className="size-4" />
+                <span>Falar com especialista</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="#como-funciona"
-                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-6 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6]"
+                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-6 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
               >
-                <PlayCircle className="size-4 text-[#A7B0BF]" /> Ver como funciona
+                <PlayCircle className="size-4 text-[#A7B0BF]" aria-hidden="true" />
+                <span>Ver como funciona</span>
               </a>
             </div>
           </Reveal>
 
+          {/* Enterprise Credibility Badges */}
           <Reveal delay={320}>
-            <div className="mt-9 flex flex-wrap items-center gap-4 text-xs sm:text-sm text-[#A7B0BF]">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5">
-                <span className="relative flex size-2.5">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
-                  <span className="relative inline-flex size-2.5 rounded-full bg-[#22C55E]" />
-                </span>
-                <span className="font-semibold text-[#F5F7FA]">Atendimento digital 24/7</span>
+            <div className="mt-10 pt-7 border-t border-[#252C38]/70">
+              <p className="text-[11px] font-semibold tracking-wider text-[#667085] uppercase mb-3">
+                Padrões Operacionais & Tecnológicos
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-4 text-xs text-[#A7B0BF]">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex size-2">
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
+                    <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
+                  </span>
+                  <span className="font-medium text-[#F5F7FA]">Atendimento 24/7 Ativo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-1.5 rounded-full bg-[#3B82F6]" />
+                  <span>WhatsApp Cloud API Oficial</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-1.5 rounded-full bg-[#8B5CF6]" />
+                  <span>Supervisão Humana sem Alucinação</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                  <span className="font-mono text-[11px] text-[#22C55E]">SLA 99.9%</span>
+                </div>
               </div>
-              <span className="hidden sm:inline text-[#252C38]">•</span>
-              <span>WhatsApp • Web • CRM integrado</span>
             </div>
           </Reveal>
         </div>

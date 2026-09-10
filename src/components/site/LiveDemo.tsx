@@ -2,13 +2,21 @@ import { Bot, User, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 
 const timeline = [
-  { tag: "09:41 • Novo contacto", text: "“Boa tarde, gostaria de marcar uma reunião com a direção comercial.”", ia: false },
+  {
+    tag: "09:41 • Novo contacto",
+    text: "“Boa tarde, gostaria de marcar uma reunião com a direção comercial.”",
+    ia: false,
+  },
   {
     tag: "Agente Digital IA",
     text: "“Olá! Com certeza. Será um prazer auxiliá-lo. Qual solução ou serviço da Agentes Digital procura?”",
     ia: true,
   },
-  { tag: "Cliente", text: "“Consultoria de automação e implantação de website com IA.”", ia: false },
+  {
+    tag: "Cliente",
+    text: "“Consultoria de automação e implantação de website com IA.”",
+    ia: false,
+  },
   {
     tag: "Agente Digital IA",
     text: "“Excelente escolha. Consultei a disponibilidade dos nossos especialistas e temos vagas amanhã às 10h ou às 15h. Qual horário é mais conveniente?”",
@@ -18,7 +26,10 @@ const timeline = [
 
 export function LiveDemo() {
   return (
-    <section id="demonstracao" className="relative py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="demonstracao"
+      className="relative py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
@@ -82,7 +93,8 @@ export function LiveDemo() {
         <Reveal delay={160}>
           <p className="mt-12 flex items-center justify-center gap-2 text-center text-xs sm:text-sm text-[#A7B0BF]">
             <Bot className="size-4 text-[#3B82F6]" aria-hidden="true" />
-            Não construímos apenas presença digital. Construímos sistemas que trabalham para o seu negócio.
+            Não construímos apenas presença digital. Construímos sistemas que trabalham para o seu
+            negócio.
           </p>
         </Reveal>
       </div>

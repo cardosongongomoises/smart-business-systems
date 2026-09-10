@@ -42,7 +42,10 @@ function Cell({ value }: { value: boolean | string }) {
 
 export function Comparison() {
   return (
-    <section id="comparacao" className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="comparacao"
+      className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
@@ -65,7 +68,8 @@ export function Comparison() {
           >
             <table className="w-full min-w-[760px] border-collapse text-left">
               <caption className="sr-only">
-                Tabela comparativa de funcionalidades dos planos Presença, Profissional, Autoridade e Domínio IA
+                Tabela comparativa de funcionalidades dos planos Presença, Profissional, Autoridade
+                e Domínio IA
               </caption>
               <thead>
                 <tr className="border-b border-[#252C38] bg-[#0E121A]">
@@ -80,7 +84,9 @@ export function Comparison() {
                       key={c}
                       scope="col"
                       className={`p-4 sm:p-5 text-center text-sm font-bold ${
-                        i === 1 ? "bg-[#3B82F6]/10 text-[#3B82F6] border-x border-[#3B82F6]/30" : "text-[#F5F7FA]"
+                        i === 1
+                          ? "bg-[#3B82F6]/10 text-[#3B82F6] border-x border-[#3B82F6]/30"
+                          : "text-[#F5F7FA]"
                       }`}
                     >
                       {c}
@@ -95,15 +101,18 @@ export function Comparison() {
               </thead>
               <tbody className="divide-y divide-[#252C38]/60">
                 {rows.map(([label, values]) => (
-                  <tr
-                    key={label}
-                    className="hover:bg-[#0E121A]/50 transition-colors"
-                  >
-                    <th scope="row" className="p-4 text-xs sm:text-sm font-medium text-[#F5F7FA] text-left">
+                  <tr key={label} className="hover:bg-[#0E121A]/50 transition-colors">
+                    <th
+                      scope="row"
+                      className="p-4 text-xs sm:text-sm font-medium text-[#F5F7FA] text-left"
+                    >
                       {label}
                     </th>
                     {values.map((v, i) => (
-                      <td key={i} className={`p-4 text-center ${i === 1 ? "bg-[#3B82F6]/5 border-x border-[#3B82F6]/20" : ""}`}>
+                      <td
+                        key={i}
+                        className={`p-4 text-center ${i === 1 ? "bg-[#3B82F6]/5 border-x border-[#3B82F6]/20" : ""}`}
+                      >
                         <Cell value={v} />
                       </td>
                     ))}

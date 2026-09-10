@@ -93,7 +93,9 @@ export function TrustResults() {
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-4 text-base leading-relaxed text-[#A7B0BF]">
-              Em Luanda e em todo o país, a diferença entre fechar um contrato corporativo ou perder para a concorrência está na rapidez da resposta e na credibilidade da sua estrutura digital.
+              Em Luanda e em todo o país, a diferença entre fechar um contrato corporativo ou perder
+              para a concorrência está na rapidez da resposta e na credibilidade da sua estrutura
+              digital.
             </p>
           </Reveal>
         </div>
@@ -125,7 +127,9 @@ export function TrustResults() {
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#A7B0BF]">
                 Aplicações Práticas por Ramo de Atividade
               </h3>
-              <span className="text-[11px] font-mono text-[#3B82F6] uppercase tracking-wider">Luanda • Angola</span>
+              <span className="text-[11px] font-mono text-[#3B82F6] uppercase tracking-wider">
+                Luanda • Angola
+              </span>
             </div>
           </Reveal>
 
@@ -173,6 +177,64 @@ export function TrustResults() {
             ))}
           </div>
         </div>
+
+        {/* Enterprise Security & Compliance Guarantee */}
+        <Reveal delay={140}>
+          <div className="mt-16 rounded-[16px] border border-[#252C38] bg-[#151A23] p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#252C38] pb-5">
+              <div>
+                <span className="text-[11px] font-mono font-semibold tracking-wider text-[#3B82F6] uppercase">
+                  Conformidade, Estabilidade & Segurança
+                </span>
+                <h3 className="text-xl font-bold text-[#F5F7FA] mt-1">
+                  Infraestrutura Corporativa Desenhada para Operações Críticas
+                </h3>
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/30 px-3 py-1 rounded-full w-fit">
+                <span className="size-1.5 rounded-full bg-[#22C55E]" /> SLA 99.9% GARANTIDO
+              </span>
+            </div>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-4">
+                <p className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                  API Oficial Meta
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[#A7B0BF]">
+                  Integração direta com o WhatsApp Cloud API oficial, eliminando riscos de bloqueio
+                  do número empresarial.
+                </p>
+              </div>
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-4">
+                <p className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                  Proteção & Sigilo
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[#A7B0BF]">
+                  Dados dos clientes isolados e criptografados em trânsito e repouso, respeitando
+                  normas de confidencialidade.
+                </p>
+              </div>
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-4">
+                <p className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                  Backups Diários
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[#A7B0BF]">
+                  Histórico completo de conversas, leads e oportunidades sincronizado e protegido
+                  contra perdas operacionais.
+                </p>
+              </div>
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-4">
+                <p className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                  Suporte Especializado
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-[#A7B0BF]">
+                  Equipa técnica em Angola pronta para ajustes de fluxo, novas regras e manutenção
+                  proativa mensal.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

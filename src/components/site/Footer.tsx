@@ -5,23 +5,26 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
             <a href="#topo" className="flex items-center gap-3 group">
-              <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#3B82F6] text-sm font-extrabold text-white transition-transform group-hover:scale-105">
-                AD
-              </span>
+              <div className="relative flex size-9 items-center justify-center rounded-[8px] border border-[#3B82F6]/40 bg-[#0E121A] text-sm font-extrabold text-[#F5F7FA] shadow-sm transition-all duration-200 group-hover:border-[#3B82F6] group-hover:shadow-[0_0_16px_rgba(59,130,246,0.3)]">
+                <span className="bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent font-black tracking-tight">
+                  AD
+                </span>
+              </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold tracking-[0.16em] uppercase text-[#F5F7FA]">
+                <span className="text-sm font-bold tracking-[0.14em] uppercase text-[#F5F7FA] transition-colors group-hover:text-white">
                   Agentes Digital
                 </span>
                 <span className="text-[10px] font-medium tracking-wider text-[#A7B0BF]">
-                  Sistemas Digitais
+                  Sistemas Digitais • IA
                 </span>
               </div>
             </a>
-            <p className="mt-4 max-w-sm text-sm text-[#A7B0BF]">
-              Websites Corporativos • Agentes de Inteligência Artificial • Automação Comercial
+            <p className="mt-4 max-w-sm text-sm text-[#A7B0BF] leading-relaxed">
+              “Não construímos apenas presença digital. Construímos sistemas que trabalham para o
+              seu negócio.”
             </p>
             <p className="mt-2 text-xs text-[#667085]">
-              Arquitetura de sistemas digitais inteligentes e integrados para empresas em crescimento.
+              Websites Corporativos • Agentes de Inteligência Artificial • Automação Comercial • CRM
             </p>
             <p className="mt-4 text-[11px] font-mono font-semibold tracking-wider text-[#3B82F6] uppercase">
               Malanje & Luanda, Angola • Lusofonia
@@ -34,10 +37,7 @@ export function Footer() {
             </p>
             <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a
-                  href="/#topo"
-                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
-                >
+                <a href="/#topo" className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]">
                   Início
                 </a>
               </li>
@@ -106,10 +106,7 @@ export function Footer() {
             </p>
             <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a
-                  href="/#faq"
-                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
-                >
+                <a href="/#faq" className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]">
                   Perguntas Frequentes
                 </a>
               </li>
@@ -122,10 +119,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/termos"
-                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
-                >
+                <a href="/termos" className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]">
                   Termos de Serviço
                 </a>
               </li>
@@ -134,7 +128,8 @@ export function Footer() {
               <div className="flex items-center gap-2 text-[#22C55E] font-mono text-[11px] mb-1">
                 <span className="size-2 rounded-full bg-[#22C55E]" /> SLA 99.9% Operacional
               </div>
-              Infraestrutura em Cloud com alta disponibilidade para atendimento 24/7 sem interrupções.
+              Infraestrutura em Cloud com alta disponibilidade para atendimento 24/7 sem
+              interrupções.
             </div>
           </div>
         </div>

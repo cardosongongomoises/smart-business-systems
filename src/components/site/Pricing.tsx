@@ -120,7 +120,10 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="planos" className="py-20 sm:py-28 relative bg-[#080A0F] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="planos"
+      className="py-20 sm:py-28 relative bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[42rem] rounded-full bg-[#3B82F6]/5 blur-[160px]" />
       <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
@@ -137,7 +140,8 @@ export function Pricing() {
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-4 max-w-2xl mx-auto text-base text-[#A7B0BF]">
-              Estruturas precificadas em Kwanzas (Kz). Inicie com presença de alta conversão ou implemente uma operação completa com inteligência artificial no WhatsApp.
+              Estruturas precificadas em Kwanzas (Kz). Inicie com presença de alta conversão ou
+              implemente uma operação completa com inteligência artificial no WhatsApp.
             </p>
           </Reveal>
         </div>
@@ -174,18 +178,22 @@ export function Pricing() {
                       {p.setup}
                     </p>
                     <p className="text-xs text-[#A7B0BF]">Implementação única</p>
-                    <p className="mt-2 text-sm font-bold text-[#3B82F6] tabular-nums">{p.monthly}</p>
+                    <p className="mt-2 text-sm font-bold text-[#3B82F6] tabular-nums">
+                      {p.monthly}
+                    </p>
                   </div>
 
-                  <p className="mt-4 text-xs leading-relaxed text-[#A7B0BF] min-h-[36px]">{p.pitch}</p>
+                  <p className="mt-4 text-xs leading-relaxed text-[#A7B0BF] min-h-[36px]">
+                    {p.pitch}
+                  </p>
 
                   <ul className="mt-6 space-y-2.5 border-t border-[#252C38]/60 pt-4">
                     {p.items.map((it) => (
-                      <li
-                        key={it}
-                        className="flex items-start gap-2.5 text-xs text-[#A7B0BF]"
-                      >
-                        <Check className="mt-0.5 size-3.5 shrink-0 text-[#3B82F6]" aria-hidden="true" />
+                      <li key={it} className="flex items-start gap-2.5 text-xs text-[#A7B0BF]">
+                        <Check
+                          className="mt-0.5 size-3.5 shrink-0 text-[#3B82F6]"
+                          aria-hidden="true"
+                        />
                         <span>{it}</span>
                       </li>
                     ))}

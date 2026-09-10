@@ -211,7 +211,9 @@
   padding: 10px 20px;
   font-weight: 600;
   touch-action: manipulation;
-  transition: background-color 150ms ease, opacity 150ms ease;
+  transition:
+    background-color 150ms ease,
+    opacity 150ms ease;
   &:hover {
     background-color: #2563eb;
   }
@@ -226,7 +228,10 @@
   padding: 10px 20px;
   font-weight: 600;
   touch-action: manipulation;
-  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
   &:hover {
     background-color: #151a23;
     border-color: #3b82f6;
@@ -242,7 +247,10 @@
   font-weight: 600;
   touch-action: manipulation;
   box-shadow: 0 4px 20px -4px rgba(139, 92, 246, 0.35);
-  transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease;
+  transition:
+    transform 150ms ease,
+    filter 150ms ease,
+    box-shadow 150ms ease;
   &:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);

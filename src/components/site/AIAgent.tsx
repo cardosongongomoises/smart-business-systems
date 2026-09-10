@@ -91,7 +91,10 @@ export function AIAgent() {
   }, [selectedScenario, activeMessages.length]);
 
   return (
-    <section id="agente-ia" className="relative py-20 sm:py-28 overflow-hidden bg-[#0E121A] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="agente-ia"
+      className="relative py-20 sm:py-28 overflow-hidden bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="pointer-events-none absolute top-1/3 right-0 size-[32rem] rounded-full bg-[#8B5CF6]/5 blur-[140px]" />
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_1fr]">
         <div>
@@ -110,7 +113,9 @@ export function AIAgent() {
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[#A7B0BF]">
-              Um agente virtual corporativo treinado exclusivamente com as diretrizes e dados da sua empresa. Ele atende no WhatsApp e na web, responde dúvidas com precisão, qualifica oportunidades e agenda reuniões no calendário da sua equipa.
+              Um agente virtual corporativo treinado exclusivamente com as diretrizes e dados da sua
+              empresa. Ele atende no WhatsApp e na web, responde dúvidas com precisão, qualifica
+              oportunidades e agenda reuniões no calendário da sua equipa.
             </p>
           </Reveal>
 
@@ -165,7 +170,9 @@ export function AIAgent() {
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs font-bold uppercase tracking-wider text-[#F5F7FA]">Agente Digital IA</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#F5F7FA]">
+                      Agente Digital IA
+                    </p>
                     <span className="inline-flex items-center gap-1 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-2 py-0.5 font-mono text-[9px] font-bold text-[#22C55E] tracking-wider uppercase">
                       ● ONLINE
                     </span>
@@ -253,7 +260,9 @@ export function AIAgent() {
               {/* Typing indicator */}
               {isTyping && (
                 <div className="flex items-center gap-2 pl-8 pt-1">
-                  <span className="text-[11px] font-mono text-[#8B5CF6]">••• Agente processando</span>
+                  <span className="text-[11px] font-mono text-[#8B5CF6]">
+                    ••• Agente processando
+                  </span>
                   <div className="flex gap-1">
                     {[0, 1, 2].map((d) => (
                       <span

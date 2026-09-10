@@ -12,7 +12,10 @@ export function RoiCalculator() {
   const potential = missedContacts * value;
 
   return (
-    <section id="valor" className="py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="valor"
+      className="py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
@@ -22,7 +25,8 @@ export function RoiCalculator() {
             Quanto custa uma oportunidade perdida por falta de resposta?
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            Avalie o impacto comercial das mensagens de clientes que chegam fora do horário ou ficam sem atendimento imediato.
+            Avalie o impacto comercial das mensagens de clientes que chegam fora do horário ou ficam
+            sem atendimento imediato.
           </p>
         </Reveal>
 
@@ -35,7 +39,9 @@ export function RoiCalculator() {
                   className="text-xs sm:text-sm font-semibold text-[#F5F7FA] flex justify-between items-center"
                 >
                   <span>Quantos contactos a sua empresa recebe por mês?</span>
-                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">{contacts}</span>
+                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">
+                    {contacts}
+                  </span>
                 </label>
                 <input
                   id="contacts"
@@ -58,7 +64,9 @@ export function RoiCalculator() {
                   className="text-xs sm:text-sm font-semibold text-[#F5F7FA] flex justify-between items-center"
                 >
                   <span>Percentagem que demora a ser atendida ou fica sem resposta:</span>
-                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">{missed}%</span>
+                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">
+                    {missed}%
+                  </span>
                 </label>
                 <input
                   id="missed"
@@ -81,7 +89,9 @@ export function RoiCalculator() {
                   className="text-xs sm:text-sm font-semibold text-[#F5F7FA] flex justify-between items-center"
                 >
                   <span>Ticket médio estimado de um novo cliente:</span>
-                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">Kz {fmt(value)}</span>
+                  <span className="text-[#3B82F6] font-mono font-bold tabular-nums text-base">
+                    Kz {fmt(value)}
+                  </span>
                 </label>
                 <input
                   id="value"
@@ -109,9 +119,12 @@ export function RoiCalculator() {
                 </p>
                 <p className="mt-5 text-xs text-[#A7B0BF]">Leads com risco de evasão por espera:</p>
                 <p className="text-3xl sm:text-4xl font-mono font-bold text-[#F5F7FA] tabular-nums mt-1">
-                  {missedContacts} <span className="text-sm font-sans font-normal text-[#A7B0BF]">contactos/mês</span>
+                  {missedContacts}{" "}
+                  <span className="text-sm font-sans font-normal text-[#A7B0BF]">
+                    contactos/mês
+                  </span>
                 </p>
-                
+
                 <p className="mt-6 text-xs text-[#A7B0BF]">Receita potencial em risco mensal:</p>
                 <p className="text-gradient text-3xl sm:text-4xl font-mono font-bold tabular-nums mt-1">
                   Kz {fmt(potential)}
@@ -120,7 +133,9 @@ export function RoiCalculator() {
 
               <div className="mt-7 pt-4 border-t border-[#252C38]">
                 <p className="text-[11px] leading-relaxed text-[#667085]">
-                  * Simulação analítica com base nas variáveis informadas. A automação com Agente Digital visa assegurar taxa de resposta de 100% em menos de 10 segundos, convertendo contactos em agendamentos qualificados.
+                  * Simulação analítica com base nas variáveis informadas. A automação com Agente
+                  Digital visa assegurar taxa de resposta de 100% em menos de 10 segundos,
+                  convertendo contactos em agendamentos qualificados.
                 </p>
               </div>
             </div>

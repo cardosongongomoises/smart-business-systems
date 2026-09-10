@@ -118,7 +118,10 @@ export function Journey() {
                     Etapa automatizada
                   </span>
                   {i < steps.length - 1 ? (
-                    <ArrowRight className="size-3.5 text-[#3B82F6] group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                    <ArrowRight
+                      className="size-3.5 text-[#3B82F6] group-hover:translate-x-1 transition-transform"
+                      aria-hidden="true"
+                    />
                   ) : (
                     <span className="text-[10px] font-bold text-[#22C55E] uppercase flex items-center gap-1">
                       <span className="size-1.5 rounded-full bg-[#22C55E]" /> Conversão
@@ -134,10 +137,11 @@ export function Journey() {
         <Reveal delay={200}>
           <div className="mt-12 rounded-[16px] border border-[#252C38] bg-[#0E121A] p-6 sm:p-8 text-center max-w-3xl mx-auto">
             <p className="text-base sm:text-lg font-medium text-[#F5F7FA]">
-              “Não construímos apenas presença digital. Construímos sistemas que trabalham para o seu negócio.”
+              “Não construímos apenas presença digital. Construímos sistemas que trabalham para o
+              seu negócio.”
             </p>
             <p className="mt-2 text-xs font-semibold tracking-wider text-[#3B82F6] uppercase">
-              Agentes Digital • DARK INTELLIGENCE
+              Agentes Digital • Sistemas Digitais & Inteligência Artificial
             </p>
           </div>
         </Reveal>

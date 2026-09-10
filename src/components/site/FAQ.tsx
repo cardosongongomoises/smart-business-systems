@@ -42,7 +42,10 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="faq"
+      className="py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto">
           <Reveal>

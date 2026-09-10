@@ -1,20 +1,39 @@
 import { Reveal } from "./Reveal";
 
 const steps = [
-  { n: "01", title: "Diagnóstico & Descoberta", text: "Mapeamos os gargalos operacionais da empresa, perfil de público e rotinas de atendimento." },
-  { n: "02", title: "Arquitetura & Estratégia", text: "Desenhamos o funil, scripts corporativos e réguas de qualificação do agente digital." },
-  { n: "03", title: "Desenvolvimento & IA", text: "Construímos o website de alta conversão e configuramos os modelos de IA e automações." },
+  {
+    n: "01",
+    title: "Diagnóstico & Descoberta",
+    text: "Mapeamos os gargalos operacionais da empresa, perfil de público e rotinas de atendimento.",
+  },
+  {
+    n: "02",
+    title: "Arquitetura & Estratégia",
+    text: "Desenhamos o funil, scripts corporativos e réguas de qualificação do agente digital.",
+  },
+  {
+    n: "03",
+    title: "Desenvolvimento & IA",
+    text: "Construímos o website de alta conversão e configuramos os modelos de IA e automações.",
+  },
   {
     n: "04",
     title: "Integração & Homologação",
     text: "Conectamos WhatsApp corporativo, e-mail empresarial, Google Calendar e CRM com testes rigorosos.",
   },
-  { n: "05", title: "Operação & Otimização", text: "Monitoramento contínuo de conversões, métricas de tempo de resposta e refinamento de prompts." },
+  {
+    n: "05",
+    title: "Operação & Otimização",
+    text: "Monitoramento contínuo de conversões, métricas de tempo de resposta e refinamento de prompts.",
+  },
 ];
 
 export function Process() {
   return (
-    <section id="como-funciona" className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20">
+    <section
+      id="como-funciona"
+      className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
@@ -24,7 +43,8 @@ export function Process() {
             Do primeiro contacto ao cliente recorrente.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            Um processo estruturado de 5 etapas para colocar a tecnologia a trabalhar pelo crescimento da sua empresa em Angola.
+            Um processo estruturado de 5 etapas para colocar a tecnologia a trabalhar pelo
+            crescimento da sua empresa em Angola.
           </p>
         </Reveal>
 
