@@ -84,27 +84,51 @@ export function Header() {
 
       {/* Mobile Drawer */}
       {open && (
-        <div className="mx-5 mt-2 rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)] lg:hidden">
-          <nav className="flex flex-col">
-            {links.map((l) => (
+        <div className="fixed inset-x-0 top-[72px] bottom-0 bg-black/60 backdrop-blur-md z-50 lg:hidden flex flex-col justify-start p-4 animate-in fade-in-20">
+          <div className="w-full rounded-[16px] border border-[#252C38] bg-[#0E121A] p-5 shadow-[0_12px_36px_rgba(0,0,0,0.5)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto">
+            <nav className="flex flex-col divide-y divide-[#252C38]/60">
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="py-3.5 text-sm font-medium text-[#A7B0BF] hover:text-[#F5F7FA] flex items-center justify-between"
+                >
+                  <span>{l.label}</span>
+                  <ArrowRight className="size-3.5 text-[#667085]" />
+                </a>
+              ))}
               <a
-                key={l.href}
-                href={l.href}
+                href="/operacoes"
                 onClick={() => setOpen(false)}
-                className="border-b border-[#252C38] py-3 text-sm font-medium text-[#A7B0BF] last:border-0 hover:text-[#F5F7FA]"
+                className="py-3.5 text-sm font-semibold text-[#8B5CF6] hover:text-[#A78BFA] flex items-center justify-between"
               >
-                {l.label}
+                <span>Centro de Operações (CRM IA)</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 text-[#C084FC]">
+                  Painel
+                </span>
               </a>
-            ))}
-          </nav>
-          <a
-            href={CTA.specialist}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 flex h-[44px] items-center justify-center rounded-[8px] bg-[#3B82F6] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB]"
-          >
-            Falar com especialista
-          </a>
+            </nav>
+
+            <div className="mt-4 pt-4 border-t border-[#252C38] flex flex-col gap-2.5">
+              <a
+                href={CTA.specialist}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex h-[46px] items-center justify-center gap-2 rounded-[10px] bg-[#3B82F6] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB] active:scale-[0.98]"
+              >
+                Falar com especialista <ArrowRight className="size-4" />
+              </a>
+              <a
+                href="#contacto"
+                onClick={() => setOpen(false)}
+                className="flex h-[44px] items-center justify-center rounded-[10px] border border-[#252C38] bg-[#151A23] text-xs font-semibold text-[#F5F7FA] hover:border-[#3B82F6] transition-colors"
+              >
+                Solicitar Proposta Comercial
+              </a>
+            </div>
+          </div>
         </div>
       )}
     </header>

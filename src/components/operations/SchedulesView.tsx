@@ -52,7 +52,7 @@ export function SchedulesView({ leads, onSelectLead }: SchedulesViewProps) {
           title: apt.title,
           dateFormatted: apt.dateFormatted,
           timeFormatted: apt.timeFormatted,
-          status: apt.status === "confirmado" ? "confirmado" : "realizado",
+          status: apt.status === "Confirmado" ? "confirmado" : "realizado",
           meetUrl: apt.meetUrl || "https://meet.google.com/agd-oper-dxq",
         });
       });

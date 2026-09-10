@@ -94,3 +94,25 @@ export interface FunnelStage {
   dropOffRate?: string;
   color: string;
 }
+
+export type KnowledgeType = "skill" | "manual";
+
+export type KnowledgeCategory =
+  | "qualificacao"
+  | "objecoes"
+  | "fechamento"
+  | "rapport"
+  | "negociacao";
+
+export interface VendedorSkillDoc {
+  id: string;
+  title: string;
+  filename: string; // sempre .md
+  type: KnowledgeType;
+  category: KnowledgeCategory;
+  triggerCondition?: string;
+  contentMd: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

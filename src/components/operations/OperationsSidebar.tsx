@@ -14,12 +14,14 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
+  GraduationCap,
 } from "lucide-react";
 
 export type ActiveTab =
   | "dashboard"
   | "leads"
   | "conversations"
+  | "knowledge_base"
   | "system_prompt"
   | "clients"
   | "schedules"
@@ -34,6 +36,8 @@ interface SidebarProps {
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
   onLogout?: () => void;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export function OperationsSidebar({
@@ -43,6 +47,8 @@ export function OperationsSidebar({
   isCollapsed: controlledCollapsed,
   onToggleCollapse,
   onLogout,
+  isMobileOpen = false,
+  onCloseMobile,
 }: SidebarProps) {
   const [internalCollapsed, setInternalCollapsed] = useState(false);
   const isCollapsed = controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed;
@@ -52,6 +58,13 @@ export function OperationsSidebar({
       onToggleCollapse();
     } else {
       setInternalCollapsed((prev) => !prev);
+    }
+  };
+
+  const handleItemClick = (id: ActiveTab) => {
+    onSelectTab(id);
+    if (onCloseMobile) {
+      onCloseMobile();
     }
   };
 
@@ -71,6 +84,13 @@ export function OperationsSidebar({
       badge: activeChatsCount || 4,
       badgeColor: "violet",
     },
+    {
+      id: "knowledge_base",
+      label: "Capacitação & Skills IA",
+      icon: GraduationCap,
+      badge: "Skills",
+      badgeColor: "violet",
+    },
     { id: "clients", label: "Clientes", icon: Briefcase },
     { id: "schedules", label: "Agendamentos", icon: Calendar },
     { id: "automations", label: "Automações", icon: Zap },
@@ -79,27 +99,39 @@ export function OperationsSidebar({
   ];
 
   return (
-    <aside
-      className={`${
-        isCollapsed ? "w-[72px]" : "w-60"
-      } shrink-0 border-r border-[#252C38] bg-[#0E121A] flex flex-col justify-between h-screen sticky top-0 select-none z-30 transition-[width] duration-300 ease-in-out`}
-    >
-      {/* Top Section */}
-      <div
-        className={`${isCollapsed ? "p-2.5" : "p-4"} flex flex-col gap-4 overflow-y-auto overflow-x-hidden`}
-      >
-        {/* Brand Header & Toggle */}
+    <>
+      {/* Mobile Backdrop */}
+      {isMobileOpen && (
         <div
-          className={`flex items-center pb-3 border-b border-[#252C38] ${
-            isCollapsed ? "flex-col gap-2.5 justify-center" : "justify-between"
-          }`}
+          onClick={onCloseMobile}
+          className="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`
+          fixed md:sticky top-0 h-screen bg-[#0E121A] border-r border-[#252C38] flex flex-col justify-between select-none z-50 transition-all duration-300 ease-in-out
+          ${isMobileOpen ? "translate-x-0 w-64 shadow-2xl" : "-translate-x-full md:translate-x-0"}
+          ${isCollapsed ? "md:w-[72px]" : "md:w-60"}
+          shrink-0
+        `}
+      >
+        {/* Top Section */}
+        <div
+          className={`${isCollapsed ? "md:p-2.5 p-4" : "p-4"} flex flex-col gap-4 overflow-y-auto overflow-x-hidden`}
         >
-          <a href="/" className="flex items-center gap-2.5 group" title="Agentes Digital - Início">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] bg-[#3B82F6] text-xs font-extrabold text-white shadow-[0_0_12px_rgba(59,130,246,0.3)] transition-transform group-hover:scale-105">
-              AD
-            </span>
-            {!isCollapsed && (
-              <div className="flex flex-col overflow-hidden transition-opacity duration-200">
+          {/* Brand Header & Toggle */}
+          <div
+            className={`flex items-center pb-3 border-b border-[#252C38] ${
+              isCollapsed ? "md:flex-col md:gap-2.5 justify-between md:justify-center" : "justify-between"
+            }`}
+          >
+            <a href="/" className="flex items-center gap-2.5 group" title="Agentes Digital - Início">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] bg-[#3B82F6] text-xs font-extrabold text-white shadow-[0_0_12px_rgba(59,130,246,0.3)] transition-transform group-hover:scale-105">
+                AD
+              </span>
+              <div className={`flex flex-col overflow-hidden transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "flex"}`}>
                 <span className="text-[13px] font-bold tracking-[0.14em] uppercase text-[#F5F7FA] truncate">
                   Agentes Digital
                 </span>
@@ -107,48 +139,59 @@ export function OperationsSidebar({
                   <ShieldCheck className="size-3" /> Operações
                 </span>
               </div>
-            )}
-          </a>
+            </a>
 
-          {/* Collapse/Expand Toggle Button */}
-          <button
-            type="button"
-            onClick={handleToggle}
-            title={isCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
-            aria-label={isCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
-            className="size-7 shrink-0 rounded-[6px] border border-[#252C38] bg-[#151A23] flex items-center justify-center text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/60 hover:bg-[#1C2330] transition-all cursor-pointer shadow-sm"
-          >
-            {isCollapsed ? (
-              <PanelLeftOpen className="size-3.5 text-[#3B82F6]" />
-            ) : (
-              <PanelLeftClose className="size-3.5" />
-            )}
-          </button>
-        </div>
+            {/* Mobile close button / Desktop collapse toggle */}
+            <div className="flex items-center gap-1">
+              {/* Close button on mobile */}
+              <button
+                type="button"
+                onClick={onCloseMobile}
+                className="size-7 md:hidden rounded-[6px] border border-[#252C38] bg-[#151A23] flex items-center justify-center text-[#A7B0BF] hover:text-[#F5F7FA] transition-all cursor-pointer"
+                title="Fechar menu lateral"
+              >
+                <PanelLeftClose className="size-3.5" />
+              </button>
 
-        {/* Navigation Menu */}
-        <nav className="flex flex-col gap-1">
-          {!isCollapsed ? (
-            <p className="px-3 pb-1 text-[10px] font-semibold tracking-wider text-[#667085] uppercase transition-opacity duration-200">
+              {/* Desktop toggle */}
+              <button
+                type="button"
+                onClick={handleToggle}
+                title={isCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
+                aria-label={isCollapsed ? "Desencolher barra lateral" : "Encolher barra lateral"}
+                className="hidden md:flex size-7 shrink-0 rounded-[6px] border border-[#252C38] bg-[#151A23] items-center justify-center text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/60 hover:bg-[#1C2330] transition-all cursor-pointer shadow-sm"
+              >
+                {isCollapsed ? (
+                  <PanelLeftOpen className="size-3.5 text-[#3B82F6]" />
+                ) : (
+                  <PanelLeftClose className="size-3.5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation Menu */}
+          <nav className="flex flex-col gap-1">
+            <p className={`px-3 pb-1 text-[10px] font-semibold tracking-wider text-[#667085] uppercase transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "block"}`}>
               Gestão & IA
             </p>
-          ) : (
-            <div className="w-6 mx-auto my-1 border-b border-[#252C38]" />
-          )}
+            {isCollapsed && (
+              <div className="hidden md:block w-6 mx-auto my-1 border-b border-[#252C38]" />
+            )}
 
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = currentTab === item.id;
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = currentTab === item.id;
 
-            return (
-              <div key={item.id} className="relative group">
-                <button
-                  type="button"
-                  onClick={() => onSelectTab(item.id)}
-                  title={isCollapsed ? item.label : undefined}
-                  className={`w-full flex items-center ${
-                    isCollapsed ? "justify-center px-0 py-2.5" : "justify-between px-3 py-2.5"
-                  } rounded-[10px] text-xs font-medium transition-all duration-150 text-left ${
+              return (
+                <div key={item.id} className="relative group">
+                  <button
+                    type="button"
+                    onClick={() => handleItemClick(item.id)}
+                    title={isCollapsed ? item.label : undefined}
+                    className={`w-full flex items-center ${
+                      isCollapsed ? "md:justify-center md:px-0 justify-between px-3" : "justify-between px-3"
+                    } py-2.5 rounded-[10px] text-xs font-medium transition-all duration-150 text-left ${
                     isActive
                       ? "bg-[#151A23] text-[#3B82F6] border border-[#252C38] shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
                       : "text-[#A7B0BF] hover:bg-[#151A23]/60 hover:text-[#F5F7FA] border border-transparent"
@@ -325,5 +368,6 @@ export function OperationsSidebar({
         )}
       </div>
     </aside>
+  </>
   );
 }

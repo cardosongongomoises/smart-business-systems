@@ -13,6 +13,8 @@ import {
   PlusCircle,
   BarChart3,
   Zap,
+  FileSpreadsheet,
+  Globe,
 } from "lucide-react";
 import { Lead } from "./types";
 import { FunnelOverview } from "./FunnelOverview";
@@ -60,6 +62,24 @@ export function DashboardView({
   const convertedCount = leads.filter((l) => l.status === "convertido").length;
   const conversionRate = totalLeads > 0 ? ((convertedCount / totalLeads) * 100).toFixed(1) : "0";
 
+  // Form requests metrics (website channel submissions)
+  const formLeads = useMemo(() => {
+    return leads.filter((l) => l.channel === "website" || l.channel === "email");
+  }, [leads]);
+
+  const formRequestsCount = formLeads.length;
+
+  // Mini trend data for the form card using Recharts
+  const formTrendData = useMemo(() => [
+    { dia: "Seg", solicitacoes: 2 },
+    { dia: "Ter", solicitacoes: 4 },
+    { dia: "Qua", solicitacoes: 3 },
+    { dia: "Qui", solicitacoes: 7 },
+    { dia: "Sex", solicitacoes: 8 },
+    { dia: "Sáb", solicitacoes: 5 },
+    { dia: "Dom", solicitacoes: Math.max(formRequestsCount, 6) },
+  ], [formRequestsCount]);
+
   // Calculate Pipeline Value in Kwanzas
   const pipelineKz = useMemo(() => {
     return leads.reduce((acc, lead) => {
@@ -101,7 +121,7 @@ export function DashboardView({
           </button>
           <button
             type="button"
-            onClick={() => onNavigateTab(("conversas" as ActiveTab) || "conversations")}
+            onClick={() => onNavigateTab("conversations")}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-[8px] bg-[#151A23] hover:bg-[#252C38] border border-[#252C38] text-[#F5F7FA] text-xs font-semibold transition-all"
           >
             <Bot className="size-4 text-[#8B5CF6]" />
@@ -111,7 +131,7 @@ export function DashboardView({
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
         <div
           onClick={() => onNavigateTab("leads")}
           className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#3B82F6]/50 transition-all group"
@@ -127,6 +147,60 @@ export function DashboardView({
             <TrendingUp className="size-3" />
             <span>+28% este mês</span>
           </p>
+        </div>
+
+        {/* Dedicated Commercial Form Requests Card (Recharts) */}
+        <div
+          onClick={() => onNavigateTab("leads")}
+          title="Solicitações recebidas pelo formulário de proposta comercial (armazenadas no Supabase)"
+          className="rounded-[16px] border border-[#3B82F6]/35 bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#3B82F6] transition-all group relative overflow-hidden flex flex-col justify-between"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-[#3B82F6] flex items-center gap-1">
+              <FileSpreadsheet className="size-3 text-[#3B82F6]" />
+              Formulário Site
+            </span>
+            <div className="size-7 rounded-[8px] bg-[#3B82F6]/20 flex items-center justify-center text-[#3B82F6] group-hover:scale-110 transition-transform">
+              <Globe className="size-3.5" />
+            </div>
+          </div>
+
+          <div className="mt-2 flex items-baseline justify-between">
+            <div>
+              <p className="text-2xl font-bold text-[#F5F7FA] font-mono">{formRequestsCount}</p>
+              <p className="text-[10px] text-[#A7B0BF] mt-0.5">Pedidos Comerciais</p>
+            </div>
+            {/* Sparkline trend using Recharts AreaChart */}
+            <div className="w-20 h-9">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={formTrendData} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorFormSpark" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.6} />
+                      <stop offset="100%" stopColor="#3B82F6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <Area
+                    type="monotone"
+                    dataKey="solicitacoes"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorFormSpark)"
+                    isAnimationActive={false}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="mt-2 pt-2 border-t border-[#252C38] flex items-center justify-between text-[10px]">
+            <span className="text-[#22C55E] font-semibold flex items-center gap-0.5">
+              <TrendingUp className="size-2.5" />
+              100% no Supabase
+            </span>
+            <span className="text-[#A7B0BF] font-mono">7 dias</span>
+          </div>
         </div>
 
         <div

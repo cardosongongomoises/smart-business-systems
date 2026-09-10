@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { OperationsSidebar, ActiveTab } from "./OperationsSidebar";
 import { OperationsTopbar } from "./OperationsTopbar";
 import { MetricsRow } from "./MetricsRow";
@@ -14,10 +14,19 @@ import { SchedulesView } from "./SchedulesView";
 import { AutomationsView } from "./AutomationsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
+import { KnowledgeBaseView } from "./KnowledgeBaseView";
 import { initialLeads, initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
+import {
+  fetchLeadsFromSupabase,
+  updateLeadStatusInSupabase,
+  addLeadNoteInSupabase,
+  addChatMessageInSupabase,
+  createManualLeadInSupabase,
+  subscribeToLeadsChanges,
+} from "@/lib/supabaseService";
 
 export function OperationsCenter() {
   const { logout, adminEmail } = useAdminAuth();
@@ -27,6 +36,10 @@ export function OperationsCenter() {
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "todos">("todos");
   const [searchQuery, setSearchQuery] = useState("");
   const [isNewLeadModalOpen, setIsNewLeadModalOpen] = useState(false);
+  const [supabaseSource, setSupabaseSource] = useState<"supabase" | "cache" | "mock">("mock");
+  const [isLoadingLeads, setIsLoadingLeads] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [mobileLeadView, setMobileLeadView] = useState<"list" | "detail">("list");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("sbs_sidebar_collapsed") === "true";
@@ -46,6 +59,11 @@ export function OperationsCenter() {
       }
       return next;
     });
+  };
+
+  const handleSelectLeadResponsive = (leadId: string) => {
+    setSelectedLeadId(leadId);
+    setMobileLeadView("detail");
   };
 
   // Active chats count
@@ -92,8 +110,40 @@ export function OperationsCenter() {
     return leads.find((l) => l.id === selectedLeadId) || filteredLeads[0] || null;
   }, [leads, selectedLeadId, filteredLeads]);
 
+  // Carregamento de leads a partir do Supabase (com fallback para cache/mock)
+  const loadLeads = useCallback(async () => {
+    setIsLoadingLeads(true);
+    try {
+      const res = await fetchLeadsFromSupabase();
+      setLeads(res.leads);
+      setSupabaseSource(res.source);
+      if (res.leads.length > 0 && res.leads[0]) {
+        setSelectedLeadId((current) => current || res.leads[0]?.id || null);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar dados do Supabase:", err);
+    } finally {
+      setIsLoadingLeads(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadLeads();
+
+    // Supabase Realtime: escuta atualizações e novos leads automaticamente
+    const unsubscribe = subscribeToLeadsChanges(() => {
+      loadLeads();
+      toast.info("Pipeline atualizado em tempo real via Supabase!");
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [loadLeads]);
+
   // Handlers
   const handleUpdateStatus = (leadId: string, newStatus: LeadStatus) => {
+    // 1. Atualização otimista no estado local
     setLeads((prev) =>
       prev.map((lead) => {
         if (lead.id === leadId) {
@@ -112,6 +162,9 @@ export function OperationsCenter() {
         return lead;
       }),
     );
+
+    // 2. Persistência assíncrona no Supabase
+    updateLeadStatusInSupabase(leadId, newStatus);
     toast.success(`Status atualizado para: ${newStatus.toUpperCase()}`);
   };
 
@@ -128,6 +181,9 @@ export function OperationsCenter() {
         return lead;
       }),
     );
+
+    // Persistência no Supabase
+    addChatMessageInSupabase(leadId, message);
   };
 
   const handleAddNote = (leadId: string, noteText: string) => {
@@ -150,6 +206,9 @@ export function OperationsCenter() {
         return lead;
       }),
     );
+
+    // Persistência no Supabase
+    addLeadNoteInSupabase(leadId, "Operador Comercial", noteText);
     toast.success("Nota gravada com sucesso!");
   };
 
@@ -168,9 +227,10 @@ export function OperationsCenter() {
     );
   };
 
-  const handleCreateLead = (newLead: Lead) => {
+  const handleCreateLead = async (newLead: Lead) => {
     setLeads((prev) => [newLead, ...prev]);
     setSelectedLeadId(newLead.id);
+    await createManualLeadInSupabase(newLead);
     toast.success(`Lead criado: ${newLead.name}`);
   };
 
@@ -187,8 +247,8 @@ export function OperationsCenter() {
       "Luvumbo Advocacia Corporativa",
       "Imobiliária Kilamba Prime",
     ];
-    const pickedName = randomNames[Math.floor(Math.random() * randomNames.length)];
-    const pickedCompany = randomCompanies[Math.floor(Math.random() * randomCompanies.length)];
+    const pickedName = randomNames[Math.floor(Math.random() * randomNames.length)] ?? "Dra. Jandira Kuanza";
+    const pickedCompany = randomCompanies[Math.floor(Math.random() * randomCompanies.length)] ?? "Clínica Vida Talatona";
 
     const simulatedLead: Lead = {
       id: `lead-sim-${Date.now()}`,
@@ -274,7 +334,7 @@ export function OperationsCenter() {
 
   return (
     <div className="flex h-screen w-full bg-[#080A0F] text-[#F5F7FA] font-sans antialiased overflow-hidden">
-      {/* 1. Left Sidebar (Collapsible 240px / 72px) */}
+      {/* 1. Left Sidebar (Collapsible 240px / 72px desktop, slide-over drawer mobile) */}
       <OperationsSidebar
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
@@ -282,10 +342,12 @@ export function OperationsCenter() {
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={handleToggleSidebar}
         onLogout={logout}
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
         {/* Topbar */}
         <OperationsTopbar
           onOpenNewLead={() => setIsNewLeadModalOpen(true)}
@@ -294,15 +356,21 @@ export function OperationsCenter() {
           onSearchChange={setSearchQuery}
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebar={handleToggleSidebar}
+          onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
           onLogout={logout}
           adminEmail={adminEmail}
+          supabaseSource={supabaseSource}
+          onRefresh={loadLeads}
         />
 
         {/* Views Router */}
         {currentTab === "dashboard" && (
           <DashboardView
             leads={leads}
-            onSelectLead={setSelectedLeadId}
+            onSelectLead={(id) => {
+              handleSelectLeadResponsive(id);
+              setCurrentTab("leads");
+            }}
             onNavigateTab={setCurrentTab}
             onOpenNewLead={() => setIsNewLeadModalOpen(true)}
           />
@@ -311,31 +379,46 @@ export function OperationsCenter() {
         {currentTab === "leads" && (
           <div className="flex-1 overflow-y-auto flex flex-col">
             {/* Top Metrics & Journey Funnel */}
-            <div className="p-6 pb-2 space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
+            <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
               <MetricsRow metrics={initialMetrics} />
               <FunnelOverview stages={funnelStages} />
             </div>
 
             {/* CRM Main Columns */}
             <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
-              <LeadsList
-                leads={filteredLeads}
-                selectedLeadId={selectedLead?.id || null}
-                onSelectLead={setSelectedLeadId}
-                statusFilter={statusFilter}
-                onChangeStatusFilter={setStatusFilter}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
-              />
+              {/* Leads List: visible on desktop, or on mobile when mobileLeadView === 'list' */}
+              <div
+                className={`w-full lg:w-[380px] shrink-0 ${
+                  mobileLeadView === "list" ? "block" : "hidden lg:block"
+                }`}
+              >
+                <LeadsList
+                  leads={filteredLeads}
+                  selectedLeadId={selectedLead?.id || null}
+                  onSelectLead={handleSelectLeadResponsive}
+                  statusFilter={statusFilter}
+                  onChangeStatusFilter={setStatusFilter}
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
+                />
+              </div>
 
-              <LeadDetailPanel
-                lead={selectedLead}
-                onUpdateStatus={handleUpdateStatus}
-                onAddMessage={handleAddMessage}
-                onAddNote={handleAddNote}
-                onToggleAiStatus={handleToggleAiStatus}
-              />
+              {/* Lead Detail Panel: visible on desktop, or on mobile when mobileLeadView === 'detail' */}
+              <div
+                className={`flex-1 min-w-0 ${
+                  mobileLeadView === "detail" ? "block" : "hidden lg:block"
+                }`}
+              >
+                <LeadDetailPanel
+                  lead={selectedLead}
+                  onUpdateStatus={handleUpdateStatus}
+                  onAddMessage={handleAddMessage}
+                  onAddNote={handleAddNote}
+                  onToggleAiStatus={handleToggleAiStatus}
+                  onBackToList={() => setMobileLeadView("list")}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -363,6 +446,8 @@ export function OperationsCenter() {
         {currentTab === "reports" && <ReportsView leads={leads} />}
 
         {currentTab === "settings" && <SettingsView onNavigateTab={setCurrentTab} />}
+
+        {currentTab === "knowledge_base" && <KnowledgeBaseView />}
 
         {currentTab === "system_prompt" && <SystemPromptView currentLead={selectedLead} />}
       </div>

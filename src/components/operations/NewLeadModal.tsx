@@ -14,9 +14,7 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [channel, setChannel] = useState<LeadChannel>("whatsapp");
-  const [packageInterest, setPackageInterest] = useState<
-    "Presença Digital" | "Profissional" | "Autoridade Digital" | "Domínio IA"
-  >("Domínio IA");
+  const [packageInterest, setPackageInterest] = useState<Lead["packageInterest"]>("Domínio IA");
   const [autoAiQualify, setAutoAiQualify] = useState(true);
 
   if (!isOpen) return null;

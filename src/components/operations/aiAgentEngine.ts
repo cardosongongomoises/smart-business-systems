@@ -160,6 +160,32 @@ export function generateAIAgentResponse(
     };
   }
 
+  // Objection handling: Ancoragem de ROI e máquina de vendas (Skill: skill-contorno-objecoes-angola.md)
+  if (
+    lower.includes("caro") ||
+    lower.includes("muito alto") ||
+    lower.includes("sem dinheiro") ||
+    lower.includes("não tenho orçamento") ||
+    lower.includes("amigo faz") ||
+    lower.includes("sobrinho")
+  ) {
+    return {
+      replyText:
+        "Compreendo perfeitamente a sua atenção ao orçamento. A grande diferença é que a Agentes Digital não entrega apenas um website vitrine, mas sim uma máquina de aquisição com inteligência artificial que atende e qualifica clientes 24 horas por dia no WhatsApp. Se ela trouxer apenas 2 novos clientes no mês, o retorno já cobre o investimento por completo. Faz sentido avaliarmos isso num diagnóstico rápido de 20 minutos?",
+      metadata: {
+        ai_intent: "qualificacao",
+        ai_confidence: 0.96,
+        lead_update: {
+          business_segment: lead.company,
+          package_interest: "dominio_ia",
+          qualification_score: 90,
+          status: "qualificado",
+        },
+        escalate_to_human: false,
+      },
+    };
+  }
+
   // Pricing Inquiry
   if (
     lower.includes("preço") ||

@@ -13,6 +13,7 @@ import {
   Clock,
   Sparkles,
   ArrowUpRight,
+  ArrowLeft,
   ShieldCheck,
   CheckCircle2,
   PlusCircle,
@@ -32,6 +33,7 @@ interface LeadDetailPanelProps {
   onAddMessage: (leadId: string, message: ChatMessage) => void;
   onAddNote: (leadId: string, noteText: string) => void;
   onToggleAiStatus: (leadId: string) => void;
+  onBackToList?: () => void;
 }
 
 type DetailTab = "overview" | "chat" | "schedules" | "notes" | "activity";
@@ -42,6 +44,7 @@ export function LeadDetailPanel({
   onAddMessage,
   onAddNote,
   onToggleAiStatus,
+  onBackToList,
 }: LeadDetailPanelProps) {
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
   const [newNoteInput, setNewNoteInput] = useState("");
@@ -151,16 +154,28 @@ export function LeadDetailPanel({
   return (
     <div className="flex-1 flex flex-col h-full bg-[#080A0F] overflow-y-auto">
       {/* Top Header */}
-      <div className="p-6 border-b border-[#252C38] bg-[#0E121A]/80 flex flex-col gap-4">
+      <div className="p-4 sm:p-6 border-b border-[#252C38] bg-[#0E121A]/80 flex flex-col gap-3 sm:gap-4">
+        {/* Mobile Back to List Button */}
+        {onBackToList && (
+          <button
+            type="button"
+            onClick={onBackToList}
+            className="lg:hidden inline-flex items-center gap-1.5 text-xs font-semibold text-[#A7B0BF] hover:text-[#3B82F6] transition-colors py-1 cursor-pointer w-fit"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Voltar à lista de leads</span>
+          </button>
+        )}
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="size-13 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-sm font-bold text-[#3B82F6] shadow-sm">
+            <div className="size-11 sm:size-13 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-xs sm:text-sm font-bold text-[#3B82F6] shadow-sm shrink-0">
               {initials}
             </div>
 
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-lg font-bold text-[#F5F7FA] tracking-tight">{lead.name}</h2>
+                <h2 className="text-base sm:text-lg font-bold text-[#F5F7FA] tracking-tight">{lead.name}</h2>
                 {lead.aiQualified && (
                   <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#C084FC] border border-[#8B5CF6]/30">
                     <Sparkles className="size-3 text-[#8B5CF6]" />
@@ -402,7 +417,7 @@ export function LeadDetailPanel({
             </div>
 
             {/* Agendamentos Snippet */}
-            {lead.appointments.length > 0 && (
+            {lead.appointments.length > 0 && lead.appointments[0] && (
               <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
                 <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
                   <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
@@ -410,19 +425,19 @@ export function LeadDetailPanel({
                     Próximo Agendamento
                   </h4>
                   <span className="text-xs font-mono text-[#22C55E] font-semibold">
-                    {lead.appointments[0].status}
+                    {lead.appointments[0]?.status}
                   </span>
                 </div>
 
                 <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
                   <div>
-                    <p className="text-xs font-bold text-[#F5F7FA]">{lead.appointments[0].title}</p>
+                    <p className="text-xs font-bold text-[#F5F7FA]">{lead.appointments[0]?.title}</p>
                     <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-                      {lead.appointments[0].dateFormatted} • {lead.appointments[0].timeFormatted}
+                      {lead.appointments[0]?.dateFormatted} • {lead.appointments[0]?.timeFormatted}
                     </p>
                   </div>
 
-                  {lead.appointments[0].meetUrl && (
+                  {lead.appointments[0]?.meetUrl && (
                     <a
                       href={lead.appointments[0].meetUrl}
                       target="_blank"

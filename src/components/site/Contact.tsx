@@ -7,9 +7,12 @@ import {
   MapPin,
   Send,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTA, EMAIL, WHATSAPP_NUMBER, whatsappLink } from "@/lib/site-config";
+import { submitContactForm } from "@/lib/supabaseService";
+import { toast } from "sonner";
 
 const serviceOptions = [
   "Website",
@@ -29,8 +32,9 @@ export function Contact() {
   const [servico, setServico] = useState("Website");
   const [mensagem, setMensagem] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
       !nome.trim() ||
@@ -41,21 +45,51 @@ export function Contact() {
       !servico.trim() ||
       !mensagem.trim()
     ) {
+      toast.error("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-    const text =
-      `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
-      `*Nome:* ${nome.trim()}\n` +
-      `*Empresa:* ${empresa.trim()}\n` +
-      `*Telefone/WhatsApp:* ${telefone.trim()}\n` +
-      `*E-mail:* ${email.trim()}\n` +
-      `*Área que a sua empresa atua:* ${areaAtuacao.trim()}\n` +
-      `*Serviço que você pretende:* ${servico.trim()}\n` +
-      `*Mensagem:* ${mensagem.trim()}`;
 
-    const link = whatsappLink(text);
-    window.open(link, "_blank", "noopener,noreferrer");
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      // Grava todos os dados no Supabase (cada campo em sua tabela relacional)
+      const res = await submitContactForm({
+        nome,
+        empresa,
+        telefone,
+        email,
+        areaAtuacao,
+        servico,
+        mensagem,
+        canal: "website",
+      });
+
+      if (res.mode === "supabase") {
+        toast.success("Pedido registado no Supabase e encaminhado com sucesso!");
+      } else {
+        toast.success("Pedido registado no sistema com sucesso!");
+      }
+
+      // Prepara e abre o link de WhatsApp para atendimento direto
+      const text =
+        `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
+        `*Nome:* ${nome.trim()}\n` +
+        `*Empresa:* ${empresa.trim()}\n` +
+        `*Telefone/WhatsApp:* ${telefone.trim()}\n` +
+        `*E-mail:* ${email.trim()}\n` +
+        `*Área que a sua empresa atua:* ${areaAtuacao.trim()}\n` +
+        `*Serviço que você pretende:* ${servico.trim()}\n` +
+        `*Mensagem:* ${mensagem.trim()}`;
+
+      const link = whatsappLink(text);
+      window.open(link, "_blank", "noopener,noreferrer");
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Erro ao enviar formulário:", err);
+      toast.error("Ocorreu um erro ao processar o seu pedido. Tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -222,7 +256,7 @@ export function Contact() {
                           value={nome}
                           onChange={(e) => setNome(e.target.value)}
                           placeholder="Seu nome completo"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                         />
                       </div>
                       <div>
@@ -239,7 +273,7 @@ export function Contact() {
                           value={empresa}
                           onChange={(e) => setEmpresa(e.target.value)}
                           placeholder="Nome da sua empresa"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                         />
                       </div>
                     </div>
@@ -259,7 +293,7 @@ export function Contact() {
                           value={telefone}
                           onChange={(e) => setTelefone(e.target.value)}
                           placeholder="+244 9..."
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                         />
                       </div>
                       <div>
@@ -276,7 +310,7 @@ export function Contact() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="exemplo@empresa.com"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                         />
                       </div>
                     </div>
@@ -296,7 +330,7 @@ export function Contact() {
                           value={areaAtuacao}
                           onChange={(e) => setAreaAtuacao(e.target.value)}
                           placeholder="Ex: Saúde, Comércio, Imobiliário..."
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                         />
                       </div>
                       <div>
@@ -311,7 +345,7 @@ export function Contact() {
                           required
                           value={servico}
                           onChange={(e) => setServico(e.target.value)}
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground focus:border-primary focus:outline-none"
                         >
                           {serviceOptions.map((opt) => (
                             <option key={opt} value={opt} className="bg-surface text-foreground">
@@ -336,15 +370,24 @@ export function Contact() {
                         value={mensagem}
                         onChange={(e) => setMensagem(e.target.value)}
                         placeholder="Descreva brevemente o seu desafio actual ou objectivo..."
-                        className="mt-2 w-full resize-none rounded-xl border border-input bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                        className="mt-2 w-full resize-none rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="bg-gradient-primary shadow-elegant flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.01]"
+                      disabled={isSubmitting}
+                      className="bg-gradient-primary shadow-elegant flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.01] disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      <Send className="size-4" /> Enviar pedido
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="size-4 animate-spin" /> Registando no sistema...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="size-4" /> Enviar pedido
+                        </>
+                      )}
                     </button>
                   </form>
                 )}
