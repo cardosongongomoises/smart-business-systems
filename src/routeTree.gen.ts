@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as OperacoesRouteImport } from './routes/operacoes'
+import { Route as TermosRouteImport } from './routes/termos'
+import { Route as TermosDeServicoRouteImport } from './routes/termos-de-servico'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,59 @@ const OperacoesRoute = OperacoesRouteImport.update({
   path: '/operacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosDeServicoRoute = TermosDeServicoRouteImport.update({
+  id: '/termos-de-servico',
+  path: '/termos-de-servico',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/termos': typeof TermosRoute
+  '/termos-de-servico': typeof TermosDeServicoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/termos': typeof TermosRoute
+  '/termos-de-servico': typeof TermosDeServicoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/termos': typeof TermosRoute
+  '/termos-de-servico': typeof TermosDeServicoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/operacoes'
+  fullPaths: '/' | '/admin' | '/operacoes' | '/termos' | '/termos-de-servico'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/operacoes'
-  id: '__root__' | '/' | '/admin' | '/operacoes'
+  to: '/' | '/admin' | '/operacoes' | '/termos' | '/termos-de-servico'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/operacoes'
+    | '/termos'
+    | '/termos-de-servico'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   OperacoesRoute: typeof OperacoesRoute
+  TermosRoute: typeof TermosRoute
+  TermosDeServicoRoute: typeof TermosDeServicoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +108,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos-de-servico': {
+      id: '/termos-de-servico'
+      path: '/termos-de-servico'
+      fullPath: '/termos-de-servico'
+      preLoaderRoute: typeof TermosDeServicoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +129,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   OperacoesRoute: OperacoesRoute,
+  TermosRoute: TermosRoute,
+  TermosDeServicoRoute: TermosDeServicoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

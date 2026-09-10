@@ -3,11 +3,11 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { CTA } from "@/lib/site-config";
 
 const links = [
-  { href: "#servicos", label: "Serviços" },
-  { href: "#agente-ia", label: "Soluções IA" },
-  { href: "#canais", label: "Automação" },
-  { href: "#jornada", label: "Sistemas" },
-  { href: "#planos", label: "Planos" },
+  { href: "/#servicos", label: "Serviços" },
+  { href: "/#agente-ia", label: "Soluções IA" },
+  { href: "/#canais", label: "Automação" },
+  { href: "/#jornada", label: "Sistemas" },
+  { href: "/#planos", label: "Planos" },
 ];
 
 export function Header() {
@@ -31,7 +31,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-6 px-5 sm:px-8">
         {/* LOGO */}
-        <a href="#topo" className="flex items-center gap-3 group">
+        <a href="/#topo" className="flex items-center gap-3 group">
           <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#3B82F6] text-sm font-extrabold text-white transition-transform group-hover:scale-105">
             AD
           </span>
@@ -121,7 +121,7 @@ export function Header() {
                 Falar com especialista <ArrowRight className="size-4" />
               </a>
               <a
-                href="#contacto"
+                href="/#contacto"
                 onClick={() => setOpen(false)}
                 className="flex h-[44px] items-center justify-center rounded-[10px] border border-[#252C38] bg-[#151A23] text-xs font-semibold text-[#F5F7FA] hover:border-[#3B82F6] transition-colors"
               >

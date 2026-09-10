@@ -31,7 +31,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
                 <a
-                  href="#topo"
+                  href="/#topo"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Início
@@ -39,7 +39,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#servicos"
+                  href="/#servicos"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Serviços
@@ -47,7 +47,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#agente-ia"
+                  href="/#agente-ia"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Soluções IA
@@ -55,7 +55,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#canais"
+                  href="/#canais"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Automação WhatsApp & E-mail
@@ -63,7 +63,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#planos"
+                  href="/#planos"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Planos & Preços
@@ -71,7 +71,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#como-funciona"
+                  href="/#como-funciona"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Como Funciona
@@ -79,7 +79,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#contacto"
+                  href="/#contacto"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Contacto
@@ -95,7 +95,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
                 <a
-                  href="#faq"
+                  href="/#faq"
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Perguntas Frequentes
@@ -105,7 +105,12 @@ export function Footer() {
                 <span className="text-muted-foreground/80">Política de Privacidade</span>
               </li>
               <li>
-                <span className="text-muted-foreground/80">Termos de Serviço</span>
+                <a
+                  href="/termos"
+                  className="text-muted-foreground transition-colors hover:text-primary font-medium"
+                >
+                  Termos de Serviço
+                </a>
               </li>
             </ul>
             <div className="mt-6 rounded-xl border border-border/80 bg-surface-2/40 p-3 text-xs text-muted-foreground">
