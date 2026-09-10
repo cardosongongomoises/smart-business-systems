@@ -124,14 +124,22 @@ export function OperationsSidebar({
           {/* Brand Header & Toggle */}
           <div
             className={`flex items-center pb-3 border-b border-[#252C38] ${
-              isCollapsed ? "md:flex-col md:gap-2.5 justify-between md:justify-center" : "justify-between"
+              isCollapsed
+                ? "md:flex-col md:gap-2.5 justify-between md:justify-center"
+                : "justify-between"
             }`}
           >
-            <a href="/" className="flex items-center gap-2.5 group" title="Agentes Digital - Início">
+            <a
+              href="/"
+              className="flex items-center gap-2.5 group"
+              title="Agentes Digital - Início"
+            >
               <span className="flex size-8 shrink-0 items-center justify-center rounded-[8px] bg-[#3B82F6] text-xs font-extrabold text-white shadow-[0_0_12px_rgba(59,130,246,0.3)] transition-transform group-hover:scale-105">
                 AD
               </span>
-              <div className={`flex flex-col overflow-hidden transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "flex"}`}>
+              <div
+                className={`flex flex-col overflow-hidden transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "flex"}`}
+              >
                 <span className="text-[13px] font-bold tracking-[0.14em] uppercase text-[#F5F7FA] truncate">
                   Agentes Digital
                 </span>
@@ -172,7 +180,9 @@ export function OperationsSidebar({
 
           {/* Navigation Menu */}
           <nav className="flex flex-col gap-1">
-            <p className={`px-3 pb-1 text-[10px] font-semibold tracking-wider text-[#667085] uppercase transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "block"}`}>
+            <p
+              className={`px-3 pb-1 text-[10px] font-semibold tracking-wider text-[#667085] uppercase transition-opacity duration-200 ${isCollapsed ? "md:hidden" : "block"}`}
+            >
               Gestão & IA
             </p>
             {isCollapsed && (
@@ -190,184 +200,186 @@ export function OperationsSidebar({
                     onClick={() => handleItemClick(item.id)}
                     title={isCollapsed ? item.label : undefined}
                     className={`w-full flex items-center ${
-                      isCollapsed ? "md:justify-center md:px-0 justify-between px-3" : "justify-between px-3"
+                      isCollapsed
+                        ? "md:justify-center md:px-0 justify-between px-3"
+                        : "justify-between px-3"
                     } py-2.5 rounded-[10px] text-xs font-medium transition-all duration-150 text-left ${
-                    isActive
-                      ? "bg-[#151A23] text-[#3B82F6] border border-[#252C38] shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
-                      : "text-[#A7B0BF] hover:bg-[#151A23]/60 hover:text-[#F5F7FA] border border-transparent"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div className="relative flex items-center justify-center">
-                      <Icon
-                        className={`size-4 shrink-0 ${isActive ? "text-[#3B82F6]" : "text-[#A7B0BF]"}`}
-                        strokeWidth={isActive ? 2.2 : 1.75}
-                      />
-                      {/* Compact notification badge dot in collapsed mode */}
-                      {isCollapsed && item.badge !== undefined && (
-                        <span
-                          className={`absolute -top-1 -right-1 size-2 rounded-full ${
-                            item.badgeColor === "violet"
-                              ? "bg-[#8B5CF6] animate-pulse"
-                              : "bg-[#3B82F6]"
-                          }`}
+                      isActive
+                        ? "bg-[#151A23] text-[#3B82F6] border border-[#252C38] shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
+                        : "text-[#A7B0BF] hover:bg-[#151A23]/60 hover:text-[#F5F7FA] border border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="relative flex items-center justify-center">
+                        <Icon
+                          className={`size-4 shrink-0 ${isActive ? "text-[#3B82F6]" : "text-[#A7B0BF]"}`}
+                          strokeWidth={isActive ? 2.2 : 1.75}
                         />
-                      )}
+                        {/* Compact notification badge dot in collapsed mode */}
+                        {isCollapsed && item.badge !== undefined && (
+                          <span
+                            className={`absolute -top-1 -right-1 size-2 rounded-full ${
+                              item.badgeColor === "violet"
+                                ? "bg-[#8B5CF6] animate-pulse"
+                                : "bg-[#3B82F6]"
+                            }`}
+                          />
+                        )}
+                      </div>
+                      {!isCollapsed && <span className="truncate">{item.label}</span>}
                     </div>
-                    {!isCollapsed && <span className="truncate">{item.label}</span>}
-                  </div>
 
-                  {!isCollapsed && item.badge !== undefined && (
-                    <span
-                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
-                        item.badgeColor === "violet"
-                          ? "bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30 animate-pulse"
-                          : "bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30"
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-
-                {/* Floating tooltip when collapsed */}
-                {isCollapsed && (
-                  <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center gap-2 whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#F5F7FA] shadow-xl">
-                    <span>{item.label}</span>
-                    {item.badge !== undefined && (
-                      <span className="rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 px-1.5 py-0.5 text-[10px] font-bold text-[#C084FC]">
+                    {!isCollapsed && item.badge !== undefined && (
+                      <span
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+                          item.badgeColor === "violet"
+                            ? "bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30 animate-pulse"
+                            : "bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30"
+                        }`}
+                      >
                         {item.badge}
                       </span>
                     )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+                  </button>
 
-        {/* Back to Public Site */}
-        <div className="pt-2">
-          <a
-            href="/"
-            title="Ver Website Público"
-            className={`flex items-center ${
-              isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2"
-            } rounded-[8px] border border-[#252C38] bg-[#151A23]/40 text-[11px] font-medium text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/50 transition-colors relative group`}
-          >
-            {!isCollapsed ? (
-              <>
-                <span className="truncate">Ver Website Público</span>
-                <ExternalLink className="size-3 text-[#667085] shrink-0" />
-              </>
-            ) : (
-              <>
-                <ExternalLink className="size-4 text-[#A7B0BF] group-hover:text-[#F5F7FA]" />
-                <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#F5F7FA] shadow-xl">
-                  Ver Website Público
+                  {/* Floating tooltip when collapsed */}
+                  {isCollapsed && (
+                    <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center gap-2 whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#F5F7FA] shadow-xl">
+                      <span>{item.label}</span>
+                      {item.badge !== undefined && (
+                        <span className="rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 px-1.5 py-0.5 text-[10px] font-bold text-[#C084FC]">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </>
-            )}
-          </a>
+              );
+            })}
+          </nav>
 
-          {onLogout && (
-            <button
-              type="button"
-              onClick={onLogout}
-              title="Encerrar Sessão Administrativa"
-              className={`w-full mt-2 flex items-center ${
+          {/* Back to Public Site */}
+          <div className="pt-2">
+            <a
+              href="/"
+              title="Ver Website Público"
+              className={`flex items-center ${
                 isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2"
-              } rounded-[8px] border border-[#EF4444]/20 bg-[#EF4444]/5 text-[11px] font-medium text-[#FCA5A5] hover:bg-[#EF4444]/15 hover:border-[#EF4444]/50 transition-colors relative group cursor-pointer`}
+              } rounded-[8px] border border-[#252C38] bg-[#151A23]/40 text-[11px] font-medium text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/50 transition-colors relative group`}
             >
               {!isCollapsed ? (
                 <>
-                  <span className="truncate">Encerrar Sessão</span>
-                  <LogOut className="size-3 text-[#EF4444] shrink-0" />
+                  <span className="truncate">Ver Website Público</span>
+                  <ExternalLink className="size-3 text-[#667085] shrink-0" />
                 </>
               ) : (
                 <>
-                  <LogOut className="size-4 text-[#EF4444]" />
-                  <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#FCA5A5] shadow-xl">
-                    Encerrar Sessão
+                  <ExternalLink className="size-4 text-[#A7B0BF] group-hover:text-[#F5F7FA]" />
+                  <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#F5F7FA] shadow-xl">
+                    Ver Website Público
                   </div>
                 </>
               )}
-            </button>
+            </a>
+
+            {onLogout && (
+              <button
+                type="button"
+                onClick={onLogout}
+                title="Encerrar Sessão Administrativa"
+                className={`w-full mt-2 flex items-center ${
+                  isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2"
+                } rounded-[8px] border border-[#EF4444]/20 bg-[#EF4444]/5 text-[11px] font-medium text-[#FCA5A5] hover:bg-[#EF4444]/15 hover:border-[#EF4444]/50 transition-colors relative group cursor-pointer`}
+              >
+                {!isCollapsed ? (
+                  <>
+                    <span className="truncate">Encerrar Sessão</span>
+                    <LogOut className="size-3 text-[#EF4444] shrink-0" />
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="size-4 text-[#EF4444]" />
+                    <div className="pointer-events-none absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden group-hover:flex z-50 items-center whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs font-semibold text-[#FCA5A5] shadow-xl">
+                      Encerrar Sessão
+                    </div>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* System Status Card (Fixed Footer) */}
+        <div className={`${isCollapsed ? "p-2" : "p-4"} border-t border-[#252C38] bg-[#080A0F]/60`}>
+          {!isCollapsed ? (
+            <div className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-3 shadow-sm transition-opacity duration-200">
+              <div className="flex items-center justify-between pb-2 border-b border-[#252C38] mb-2.5">
+                <span className="text-[11px] font-bold text-[#F5F7FA] tracking-wide flex items-center gap-1.5">
+                  <Radio className="size-3 text-[#22C55E] animate-pulse" />
+                  Status do Sistema
+                </span>
+                <span className="text-[10px] font-mono text-[#22C55E] font-bold">100% OK</span>
+              </div>
+
+              <div className="space-y-1.5 text-[11px]">
+                <div className="flex items-center justify-between text-[#A7B0BF]">
+                  <div className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                    <span>Website</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
+                </div>
+
+                <div className="flex items-center justify-between text-[#A7B0BF]">
+                  <div className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                    <span>WhatsApp API</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
+                </div>
+
+                <div className="flex items-center justify-between text-[#A7B0BF]">
+                  <div className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                    <span>Agente IA Core</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-[#8B5CF6] font-semibold">ONLINE</span>
+                </div>
+
+                <div className="flex items-center justify-between text-[#A7B0BF]">
+                  <div className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                    <span>Agendamentos</span>
+                  </div>
+                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              onClick={handleToggle}
+              title="Status do Sistema: 100% OK (Clique para expandir)"
+              className="flex flex-col items-center justify-center p-2 rounded-[10px] border border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/50 cursor-pointer transition-all relative group"
+            >
+              <div className="relative flex size-6 items-center justify-center">
+                <Radio className="size-3.5 text-[#22C55E] animate-pulse" />
+                <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[#22C55E]" />
+              </div>
+              <span className="text-[9px] font-mono text-[#22C55E] font-bold mt-1">100%</span>
+
+              {/* Hover tooltip for status in collapsed mode */}
+              <div className="pointer-events-none absolute left-full bottom-2 ml-2 hidden group-hover:flex flex-col gap-1 z-50 whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] p-2.5 text-xs text-[#F5F7FA] shadow-xl">
+                <div className="flex items-center gap-1.5 font-bold text-[#22C55E]">
+                  <Radio className="size-3" /> Status do Sistema: 100% OK
+                </div>
+                <div className="text-[11px] text-[#A7B0BF]">
+                  Website, WhatsApp API, IA e Agendamentos ONLINE
+                </div>
+              </div>
+            </div>
           )}
         </div>
-      </div>
-
-      {/* System Status Card (Fixed Footer) */}
-      <div className={`${isCollapsed ? "p-2" : "p-4"} border-t border-[#252C38] bg-[#080A0F]/60`}>
-        {!isCollapsed ? (
-          <div className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-3 shadow-sm transition-opacity duration-200">
-            <div className="flex items-center justify-between pb-2 border-b border-[#252C38] mb-2.5">
-              <span className="text-[11px] font-bold text-[#F5F7FA] tracking-wide flex items-center gap-1.5">
-                <Radio className="size-3 text-[#22C55E] animate-pulse" />
-                Status do Sistema
-              </span>
-              <span className="text-[10px] font-mono text-[#22C55E] font-bold">100% OK</span>
-            </div>
-
-            <div className="space-y-1.5 text-[11px]">
-              <div className="flex items-center justify-between text-[#A7B0BF]">
-                <div className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                  <span>Website</span>
-                </div>
-                <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-              </div>
-
-              <div className="flex items-center justify-between text-[#A7B0BF]">
-                <div className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                  <span>WhatsApp API</span>
-                </div>
-                <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-              </div>
-
-              <div className="flex items-center justify-between text-[#A7B0BF]">
-                <div className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                  <span>Agente IA Core</span>
-                </div>
-                <span className="font-mono text-[10px] text-[#8B5CF6] font-semibold">ONLINE</span>
-              </div>
-
-              <div className="flex items-center justify-between text-[#A7B0BF]">
-                <div className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                  <span>Agendamentos</span>
-                </div>
-                <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div
-            onClick={handleToggle}
-            title="Status do Sistema: 100% OK (Clique para expandir)"
-            className="flex flex-col items-center justify-center p-2 rounded-[10px] border border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/50 cursor-pointer transition-all relative group"
-          >
-            <div className="relative flex size-6 items-center justify-center">
-              <Radio className="size-3.5 text-[#22C55E] animate-pulse" />
-              <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[#22C55E]" />
-            </div>
-            <span className="text-[9px] font-mono text-[#22C55E] font-bold mt-1">100%</span>
-
-            {/* Hover tooltip for status in collapsed mode */}
-            <div className="pointer-events-none absolute left-full bottom-2 ml-2 hidden group-hover:flex flex-col gap-1 z-50 whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] p-2.5 text-xs text-[#F5F7FA] shadow-xl">
-              <div className="flex items-center gap-1.5 font-bold text-[#22C55E]">
-                <Radio className="size-3" /> Status do Sistema: 100% OK
-              </div>
-              <div className="text-[11px] text-[#A7B0BF]">
-                Website, WhatsApp API, IA e Agendamentos ONLINE
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </aside>
-  </>
+      </aside>
+    </>
   );
 }

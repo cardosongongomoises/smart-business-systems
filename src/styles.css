@@ -54,6 +54,7 @@
 }
 
 :root {
+  color-scheme: dark;
   /* Official Design System Tokens */
   --brand-blue: #3b82f6;
   --brand-violet: #8b5cf6;
@@ -140,7 +141,14 @@
     max-width: 100vw;
   }
 
-  img, svg, video, canvas, audio, iframe, embed, object {
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
     max-width: 100%;
   }
 
@@ -202,7 +210,8 @@
   min-height: 44px;
   padding: 10px 20px;
   font-weight: 600;
-  transition: all 150ms ease;
+  touch-action: manipulation;
+  transition: background-color 150ms ease, opacity 150ms ease;
   &:hover {
     background-color: #2563eb;
   }
@@ -216,7 +225,8 @@
   min-height: 44px;
   padding: 10px 20px;
   font-weight: 600;
-  transition: all 150ms ease;
+  touch-action: manipulation;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
   &:hover {
     background-color: #151a23;
     border-color: #3b82f6;
@@ -230,8 +240,9 @@
   min-height: 44px;
   padding: 10px 20px;
   font-weight: 600;
+  touch-action: manipulation;
   box-shadow: 0 4px 20px -4px rgba(139, 92, 246, 0.35);
-  transition: all 150ms ease;
+  transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease;
   &:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
@@ -313,5 +324,20 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

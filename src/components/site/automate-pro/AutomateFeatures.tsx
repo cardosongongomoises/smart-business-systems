@@ -1,0 +1,140 @@
+import {
+  Bot,
+  Filter,
+  MessageSquare,
+  Database,
+  Calendar,
+  Clock,
+  Mail,
+  UserCheck,
+} from "lucide-react";
+import { Reveal } from "../Reveal";
+
+const features = [
+  {
+    icon: Bot,
+    title: "AGENTE DE IA",
+    subtitle: "Atendimento Conversacional",
+    desc: "Responde perguntas e orienta visitantes com velocidade imediata e precisão sobre os produtos e serviços da sua empresa.",
+    badge: "01",
+    tag: "IA Contextual",
+  },
+  {
+    icon: Filter,
+    title: "QUALIFICAÇÃO",
+    subtitle: "Filtro Comercial Ativo",
+    desc: "Identifica necessidades, descobre o orçamento disponível e coleta informações essenciais antes de passar para o time de vendas.",
+    badge: "02",
+    tag: "Score de Lead",
+  },
+  {
+    icon: MessageSquare,
+    title: "WHATSAPP",
+    subtitle: "Canal de Alto Engajamento",
+    desc: "Conecta o atendimento digital à equipa comercial através do número oficial da sua empresa com automação segura.",
+    badge: "03",
+    tag: "API Oficial",
+  },
+  {
+    icon: Database,
+    title: "CRM",
+    subtitle: "Centralização de Leads",
+    desc: "Organiza leads e oportunidades em estágios de funil para que nenhum contacto seja esquecido ou fique sem histórico.",
+    badge: "04",
+    tag: "Funil Visual",
+  },
+  {
+    icon: Calendar,
+    title: "AGENDAMENTO",
+    subtitle: "Calendário Automático",
+    desc: "Permite marcar reuniões e serviços sem troca infinita de e-mails, sincronizando diretamente com os calendários da equipa.",
+    badge: "05",
+    tag: "Auto-Booking",
+  },
+  {
+    icon: Clock,
+    title: "FOLLOW-UP",
+    subtitle: "Acompanhamento Inteligente",
+    desc: "Acompanha oportunidades automaticamente em intervalos programados, resgatando leads que pararam de responder.",
+    badge: "06",
+    tag: "Cadência Ativa",
+  },
+  {
+    icon: Mail,
+    title: "E-MAIL",
+    subtitle: "Confirmações e Lembretes",
+    desc: "Automatiza confirmações de reunião, lembretes 24h antes e e-mails de acompanhamento para reduzir faltas (no-show).",
+    badge: "07",
+    tag: "Automação",
+  },
+  {
+    icon: UserCheck,
+    title: "TRANSFERÊNCIA HUMANA",
+    subtitle: "Handoff Transparente",
+    desc: "Encaminha situações complexas ou clientes prontos para fechar contrato diretamente para os especialistas humanos.",
+    badge: "08",
+    tag: "Equipa Notificada",
+  },
+];
+
+export function AutomateFeatures() {
+  return (
+    <div className="py-20 sm:py-28 relative">
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+        <div className="max-w-3xl">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#3B82F6]/40 bg-[#3B82F6]/10 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#60A5FA] uppercase">
+              Recursos Nativos Integrados
+            </span>
+          </Reveal>
+
+          <Reveal delay={80}>
+            <h3 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F7FA] sm:text-4xl leading-tight">
+              Os 8 pilares da infraestrutura <span className="text-gradient">Automate Pro</span>
+            </h3>
+          </Reveal>
+
+          <Reveal delay={140}>
+            <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
+              Cada módulo funciona de forma integrada para transformar o website existente em uma
+              máquina ativa de conversão e relacionamento.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* 8 Features Grid */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <Reveal key={item.title} delay={idx * 60}>
+                <div className="glass-card group h-full rounded-2xl border border-[#252C38] bg-[#0E121A] p-6 transition-all duration-300 hover:border-[#3B82F6]/50 hover:bg-[#151A23]">
+                  <div className="flex items-center justify-between">
+                    <span className="flex size-11 items-center justify-center rounded-xl border border-[#252C38] bg-[#151A23] text-[#3B82F6] transition-transform group-hover:scale-105">
+                      <Icon className="size-5" />
+                    </span>
+                    <span className="font-mono text-[10px] text-[#667085]">PILAR {item.badge}</span>
+                  </div>
+
+                  <div className="mt-5">
+                    <span className="inline-block font-mono text-[9px] font-bold uppercase tracking-wider text-[#A7B0BF]">
+                      {item.subtitle}
+                    </span>
+                    <h4 className="mt-0.5 text-base font-bold text-[#F5F7FA]">{item.title}</h4>
+                  </div>
+
+                  <p className="mt-2.5 text-xs text-[#A7B0BF] leading-relaxed">{item.desc}</p>
+
+                  <div className="mt-4 pt-3 border-t border-[#252C38]/60 flex items-center justify-between font-mono text-[10px] text-[#667085]">
+                    <span>STATUS: OPERACIONAL</span>
+                    <span className="text-[#3B82F6]">{item.tag}</span>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}

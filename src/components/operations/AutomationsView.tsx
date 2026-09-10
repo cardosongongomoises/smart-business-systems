@@ -236,7 +236,7 @@ export function AutomationsView() {
             <Clock className="size-4 text-[#3B82F6]" />
             Logs de Execução em Tempo Real
           </h3>
-          <span className="text-[11px] font-mono text-[#22C55E]">● 200 OK — Conectado</span>
+          <span className="text-[11px] font-mono text-[#22C55E]">● 200 OK: Conectado</span>
         </div>
 
         <div className="space-y-2 font-mono text-xs text-[#A7B0BF]">

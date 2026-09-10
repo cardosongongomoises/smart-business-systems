@@ -70,15 +70,18 @@ export function DashboardView({
   const formRequestsCount = formLeads.length;
 
   // Mini trend data for the form card using Recharts
-  const formTrendData = useMemo(() => [
-    { dia: "Seg", solicitacoes: 2 },
-    { dia: "Ter", solicitacoes: 4 },
-    { dia: "Qua", solicitacoes: 3 },
-    { dia: "Qui", solicitacoes: 7 },
-    { dia: "Sex", solicitacoes: 8 },
-    { dia: "Sáb", solicitacoes: 5 },
-    { dia: "Dom", solicitacoes: Math.max(formRequestsCount, 6) },
-  ], [formRequestsCount]);
+  const formTrendData = useMemo(
+    () => [
+      { dia: "Seg", solicitacoes: 2 },
+      { dia: "Ter", solicitacoes: 4 },
+      { dia: "Qua", solicitacoes: 3 },
+      { dia: "Qui", solicitacoes: 7 },
+      { dia: "Sex", solicitacoes: 8 },
+      { dia: "Sáb", solicitacoes: 5 },
+      { dia: "Dom", solicitacoes: Math.max(formRequestsCount, 6) },
+    ],
+    [formRequestsCount],
+  );
 
   // Calculate Pipeline Value in Kwanzas
   const pipelineKz = useMemo(() => {

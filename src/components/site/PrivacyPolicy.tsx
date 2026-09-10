@@ -30,7 +30,10 @@ export function PrivacyPolicy() {
   ];
 
   return (
-    <div id="topo" className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary">
+    <div
+      id="topo"
+      className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary"
+    >
       <Header />
 
       <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
@@ -81,19 +84,25 @@ export function PrivacyPolicy() {
             </h1>
 
             <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-              <strong className="text-foreground">Última atualização:</strong> 10 de Setembro de 2026
+              <strong className="text-foreground">Última atualização:</strong> 10 de Setembro de
+              2026
             </p>
 
             <div className="mt-6 pt-6 border-t border-border/60 text-sm text-muted-foreground leading-relaxed space-y-3">
               <p>
-                A <strong className="text-foreground font-semibold">Agentes Digital</strong> valoriza a privacidade e a segurança das informações dos seus visitantes, clientes e parceiros.
+                A <strong className="text-foreground font-semibold">Agentes Digital</strong>{" "}
+                valoriza a privacidade e a segurança das informações dos seus visitantes, clientes e
+                parceiros.
               </p>
               <p>
-                Esta Política de Privacidade explica como recolhemos, utilizamos, armazenamos, protegemos e, quando necessário, partilhamos dados pessoais através do website{" "}
-                <strong className="text-foreground font-semibold">agentes-digital.com</strong>, dos nossos canais de comunicação e dos serviços digitais que disponibilizamos.
+                Esta Política de Privacidade explica como recolhemos, utilizamos, armazenamos,
+                protegemos e, quando necessário, partilhamos dados pessoais através do website{" "}
+                <strong className="text-foreground font-semibold">agentes-digital.com</strong>, dos
+                nossos canais de comunicação e dos serviços digitais que disponibilizamos.
               </p>
               <p className="p-3 rounded-lg bg-surface-2/60 border border-border/60 text-xs text-foreground/90 font-medium">
-                Ao utilizar o nosso website ou fornecer voluntariamente os seus dados, o utilizador declara ter tomado conhecimento desta Política de Privacidade.
+                Ao utilizar o nosso website ou fornecer voluntariamente os seus dados, o utilizador
+                declara ter tomado conhecimento desta Política de Privacidade.
               </p>
             </div>
           </div>
@@ -119,28 +128,54 @@ export function PrivacyPolicy() {
           {/* Privacy Content Sections */}
           <div className="space-y-10 text-sm leading-relaxed text-muted-foreground">
             {/* 1. IDENTIFICAÇÃO DO RESPONSÁVEL */}
-            <section id="secao-1" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-1"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">1</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  1
+                </span>
                 IDENTIFICAÇÃO DO RESPONSÁVEL
               </h2>
               <div className="space-y-1.5 text-xs sm:text-sm">
-                <p><strong className="text-foreground">Nome comercial:</strong> Agentes Digital</p>
-                <p><strong className="text-foreground">Website:</strong> agentes-digital.com</p>
-                <p><strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]</p>
-                <p><strong className="text-foreground">Telefone/WhatsApp:</strong> [inserir contacto oficial]</p>
-                <p><strong className="text-foreground">Endereço:</strong> [inserir endereço da empresa]</p>
-                <p><strong className="text-foreground">NIF:</strong> [inserir NIF]</p>
+                <p>
+                  <strong className="text-foreground">Nome comercial:</strong> Agentes Digital
+                </p>
+                <p>
+                  <strong className="text-foreground">Website:</strong> agentes-digital.com
+                </p>
+                <p>
+                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]
+                </p>
+                <p>
+                  <strong className="text-foreground">Telefone/WhatsApp:</strong> [inserir contacto
+                  oficial]
+                </p>
+                <p>
+                  <strong className="text-foreground">Endereço:</strong> [inserir endereço da
+                  empresa]
+                </p>
+                <p>
+                  <strong className="text-foreground">NIF:</strong> [inserir NIF]
+                </p>
               </div>
               <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                A Agentes Digital actua como responsável pelo tratamento dos dados pessoais recolhidos directamente através dos seus canais, sem prejuízo das situações em que actue como prestador de serviços e trate dados por conta de um cliente.
+                A Agentes Digital actua como responsável pelo tratamento dos dados pessoais
+                recolhidos directamente através dos seus canais, sem prejuízo das situações em que
+                actue como prestador de serviços e trate dados por conta de um cliente.
               </p>
             </section>
 
             {/* 2. QUE DADOS PODEMOS RECOLHER */}
-            <section id="secao-2" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-2"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">2</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  2
+                </span>
                 QUE DADOS PODEMOS RECOLHER
               </h2>
               <p className="mb-4">
@@ -153,7 +188,14 @@ export function PrivacyPolicy() {
                     2.1. Dados de contacto
                   </h3>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
-                    {["Nome", "Número de telefone", "Número de WhatsApp", "Endereço de e-mail", "Nome da empresa", "Cargo ou função profissional"].map((item, idx) => (
+                    {[
+                      "Nome",
+                      "Número de telefone",
+                      "Número de WhatsApp",
+                      "Endereço de e-mail",
+                      "Nome da empresa",
+                      "Cargo ou função profissional",
+                    ].map((item, idx) => (
                       <li key={idx} className="flex items-center gap-2">
                         <CheckCircle className="size-3 text-primary shrink-0" />
                         <span>{item}</span>
@@ -167,7 +209,8 @@ export function PrivacyPolicy() {
                     2.2. Dados relacionados com projectos
                   </h3>
                   <p className="text-xs mb-2">
-                    Quando solicitado um orçamento ou serviço, poderemos recolher informações necessárias para compreender o projecto, tais como:
+                    Quando solicitado um orçamento ou serviço, poderemos recolher informações
+                    necessárias para compreender o projecto, tais como:
                   </p>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
                     {[
@@ -191,7 +234,8 @@ export function PrivacyPolicy() {
                     2.3. Dados técnicos
                   </h3>
                   <p className="text-xs mb-2">
-                    Quando o utilizador visita o website, determinados dados técnicos poderão ser recolhidos automaticamente, incluindo:
+                    Quando o utilizador visita o website, determinados dados técnicos poderão ser
+                    recolhidos automaticamente, incluindo:
                   </p>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs mb-3">
                     {[
@@ -210,16 +254,22 @@ export function PrivacyPolicy() {
                     ))}
                   </ul>
                   <p className="text-xs text-muted-foreground/90">
-                    A recolha destes dados poderá ser utilizada para segurança, diagnóstico, estatísticas e melhoria da experiência do utilizador.
+                    A recolha destes dados poderá ser utilizada para segurança, diagnóstico,
+                    estatísticas e melhoria da experiência do utilizador.
                   </p>
                 </div>
               </div>
             </section>
 
             {/* 3. COMO RECOLHEMOS OS DADOS */}
-            <section id="secao-3" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-3"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">3</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  3
+                </span>
                 COMO RECOLHEMOS OS DADOS
               </h2>
               <p className="mb-3">Os dados podem ser recolhidos através de:</p>
@@ -244,14 +294,21 @@ export function PrivacyPolicy() {
                 ))}
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Quando os dados forem recolhidos directamente junto do titular, procuraremos fornecer informação adequada sobre o responsável, finalidade e natureza do tratamento, em conformidade com a legislação aplicável.
+                Quando os dados forem recolhidos directamente junto do titular, procuraremos
+                fornecer informação adequada sobre o responsável, finalidade e natureza do
+                tratamento, em conformidade com a legislação aplicável.
               </p>
             </section>
 
             {/* 4. FINALIDADES DO TRATAMENTO */}
-            <section id="secao-4" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-4"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">4</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  4
+                </span>
                 FINALIDADES DO TRATAMENTO
               </h2>
               <p className="mb-3">Os dados pessoais poderão ser utilizados para:</p>
@@ -278,21 +335,29 @@ export function PrivacyPolicy() {
                 ))}
               </ul>
               <p className="text-xs text-foreground/90 p-3 rounded-lg bg-surface-2/40 border border-border/40">
-                Os dados não serão utilizados para finalidades incompatíveis com aquelas para as quais foram recolhidos, salvo quando permitido ou exigido pela legislação aplicável.
+                Os dados não serão utilizados para finalidades incompatíveis com aquelas para as
+                quais foram recolhidos, salvo quando permitido ou exigido pela legislação aplicável.
               </p>
             </section>
 
             {/* 5. INTELIGÊNCIA ARTIFICIAL E AUTOMAÇÃO */}
-            <section id="secao-5" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-5"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">5</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  5
+                </span>
                 INTELIGÊNCIA ARTIFICIAL E AUTOMAÇÃO
               </h2>
               <p className="mb-3">
-                A Agentes Digital disponibiliza soluções que podem utilizar Inteligência Artificial, automação, CRM e sistemas de atendimento.
+                A Agentes Digital disponibiliza soluções que podem utilizar Inteligência Artificial,
+                automação, CRM e sistemas de atendimento.
               </p>
               <p className="mb-2">
-                Quando um utilizador interage com um agente de IA disponibilizado pela Agentes Digital, determinadas informações poderão ser processadas para:
+                Quando um utilizador interage com um agente de IA disponibilizado pela Agentes
+                Digital, determinadas informações poderão ser processadas para:
               </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-4">
                 <li>responder a perguntas;</li>
@@ -304,43 +369,64 @@ export function PrivacyPolicy() {
                 <li>executar tarefas automatizadas.</li>
               </ul>
               <p className="mb-3 text-xs text-muted-foreground/90">
-                A Inteligência Artificial poderá cometer erros. Informações importantes, decisões comerciais ou questões que exijam análise humana poderão ser encaminhadas para um membro da equipa.
+                A Inteligência Artificial poderá cometer erros. Informações importantes, decisões
+                comerciais ou questões que exijam análise humana poderão ser encaminhadas para um
+                membro da equipa.
               </p>
               <p className="text-xs font-semibold text-primary">
-                A Agentes Digital não utiliza a IA como substituição absoluta da intervenção humana quando esta seja necessária.
+                A Agentes Digital não utiliza a IA como substituição absoluta da intervenção humana
+                quando esta seja necessária.
               </p>
             </section>
 
             {/* 6. DADOS DE CLIENTES DOS NOSSOS CLIENTES */}
-            <section id="secao-6" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-6"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">6</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  6
+                </span>
                 DADOS DE CLIENTES DOS NOSSOS CLIENTES
               </h2>
               <p className="mb-3">
-                Quando a Agentes Digital desenvolve websites, CRM, automações ou agentes de IA para uma empresa cliente, poderá processar dados pertencentes aos utilizadores dessa empresa.
+                Quando a Agentes Digital desenvolve websites, CRM, automações ou agentes de IA para
+                uma empresa cliente, poderá processar dados pertencentes aos utilizadores dessa
+                empresa.
               </p>
               <p className="mb-3">
-                Nessas situações, dependendo da estrutura contratual e da natureza do tratamento, a empresa cliente poderá ser a responsável pelo tratamento dos dados e a Agentes Digital poderá actuar como prestadora de serviços ou subcontratada.
+                Nessas situações, dependendo da estrutura contratual e da natureza do tratamento, a
+                empresa cliente poderá ser a responsável pelo tratamento dos dados e a Agentes
+                Digital poderá actuar como prestadora de serviços ou subcontratada.
               </p>
               <p className="mb-3">
-                O cliente é responsável por garantir que possui base legal adequada para recolher e utilizar os dados dos seus próprios clientes.
+                O cliente é responsável por garantir que possui base legal adequada para recolher e
+                utilizar os dados dos seus próprios clientes.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                A Agentes Digital procurará tratar esses dados apenas de acordo com as instruções legítimas do cliente e com as obrigações contratuais e legais aplicáveis.
+                A Agentes Digital procurará tratar esses dados apenas de acordo com as instruções
+                legítimas do cliente e com as obrigações contratuais e legais aplicáveis.
               </p>
             </section>
 
             {/* 7. PARTILHA DE DADOS */}
-            <section id="secao-7" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-7"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">7</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  7
+                </span>
                 PARTILHA DE DADOS
               </h2>
               <p className="mb-3 font-semibold text-foreground">
                 A Agentes Digital não comercializa dados pessoais dos seus utilizadores.
               </p>
-              <p className="mb-2">Os dados poderão ser partilhados ou disponibilizados, quando necessário, com:</p>
+              <p className="mb-2">
+                Os dados poderão ser partilhados ou disponibilizados, quando necessário, com:
+              </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-4">
                 <li>fornecedores de alojamento;</li>
                 <li>serviços de domínio e DNS;</li>
@@ -354,32 +440,47 @@ export function PrivacyPolicy() {
                 <li>autoridades públicas quando exista obrigação legal.</li>
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Sempre que possível e adequado, procuraremos trabalhar com fornecedores que adoptem medidas razoáveis de segurança e protecção de dados.
+                Sempre que possível e adequado, procuraremos trabalhar com fornecedores que adoptem
+                medidas razoáveis de segurança e protecção de dados.
               </p>
             </section>
 
             {/* 8. TRANSFERÊNCIA INTERNACIONAL DE DADOS */}
-            <section id="secao-8" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-8"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">8</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  8
+                </span>
                 TRANSFERÊNCIA INTERNACIONAL DE DADOS
               </h2>
               <p className="mb-3">
-                Alguns fornecedores tecnológicos utilizados pela Agentes Digital poderão armazenar ou processar informações fora de Angola.
+                Alguns fornecedores tecnológicos utilizados pela Agentes Digital poderão armazenar
+                ou processar informações fora de Angola.
               </p>
               <p className="text-xs text-foreground/90">
-                Quando isso ocorrer, procuraremos adoptar medidas adequadas para proteger os dados e cumprir a legislação aplicável.
+                Quando isso ocorrer, procuraremos adoptar medidas adequadas para proteger os dados e
+                cumprir a legislação aplicável.
               </p>
             </section>
 
             {/* 9. SEGURANÇA */}
-            <section id="secao-9" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-9"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">9</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  9
+                </span>
                 SEGURANÇA
               </h2>
               <p className="mb-3">
-                Adoptamos medidas técnicas e organizacionais razoáveis destinadas a proteger os dados pessoais contra: acesso não autorizado, perda, destruição, alteração indevida, divulgação não autorizada e utilização abusiva.
+                Adoptamos medidas técnicas e organizacionais razoáveis destinadas a proteger os
+                dados pessoais contra: acesso não autorizado, perda, destruição, alteração indevida,
+                divulgação não autorizada e utilização abusiva.
               </p>
               <p className="mb-2">Entre as medidas poderão estar:</p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs sm:text-sm mb-4">
@@ -405,30 +506,46 @@ export function PrivacyPolicy() {
             </section>
 
             {/* 10. CONSERVAÇÃO DOS DADOS */}
-            <section id="secao-10" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-10"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">10</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  10
+                </span>
                 CONSERVAÇÃO DOS DADOS
               </h2>
               <p className="mb-3">
-                Os dados serão conservados apenas durante o período necessário para cumprir as finalidades para as quais foram recolhidos, cumprir obrigações legais, resolver litígios, executar contratos ou proteger os interesses legítimos da empresa.
+                Os dados serão conservados apenas durante o período necessário para cumprir as
+                finalidades para as quais foram recolhidos, cumprir obrigações legais, resolver
+                litígios, executar contratos ou proteger os interesses legítimos da empresa.
               </p>
               <p className="text-xs text-muted-foreground/90">
-                Quando os dados deixarem de ser necessários, poderão ser eliminados, anonimizados ou conservados quando existir obrigação legal que determine a sua manutenção.
+                Quando os dados deixarem de ser necessários, poderão ser eliminados, anonimizados ou
+                conservados quando existir obrigação legal que determine a sua manutenção.
               </p>
             </section>
 
             {/* 11. COOKIES */}
-            <section id="secao-11" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-11"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">11</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  11
+                </span>
                 COOKIES
               </h2>
               <p className="mb-3">
-                O website poderá utilizar cookies e tecnologias semelhantes para: funcionamento técnico, segurança, análise de utilização, melhoria da experiência, armazenamento de preferências, medição de desempenho e eventualmente marketing, quando aplicável.
+                O website poderá utilizar cookies e tecnologias semelhantes para: funcionamento
+                técnico, segurança, análise de utilização, melhoria da experiência, armazenamento de
+                preferências, medição de desempenho e eventualmente marketing, quando aplicável.
               </p>
               <p className="mb-3">
-                O utilizador poderá configurar o seu navegador para bloquear ou limitar determinados cookies.
+                O utilizador poderá configurar o seu navegador para bloquear ou limitar determinados
+                cookies.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
                 O bloqueio de alguns cookies poderá afectar determinadas funcionalidades do website.
@@ -436,27 +553,40 @@ export function PrivacyPolicy() {
             </section>
 
             {/* 12. COMUNICAÇÕES DE MARKETING */}
-            <section id="secao-12" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-12"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">12</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  12
+                </span>
                 COMUNICAÇÕES DE MARKETING
               </h2>
               <p className="mb-2">
-                A Agentes Digital poderá enviar comunicações comerciais sobre: novos serviços, actualizações, conteúdos, ofertas, eventos e soluções de tecnologia, IA e automação.
+                A Agentes Digital poderá enviar comunicações comerciais sobre: novos serviços,
+                actualizações, conteúdos, ofertas, eventos e soluções de tecnologia, IA e automação.
               </p>
               <p className="text-xs text-foreground/90 pt-3 border-t border-border/40">
-                Quando aplicável, o utilizador poderá cancelar essas comunicações através do mecanismo disponibilizado na própria comunicação ou entrando em contacto connosco.
+                Quando aplicável, o utilizador poderá cancelar essas comunicações através do
+                mecanismo disponibilizado na própria comunicação ou entrando em contacto connosco.
               </p>
             </section>
 
             {/* 13. DIREITOS DO TITULAR DOS DADOS */}
-            <section id="secao-13" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-13"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">13</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  13
+                </span>
                 DIREITOS DO TITULAR DOS DADOS
               </h2>
               <p className="mb-3">
-                Nos termos da legislação aplicável, o titular poderá exercer direitos relativos aos seus dados pessoais, incluindo, quando aplicável:
+                Nos termos da legislação aplicável, o titular poderá exercer direitos relativos aos
+                seus dados pessoais, incluindo, quando aplicável:
               </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs sm:text-sm mb-4">
                 {[
@@ -476,54 +606,79 @@ export function PrivacyPolicy() {
               </ul>
               <div className="p-4 rounded-lg bg-surface-2/60 border border-border/60 text-xs space-y-2 mb-3">
                 <p className="font-semibold text-foreground">
-                  A Agência de Protecção de Dados confirma estes direitos no âmbito da Lei n.º 22/11.
+                  A Agência de Protecção de Dados confirma estes direitos no âmbito da Lei n.º
+                  22/11.
                 </p>
                 <p>
                   Para exercer os seus direitos, contacte:{" "}
-                  <strong className="text-primary font-mono">privacidade@agentes-digital.com</strong>
+                  <strong className="text-primary font-mono">
+                    privacidade@agentes-digital.com
+                  </strong>
                 </p>
                 <p className="text-muted-foreground/90">Assunto: Pedido de Protecção de Dados</p>
               </div>
               <p className="text-xs italic text-muted-foreground/80">
-                Poderemos solicitar informações razoáveis para confirmar a identidade do solicitante antes de processar determinados pedidos.
+                Poderemos solicitar informações razoáveis para confirmar a identidade do solicitante
+                antes de processar determinados pedidos.
               </p>
             </section>
 
             {/* 14. RECLAMAÇÕES */}
-            <section id="secao-14" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-14"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">14</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  14
+                </span>
                 RECLAMAÇÕES
               </h2>
               <p className="mb-3">
-                Caso o utilizador considere que os seus dados foram tratados de forma inadequada, poderá contactar primeiro a Agentes Digital para procurarmos resolver a situação.
+                Caso o utilizador considere que os seus dados foram tratados de forma inadequada,
+                poderá contactar primeiro a Agentes Digital para procurarmos resolver a situação.
               </p>
               <p className="text-xs text-foreground/90">
-                O titular mantém também os direitos que lhe sejam conferidos pela legislação aplicável perante a autoridade competente de protecção de dados.
+                O titular mantém também os direitos que lhe sejam conferidos pela legislação
+                aplicável perante a autoridade competente de protecção de dados.
               </p>
             </section>
 
             {/* 15. LINKS PARA TERCEIROS */}
-            <section id="secao-15" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-15"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">15</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  15
+                </span>
                 LINKS PARA TERCEIROS
               </h2>
               <p className="mb-3">
                 O website poderá conter links para websites, plataformas ou serviços de terceiros.
               </p>
               <p className="text-xs italic text-muted-foreground/80">
-                A Agentes Digital não controla as políticas de privacidade desses terceiros e recomenda que o utilizador consulte as respectivas políticas antes de fornecer dados pessoais.
+                A Agentes Digital não controla as políticas de privacidade desses terceiros e
+                recomenda que o utilizador consulte as respectivas políticas antes de fornecer dados
+                pessoais.
               </p>
             </section>
 
             {/* 16. ACTUALIZAÇÕES DESTA POLÍTICA */}
-            <section id="secao-16" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-16"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">16</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  16
+                </span>
                 ACTUALIZAÇÕES DESTA POLÍTICA
               </h2>
-              <p className="mb-2">Esta Política poderá ser actualizada periodicamente para reflectir:</p>
+              <p className="mb-2">
+                Esta Política poderá ser actualizada periodicamente para reflectir:
+              </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-3">
                 <li>alterações legais;</li>
                 <li>alterações tecnológicas;</li>
@@ -536,18 +691,35 @@ export function PrivacyPolicy() {
             </section>
 
             {/* 17. CONTACTO */}
-            <section id="secao-17" className="scroll-mt-24 p-6 rounded-xl border border-primary/40 bg-primary/5">
+            <section
+              id="secao-17"
+              className="scroll-mt-24 p-6 rounded-xl border border-primary/40 bg-primary/5"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary text-white flex items-center justify-center text-xs font-mono font-bold">17</span>
+                <span className="size-6 rounded-md bg-primary text-white flex items-center justify-center text-xs font-mono font-bold">
+                  17
+                </span>
                 CONTACTO
               </h2>
-              <p className="mb-3">Para questões relacionadas com privacidade e protecção de dados:</p>
+              <p className="mb-3">
+                Para questões relacionadas com privacidade e protecção de dados:
+              </p>
               <div className="space-y-1.5 text-xs sm:text-sm">
-                <p><strong className="text-foreground">Agentes Digital</strong></p>
-                <p><strong className="text-foreground">Website:</strong> agentes-digital.com</p>
-                <p><strong className="text-foreground">E-mail:</strong> [inserir e-mail]</p>
-                <p><strong className="text-foreground">WhatsApp:</strong> [inserir número]</p>
-                <p><strong className="text-foreground">Endereço:</strong> [inserir endereço]</p>
+                <p>
+                  <strong className="text-foreground">Agentes Digital</strong>
+                </p>
+                <p>
+                  <strong className="text-foreground">Website:</strong> agentes-digital.com
+                </p>
+                <p>
+                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail]
+                </p>
+                <p>
+                  <strong className="text-foreground">WhatsApp:</strong> [inserir número]
+                </p>
+                <p>
+                  <strong className="text-foreground">Endereço:</strong> [inserir endereço]
+                </p>
               </div>
               <p className="mt-4 text-xs font-bold text-primary pt-3 border-t border-primary/20">
                 Última actualização: 10 de Setembro de 2026.

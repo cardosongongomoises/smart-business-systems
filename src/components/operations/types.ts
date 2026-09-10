@@ -98,11 +98,7 @@ export interface FunnelStage {
 export type KnowledgeType = "skill" | "manual";
 
 export type KnowledgeCategory =
-  | "qualificacao"
-  | "objecoes"
-  | "fechamento"
-  | "rapport"
-  | "negociacao";
+  "qualificacao" | "objecoes" | "fechamento" | "rapport" | "negociacao";
 
 export interface VendedorSkillDoc {
   id: string;

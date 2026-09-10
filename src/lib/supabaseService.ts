@@ -1,5 +1,13 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
-import { Lead, LeadStatus, ChatMessage, ActivityItem, VendedorSkillDoc } from "@/components/operations/types";
+import {
+  Lead,
+  LeadStatus,
+  ChatMessage,
+  ActivityItem,
+  VendedorSkillDoc,
+  Appointment,
+  LeadNote,
+} from "@/components/operations/types";
 import { initialVendedorSkills } from "@/components/operations/vendedorSkillsData";
 
 export interface ContactFormData {
@@ -27,7 +35,7 @@ export function getLocalLeads(): Lead[] {
       if (Array.isArray(parsed)) {
         // Purga qualquer lead mockado que possa ter ficado no cache local
         const cleaned = parsed.filter(
-          (l) => l && l.id && !l.id.startsWith("lead-0") && !l.name?.includes("Gonçalo")
+          (l) => l && l.id && !l.id.startsWith("lead-0") && !l.name?.includes("Gonçalo"),
         );
         if (cleaned.length !== parsed.length) {
           localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(cleaned));
@@ -291,28 +299,34 @@ export async function fetchLeadsFromSupabase(): Promise<{
         .order("createdAt", { ascending: false });
 
       if (!error && Array.isArray(data)) {
-        const mappedLeads: Lead[] = data.map((row: any) => ({
-          id: String(row.id),
-          name: row.name || "Contacto",
-          company: row.company || "Empresa a confirmar",
-          role: row.role || "Responsável Comercial",
-          phone: row.phone || "",
-          email: row.email || "",
-          location: row.location || "Angola",
-          channel: row.channel || "website",
-          status: row.status || "novo",
-          packageInterest: row.packageInterest || "Profissional",
-          aiQualified: Boolean(row.aiQualified),
-          qualificationScore: Number(row.qualificationScore) || 75,
-          estimatedValue: row.estimatedValue || "Kz 250.000",
-          firstContactAt: row.createdAt ? new Date(row.createdAt).toLocaleDateString("pt-PT") : "Hoje",
+        const mappedLeads: Lead[] = data.map((row: Record<string, unknown>) => ({
+          id: String(row["id"]),
+          name: (row["name"] as string) || "Contacto",
+          company: (row["company"] as string) || "Empresa a confirmar",
+          role: (row["role"] as string) || "Responsável Comercial",
+          phone: (row["phone"] as string) || "",
+          email: (row["email"] as string) || "",
+          location: (row["location"] as string) || "Angola",
+          channel: (row["channel"] as Lead["channel"]) || "website",
+          status: (row["status"] as LeadStatus) || "novo",
+          packageInterest: (row["packageInterest"] as string) || "Profissional",
+          aiQualified: Boolean(row["aiQualified"]),
+          qualificationScore: Number(row["qualificationScore"]) || 75,
+          estimatedValue: (row["estimatedValue"] as string) || "Kz 250.000",
+          firstContactAt: row["createdAt"]
+            ? new Date(row["createdAt"] as string).toLocaleDateString("pt-PT")
+            : "Hoje",
           lastActive: "Activo",
-          aiProcessingStatus: row.aiProcessingStatus || "ativo",
-          unreadMessagesCount: Number(row.unreadMessagesCount) || 0,
-          appointments: Array.isArray(row.appointments) ? row.appointments : [],
-          notes: Array.isArray(row.notes) ? row.notes : [],
-          activities: Array.isArray(row.activities) ? row.activities : [],
-          conversation: Array.isArray(row.conversation) ? row.conversation : [],
+          aiProcessingStatus: (row["aiProcessingStatus"] as Lead["aiProcessingStatus"]) || "ativo",
+          unreadMessagesCount: Number(row["unreadMessagesCount"]) || 0,
+          appointments: Array.isArray(row["appointments"])
+            ? (row["appointments"] as Appointment[])
+            : [],
+          notes: Array.isArray(row["notes"]) ? (row["notes"] as LeadNote[]) : [],
+          activities: Array.isArray(row["activities"]) ? (row["activities"] as ActivityItem[]) : [],
+          conversation: Array.isArray(row["conversation"])
+            ? (row["conversation"] as ChatMessage[])
+            : [],
         }));
 
         setLocalLeads(mappedLeads);
@@ -334,7 +348,10 @@ export async function fetchLeadsFromSupabase(): Promise<{
 /**
  * 3. ATUALIZAR STATUS DO LEAD NO SUPABASE
  */
-export async function updateLeadStatusInSupabase(leadId: string, newStatus: LeadStatus): Promise<boolean> {
+export async function updateLeadStatusInSupabase(
+  leadId: string,
+  newStatus: LeadStatus,
+): Promise<boolean> {
   if (isSupabaseConfigured()) {
     try {
       await supabase
@@ -484,20 +501,12 @@ export function subscribeToLeadsChanges(onUpdate: () => void): () => void {
 
   const channel = supabase
     .channel("sbs-leads-channel")
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "leads" },
-      () => {
-        onUpdate();
-      },
-    )
-    .on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "lead_atividades" },
-      () => {
-        onUpdate();
-      },
-    )
+    .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
+      onUpdate();
+    })
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "lead_atividades" }, () => {
+      onUpdate();
+    })
     .subscribe();
 
   return () => {
@@ -544,17 +553,23 @@ export async function fetchVendedorSkills(): Promise<{
         .order("created_at", { ascending: false });
 
       if (!error && data && data.length > 0) {
-        const mapped: VendedorSkillDoc[] = data.map((r: any) => ({
-          id: String(r.id),
-          title: r.title,
-          filename: r.filename || `${r.title.toLowerCase().replace(/\s+/g, "-")}.md`,
-          type: r.type || "skill",
-          category: r.category || "qualificacao",
-          triggerCondition: r.trigger_condition || "",
-          contentMd: r.content_md || "",
-          isActive: Boolean(r.is_active),
-          createdAt: r.created_at ? new Date(r.created_at).toLocaleDateString("pt-PT") : "09/09/2026",
-          updatedAt: r.updated_at ? new Date(r.updated_at).toLocaleDateString("pt-PT") : "09/09/2026",
+        const mapped: VendedorSkillDoc[] = data.map((r: Record<string, unknown>) => ({
+          id: String(r["id"]),
+          title: (r["title"] as string) || "Skill",
+          filename:
+            (r["filename"] as string) ||
+            `${((r["title"] as string) || "skill").toLowerCase().replace(/\s+/g, "-")}.md`,
+          type: (r["type"] as VendedorSkillDoc["type"]) || "skill",
+          category: (r["category"] as VendedorSkillDoc["category"]) || "qualificacao",
+          triggerCondition: (r["trigger_condition"] as string) || "",
+          contentMd: (r["content_md"] as string) || "",
+          isActive: Boolean(r["is_active"]),
+          createdAt: r["created_at"]
+            ? new Date(r["created_at"] as string).toLocaleDateString("pt-PT")
+            : "09/09/2026",
+          updatedAt: r["updated_at"]
+            ? new Date(r["updated_at"] as string).toLocaleDateString("pt-PT")
+            : "09/09/2026",
         }));
         setLocalVendedorSkills(mapped);
         return { skills: mapped, source: "supabase" };
@@ -577,9 +592,7 @@ export async function fetchVendedorSkills(): Promise<{
 export async function saveVendedorSkill(doc: VendedorSkillDoc): Promise<boolean> {
   const current = getLocalVendedorSkills();
   const exists = current.some((s) => s.id === doc.id);
-  const updated = exists
-    ? current.map((s) => (s.id === doc.id ? doc : s))
-    : [doc, ...current];
+  const updated = exists ? current.map((s) => (s.id === doc.id ? doc : s)) : [doc, ...current];
   setLocalVendedorSkills(updated);
 
   if (isSupabaseConfigured()) {

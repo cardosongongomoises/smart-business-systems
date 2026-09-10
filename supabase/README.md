@@ -8,7 +8,7 @@ Este projeto está 100% estruturado para armazenar os dados do **Formulário de 
 
 1. Acesse [supabase.com](https://supabase.com) e faça login na sua conta (ou crie uma gratuitamente).
 2. Clique em **"New Project"**.
-3. Escolha uma organização, defina o nome do projeto (ex: `smart-business-systems`), crie uma senha forte para o banco de dados e selecione a região mais próxima (ex: *São Paulo (sa-east-1)* ou *Frankfurt (eu-central-1)*).
+3. Escolha uma organização, defina o nome do projeto (ex: `smart-business-systems`), crie uma senha forte para o banco de dados e selecione a região mais próxima (ex: _São Paulo (sa-east-1)_ ou _Frankfurt (eu-central-1)_).
 4. Aguarde 1 a 2 minutos para a inicialização do projeto.
 
 ---
@@ -24,6 +24,7 @@ Este projeto está 100% estruturado para armazenar os dados do **Formulário de 
 6. Você verá a mensagem de sucesso: `Success. No rows returned`.
 
 ### O que este script cria:
+
 - **`leads`**: Tabela mestre que controla o fluxo comercial, status, pacote e qualificação IA.
 - **`lead_nomes`**: Tabela dedicada para o nome do contacto.
 - **`lead_empresas`**: Tabela dedicada para a empresa do lead.

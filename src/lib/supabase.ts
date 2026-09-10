@@ -16,11 +16,11 @@ const supabaseAnonKey =
 export function isSupabaseConfigured(): boolean {
   return Boolean(
     supabaseUrl &&
-      supabaseAnonKey &&
-      supabaseUrl.trim() !== "" &&
-      supabaseAnonKey.trim() !== "" &&
-      !supabaseUrl.includes("seu-projeto") &&
-      !supabaseUrl.includes("your-project"),
+    supabaseAnonKey &&
+    supabaseUrl.trim() !== "" &&
+    supabaseAnonKey.trim() !== "" &&
+    !supabaseUrl.includes("seu-projeto") &&
+    !supabaseUrl.includes("your-project"),
   );
 }
 

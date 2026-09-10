@@ -4,6 +4,7 @@ import { CTA } from "@/lib/site-config";
 
 const links = [
   { href: "/#servicos", label: "Serviços" },
+  { href: "/#automate-pro", label: "Automate Pro" },
   { href: "/#agente-ia", label: "Soluções IA" },
   { href: "/#canais", label: "Automação" },
   { href: "/#jornada", label: "Sistemas" },
@@ -23,7 +24,7 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-250 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-200 ${
         scrolled
           ? "h-[72px] bg-[#080A0F]/85 backdrop-blur-[12px] border-b border-[#252C38]"
           : "h-[72px] bg-[#080A0F]/60 backdrop-blur-sm border-b border-transparent"
@@ -31,7 +32,10 @@ export function Header() {
     >
       <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-6 px-5 sm:px-8">
         {/* LOGO */}
-        <a href="/#topo" className="flex items-center gap-3 group">
+        <a
+          href="/#topo"
+          className="flex items-center gap-3 group rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
           <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#3B82F6] text-sm font-extrabold text-white transition-transform group-hover:scale-105">
             AD
           </span>
@@ -51,7 +55,7 @@ export function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-[#A7B0BF] transition-colors hover:text-[#F5F7FA]"
+              className="text-sm font-medium text-[#A7B0BF] transition-colors hover:text-[#F5F7FA] rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {l.label}
             </a>
@@ -64,9 +68,9 @@ export function Header() {
             href={CTA.specialist}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white transition-all hover:bg-[#2563EB] active:scale-[0.98]"
+            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
           >
-            Falar com especialista <ArrowRight className="size-3.5" />
+            Falar com especialista <ArrowRight className="size-3.5" aria-hidden="true" />
           </a>
         </div>
 
@@ -76,32 +80,36 @@ export function Header() {
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex size-10 items-center justify-center rounded-[8px] border border-[#252C38] bg-[#151A23] text-[#F5F7FA] transition-colors hover:border-[#3B82F6] lg:hidden"
+          className="inline-flex size-10 items-center justify-center rounded-[8px] border border-[#252C38] bg-[#151A23] text-[#F5F7FA] transition-colors hover:border-[#3B82F6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:hidden"
         >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          {open ? (
+            <X className="size-5" aria-hidden="true" />
+          ) : (
+            <Menu className="size-5" aria-hidden="true" />
+          )}
         </button>
       </div>
 
       {/* Mobile Drawer */}
       {open && (
         <div className="fixed inset-x-0 top-[72px] bottom-0 bg-black/60 backdrop-blur-md z-50 lg:hidden flex flex-col justify-start p-4 animate-in fade-in-20">
-          <div className="w-full rounded-[16px] border border-[#252C38] bg-[#0E121A] p-5 shadow-[0_12px_36px_rgba(0,0,0,0.5)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto">
+          <div className="w-full rounded-[16px] border border-[#252C38] bg-[#0E121A] p-5 shadow-[0_12px_36px_rgba(0,0,0,0.5)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto overscroll-contain">
             <nav className="flex flex-col divide-y divide-[#252C38]/60">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="py-3.5 text-sm font-medium text-[#A7B0BF] hover:text-[#F5F7FA] flex items-center justify-between"
+                  className="py-3.5 text-sm font-medium text-[#A7B0BF] hover:text-[#F5F7FA] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <span>{l.label}</span>
-                  <ArrowRight className="size-3.5 text-[#667085]" />
+                  <ArrowRight className="size-3.5 text-[#667085]" aria-hidden="true" />
                 </a>
               ))}
               <a
                 href="/operacoes"
                 onClick={() => setOpen(false)}
-                className="py-3.5 text-sm font-semibold text-[#8B5CF6] hover:text-[#A78BFA] flex items-center justify-between"
+                className="py-3.5 text-sm font-semibold text-[#8B5CF6] hover:text-[#A78BFA] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 <span>Centro de Operações (CRM IA)</span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 text-[#C084FC]">
@@ -116,14 +124,14 @@ export function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex h-[46px] items-center justify-center gap-2 rounded-[10px] bg-[#3B82F6] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB] active:scale-[0.98]"
+                className="flex h-[46px] items-center justify-center gap-2 rounded-[10px] bg-[#3B82F6] px-5 text-sm font-semibold text-white transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                Falar com especialista <ArrowRight className="size-4" />
+                Falar com especialista <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
-                href="/#contacto"
+                href="/#contato"
                 onClick={() => setOpen(false)}
-                className="flex h-[44px] items-center justify-center rounded-[10px] border border-[#252C38] bg-[#151A23] text-xs font-semibold text-[#F5F7FA] hover:border-[#3B82F6] transition-colors"
+                className="flex h-[44px] items-center justify-center rounded-[10px] border border-[#252C38] bg-[#151A23] text-xs font-semibold text-[#F5F7FA] hover:border-[#3B82F6] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 Solicitar Proposta Comercial
               </a>

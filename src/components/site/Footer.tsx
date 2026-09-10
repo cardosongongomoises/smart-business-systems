@@ -1,38 +1,42 @@
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-surface/30 pt-7 pb-2 sm:pt-8 sm:pb-2.5">
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+    <footer className="border-t border-[#252C38] bg-[#080A0F] pt-14 pb-8 sm:pt-16 sm:pb-10">
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <a href="#topo" className="flex items-center gap-3">
-              <span className="bg-gradient-primary flex size-9 items-center justify-center rounded-lg text-sm font-extrabold text-primary-foreground">
+            <a href="#topo" className="flex items-center gap-3 group">
+              <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#3B82F6] text-sm font-extrabold text-white transition-transform group-hover:scale-105">
                 AD
               </span>
-              <span className="text-sm font-extrabold tracking-[0.18em] uppercase">
-                Agentes Digital
-              </span>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold tracking-[0.16em] uppercase text-[#F5F7FA]">
+                  Agentes Digital
+                </span>
+                <span className="text-[10px] font-medium tracking-wider text-[#A7B0BF]">
+                  Sistemas Digitais
+                </span>
+              </div>
             </a>
-            <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-              Websites • Inteligência Artificial • Automação • Sistemas Digitais
+            <p className="mt-4 max-w-sm text-sm text-[#A7B0BF]">
+              Websites Corporativos • Agentes de Inteligência Artificial • Automação Comercial
             </p>
-            <p className="mt-2 text-xs text-muted-foreground/80">
-              Não construímos apenas presença digital. Construímos sistemas que trabalham para o seu
-              negócio.
+            <p className="mt-2 text-xs text-[#667085]">
+              Arquitetura de sistemas digitais inteligentes e integrados para empresas em crescimento.
             </p>
-            <p className="mt-4 text-xs font-semibold tracking-wider text-primary uppercase">
-              Malanje / Angola • Lusofonia • Digital First
+            <p className="mt-4 text-[11px] font-mono font-semibold tracking-wider text-[#3B82F6] uppercase">
+              Malanje & Luanda, Angola • Lusofonia
             </p>
           </div>
 
           <div>
-            <p className="text-xs font-bold tracking-[0.18em] text-foreground uppercase">
-              Navegação
+            <p className="text-[11px] font-bold tracking-[0.18em] text-[#F5F7FA] uppercase">
+              Navegação Estrutural
             </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
                 <a
                   href="/#topo"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Início
                 </a>
@@ -40,15 +44,23 @@ export function Footer() {
               <li>
                 <a
                   href="/#servicos"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Serviços
                 </a>
               </li>
               <li>
                 <a
+                  href="/#automate-pro"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
+                >
+                  Automate Pro
+                </a>
+              </li>
+              <li>
+                <a
                   href="/#agente-ia"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Soluções IA
                 </a>
@@ -56,7 +68,7 @@ export function Footer() {
               <li>
                 <a
                   href="/#canais"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Automação WhatsApp & E-mail
                 </a>
@@ -64,7 +76,7 @@ export function Footer() {
               <li>
                 <a
                   href="/#planos"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Planos & Preços
                 </a>
@@ -72,31 +84,31 @@ export function Footer() {
               <li>
                 <a
                   href="/#como-funciona"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
-                  Como Funciona
+                  Metodologia de Implantação
                 </a>
               </li>
               <li>
                 <a
-                  href="/#contacto"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  href="/#contato"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
-                  Contacto
+                  Contacto Institucional
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <p className="text-xs font-bold tracking-[0.18em] text-foreground uppercase">
-              Legal & Informação
+            <p className="text-[11px] font-bold tracking-[0.18em] text-[#F5F7FA] uppercase">
+              Governança & Legal
             </p>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
                 <a
                   href="/#faq"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Perguntas Frequentes
                 </a>
@@ -104,7 +116,7 @@ export function Footer() {
               <li>
                 <a
                   href="/privacidade"
-                  className="text-muted-foreground transition-colors hover:text-primary font-medium"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Política de Privacidade
                 </a>
@@ -112,21 +124,24 @@ export function Footer() {
               <li>
                 <a
                   href="/termos"
-                  className="text-muted-foreground transition-colors hover:text-primary font-medium"
+                  className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]"
                 >
                   Termos de Serviço
                 </a>
               </li>
             </ul>
-            <div className="mt-6 rounded-xl border border-border/80 bg-surface-2/40 p-3 text-xs text-muted-foreground">
-              Atendimento digital contínuo com suporte comercial especializado em Luanda e Angola.
+            <div className="mt-6 rounded-[12px] border border-[#252C38] bg-[#151A23] p-3.5 text-xs text-[#A7B0BF]">
+              <div className="flex items-center gap-2 text-[#22C55E] font-mono text-[11px] mb-1">
+                <span className="size-2 rounded-full bg-[#22C55E]" /> SLA 99.9% Operacional
+              </div>
+              Infraestrutura em Cloud com alta disponibilidade para atendimento 24/7 sem interrupções.
             </div>
           </div>
         </div>
 
-        <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-2 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
+        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-[#252C38] pt-6 text-center text-xs text-[#667085] sm:flex-row sm:text-left">
           <p>© 2026 Agentes Digital. Todos os direitos reservados.</p>
-          <p>Sistemas Digitais que trabalham 24/7.</p>
+          <p className="font-mono text-[11px]">Sistemas Digitais Corporativos</p>
         </div>
       </div>
     </footer>

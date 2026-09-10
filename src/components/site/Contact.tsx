@@ -84,7 +84,9 @@ export function Contact() {
         }, 5000);
       } else {
         console.error("Falha ao gravar no Supabase:", res.error);
-        toast.error("Ocorreu um erro ao registar o seu pedido. Por favor tente novamente ou contacte-nos directamente.");
+        toast.error(
+          "Ocorreu um erro ao registar o seu pedido. Por favor tente novamente ou contacte-nos directamente.",
+        );
       }
     } catch (err) {
       console.error("Erro ao enviar formulário:", err);
@@ -96,27 +98,26 @@ export function Contact() {
 
   return (
     <>
-      {/* SECTION 13 — CTA FINAL */}
-      <section className="relative overflow-hidden py-24 sm:py-32">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        <div className="relative mx-auto w-full max-w-5xl px-5 text-center sm:px-8">
+      {/* SECTION 13: CTA FINAL */}
+      <section className="relative overflow-hidden py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.06),transparent_70%)]" />
+        <div className="relative mx-auto w-full max-w-[1200px] px-5 text-center sm:px-8">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-primary uppercase">
-              Transformação Digital
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
+              Transformação Digital Corporativa
             </span>
           </Reveal>
 
           <Reveal delay={80}>
-            <h2 className="mt-6 text-3xl leading-tight font-extrabold tracking-tight sm:text-5xl">
-              Sua empresa está pronta para trabalhar de{" "}
+            <h2 className="mt-6 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl lg:text-5xl text-balance max-w-3xl mx-auto">
+              Sua empresa está pronta para operar de{" "}
               <span className="text-gradient">forma mais inteligente?</span>
             </h2>
           </Reveal>
 
           <Reveal delay={160}>
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Vamos analisar sua operação e identificar onde um website, um agente de IA ou uma
-              automação pode gerar mais eficiência.
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#A7B0BF]">
+              Realizamos um diagnóstico minucioso da sua operação comercial para implementar o website corporativo, agente de inteligência artificial ou automações adequadas ao seu segmento em Angola.
             </p>
           </Reveal>
 
@@ -126,57 +127,61 @@ export function Contact() {
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-primary shadow-elegant inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-8 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB]"
               >
-                Falar com um especialista <ArrowRight className="size-4" />
+                Falar com um especialista <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href={CTA.diagnostic}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface/60 px-8 py-4 text-sm font-semibold text-foreground transition-colors hover:bg-surface"
+                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-8 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6]"
               >
-                <Calendar className="size-4 text-primary" /> Agendar diagnóstico
+                <Calendar className="size-4 text-[#3B82F6]" aria-hidden="true" /> Agendar diagnóstico gratuito
               </a>
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">Sem compromisso.</p>
+            <p className="mt-4 text-xs text-[#667085]">Atendimento consultivo e sem compromisso.</p>
           </Reveal>
         </div>
       </section>
 
-      {/* SECTION 14 — CONTACTO */}
-      <section id="contacto" className="relative border-t border-border/60 py-24 sm:py-32">
-        <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+      {/* SECTION 14: CONTACTO */}
+      <section
+        id="contato"
+        className="relative border-t border-[#252C38] py-20 sm:py-28 bg-[#0E121A] scroll-mt-20"
+      >
+        <span id="contacto" className="sr-only" />
+        <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr]">
             <div>
               <Reveal>
-                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-primary uppercase">
-                  Contacto Directo
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
+                  Canal Directo Institucional
                 </span>
-                <h2 className="mt-6 text-3xl leading-tight font-bold tracking-tight sm:text-4xl">
-                  Inicie a transformação digital do seu negócio.
+                <h2 className="mt-6 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
+                  Inicie a modernização digital da sua organização.
                 </h2>
-                <p className="mt-4 text-muted-foreground">
-                  Preencha o formulário ou fale directamente pelos nossos canais oficiais em Angola.
+                <p className="mt-4 text-base text-[#A7B0BF]">
+                  Envie o formulário técnico ao lado ou contacte-nos através dos canais de suporte oficial em Angola.
                 </p>
               </Reveal>
 
-              <div className="mt-10 space-y-5">
+              <div className="mt-10 space-y-4">
                 <Reveal delay={100}>
                   <a
                     href={CTA.specialist}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="glass-card flex items-center gap-4 rounded-2xl p-5 transition-transform hover:scale-[1.02]"
+                    className="flex items-center gap-4 rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 transition-[border-color,transform] hover:border-[#3B82F6]/50 hover:-translate-y-0.5"
                   >
-                    <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-surface-2 text-primary">
-                      <MessageCircle className="size-6" />
+                    <span className="inline-flex size-11 items-center justify-center rounded-[10px] border border-[#252C38] bg-[#0E121A] text-[#3B82F6]">
+                      <MessageCircle className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                      <p className="text-[11px] font-bold tracking-wider text-[#667085] uppercase">
                         WhatsApp Oficial
                       </p>
-                      <p className="mt-1 text-sm font-bold text-foreground">
+                      <p className="mt-0.5 text-sm font-bold text-[#F5F7FA] font-mono">
                         +{WHATSAPP_NUMBER.slice(0, 3)} {WHATSAPP_NUMBER.slice(3, 6)}{" "}
                         {WHATSAPP_NUMBER.slice(6)}
                       </p>
@@ -187,31 +192,31 @@ export function Contact() {
                 <Reveal delay={180}>
                   <a
                     href={`mailto:${EMAIL}`}
-                    className="glass-card flex items-center gap-4 rounded-2xl p-5 transition-transform hover:scale-[1.02]"
+                    className="flex items-center gap-4 rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 transition-[border-color,transform] hover:border-[#3B82F6]/50 hover:-translate-y-0.5"
                   >
-                    <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-surface-2 text-primary">
-                      <Mail className="size-6" />
+                    <span className="inline-flex size-11 items-center justify-center rounded-[10px] border border-[#252C38] bg-[#0E121A] text-[#3B82F6]">
+                      <Mail className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                        E-mail
+                      <p className="text-[11px] font-bold tracking-wider text-[#667085] uppercase">
+                        E-mail Institucional
                       </p>
-                      <p className="mt-1 text-sm font-bold text-foreground">{EMAIL}</p>
+                      <p className="mt-0.5 text-sm font-bold text-[#F5F7FA]">{EMAIL}</p>
                     </div>
                   </a>
                 </Reveal>
 
                 <Reveal delay={260}>
-                  <div className="glass-card flex items-center gap-4 rounded-2xl p-5">
-                    <span className="inline-flex size-12 items-center justify-center rounded-xl border border-border bg-surface-2 text-primary">
-                      <MapPin className="size-6" />
+                  <div className="flex items-center gap-4 rounded-[16px] border border-[#252C38] bg-[#151A23] p-5">
+                    <span className="inline-flex size-11 items-center justify-center rounded-[10px] border border-[#252C38] bg-[#0E121A] text-[#3B82F6]">
+                      <MapPin className="size-5" aria-hidden="true" />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                        Localização
+                      <p className="text-[11px] font-bold tracking-wider text-[#667085] uppercase">
+                        Sede & Atendimento
                       </p>
-                      <p className="mt-1 text-sm font-bold text-foreground">
-                        Malanje / Angola • Lusofonia • Digital First
+                      <p className="mt-0.5 text-sm font-bold text-[#F5F7FA]">
+                        Luanda & Malanje, Angola • Lusofonia
                       </p>
                     </div>
                   </div>
@@ -220,62 +225,69 @@ export function Contact() {
             </div>
 
             <Reveal delay={120}>
-              <div className="glass-card rounded-3xl p-7 sm:p-10">
-                <h3 className="text-xl font-bold">Solicitar proposta comercial</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Conte-nos brevemente sobre o seu projecto e entraremos em contacto rapidamente.
+              <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-7 sm:p-9 shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
+                <h3 className="text-xl font-bold text-[#F5F7FA]">Solicitar proposta executiva</h3>
+                <p className="mt-2 text-xs sm:text-sm text-[#A7B0BF]">
+                  Preencha as informações preliminares. Nossa equipa técnica entrará em contacto em menos de 24 horas úteis.
                 </p>
 
                 {submitted ? (
-                  <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/10 p-8 text-center">
-                    <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-primary/15 border border-primary/30">
-                      <CheckCircle2 className="size-8 text-primary" />
+                  <div
+                    aria-live="polite"
+                    className="mt-8 rounded-[12px] border border-[#22C55E]/30 bg-[#22C55E]/10 p-8 text-center"
+                  >
+                    <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-[#22C55E]/15 border border-[#22C55E]/30">
+                      <CheckCircle2 className="size-6 text-[#22C55E]" aria-hidden="true" />
                     </div>
-                    <p className="text-lg font-bold text-foreground">
-                      Muito obrigado pelo seu contacto! 🙏
+                    <p className="text-base font-bold text-[#F5F7FA]">
+                      Solicitação registada com sucesso
                     </p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      Recebemos a sua solicitação com sucesso. A nossa equipa irá analisar o seu pedido e entrar em contacto consigo brevemente para apresentar a melhor proposta para o seu negócio.
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#A7B0BF]">
+                      Os seus dados foram encaminhados com segurança. Um especialista da Agentes Digital entrará em contacto em breve.
                     </p>
-                    <p className="mt-3 text-xs text-muted-foreground/70">
-                      O formulário estará pronto novamente em instantes.
+                    <p className="mt-3 text-[11px] text-[#667085]">
+                      O formulário será reiniciado automaticamente em instantes.
                     </p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                  <form onSubmit={handleSubmit} className="mt-8 space-y-5" aria-busy={isSubmitting}>
                     <div className="grid gap-5 sm:grid-cols-2">
                       <div>
                         <label
                           htmlFor="nome"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
-                          Nome *
+                          Nome do Responsável *
                         </label>
                         <input
                           id="nome"
+                          name="nome"
                           type="text"
                           required
+                          autoComplete="name"
                           value={nome}
                           onChange={(e) => setNome(e.target.value)}
                           placeholder="Seu nome completo"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="empresa"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
-                          Empresa *
+                          Nome da Empresa *
                         </label>
                         <input
                           id="empresa"
+                          name="empresa"
                           type="text"
                           required
+                          autoComplete="organization"
                           value={empresa}
                           onChange={(e) => setEmpresa(e.target.value)}
-                          placeholder="Nome da sua empresa"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          placeholder="Ex: Grupo Horizonte Lda"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>
                     </div>
@@ -284,35 +296,41 @@ export function Contact() {
                       <div>
                         <label
                           htmlFor="telefone"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
                           Telefone / WhatsApp *
                         </label>
                         <input
                           id="telefone"
+                          name="telefone"
                           type="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
                           required
                           value={telefone}
                           onChange={(e) => setTelefone(e.target.value)}
-                          placeholder="+244 9..."
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          placeholder="+244 923 000 000"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
-                          E-mail *
+                          E-mail Corporativo *
                         </label>
                         <input
                           id="email"
+                          name="email"
                           type="email"
+                          autoComplete="email"
+                          spellCheck={false}
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          placeholder="exemplo@empresa.com"
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          placeholder="diretoria@empresa.ao"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>
                     </div>
@@ -321,36 +339,38 @@ export function Contact() {
                       <div>
                         <label
                           htmlFor="areaAtuacao"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
-                          Área que a sua empresa atua *
+                          Segmento de Atuação *
                         </label>
                         <input
                           id="areaAtuacao"
+                          name="areaAtuacao"
                           type="text"
                           required
                           value={areaAtuacao}
                           onChange={(e) => setAreaAtuacao(e.target.value)}
-                          placeholder="Ex: Saúde, Comércio, Imobiliário..."
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                          placeholder="Ex: Saúde, Imobiliário, Logística…"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="servico"
-                          className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                          className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                         >
-                          Serviço que você pretende *
+                          Solução de Interesse *
                         </label>
                         <select
                           id="servico"
+                          name="servico"
                           required
                           value={servico}
                           onChange={(e) => setServico(e.target.value)}
-                          className="mt-2 w-full rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground focus:border-primary focus:outline-none"
+                          className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         >
                           {serviceOptions.map((opt) => (
-                            <option key={opt} value={opt} className="bg-surface text-foreground">
+                            <option key={opt} value={opt} className="bg-[#0E121A] text-[#F5F7FA]">
                               {opt}
                             </option>
                           ))}
@@ -361,33 +381,34 @@ export function Contact() {
                     <div>
                       <label
                         htmlFor="mensagem"
-                        className="block text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+                        className="block text-[11px] font-bold tracking-wider text-[#A7B0BF] uppercase"
                       >
-                        Mensagem *
+                        Descreva o Objetivo ou Desafio Principal *
                       </label>
                       <textarea
                         id="mensagem"
+                        name="mensagem"
                         rows={4}
                         required
                         value={mensagem}
                         onChange={(e) => setMensagem(e.target.value)}
-                        placeholder="Descreva brevemente o seu desafio actual ou objectivo..."
-                        className="mt-2 w-full resize-none rounded-xl border border-input bg-surface px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+                        placeholder="Descreva brevemente sua necessidade atual (ex: automatizar agendamento, criar portal institucional moderno, integrar CRM)..."
+                        className="mt-2 w-full resize-none rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-gradient-primary shadow-elegant flex w-full items-center justify-center gap-2 rounded-xl py-4 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.01] disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="size-4 animate-spin" /> Registando no sistema...
+                          <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Processando solicitação…
                         </>
                       ) : (
                         <>
-                          <Send className="size-4" /> Enviar pedido
+                          <Send className="size-4" aria-hidden="true" /> Enviar solicitação de proposta
                         </>
                       )}
                     </button>

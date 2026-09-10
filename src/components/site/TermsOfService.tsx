@@ -43,7 +43,10 @@ export function TermsOfService() {
   ];
 
   return (
-    <div id="topo" className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary">
+    <div
+      id="topo"
+      className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary"
+    >
       <Header />
 
       <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
@@ -71,7 +74,7 @@ export function TermsOfService() {
           {/* Title Header Card */}
           <div className="rounded-2xl border border-border/80 bg-surface/40 p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden mb-10 shadow-sm">
             <div className="pointer-events-none absolute -right-12 -bottom-12 size-48 rounded-full bg-primary/10 blur-3xl" />
-            
+
             <div className="flex items-center gap-3 mb-4">
               <div className="size-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shrink-0">
                 <ShieldCheck className="size-5" />
@@ -86,19 +89,25 @@ export function TermsOfService() {
             </h1>
 
             <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-              <strong className="text-foreground">Última atualização:</strong> 10 de Setembro de 2026
+              <strong className="text-foreground">Última atualização:</strong> 10 de Setembro de
+              2026
             </p>
 
             <div className="mt-6 pt-6 border-t border-border/60 text-sm text-muted-foreground leading-relaxed space-y-3">
               <p>
-                Bem-vindo à <strong className="text-foreground font-semibold">Agentes Digital</strong>.
+                Bem-vindo à{" "}
+                <strong className="text-foreground font-semibold">Agentes Digital</strong>.
               </p>
               <p>
-                Estes Termos de Serviço estabelecem as condições gerais aplicáveis à utilização do website{" "}
-                <strong className="text-foreground font-semibold">agentes-digital.com</strong>, à contratação dos nossos serviços e à utilização das soluções digitais fornecidas pela Agentes Digital.
+                Estes Termos de Serviço estabelecem as condições gerais aplicáveis à utilização do
+                website{" "}
+                <strong className="text-foreground font-semibold">agentes-digital.com</strong>, à
+                contratação dos nossos serviços e à utilização das soluções digitais fornecidas pela
+                Agentes Digital.
               </p>
               <p className="p-3 rounded-lg bg-surface-2/60 border border-border/60 text-xs text-foreground/90 font-medium">
-                Ao utilizar o website, solicitar uma proposta ou contratar os nossos serviços, o utilizador declara que leu e compreendeu estes Termos.
+                Ao utilizar o website, solicitar uma proposta ou contratar os nossos serviços, o
+                utilizador declara que leu e compreendeu estes Termos.
               </p>
             </div>
           </div>
@@ -124,32 +133,56 @@ export function TermsOfService() {
           {/* Terms Content Sections */}
           <div className="space-y-10 text-sm leading-relaxed text-muted-foreground">
             {/* 1. IDENTIFICAÇÃO */}
-            <section id="secao-1" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-1"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">1</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  1
+                </span>
                 IDENTIFICAÇÃO
               </h2>
               <div className="space-y-1.5 text-xs sm:text-sm">
-                <p><strong className="text-foreground">Nome comercial:</strong> Agentes Digital</p>
-                <p><strong className="text-foreground">Website:</strong> agentes-digital.com</p>
-                <p><strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]</p>
-                <p><strong className="text-foreground">Telefone/WhatsApp:</strong> [inserir contacto]</p>
-                <p><strong className="text-foreground">Endereço:</strong> [inserir endereço]</p>
-                <p><strong className="text-foreground">NIF:</strong> [inserir NIF]</p>
+                <p>
+                  <strong className="text-foreground">Nome comercial:</strong> Agentes Digital
+                </p>
+                <p>
+                  <strong className="text-foreground">Website:</strong> agentes-digital.com
+                </p>
+                <p>
+                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]
+                </p>
+                <p>
+                  <strong className="text-foreground">Telefone/WhatsApp:</strong> [inserir contacto]
+                </p>
+                <p>
+                  <strong className="text-foreground">Endereço:</strong> [inserir endereço]
+                </p>
+                <p>
+                  <strong className="text-foreground">NIF:</strong> [inserir NIF]
+                </p>
               </div>
               <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                A identificação jurídica completa da entidade contratante deverá constar da proposta, factura ou contrato aplicável.
+                A identificação jurídica completa da entidade contratante deverá constar da
+                proposta, factura ou contrato aplicável.
               </p>
             </section>
 
             {/* 2. OBJECTO DOS SERVIÇOS */}
-            <section id="secao-2" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-2"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">2</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  2
+                </span>
                 OBJECTO DOS SERVIÇOS
               </h2>
               <p className="mb-3">
-                A Agentes Digital presta serviços relacionados com tecnologia e transformação digital, incluindo, entre outros:
+                A Agentes Digital presta serviços relacionados com tecnologia e transformação
+                digital, incluindo, entre outros:
               </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
                 {[
@@ -177,20 +210,30 @@ export function TermsOfService() {
                 ))}
               </ul>
               <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                O serviço efectivamente contratado será definido na proposta comercial, orçamento, contrato, ordem de serviço ou documento equivalente.
+                O serviço efectivamente contratado será definido na proposta comercial, orçamento,
+                contrato, ordem de serviço ou documento equivalente.
               </p>
             </section>
 
             {/* 3. PROPOSTAS E ORÇAMENTOS */}
-            <section id="secao-3" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-3"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">3</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  3
+                </span>
                 PROPOSTAS E ORÇAMENTOS
               </h2>
               <p className="mb-3">
-                As informações apresentadas no website têm carácter informativo e não constituem necessariamente uma proposta contratual definitiva. Cada projecto poderá possuir requisitos, prazos, integrações e custos diferentes.
+                As informações apresentadas no website têm carácter informativo e não constituem
+                necessariamente uma proposta contratual definitiva. Cada projecto poderá possuir
+                requisitos, prazos, integrações e custos diferentes.
               </p>
-              <p className="mb-2">A proposta comercial enviada ao cliente deverá indicar, conforme aplicável:</p>
+              <p className="mb-2">
+                A proposta comercial enviada ao cliente deverá indicar, conforme aplicável:
+              </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-4">
                 <li>serviços incluídos;</li>
                 <li>entregáveis;</li>
@@ -204,35 +247,53 @@ export function TermsOfService() {
                 <li>condições específicas do projecto.</li>
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Em caso de conflito entre estes Termos e um contrato específico assinado pelas partes, prevalecerão as condições específicas do contrato, na medida permitida pela lei.
+                Em caso de conflito entre estes Termos e um contrato específico assinado pelas
+                partes, prevalecerão as condições específicas do contrato, na medida permitida pela
+                lei.
               </p>
             </section>
 
             {/* 4. CONTRATAÇÃO */}
-            <section id="secao-4" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-4"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">4</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  4
+                </span>
                 CONTRATAÇÃO
               </h2>
               <p className="mb-3">
-                A contratação será considerada concluída quando houver aceitação da proposta e/ou assinatura do contrato aplicável, acompanhada dos procedimentos de pagamento eventualmente previstos.
+                A contratação será considerada concluída quando houver aceitação da proposta e/ou
+                assinatura do contrato aplicável, acompanhada dos procedimentos de pagamento
+                eventualmente previstos.
               </p>
               <p className="mb-3">
-                Nos contratos celebrados electronicamente, serão observadas as regras legais aplicáveis aos contratos electrónicos.
+                Nos contratos celebrados electronicamente, serão observadas as regras legais
+                aplicáveis aos contratos electrónicos.
               </p>
               <p className="text-xs text-muted-foreground/90">
-                A legislação angolana prevê regras específicas para a celebração de contratos electrónicos e para a informação que deve ser disponibilizada aos destinatários antes da contratação.
+                A legislação angolana prevê regras específicas para a celebração de contratos
+                electrónicos e para a informação que deve ser disponibilizada aos destinatários
+                antes da contratação.
               </p>
             </section>
 
             {/* 5. PAGAMENTOS */}
-            <section id="secao-5" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-5"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">5</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  5
+                </span>
                 PAGAMENTOS
               </h2>
               <p className="mb-3">
-                Os preços e condições de pagamento serão definidos na proposta comercial ou contrato. Dependendo do projecto, poderá ser solicitado:
+                Os preços e condições de pagamento serão definidos na proposta comercial ou
+                contrato. Dependendo do projecto, poderá ser solicitado:
               </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-4">
                 <li>pagamento inicial para início do projecto;</li>
@@ -243,21 +304,32 @@ export function TermsOfService() {
                 <li>mensalidade de automação ou IA.</li>
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Impostos, taxas de terceiros, serviços externos ou custos extraordinários serão tratados conforme indicado na proposta.
+                Impostos, taxas de terceiros, serviços externos ou custos extraordinários serão
+                tratados conforme indicado na proposta.
               </p>
             </section>
 
             {/* 6. PLANOS MENSAIS */}
-            <section id="secao-6" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-6"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">6</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  6
+                </span>
                 PLANOS MENSAIS
               </h2>
               <p className="mb-3">
-                Quando contratado um plano mensal, este poderá incluir, conforme o plano: alojamento, domínio, certificado SSL, backups, monitorização, actualizações, manutenção, suporte, pequenas alterações, automações, serviços de IA, CRM e integrações.
+                Quando contratado um plano mensal, este poderá incluir, conforme o plano:
+                alojamento, domínio, certificado SSL, backups, monitorização, actualizações,
+                manutenção, suporte, pequenas alterações, automações, serviços de IA, CRM e
+                integrações.
               </p>
               <p className="mb-3">
-                Os limites de utilização, quantidade de alterações, horas de suporte, mensagens, contactos, conversas de IA ou outros recursos poderão variar conforme o plano contratado.
+                Os limites de utilização, quantidade de alterações, horas de suporte, mensagens,
+                contactos, conversas de IA ou outros recursos poderão variar conforme o plano
+                contratado.
               </p>
               <p className="text-xs font-semibold text-primary">
                 Serviços que excedam os limites contratados poderão ser cobrados separadamente.
@@ -265,60 +337,100 @@ export function TermsOfService() {
             </section>
 
             {/* 7. DOMÍNIOS */}
-            <section id="secao-7" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-7"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">7</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  7
+                </span>
                 DOMÍNIOS
               </h2>
               <p className="mb-3">
-                Quando a Agentes Digital gerir o registo de um domínio para o cliente, procuraremos, sempre que tecnicamente e comercialmente possível, registar o domínio em nome do próprio cliente.
+                Quando a Agentes Digital gerir o registo de um domínio para o cliente, procuraremos,
+                sempre que tecnicamente e comercialmente possível, registar o domínio em nome do
+                próprio cliente.
               </p>
               <p className="mb-3">
-                A Agentes Digital poderá efectuar a configuração, gestão técnica e renovação do domínio conforme contratado. A disponibilidade, renovação, suspensão ou transferência de um domínio também poderá depender das regras da entidade registradora ou fornecedor utilizado.
+                A Agentes Digital poderá efectuar a configuração, gestão técnica e renovação do
+                domínio conforme contratado. A disponibilidade, renovação, suspensão ou
+                transferência de um domínio também poderá depender das regras da entidade
+                registradora ou fornecedor utilizado.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                A perda de um domínio causada por informações incorrectas fornecidas pelo cliente, falta de pagamento ou incumprimento das regras do registrador poderá não ser imputável à Agentes Digital.
+                A perda de um domínio causada por informações incorrectas fornecidas pelo cliente,
+                falta de pagamento ou incumprimento das regras do registrador poderá não ser
+                imputável à Agentes Digital.
               </p>
             </section>
 
             {/* 8. ALOJAMENTO E SERVIÇOS DE TERCEIROS */}
-            <section id="secao-8" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-8"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">8</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  8
+                </span>
                 ALOJAMENTO E SERVIÇOS DE TERCEIROS
               </h2>
               <p className="mb-3">
-                Os nossos serviços podem depender de plataformas externas, tais como: Vercel, provedores de alojamento, fornecedores de domínio, Google, Meta, WhatsApp, serviços de e-mail, plataformas de CRM, fornecedores de IA, gateways de pagamento, APIs e serviços de automação.
+                Os nossos serviços podem depender de plataformas externas, tais como: Vercel,
+                provedores de alojamento, fornecedores de domínio, Google, Meta, WhatsApp, serviços
+                de e-mail, plataformas de CRM, fornecedores de IA, gateways de pagamento, APIs e
+                serviços de automação.
               </p>
               <p className="mb-3">
-                A disponibilidade e funcionamento desses serviços dependem dos respectivos fornecedores. Alterações de preços, políticas, limites, APIs, interrupções ou encerramentos realizados por terceiros poderão afectar determinado serviço.
+                A disponibilidade e funcionamento desses serviços dependem dos respectivos
+                fornecedores. Alterações de preços, políticas, limites, APIs, interrupções ou
+                encerramentos realizados por terceiros poderão afectar determinado serviço.
               </p>
               <p className="text-xs text-foreground/90">
-                Quando uma alteração exigir trabalho adicional para manter ou substituir uma integração, esse trabalho poderá ser orçamentado separadamente.
+                Quando uma alteração exigir trabalho adicional para manter ou substituir uma
+                integração, esse trabalho poderá ser orçamentado separadamente.
               </p>
             </section>
 
             {/* 9. INTELIGÊNCIA ARTIFICIAL */}
-            <section id="secao-9" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-9"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">9</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  9
+                </span>
                 INTELIGÊNCIA ARTIFICIAL
               </h2>
               <p className="mb-3">
-                Alguns serviços da Agentes Digital utilizam Inteligência Artificial para: atendimento, respostas automáticas, qualificação de leads, agendamento, follow-up, processamento de linguagem, geração de conteúdos, classificação de informações e automação de tarefas.
+                Alguns serviços da Agentes Digital utilizam Inteligência Artificial para:
+                atendimento, respostas automáticas, qualificação de leads, agendamento, follow-up,
+                processamento de linguagem, geração de conteúdos, classificação de informações e
+                automação de tarefas.
               </p>
               <p className="mb-3">
-                Embora sejam adoptadas medidas para melhorar a qualidade dos sistemas, respostas produzidas por IA podem conter erros, omissões ou interpretações incorrectas. O cliente deve definir quais decisões podem ser automatizadas e quais devem exigir intervenção humana.
+                Embora sejam adoptadas medidas para melhorar a qualidade dos sistemas, respostas
+                produzidas por IA podem conter erros, omissões ou interpretações incorrectas. O
+                cliente deve definir quais decisões podem ser automatizadas e quais devem exigir
+                intervenção humana.
               </p>
               <p className="text-xs font-semibold text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20">
-                A Agentes Digital não garante que uma solução de IA produzirá resultados comerciais específicos, determinado número de clientes, vendas, leads ou receitas.
+                A Agentes Digital não garante que uma solução de IA produzirá resultados comerciais
+                específicos, determinado número de clientes, vendas, leads ou receitas.
               </p>
             </section>
 
             {/* 10. RESPONSABILIDADE DO CLIENTE */}
-            <section id="secao-10" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-10"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">10</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  10
+                </span>
                 RESPONSABILIDADE DO CLIENTE
               </h2>
               <p className="mb-2">O cliente é responsável por:</p>
@@ -333,63 +445,95 @@ export function TermsOfService() {
                 <li>utilizar os sistemas de acordo com a legislação.</li>
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                O cliente não deverá fornecer à Agentes Digital informações pessoais, confidenciais ou sensíveis que não sejam necessárias para a execução do serviço.
+                O cliente não deverá fornecer à Agentes Digital informações pessoais, confidenciais
+                ou sensíveis que não sejam necessárias para a execução do serviço.
               </p>
             </section>
 
             {/* 11. CONTEÚDOS FORNECIDOS PELO CLIENTE */}
-            <section id="secao-11" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-11"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">11</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  11
+                </span>
                 CONTEÚDOS FORNECIDOS PELO CLIENTE
               </h2>
               <p className="mb-3">
-                O cliente declara possuir os direitos necessários sobre textos, imagens, vídeos, logótipos, bases de dados, marcas e outros materiais fornecidos à Agentes Digital.
+                O cliente declara possuir os direitos necessários sobre textos, imagens, vídeos,
+                logótipos, bases de dados, marcas e outros materiais fornecidos à Agentes Digital.
               </p>
               <p className="text-xs text-foreground/90">
-                O cliente será responsável por reclamações de terceiros relacionadas com conteúdos cuja utilização tenha sido autorizada ou fornecida pelo próprio cliente.
+                O cliente será responsável por reclamações de terceiros relacionadas com conteúdos
+                cuja utilização tenha sido autorizada ou fornecida pelo próprio cliente.
               </p>
             </section>
 
             {/* 12. PROPRIEDADE INTELECTUAL */}
-            <section id="secao-12" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-12"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">12</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  12
+                </span>
                 PROPRIEDADE INTELECTUAL
               </h2>
               <p className="mb-3">
-                Salvo disposição diferente no contrato, permanecem propriedade da Agentes Digital: código-fonte próprio, frameworks internos, componentes reutilizáveis, bibliotecas próprias, metodologias, templates, sistemas internos, processos, documentação proprietária e ferramentas desenvolvidas previamente.
+                Salvo disposição diferente no contrato, permanecem propriedade da Agentes Digital:
+                código-fonte próprio, frameworks internos, componentes reutilizáveis, bibliotecas
+                próprias, metodologias, templates, sistemas internos, processos, documentação
+                proprietária e ferramentas desenvolvidas previamente.
               </p>
               <p className="mb-3">
-                Os direitos sobre os entregáveis especificamente desenvolvidos para o cliente serão definidos na proposta ou contrato.
+                Os direitos sobre os entregáveis especificamente desenvolvidos para o cliente serão
+                definidos na proposta ou contrato.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Licenças, software de terceiros, imagens licenciadas, fontes, plugins, APIs e outros componentes externos permanecem sujeitos às respectivas licenças.
+                Licenças, software de terceiros, imagens licenciadas, fontes, plugins, APIs e outros
+                componentes externos permanecem sujeitos às respectivas licenças.
               </p>
             </section>
 
             {/* 13. PORTFÓLIO */}
-            <section id="secao-13" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-13"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">13</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  13
+                </span>
                 PORTFÓLIO
               </h2>
               <p className="mb-3">
-                Salvo acordo escrito em contrário, a Agentes Digital poderá apresentar projectos realizados para clientes no seu portfólio, website, apresentações e materiais comerciais.
+                Salvo acordo escrito em contrário, a Agentes Digital poderá apresentar projectos
+                realizados para clientes no seu portfólio, website, apresentações e materiais
+                comerciais.
               </p>
               <p className="text-xs text-muted-foreground/80">
-                Quando o projecto ou informações forem confidenciais, a utilização poderá ser limitada conforme estabelecido contratualmente.
+                Quando o projecto ou informações forem confidenciais, a utilização poderá ser
+                limitada conforme estabelecido contratualmente.
               </p>
             </section>
 
             {/* 14. PRAZOS */}
-            <section id="secao-14" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-14"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">14</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  14
+                </span>
                 PRAZOS
               </h2>
               <p className="mb-3">
-                Os prazos apresentados pela Agentes Digital são estimativas, salvo quando um prazo vinculativo estiver expressamente estabelecido no contrato.
+                Os prazos apresentados pela Agentes Digital são estimativas, salvo quando um prazo
+                vinculativo estiver expressamente estabelecido no contrato.
               </p>
               <p className="mb-2">O prazo poderá ser afectado por:</p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
@@ -405,27 +549,40 @@ export function TermsOfService() {
             </section>
 
             {/* 15. ALTERAÇÕES DE ESCOPO */}
-            <section id="secao-15" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-15"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">15</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  15
+                </span>
                 ALTERAÇÕES DE ESCOPO
               </h2>
               <p className="mb-3">
-                Pedidos adicionais que não estejam incluídos no escopo original poderão gerar: alteração de prazo, custo adicional e necessidade de nova proposta.
+                Pedidos adicionais que não estejam incluídos no escopo original poderão gerar:
+                alteração de prazo, custo adicional e necessidade de nova proposta.
               </p>
               <p className="text-xs font-semibold text-primary">
-                Nenhuma alteração relevante deverá ser considerada incluída automaticamente apenas por ter sido solicitada durante o projecto.
+                Nenhuma alteração relevante deverá ser considerada incluída automaticamente apenas
+                por ter sido solicitada durante o projecto.
               </p>
             </section>
 
             {/* 16. MANUTENÇÃO E SUPORTE */}
-            <section id="secao-16" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-16"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">16</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  16
+                </span>
                 MANUTENÇÃO E SUPORTE
               </h2>
               <p className="mb-3">
-                A manutenção poderá incluir, conforme o plano contratado: actualizações, correcções, monitorização, backups, pequenas alterações e suporte técnico.
+                A manutenção poderá incluir, conforme o plano contratado: actualizações, correcções,
+                monitorização, backups, pequenas alterações e suporte técnico.
               </p>
               <p className="mb-2">Não estão necessariamente incluídos:</p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-3">
@@ -442,13 +599,21 @@ export function TermsOfService() {
             </section>
 
             {/* 17. SUSPENSÃO DOS SERVIÇOS */}
-            <section id="secao-17" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-17"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">17</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  17
+                </span>
                 SUSPENSÃO DOS SERVIÇOS
               </h2>
               <p className="mb-3">
-                A Agentes Digital poderá suspender determinados serviços quando: existam pagamentos vencidos; haja utilização ilegal ou abusiva; exista risco de segurança; o sistema esteja a ser utilizado para actividades fraudulentas; exista violação grave destes Termos; a suspensão seja necessária para proteger sistemas, clientes ou terceiros.
+                A Agentes Digital poderá suspender determinados serviços quando: existam pagamentos
+                vencidos; haja utilização ilegal ou abusiva; exista risco de segurança; o sistema
+                esteja a ser utilizado para actividades fraudulentas; exista violação grave destes
+                Termos; a suspensão seja necessária para proteger sistemas, clientes ou terceiros.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
                 Quando possível, o cliente será informado antes da suspensão.
@@ -456,16 +621,25 @@ export function TermsOfService() {
             </section>
 
             {/* 18. CANCELAMENTO */}
-            <section id="secao-18" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-18"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">18</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  18
+                </span>
                 CANCELAMENTO
               </h2>
               <p className="mb-3">
-                As condições de cancelamento dependerão do contrato ou plano contratado. No caso de serviços mensais, o cliente poderá solicitar o cancelamento nos termos definidos na contratação.
+                As condições de cancelamento dependerão do contrato ou plano contratado. No caso de
+                serviços mensais, o cliente poderá solicitar o cancelamento nos termos definidos na
+                contratação.
               </p>
               <p className="mb-3">
-                Valores correspondentes a serviços já prestados, períodos já iniciados, serviços de terceiros ou custos não recuperáveis poderão continuar devidos, conforme a legislação aplicável e o contrato.
+                Valores correspondentes a serviços já prestados, períodos já iniciados, serviços de
+                terceiros ou custos não recuperáveis poderão continuar devidos, conforme a
+                legislação aplicável e o contrato.
               </p>
               <p className="text-xs text-foreground/90">
                 Direitos legalmente conferidos ao consumidor não são prejudicados por esta cláusula.
@@ -473,13 +647,19 @@ export function TermsOfService() {
             </section>
 
             {/* 19. GARANTIA E CORRECÇÃO DE ERROS */}
-            <section id="secao-19" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-19"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">19</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  19
+                </span>
                 GARANTIA E CORRECÇÃO DE ERROS
               </h2>
               <p className="mb-3">
-                A Agentes Digital procurará corrigir erros técnicos atribuíveis ao nosso trabalho dentro do período e condições estabelecidos no contrato.
+                A Agentes Digital procurará corrigir erros técnicos atribuíveis ao nosso trabalho
+                dentro do período e condições estabelecidos no contrato.
               </p>
               <p className="mb-2">A garantia não cobre problemas provocados por:</p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
@@ -494,24 +674,39 @@ export function TermsOfService() {
             </section>
 
             {/* 20. DISPONIBILIDADE DOS SERVIÇOS */}
-            <section id="secao-20" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-20"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">20</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  20
+                </span>
                 DISPONIBILIDADE DOS SERVIÇOS
               </h2>
               <p className="mb-3">
-                A Agentes Digital procura manter os serviços disponíveis e funcionais, mas não garante disponibilidade absoluta ou ininterrupta. Podem ocorrer interrupções por: manutenção; falhas de infraestrutura; ataques informáticos; falhas de fornecedores; problemas de conectividade; indisponibilidade de APIs; acontecimentos de força maior.
+                A Agentes Digital procura manter os serviços disponíveis e funcionais, mas não
+                garante disponibilidade absoluta ou ininterrupta. Podem ocorrer interrupções por:
+                manutenção; falhas de infraestrutura; ataques informáticos; falhas de fornecedores;
+                problemas de conectividade; indisponibilidade de APIs; acontecimentos de força
+                maior.
               </p>
             </section>
 
             {/* 21. LIMITAÇÃO DE RESULTADOS */}
-            <section id="secao-21" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-21"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">21</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  21
+                </span>
                 LIMITAÇÃO DE RESULTADOS
               </h2>
               <p className="mb-3">
-                A Agentes Digital fornece tecnologia, estratégia, automação e sistemas destinados a apoiar os objectivos do cliente. Não garantimos:
+                A Agentes Digital fornece tecnologia, estratégia, automação e sistemas destinados a
+                apoiar os objectivos do cliente. Não garantimos:
               </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm mb-3">
                 <li>posição específica no Google;</li>
@@ -523,14 +718,20 @@ export function TermsOfService() {
                 <li>funcionamento perfeito de sistemas de terceiros.</li>
               </ul>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Os resultados comerciais dependem de diversos factores que podem estar fora do controlo da Agentes Digital.
+                Os resultados comerciais dependem de diversos factores que podem estar fora do
+                controlo da Agentes Digital.
               </p>
             </section>
 
             {/* 22. UTILIZAÇÃO PROIBIDA */}
-            <section id="secao-22" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-22"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">22</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  22
+                </span>
                 UTILIZAÇÃO PROIBIDA
               </h2>
               <p className="mb-2">É proibida a utilização dos nossos serviços para:</p>
@@ -549,30 +750,45 @@ export function TermsOfService() {
             </section>
 
             {/* 23. PROTECÇÃO DE DADOS */}
-            <section id="secao-23" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-23"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">23</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  23
+                </span>
                 PROTECÇÃO DE DADOS
               </h2>
               <p className="mb-3">
-                O tratamento de dados pessoais será realizado de acordo com a legislação aplicável e com a nossa <strong className="text-foreground">Política de Privacidade</strong>.
+                O tratamento de dados pessoais será realizado de acordo com a legislação aplicável e
+                com a nossa <strong className="text-foreground">Política de Privacidade</strong>.
               </p>
               <p className="mb-3">
-                A legislação angolana estabelece princípios como tratamento lícito e de boa-fé, finalidades determinadas e recolha adequada e não excessiva dos dados.
+                A legislação angolana estabelece princípios como tratamento lícito e de boa-fé,
+                finalidades determinadas e recolha adequada e não excessiva dos dados.
               </p>
               <p className="text-xs text-muted-foreground/80">
-                A Política de Privacidade disponível no website integra estes Termos para efeitos de informação sobre o tratamento de dados.
+                A Política de Privacidade disponível no website integra estes Termos para efeitos de
+                informação sobre o tratamento de dados.
               </p>
             </section>
 
             {/* 24. SEGURANÇA */}
-            <section id="secao-24" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-24"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">24</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  24
+                </span>
                 SEGURANÇA
               </h2>
               <p className="mb-3">
-                Adoptamos medidas razoáveis para proteger os sistemas e informações sob a nossa responsabilidade. Contudo, nenhum sistema conectado à Internet é completamente imune a ataques, falhas ou acessos não autorizados.
+                Adoptamos medidas razoáveis para proteger os sistemas e informações sob a nossa
+                responsabilidade. Contudo, nenhum sistema conectado à Internet é completamente imune
+                a ataques, falhas ou acessos não autorizados.
               </p>
               <p className="text-xs font-semibold text-primary">
                 O cliente também é responsável por proteger as suas credenciais e acessos.
@@ -580,27 +796,40 @@ export function TermsOfService() {
             </section>
 
             {/* 25. RESPONSABILIDADE */}
-            <section id="secao-25" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-25"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">25</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  25
+                </span>
                 RESPONSABILIDADE
               </h2>
               <p className="mb-3">
-                A responsabilidade da Agentes Digital será determinada de acordo com a legislação aplicável e com o contrato celebrado com o cliente.
+                A responsabilidade da Agentes Digital será determinada de acordo com a legislação
+                aplicável e com o contrato celebrado com o cliente.
               </p>
               <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
-                Nada nestes Termos pretende excluir ou limitar responsabilidades que não possam legalmente ser excluídas ou limitadas.
+                Nada nestes Termos pretende excluir ou limitar responsabilidades que não possam
+                legalmente ser excluídas ou limitadas.
               </p>
             </section>
 
             {/* 26. FORÇA MAIOR */}
-            <section id="secao-26" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-26"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">26</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  26
+                </span>
                 FORÇA MAIOR
               </h2>
               <p className="mb-2">
-                Nenhuma das partes será considerada responsável por atrasos ou falhas resultantes de acontecimentos que estejam razoavelmente fora do seu controlo, incluindo:
+                Nenhuma das partes será considerada responsável por atrasos ou falhas resultantes de
+                acontecimentos que estejam razoavelmente fora do seu controlo, incluindo:
               </p>
               <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
                 <li>catástrofes naturais;</li>
@@ -616,60 +845,100 @@ export function TermsOfService() {
             </section>
 
             {/* 27. ALTERAÇÕES DOS TERMOS */}
-            <section id="secao-27" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-27"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">27</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  27
+                </span>
                 ALTERAÇÕES DOS TERMOS
               </h2>
               <p className="mb-3">
-                A Agentes Digital poderá actualizar estes Termos para reflectir alterações nos serviços, legislação, tecnologia ou modelo de negócio. A versão mais recente será disponibilizada no website.
+                A Agentes Digital poderá actualizar estes Termos para reflectir alterações nos
+                serviços, legislação, tecnologia ou modelo de negócio. A versão mais recente será
+                disponibilizada no website.
               </p>
               <p className="text-xs text-muted-foreground/80">
-                Alterações relevantes às condições contratuais de clientes existentes serão tratadas de acordo com o contrato aplicável e a legislação.
+                Alterações relevantes às condições contratuais de clientes existentes serão tratadas
+                de acordo com o contrato aplicável e a legislação.
               </p>
             </section>
 
             {/* 28. LEGISLAÇÃO APLICÁVEL */}
-            <section id="secao-28" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-28"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">28</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  28
+                </span>
                 LEGISLAÇÃO APLICÁVEL
               </h2>
               <p className="mb-3">
-                Estes Termos serão interpretados de acordo com as leis aplicáveis da República de Angola, sem prejuízo dos direitos imperativos que possam ser aplicáveis ao consumidor ou a qualquer outra parte protegida por lei.
+                Estes Termos serão interpretados de acordo com as leis aplicáveis da República de
+                Angola, sem prejuízo dos direitos imperativos que possam ser aplicáveis ao
+                consumidor ou a qualquer outra parte protegida por lei.
               </p>
               <p className="text-xs text-foreground/90">
-                A legislação angolana de defesa do consumidor reconhece, entre outros, direitos relacionados com qualidade dos serviços, informação, liberdade de escolha e protecção contra publicidade enganosa ou abusiva.
+                A legislação angolana de defesa do consumidor reconhece, entre outros, direitos
+                relacionados com qualidade dos serviços, informação, liberdade de escolha e
+                protecção contra publicidade enganosa ou abusiva.
               </p>
             </section>
 
             {/* 29. RESOLUÇÃO DE CONFLITOS */}
-            <section id="secao-29" className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20">
+            <section
+              id="secao-29"
+              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">29</span>
+                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+                  29
+                </span>
                 RESOLUÇÃO DE CONFLITOS
               </h2>
               <p className="mb-3">
-                Em caso de conflito, as partes procurarão inicialmente resolver a questão por negociação directa.
+                Em caso de conflito, as partes procurarão inicialmente resolver a questão por
+                negociação directa.
               </p>
               <p className="text-xs text-muted-foreground/80">
-                Quando não for possível alcançar uma solução amigável, poderão ser utilizados os mecanismos administrativos, extrajudiciais ou judiciais disponíveis nos termos da legislação aplicável.
+                Quando não for possível alcançar uma solução amigável, poderão ser utilizados os
+                mecanismos administrativos, extrajudiciais ou judiciais disponíveis nos termos da
+                legislação aplicável.
               </p>
             </section>
 
             {/* 30. CONTACTO */}
-            <section id="secao-30" className="scroll-mt-24 p-6 rounded-xl border border-primary/40 bg-primary/5">
+            <section
+              id="secao-30"
+              className="scroll-mt-24 p-6 rounded-xl border border-primary/40 bg-primary/5"
+            >
               <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary text-white flex items-center justify-center text-xs font-mono font-bold">30</span>
+                <span className="size-6 rounded-md bg-primary text-white flex items-center justify-center text-xs font-mono font-bold">
+                  30
+                </span>
                 CONTACTO
               </h2>
               <p className="mb-3">Para questões relacionadas com estes Termos:</p>
               <div className="space-y-1.5 text-xs sm:text-sm">
-                <p><strong className="text-foreground">Agentes Digital</strong></p>
-                <p><strong className="text-foreground">Website:</strong> agentes-digital.com</p>
-                <p><strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]</p>
-                <p><strong className="text-foreground">WhatsApp:</strong> [inserir número]</p>
-                <p><strong className="text-foreground">Endereço:</strong> [inserir endereço]</p>
+                <p>
+                  <strong className="text-foreground">Agentes Digital</strong>
+                </p>
+                <p>
+                  <strong className="text-foreground">Website:</strong> agentes-digital.com
+                </p>
+                <p>
+                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]
+                </p>
+                <p>
+                  <strong className="text-foreground">WhatsApp:</strong> [inserir número]
+                </p>
+                <p>
+                  <strong className="text-foreground">Endereço:</strong> [inserir endereço]
+                </p>
               </div>
               <p className="mt-4 text-xs font-bold text-primary pt-3 border-t border-primary/20">
                 Última actualização: 10 de Setembro de 2026.

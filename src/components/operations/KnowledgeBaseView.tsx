@@ -179,7 +179,11 @@ export function KnowledgeBaseView() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.name.endsWith(".md") && !file.name.endsWith(".markdown") && !file.name.endsWith(".txt")) {
+    if (
+      !file.name.endsWith(".md") &&
+      !file.name.endsWith(".markdown") &&
+      !file.name.endsWith(".txt")
+    ) {
       toast.error("Por favor, selecione um arquivo no formato .md (Markdown).");
       return;
     }
@@ -264,13 +268,28 @@ export function KnowledgeBaseView() {
     const activeList = skills.filter((s) => s.isActive);
 
     let match = activeList.find((s) => {
-      if (lower.includes("caro") || lower.includes("preço") || lower.includes("barato") || lower.includes("orçamento")) {
+      if (
+        lower.includes("caro") ||
+        lower.includes("preço") ||
+        lower.includes("barato") ||
+        lower.includes("orçamento")
+      ) {
         return s.category === "objecoes";
       }
-      if (lower.includes("agendar") || lower.includes("reunião") || lower.includes("contratar") || lower.includes("horário")) {
+      if (
+        lower.includes("agendar") ||
+        lower.includes("reunião") ||
+        lower.includes("contratar") ||
+        lower.includes("horário")
+      ) {
         return s.category === "fechamento";
       }
-      if (lower.includes("como funciona") || lower.includes("serviço") || lower.includes("site") || lower.includes("ia")) {
+      if (
+        lower.includes("como funciona") ||
+        lower.includes("serviço") ||
+        lower.includes("site") ||
+        lower.includes("ia")
+      ) {
         return s.category === "qualificacao";
       }
       return false;
@@ -329,9 +348,13 @@ export function KnowledgeBaseView() {
                 </span>
               </div>
               <p className="text-xs text-[#A7B0BF] mt-1 max-w-3xl leading-relaxed">
-                Esta área é dedicada à <strong className="text-[#F5F7FA]">escola de vendas e habilidades comerciais do Agente IA</strong>.
-                Adicione playbooks em Markdown (<code className="text-[#C084FC]">.md</code>), técnicas de negociação, rapport para Angola e
-                skills com gatilhos automáticos que transformam a IA num consultor de alta conversão.
+                Esta área é dedicada à{" "}
+                <strong className="text-[#F5F7FA]">
+                  escola de vendas e habilidades comerciais do Agente IA
+                </strong>
+                . Adicione playbooks em Markdown (<code className="text-[#C084FC]">.md</code>),
+                técnicas de negociação, rapport para Angola e skills com gatilhos automáticos que
+                transformam a IA num consultor de alta conversão.
               </p>
             </div>
           </div>
@@ -408,7 +431,9 @@ export function KnowledgeBaseView() {
               type="button"
               onClick={() => setSelectedType("all")}
               className={`px-2.5 py-1 rounded-[6px] font-semibold transition-colors ${
-                selectedType === "all" ? "bg-[#3B82F6] text-white" : "text-[#A7B0BF] hover:text-[#F5F7FA]"
+                selectedType === "all"
+                  ? "bg-[#3B82F6] text-white"
+                  : "text-[#A7B0BF] hover:text-[#F5F7FA]"
               }`}
             >
               Todos ({skills.length})
@@ -417,7 +442,9 @@ export function KnowledgeBaseView() {
               type="button"
               onClick={() => setSelectedType("skill")}
               className={`px-2.5 py-1 rounded-[6px] font-semibold transition-colors ${
-                selectedType === "skill" ? "bg-[#3B82F6] text-white" : "text-[#A7B0BF] hover:text-[#F5F7FA]"
+                selectedType === "skill"
+                  ? "bg-[#3B82F6] text-white"
+                  : "text-[#A7B0BF] hover:text-[#F5F7FA]"
               }`}
             >
               Skills ({skills.filter((s) => s.type === "skill").length})
@@ -426,7 +453,9 @@ export function KnowledgeBaseView() {
               type="button"
               onClick={() => setSelectedType("manual")}
               className={`px-2.5 py-1 rounded-[6px] font-semibold transition-colors ${
-                selectedType === "manual" ? "bg-[#3B82F6] text-white" : "text-[#A7B0BF] hover:text-[#F5F7FA]"
+                selectedType === "manual"
+                  ? "bg-[#3B82F6] text-white"
+                  : "text-[#A7B0BF] hover:text-[#F5F7FA]"
               }`}
             >
               Manuais ({skills.filter((s) => s.type === "manual").length})
@@ -435,7 +464,7 @@ export function KnowledgeBaseView() {
 
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value as any)}
+            onChange={(e) => setSelectedCategory(e.target.value as "all" | KnowledgeCategory)}
             className="h-8 rounded-[8px] border border-[#252C38] bg-[#151A23] px-2.5 text-[#F5F7FA] focus:outline-none focus:border-[#3B82F6] text-[11px] shrink-0"
           >
             <option value="all">Todas as Categorias</option>
@@ -505,7 +534,9 @@ export function KnowledgeBaseView() {
                         : "bg-[#667085]/20 text-[#A7B0BF] border border-[#667085]/30"
                     }`}
                   >
-                    <span className={`size-1.5 rounded-full ${doc.isActive ? "bg-[#22C55E]" : "bg-[#667085]"}`} />
+                    <span
+                      className={`size-1.5 rounded-full ${doc.isActive ? "bg-[#22C55E]" : "bg-[#667085]"}`}
+                    />
                     <span>{doc.isActive ? "ATIVA" : "PAUSADA"}</span>
                   </button>
                 </div>
@@ -581,7 +612,8 @@ export function KnowledgeBaseView() {
           </span>
         </div>
         <p className="text-xs text-[#A7B0BF] mb-4">
-          Escreva uma frase de um potencial cliente para verificar qual das suas skills de venda ativas seria acionada para orientar a resposta da IA:
+          Escreva uma frase de um potencial cliente para verificar qual das suas skills de venda
+          ativas seria acionada para orientar a resposta da IA:
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -609,7 +641,10 @@ export function KnowledgeBaseView() {
                 <Zap className="size-3.5 text-[#F59E0B]" />
                 Skill Acionada:{" "}
                 <strong className="text-[#C084FC]">{sandboxResult.triggeredSkill?.title}</strong> (
-                <code className="text-[10px] text-[#A7B0BF]">{sandboxResult.triggeredSkill?.filename}</code>)
+                <code className="text-[10px] text-[#A7B0BF]">
+                  {sandboxResult.triggeredSkill?.filename}
+                </code>
+                )
               </span>
               <span className="text-[10px] font-bold text-[#22C55E]">GATILHO VALIDADO</span>
             </div>
@@ -643,7 +678,9 @@ export function KnowledgeBaseView() {
                 </div>
                 <div className="overflow-hidden">
                   <h3 className="text-sm font-bold text-[#F5F7FA] truncate">{viewingDoc.title}</h3>
-                  <p className="text-[11px] font-mono text-[#A7B0BF] truncate">{viewingDoc.filename}</p>
+                  <p className="text-[11px] font-mono text-[#A7B0BF] truncate">
+                    {viewingDoc.filename}
+                  </p>
                 </div>
               </div>
 
@@ -742,8 +779,8 @@ export function KnowledgeBaseView() {
             {/* Modal Footer */}
             <div className="p-4 border-t border-[#252C38] flex items-center justify-between bg-[#0E121A]">
               <span className="text-[11px] text-[#667085]">
-                Tipo: {viewingDoc.type === "skill" ? "Skill de Ação" : "Manual de Treinamento"} • Categoria:{" "}
-                {categoryLabels[viewingDoc.category]}
+                Tipo: {viewingDoc.type === "skill" ? "Skill de Ação" : "Manual de Treinamento"} •
+                Categoria: {categoryLabels[viewingDoc.category]}
               </span>
 
               <div className="flex items-center gap-2">
@@ -809,7 +846,9 @@ export function KnowledgeBaseView() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#A7B0BF] mb-1 font-semibold">Nome do Arquivo (.md)</label>
+                  <label className="block text-[#A7B0BF] mb-1 font-semibold">
+                    Nome do Arquivo (.md)
+                  </label>
                   <input
                     type="text"
                     value={newFilename}
@@ -820,7 +859,9 @@ export function KnowledgeBaseView() {
                 </div>
 
                 <div>
-                  <label className="block text-[#A7B0BF] mb-1 font-semibold">Tipo de Documento</label>
+                  <label className="block text-[#A7B0BF] mb-1 font-semibold">
+                    Tipo de Documento
+                  </label>
                   <select
                     value={newType}
                     onChange={(e) => setNewType(e.target.value as KnowledgeType)}
@@ -834,7 +875,9 @@ export function KnowledgeBaseView() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#A7B0BF] mb-1 font-semibold">Categoria Comercial</label>
+                  <label className="block text-[#A7B0BF] mb-1 font-semibold">
+                    Categoria Comercial
+                  </label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as KnowledgeCategory)}
@@ -849,7 +892,9 @@ export function KnowledgeBaseView() {
                 </div>
 
                 <div>
-                  <label className="block text-[#A7B0BF] mb-1 font-semibold">Gatilho de Ativação (Trigger)</label>
+                  <label className="block text-[#A7B0BF] mb-1 font-semibold">
+                    Gatilho de Ativação (Trigger)
+                  </label>
                   <input
                     type="text"
                     value={newTrigger}
@@ -862,7 +907,7 @@ export function KnowledgeBaseView() {
 
               <div>
                 <label className="block text-[#A7B0BF] mb-1 font-semibold">
-                  Conteúdo Markdown (.md) — Deixe vazio para usar modelo sugerido
+                  Conteúdo Markdown (.md) (deixe vazio para usar modelo sugerido)
                 </label>
                 <textarea
                   rows={6}

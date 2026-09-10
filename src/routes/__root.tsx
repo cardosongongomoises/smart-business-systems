@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { organizationSchema, websiteSchema, faqSchema } from "../lib/seo-schemas";
 
 function NotFoundComponent() {
   return (
@@ -77,24 +78,54 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Smart Business Systems | Agentes Digital" },
+      { title: "Agentes Digital | Criação de Websites e Agentes de IA em Angola" },
       {
         name: "description",
         content:
-          "Agentes Digital - Websites, Inteligência Artificial, Automação e Sistemas Digitais para empresas.",
+          "Criação de websites profissionais, agentes de IA para WhatsApp e automação comercial para empresas em Angola. Atendimento 24/7 e qualificação de leads.",
+      },
+      {
+        name: "keywords",
+        content:
+          "criação de websites angola, desenvolvimento de sites luanda, agentes de inteligência artificial angola, automação whatsapp empresas, chatbot ia angola, crm angola, automate pro",
       },
       { name: "author", content: "Agentes Digital" },
-      { property: "og:title", content: "Smart Business Systems | Agentes Digital" },
+      {
+        name: "robots",
+        content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      },
+      { name: "geo.region", content: "AO-LUA" },
+      { name: "geo.placename", content: "Luanda, Angola" },
+      {
+        property: "og:title",
+        content: "Agentes Digital | Criação de Websites e Agentes de IA em Angola",
+      },
       {
         property: "og:description",
         content:
-          "Agentes Digital - Websites, Inteligência Artificial, Automação e Sistemas Digitais para empresas.",
+          "Websites profissionais, agentes de IA para WhatsApp e automação de atendimento para empresas em Luanda e em toda Angola.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://agentes-digital.com/" },
+      { property: "og:site_name", content: "Agentes Digital" },
+      { property: "og:locale", content: "pt_AO" },
+      { property: "og:image", content: "https://agentes-digital.com/favicon-512.png" },
+      { property: "og:image:width", content: "512" },
+      { property: "og:image:height", content: "512" },
+      { property: "og:image:alt", content: "Agentes Digital - Websites e IA em Angola" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Agentes Digital | Websites e Agentes de IA em Angola" },
+      {
+        name: "twitter:description",
+        content:
+          "Transforme o atendimento e aquisição da sua empresa com websites modernos e agentes inteligentes em Angola.",
+      },
+      { name: "twitter:image", content: "https://agentes-digital.com/favicon-512.png" },
       { name: "twitter:site", content: "@AgentesDigital" },
+      { name: "theme-color", content: "#080A0F" },
     ],
     links: [
+      { rel: "canonical", href: "https://agentes-digital.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
@@ -123,11 +154,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt" style={{ colorScheme: "dark" }}>
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+        >
+          Saltar para o conteúdo principal
+        </a>
         {children}
         <Scripts />
       </body>

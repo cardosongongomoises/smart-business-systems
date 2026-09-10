@@ -73,7 +73,7 @@ export function Hero() {
         <div>
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-[#3B82F6] uppercase">
-              Tecnologia • IA • Automação
+              Websites • Inteligência Artificial • Automação Comercial
             </span>
           </Reveal>
 
@@ -85,9 +85,10 @@ export function Hero() {
 
           <Reveal delay={160}>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[#A7B0BF] sm:text-lg">
-              Criamos websites, agentes de Inteligência Artificial e automações que ajudam sua
-              empresa a ser encontrada, atender clientes, qualificar oportunidades e agendar
-              reuniões automaticamente.
+              Criamos websites profissionais, agentes de Inteligência Artificial e automações
+              comerciais em Angola. Ajudamos a sua empresa a ser encontrada no Google, atender
+              clientes 24/7 no WhatsApp, qualificar oportunidades e agendar reuniões
+              automaticamente.
             </p>
           </Reveal>
 

@@ -175,7 +175,9 @@ export function LeadDetailPanel({
 
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-base sm:text-lg font-bold text-[#F5F7FA] tracking-tight">{lead.name}</h2>
+                <h2 className="text-base sm:text-lg font-bold text-[#F5F7FA] tracking-tight">
+                  {lead.name}
+                </h2>
                 {lead.aiQualified && (
                   <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#8B5CF6]/15 text-[#C084FC] border border-[#8B5CF6]/30">
                     <Sparkles className="size-3 text-[#8B5CF6]" />
@@ -431,7 +433,9 @@ export function LeadDetailPanel({
 
                 <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
                   <div>
-                    <p className="text-xs font-bold text-[#F5F7FA]">{lead.appointments[0]?.title}</p>
+                    <p className="text-xs font-bold text-[#F5F7FA]">
+                      {lead.appointments[0]?.title}
+                    </p>
                     <p className="text-[11px] text-[#A7B0BF] mt-0.5">
                       {lead.appointments[0]?.dateFormatted} • {lead.appointments[0]?.timeFormatted}
                     </p>

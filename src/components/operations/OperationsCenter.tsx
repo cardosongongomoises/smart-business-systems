@@ -134,7 +134,9 @@ export function OperationsCenter() {
       if (cached) {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed)) {
-          const hasMockLeads = parsed.some((l: any) => l?.id?.startsWith("lead-0"));
+          const hasMockLeads = parsed.some(
+            (l: { id?: unknown }) => typeof l?.id === "string" && l.id.startsWith("lead-0"),
+          );
           if (hasMockLeads) {
             localStorage.removeItem("sbs_leads_cache");
           }
@@ -269,8 +271,11 @@ export function OperationsCenter() {
       "Luvumbo Advocacia Corporativa",
       "Imobiliária Kilamba Prime",
     ];
-    const pickedName = randomNames[Math.floor(Math.random() * randomNames.length)] ?? "Dra. Jandira Kuanza";
-    const pickedCompany = randomCompanies[Math.floor(Math.random() * randomCompanies.length)] ?? "Clínica Vida Talatona";
+    const pickedName =
+      randomNames[Math.floor(Math.random() * randomNames.length)] ?? "Dra. Jandira Kuanza";
+    const pickedCompany =
+      randomCompanies[Math.floor(Math.random() * randomCompanies.length)] ??
+      "Clínica Vida Talatona";
 
     const simulatedLead: Lead = {
       id: `lead-sim-${Date.now()}`,

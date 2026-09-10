@@ -171,7 +171,9 @@ export function OperationsTopbar({
           aria-label="Atualizar dados"
           className="size-8 sm:size-9 rounded-[8px] border border-[#252C38] bg-[#151A23] flex items-center justify-center text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6]/50 transition-colors shrink-0"
         >
-          <RefreshCw className={`size-3.5 sm:size-4 ${isRefreshing ? "animate-spin text-[#3B82F6]" : ""}`} />
+          <RefreshCw
+            className={`size-3.5 sm:size-4 ${isRefreshing ? "animate-spin text-[#3B82F6]" : ""}`}
+          />
         </button>
 
         {/* Operator Badge & Logout */}

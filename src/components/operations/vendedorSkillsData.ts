@@ -3,16 +3,17 @@ import { VendedorSkillDoc } from "./types";
 export const initialVendedorSkills: VendedorSkillDoc[] = [
   {
     id: "skill-01",
-    title: "Framework SPIN Selling — Diagnóstico Consultivo",
+    title: "Framework SPIN Selling: Diagnóstico Consultivo",
     filename: "skill-spin-selling-diagnostico.md",
     type: "skill",
     category: "qualificacao",
-    triggerCondition: "Primeiro contacto ou quando o cliente diz genericamente 'quero saber mais' ou 'preciso de um site'",
+    triggerCondition:
+      "Primeiro contacto ou quando o cliente diz genericamente 'quero saber mais' ou 'preciso de um site'",
     isActive: true,
     createdAt: "09/09/2026",
     updatedAt: "09/09/2026",
     contentMd: `# Skill: SPIN Selling para Vendedor IA
-<!-- Versão 2.1 — Mercado Empresarial Angolano -->
+<!-- Versão 2.1: Mercado Empresarial Angolano -->
 
 ## 1. Objectivo Comercial
 Capacitar o agente IA a **diagnosticar a dor real** do decisor antes de apresentar qualquer pacote ou solução de preço. Um vendedor de alto nível nunca atira orçamentos sem antes mapear o problema.
@@ -27,19 +28,19 @@ Capacitar o agente IA a **diagnosticar a dor real** do decisor antes de apresent
 
 ## 3. Protocolo de 4 Etapas (SPIN)
 
-### S — Situação (Entender o Cenário Atual)
+### S: Situação (Entender o Cenário Atual)
 - Faça **uma única pergunta curta e direta**:
   > *"Com todo o gosto! Para eu te orientar com precisão: qual é o ramo da sua empresa e como vocês captam clientes hoje?"*
 
-### P — Problema (Revelar o Ponto de Dor)
+### P: Problema (Revelar o Ponto de Dor)
 - Identifique se o problema é falta de visibilidade, perda de mensagens fora do horário ou falta de credibilidade:
   > *"Entendo. Hoje vocês sentem que perdem potenciais clientes no WhatsApp à noite ou aos finais de semana por falta de resposta imediata?"*
 
-### I — Implicação (Tornar a Dor Evidente)
+### I: Implicação (Tornar a Dor Evidente)
 - Mostre o custo invisível de não resolver:
   > *"No mercado actual em Luanda e províncias, um cliente que não recebe resposta em 5 minutos geralmente procura o concorrente no Google ou Instagram no mesmo instante."*
 
-### N — Necessidade de Solução (Preparar o Terreno)
+### N: Necessidade de Solução (Preparar o Terreno)
 - Conduza o cliente a verbalizar a necessidade:
   > *"Se tivessem um sistema inteligente que atende, qualifica e agenda reuniões automaticamente 24 horas por dia, isso aliviaria a sua equipa comercial?"*
 
@@ -56,7 +57,8 @@ Capacitar o agente IA a **diagnosticar a dor real** do decisor antes de apresent
     filename: "skill-contorno-objecoes-angola.md",
     type: "skill",
     category: "objecoes",
-    triggerCondition: "Quando o cliente diz 'está caro', 'não tenho orçamento', 'o meu sobrinho faz mais barato' ou 'preciso falar com o sócio'",
+    triggerCondition:
+      "Quando o cliente diz 'está caro', 'não tenho orçamento', 'o meu sobrinho faz mais barato' ou 'preciso falar com o sócio'",
     isActive: true,
     createdAt: "09/09/2026",
     updatedAt: "09/09/2026",
@@ -91,7 +93,8 @@ A sobrecarga de tempo é exatamente o sintoma da falta de automação.
     filename: "skill-fechamento-agendamento-direto.md",
     type: "skill",
     category: "fechamento",
-    triggerCondition: "Quando o lead foi qualificado, demonstrou interesse ou perguntou 'como funciona para contratar?'",
+    triggerCondition:
+      "Quando o lead foi qualificado, demonstrou interesse ou perguntou 'como funciona para contratar?'",
     isActive: true,
     createdAt: "09/09/2026",
     updatedAt: "09/09/2026",
@@ -130,7 +133,8 @@ Assim que o cliente escolher um dos horários:
     filename: "manual-tom-de-voz-vendedor-consultivo.md",
     type: "manual",
     category: "rapport",
-    triggerCondition: "Diretriz permanente de estilo e conduta para todas as mensagens do Agente IA",
+    triggerCondition:
+      "Diretriz permanente de estilo e conduta para todas as mensagens do Agente IA",
     isActive: true,
     createdAt: "09/09/2026",
     updatedAt: "09/09/2026",

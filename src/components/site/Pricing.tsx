@@ -120,73 +120,73 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="planos" className="py-24 sm:py-32 relative border-t border-border/40">
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[42rem] rounded-full bg-primary/5 blur-[160px]" />
-      <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
+    <section id="planos" className="py-20 sm:py-28 relative bg-[#080A0F] border-t border-[#252C38] scroll-mt-20">
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[42rem] rounded-full bg-[#3B82F6]/5 blur-[160px]" />
+      <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-primary uppercase">
-              Investimento Estruturado
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
+              Pacotes de Websites & Automação em Angola
             </span>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className="mt-5 text-3xl leading-tight font-bold tracking-tight sm:text-5xl">
+            <h2 className="mt-5 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
               Escolha o nível de transformação{" "}
               <span className="text-gradient">da sua empresa.</span>
             </h2>
           </Reveal>
           <Reveal delay={160}>
-            <p className="mt-4 max-w-2xl mx-auto text-base text-muted-foreground sm:text-lg">
-              Comece com uma presença digital profissional ou construa uma operação comercial
-              inteligente.
+            <p className="mt-4 max-w-2xl mx-auto text-base text-[#A7B0BF]">
+              Estruturas precificadas em Kwanzas (Kz). Inicie com presença de alta conversão ou implemente uma operação completa com inteligência artificial no WhatsApp.
             </p>
           </Reveal>
         </div>
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4 items-stretch">
           {plans.map((p, i) => (
             <Reveal key={p.name} delay={i * 80}>
               <article
-                className={`glass-card relative flex h-full flex-col justify-between rounded-3xl p-6 sm:p-7 transition-all duration-300 hover:border-primary/60 ${
+                className={`relative flex h-full flex-col justify-between rounded-[16px] p-6 sm:p-7 transition-all duration-200 ${
                   p.highlight
-                    ? "shadow-elegant border-primary/50 bg-surface-2/60 ring-1 ring-primary/30"
-                    : ""
+                    ? "border-2 border-[#3B82F6] bg-[#151A23] shadow-[0_8px_30px_rgba(59,130,246,0.18)]"
+                    : "border border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/40 hover:-translate-y-0.5"
                 }`}
               >
                 <div>
                   {p.badge && (
-                    <span className="bg-gradient-primary absolute -top-3.5 left-6 rounded-full px-3.5 py-1 text-[10px] font-extrabold tracking-[0.18em] text-primary-foreground uppercase shadow-md flex items-center gap-1.5">
-                      <Sparkles className="size-3" /> {p.badge}
+                    <span className="absolute -top-3 left-6 rounded-full border border-[#3B82F6]/40 bg-[#3B82F6] px-3 py-0.5 text-[10px] font-bold tracking-[0.16em] text-white uppercase shadow-sm flex items-center gap-1">
+                      <Sparkles className="size-2.5" aria-hidden="true" /> {p.badge}
                     </span>
                   )}
                   <div className="flex items-center justify-between">
-                    <p className="font-mono text-xs text-primary font-semibold">{p.n}</p>
-                    <span className="text-[10px] font-mono tracking-wider text-muted-foreground uppercase">
+                    <p className="font-mono text-xs text-[#3B82F6] font-bold">0{i + 1}</p>
+                    <span className="text-[10px] font-mono tracking-wider text-[#667085] uppercase">
                       PACOTE
                     </span>
                   </div>
 
-                  <h3 className="mt-3 text-xl font-bold tracking-tight uppercase text-foreground">
+                  <h3 className="mt-3 text-lg font-bold tracking-tight uppercase text-[#F5F7FA]">
                     {p.name}
                   </h3>
 
-                  <div className="mt-5 border-y border-border/60 py-4">
-                    <p className="text-2xl font-extrabold text-foreground tracking-tight">
+                  <div className="mt-5 border-y border-[#252C38] py-4">
+                    <p className="text-2xl font-bold text-[#F5F7FA] tracking-tight tabular-nums">
                       {p.setup}
                     </p>
-                    <p className="text-xs text-muted-foreground">Implementação única</p>
-                    <p className="mt-2 text-sm font-bold text-primary">{p.monthly}</p>
+                    <p className="text-xs text-[#A7B0BF]">Implementação única</p>
+                    <p className="mt-2 text-sm font-bold text-[#3B82F6] tabular-nums">{p.monthly}</p>
                   </div>
 
-                  <p className="mt-4 text-xs leading-relaxed text-muted-foreground">{p.pitch}</p>
+                  <p className="mt-4 text-xs leading-relaxed text-[#A7B0BF] min-h-[36px]">{p.pitch}</p>
 
-                  <ul className="mt-6 space-y-2 border-t border-border/40 pt-4">
+                  <ul className="mt-6 space-y-2.5 border-t border-[#252C38]/60 pt-4">
                     {p.items.map((it) => (
                       <li
                         key={it}
-                        className="flex items-start gap-2.5 text-xs text-muted-foreground"
+                        className="flex items-start gap-2.5 text-xs text-[#A7B0BF]"
                       >
-                        <Check className="mt-0.5 size-3.5 shrink-0 text-primary" /> {it}
+                        <Check className="mt-0.5 size-3.5 shrink-0 text-[#3B82F6]" aria-hidden="true" />
+                        <span>{it}</span>
                       </li>
                     ))}
                   </ul>
@@ -196,10 +196,10 @@ export function Pricing() {
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-8 inline-flex items-center justify-center rounded-full px-5 py-3.5 text-sm font-semibold transition-transform hover:scale-[1.03] ${
+                  className={`mt-8 inline-flex h-[44px] items-center justify-center rounded-[8px] px-5 text-xs font-semibold uppercase tracking-wider transition-colors ${
                     p.highlight
-                      ? "bg-gradient-primary shadow-elegant text-primary-foreground"
-                      : "border border-border bg-surface-2 text-foreground hover:bg-surface"
+                      ? "bg-[#3B82F6] text-white hover:bg-[#2563EB]"
+                      : "border border-[#252C38] bg-[#0E121A] text-[#F5F7FA] hover:bg-[#151A23] hover:border-[#3B82F6]"
                   }`}
                 >
                   {p.cta}
