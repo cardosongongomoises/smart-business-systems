@@ -309,7 +309,8 @@ export async function fetchLeadsFromSupabase(): Promise<{
           location: (row["location"] as string) || "Angola",
           channel: (row["channel"] as Lead["channel"]) || "website",
           status: (row["status"] as LeadStatus) || "novo",
-          packageInterest: (row["packageInterest"] as string) || "Profissional",
+          packageInterest:
+            (row["packageInterest"] as Lead["packageInterest"]) || "Profissional",
           aiQualified: Boolean(row["aiQualified"]),
           qualificationScore: Number(row["qualificationScore"]) || 75,
           estimatedValue: (row["estimatedValue"] as string) || "Kz 250.000",
