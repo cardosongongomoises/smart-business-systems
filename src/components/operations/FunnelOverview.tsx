@@ -6,7 +6,10 @@ interface FunnelOverviewProps {
 }
 
 export function FunnelOverview({ stages }: FunnelOverviewProps) {
-  const maxCount = Math.max(...stages.map((s) => s.count));
+  const maxCount = Math.max(...stages.map((s) => s.count), 0);
+  const totalVisitors = stages[0]?.count || 0;
+  const totalConversions = stages.find((s) => s.id === "converter")?.count || 0;
+  const globalRate = totalVisitors > 0 ? ((totalConversions / totalVisitors) * 100).toFixed(1) : "0.0";
 
   return (
     <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
@@ -26,9 +29,9 @@ export function FunnelOverview({ stages }: FunnelOverviewProps) {
         </div>
 
         <div className="text-[11px] text-[#667085] flex items-center gap-1.5 font-mono">
-          <span>Total de Visitantes: 1.420</span>
+          <span>Total de Entradas: {totalVisitors}</span>
           <span>•</span>
-          <span className="text-[#22C55E]">38 Conversões (2.7% global)</span>
+          <span className="text-[#22C55E]">{totalConversions} Conversões ({globalRate}% global)</span>
         </div>
       </div>
 
@@ -80,7 +83,7 @@ export function FunnelOverview({ stages }: FunnelOverviewProps) {
                     className={`h-full rounded-full ${
                       isAiStage ? "bg-[#8B5CF6]" : isConversion ? "bg-[#22C55E]" : "bg-[#3B82F6]"
                     }`}
-                    style={{ width: `${Math.max(12, (stage.count / maxCount) * 100)}%` }}
+                    style={{ width: `${maxCount > 0 ? Math.max(4, (stage.count / maxCount) * 100) : 4}%` }}
                   />
                 </div>
                 <div className="flex items-center justify-between mt-1 text-[10px]">

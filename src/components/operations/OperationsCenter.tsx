@@ -15,7 +15,7 @@ import { AutomationsView } from "./AutomationsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
-import { initialLeads, initialMetrics, funnelStages } from "./mockData";
+import { initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
@@ -30,8 +30,8 @@ import {
 
 export function OperationsCenter() {
   const { logout, adminEmail } = useAdminAuth();
-  const [leads, setLeads] = useState<Lead[]>(initialLeads);
-  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(initialLeads[0]?.id || null);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [currentTab, setCurrentTab] = useState<ActiveTab>("dashboard");
   const [statusFilter, setStatusFilter] = useState<LeadStatus | "todos">("todos");
   const [searchQuery, setSearchQuery] = useState("");
@@ -128,6 +128,22 @@ export function OperationsCenter() {
   }, []);
 
   useEffect(() => {
+    // Purga leads mockados que possam ter ficado no localStorage
+    try {
+      const cached = localStorage.getItem("sbs_leads_cache");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) {
+          const hasMockLeads = parsed.some((l: any) => l?.id?.startsWith("lead-0"));
+          if (hasMockLeads) {
+            localStorage.removeItem("sbs_leads_cache");
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+
     loadLeads();
 
     // Supabase Realtime: escuta atualizações e novos leads automaticamente

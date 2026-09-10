@@ -1,6 +1,5 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
 import { Lead, LeadStatus, ChatMessage, ActivityItem, VendedorSkillDoc } from "@/components/operations/types";
-import { initialLeads } from "@/components/operations/mockData";
 import { initialVendedorSkills } from "@/components/operations/vendedorSkillsData";
 
 export interface ContactFormData {
@@ -20,16 +19,26 @@ const LOCAL_STORAGE_LEADS_KEY = "sbs_leads_cache";
  * Salva leads no cache local para resiliência e fallback offline
  */
 export function getLocalLeads(): Lead[] {
-  if (typeof window === "undefined") return initialLeads;
+  if (typeof window === "undefined") return [];
   try {
     const cached = localStorage.getItem(LOCAL_STORAGE_LEADS_KEY);
     if (cached) {
-      return JSON.parse(cached);
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed)) {
+        // Purga qualquer lead mockado que possa ter ficado no cache local
+        const cleaned = parsed.filter(
+          (l) => l && l.id && !l.id.startsWith("lead-0") && !l.name?.includes("Gonçalo")
+        );
+        if (cleaned.length !== parsed.length) {
+          localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(cleaned));
+        }
+        return cleaned;
+      }
     }
   } catch (err) {
     console.warn("Erro ao ler cache local de leads:", err);
   }
-  return initialLeads;
+  return [];
 }
 
 export function setLocalLeads(leads: Lead[]) {
@@ -285,7 +294,7 @@ export async function fetchLeadsFromSupabase(): Promise<{
         .select("*")
         .order("createdAt", { ascending: false });
 
-      if (!error && data && data.length > 0) {
+      if (!error && Array.isArray(data)) {
         const mappedLeads: Lead[] = data.map((row: any) => ({
           id: String(row.id),
           name: row.name || "Contacto",
@@ -318,10 +327,10 @@ export async function fetchLeadsFromSupabase(): Promise<{
     }
   }
 
-  // Fallback: cache local ou mock
+  // Fallback: cache local ou lista vazia
   const local = getLocalLeads();
   return {
-    leads: local && local.length > 0 ? local : initialLeads,
+    leads: local || [],
     source: isSupabaseConfigured() ? "cache" : "mock",
   };
 }
