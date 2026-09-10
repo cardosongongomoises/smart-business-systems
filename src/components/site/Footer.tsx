@@ -102,7 +102,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <span className="text-muted-foreground/80">Política de Privacidade</span>
+                <a
+                  href="/privacidade"
+                  className="text-muted-foreground transition-colors hover:text-primary font-medium"
+                >
+                  Política de Privacidade
+                </a>
               </li>
               <li>
                 <a

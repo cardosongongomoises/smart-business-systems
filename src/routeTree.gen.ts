@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as OperacoesRouteImport } from './routes/operacoes'
+import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as TermosDeServicoRouteImport } from './routes/termos-de-servico'
 
@@ -30,6 +32,16 @@ const OperacoesRoute = OperacoesRouteImport.update({
   path: '/operacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
+  id: '/politica-de-privacidade',
+  path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermosRoute = TermosRouteImport.update({
   id: '/termos',
   path: '/termos',
@@ -45,6 +57,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/termos': typeof TermosRoute
   '/termos-de-servico': typeof TermosDeServicoRoute
 }
@@ -52,6 +66,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/termos': typeof TermosRoute
   '/termos-de-servico': typeof TermosDeServicoRoute
 }
@@ -60,19 +76,37 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/operacoes': typeof OperacoesRoute
+  '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/privacidade': typeof PrivacidadeRoute
   '/termos': typeof TermosRoute
   '/termos-de-servico': typeof TermosDeServicoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/operacoes' | '/termos' | '/termos-de-servico'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/operacoes'
+    | '/politica-de-privacidade'
+    | '/privacidade'
+    | '/termos'
+    | '/termos-de-servico'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/operacoes' | '/termos' | '/termos-de-servico'
+  to:
+    | '/'
+    | '/admin'
+    | '/operacoes'
+    | '/politica-de-privacidade'
+    | '/privacidade'
+    | '/termos'
+    | '/termos-de-servico'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/operacoes'
+    | '/politica-de-privacidade'
+    | '/privacidade'
     | '/termos'
     | '/termos-de-servico'
   fileRoutesById: FileRoutesById
@@ -81,6 +115,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   OperacoesRoute: typeof OperacoesRoute
+  PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
   TermosRoute: typeof TermosRoute
   TermosDeServicoRoute: typeof TermosDeServicoRoute
 }
@@ -108,6 +144,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OperacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/politica-de-privacidade': {
+      id: '/politica-de-privacidade'
+      path: '/politica-de-privacidade'
+      fullPath: '/politica-de-privacidade'
+      preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/termos': {
       id: '/termos'
       path: '/termos'
@@ -129,6 +179,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   OperacoesRoute: OperacoesRoute,
+  PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
   TermosRoute: TermosRoute,
   TermosDeServicoRoute: TermosDeServicoRoute,
 }
