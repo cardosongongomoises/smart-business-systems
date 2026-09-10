@@ -10,7 +10,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { CTA, EMAIL, WHATSAPP_NUMBER, whatsappLink } from "@/lib/site-config";
+import { CTA, EMAIL, WHATSAPP_NUMBER } from "@/lib/site-config";
 import { submitContactForm } from "@/lib/supabaseService";
 import { toast } from "sonner";
 
@@ -34,6 +34,17 @@ export function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const resetForm = () => {
+    setNome("");
+    setEmpresa("");
+    setAreaAtuacao("");
+    setTelefone("");
+    setEmail("");
+    setServico("Website");
+    setMensagem("");
+    setSubmitted(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -52,50 +63,28 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Prepara o link de WhatsApp ANTES de chamar o Supabase, para não bloquear se houver demora
-      const waText =
-        `*Novo Pedido de Contacto - Agentes Digital*\n\n` +
-        `*Nome:* ${nome.trim()}\n` +
-        `*Empresa:* ${empresa.trim()}\n` +
-        `*Telefone/WhatsApp:* ${telefone.trim()}\n` +
-        `*E-mail:* ${email.trim()}\n` +
-        `*Área que a sua empresa atua:* ${areaAtuacao.trim()}\n` +
-        `*Serviço que você pretende:* ${servico.trim()}\n` +
-        `*Mensagem:* ${mensagem.trim()}`;
+      // Grava os dados no Supabase
+      const res = await submitContactForm({
+        nome,
+        empresa,
+        telefone,
+        email,
+        areaAtuacao,
+        servico,
+        mensagem,
+        canal: "website",
+      });
 
-      const waLink = whatsappLink(waText);
-
-      // Grava no Supabase e abre o WhatsApp em paralelo
-      const [res] = await Promise.all([
-        submitContactForm({
-          nome,
-          empresa,
-          telefone,
-          email,
-          areaAtuacao,
-          servico,
-          mensagem,
-          canal: "website",
-        }),
-        // Pequeno delay para o browser não bloquear o popup do WhatsApp
-        new Promise<void>((resolve) => setTimeout(resolve, 100)),
-      ]);
-
-      // Abre o WhatsApp independentemente do resultado do Supabase
-      window.open(waLink, "_blank", "noopener,noreferrer");
-
-      if (res.success && res.mode === "supabase") {
-        toast.success("✅ Pedido registado no sistema! Entraremos em contacto brevemente.");
+      if (res.success) {
+        // Mostra a mensagem de agradecimento
         setSubmitted(true);
-      } else if (res.success) {
-        // Modo demo (offline) – ainda assim marca como enviado
-        toast.success("Pedido enviado! Entraremos em contacto brevemente.");
-        setSubmitted(true);
+        // Após 5 segundos, reseta o formulário automaticamente
+        setTimeout(() => {
+          resetForm();
+        }, 5000);
       } else {
-        // Erro ao gravar no Supabase
         console.error("Falha ao gravar no Supabase:", res.error);
-        toast.error("Erro ao registar o pedido. Por favor contacte-nos directamente pelo WhatsApp.");
-        setSubmitted(true); // Ainda marca como enviado pois o WhatsApp foi aberto
+        toast.error("Ocorreu um erro ao registar o seu pedido. Por favor tente novamente ou contacte-nos directamente.");
       }
     } catch (err) {
       console.error("Erro ao enviar formulário:", err);
@@ -238,19 +227,19 @@ export function Contact() {
                 </p>
 
                 {submitted ? (
-                  <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/10 p-6 text-center">
-                    <CheckCircle2 className="mx-auto size-10 text-primary" />
-                    <p className="mt-3 font-bold text-foreground">Pedido enviado com sucesso!</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      O seu contacto foi encaminhado para a nossa equipa. Responderemos em breve.
+                  <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/10 p-8 text-center">
+                    <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-primary/15 border border-primary/30">
+                      <CheckCircle2 className="size-8 text-primary" />
+                    </div>
+                    <p className="text-lg font-bold text-foreground">
+                      Muito obrigado pelo seu contacto! 🙏
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => setSubmitted(false)}
-                      className="mt-5 text-xs font-semibold text-primary underline underline-offset-4"
-                    >
-                      Enviar outro pedido
-                    </button>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      Recebemos a sua solicitação com sucesso. A nossa equipa irá analisar o seu pedido e entrar em contacto consigo brevemente para apresentar a melhor proposta para o seu negócio.
+                    </p>
+                    <p className="mt-3 text-xs text-muted-foreground/70">
+                      O formulário estará pronto novamente em instantes.
+                    </p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="mt-8 space-y-5">
