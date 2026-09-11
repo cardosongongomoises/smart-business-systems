@@ -166,7 +166,7 @@ export function DashboardView({
         totalTasks: projTasks.length,
         doneTasks: projDone,
         progress: projProgress,
-        clientName: client?.company || "Cliente Agentes Digital",
+        clientName: client?.name || "Cliente Agentes Digital",
       };
     });
   }, [projects, tasks, clients]);
@@ -869,14 +869,14 @@ export function DashboardView({
                       {proj.clientName}
                     </span>
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-medium border border-[#252C38] bg-[#151A23] text-[#A7B0BF]">
-                      {proj.status === "ACTIVE" ? "Em Produção" : proj.status}
+                      Em Produção
                     </span>
                   </div>
                   <h4 className="text-sm font-semibold text-[#F5F7FA] mt-1.5 group-hover:text-[#60A5FA] transition-colors line-clamp-1">
                     {proj.name}
                   </h4>
                   <p className="text-[11px] text-[#667085] mt-0.5 line-clamp-2 leading-relaxed">
-                    {proj.description}
+                    Prazo {proj.dueDate} · {proj.budget}
                   </p>
                 </div>
 
