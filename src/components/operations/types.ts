@@ -85,7 +85,7 @@ export interface MetricData {
   change: string;
   isPositive: boolean;
   timeframe: string;
-  type: "leads" | "qualification" | "appointments" | "conversion";
+  type: "leads" | "qualification" | "appointments" | "conversion" | "mrr";
 }
 
 export interface FunnelStage {

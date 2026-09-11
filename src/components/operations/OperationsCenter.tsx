@@ -18,7 +18,8 @@ import { KnowledgeBaseView } from "./KnowledgeBaseView";
 import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
 import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
 import { initialMetrics, funnelStages } from "./mockData";
-import { Lead, LeadStatus, ChatMessage } from "./types";
+import { Lead, LeadStatus, ChatMessage, MetricData } from "./types";
+import { computeFinancialMetrics, INITIAL_CLIENTS } from "./financialUtils";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
 import {
@@ -75,6 +76,60 @@ export function OperationsCenter() {
   // Active chats count
   const activeChatsCount = useMemo(() => {
     return leads.filter((l) => l.aiProcessingStatus === "ativo").length;
+  }, [leads]);
+
+  // Real-time Dynamic Metrics including MRR
+  const dynamicMetrics = useMemo<MetricData[]>(() => {
+    const fin = computeFinancialMetrics(INITIAL_CLIENTS, leads);
+    const convertedCount = leads.filter((l) => l.status === "convertido").length;
+    const total = leads.length;
+    const convRate = total > 0 ? ((convertedCount / total) * 100).toFixed(1) : "0.0";
+    const qualifiedCount = leads.filter((l) => l.aiQualified).length;
+    const qualRate = total > 0 ? ((qualifiedCount / total) * 100).toFixed(1) : "0.0";
+    const appointmentsCount = leads.reduce((acc, l) => acc + (l.appointments?.length || 0), 0);
+
+    return [
+      {
+        title: "MRR Recorrente",
+        value: fin.mrrFormatted,
+        change: `+${fin.retentionRate}%`,
+        isPositive: true,
+        timeframe: `${fin.activeRecurringClients} contratos activos (Mensalidades)`,
+        type: "mrr",
+      },
+      {
+        title: "Leads Totais",
+        value: String(total),
+        change: "+28%",
+        isPositive: true,
+        timeframe: "No pipeline comercial",
+        type: "leads",
+      },
+      {
+        title: "Qualificação IA",
+        value: `${qualRate}%`,
+        change: "+12%",
+        isPositive: true,
+        timeframe: `${qualifiedCount} qualificados`,
+        type: "qualification",
+      },
+      {
+        title: "Reuniões",
+        value: String(appointmentsCount),
+        change: "+5%",
+        isPositive: true,
+        timeframe: "Sessões marcadas",
+        type: "appointments",
+      },
+      {
+        title: "Conversão",
+        value: `${convRate}%`,
+        change: "+8%",
+        isPositive: true,
+        timeframe: `${convertedCount} clientes fechados`,
+        type: "conversion",
+      },
+    ];
   }, [leads]);
 
   // Filtered Leads
@@ -420,7 +475,7 @@ export function OperationsCenter() {
             <div className="flex-1 overflow-y-auto flex flex-col">
               {/* Top Metrics & Journey Funnel */}
               <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
-                <MetricsRow metrics={initialMetrics} />
+                <MetricsRow metrics={dynamicMetrics} />
                 <FunnelOverview stages={funnelStages} />
               </div>
 

@@ -225,8 +225,58 @@ export function DashboardView({
         </div>
       </div>
 
+      {/* High-Visibility MRR & Financial Highlight Banner */}
+      <div
+        id="mrr-top-banner"
+        className="rounded-[16px] border-2 border-[#22C55E]/60 bg-gradient-to-r from-[#0E2018] via-[#12241C] to-[#151A23] p-4.5 px-5 shadow-[0_0_24px_rgba(34,197,94,0.18)] flex flex-col md:flex-row md:items-center justify-between gap-4"
+      >
+        <div className="flex items-center gap-3.5">
+          <div className="size-11 rounded-[12px] bg-[#22C55E]/20 border border-[#22C55E]/50 flex items-center justify-center text-[#22C55E] shrink-0 shadow-[0_0_16px_rgba(34,197,94,0.3)]">
+            <Coins className="size-6 text-[#22C55E]" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-black tracking-wider uppercase bg-[#22C55E] text-black px-2 py-0.5 rounded-[6px]">
+                MRR RECORRÊNCIA MENSAL
+              </span>
+              <span className="text-[11px] font-semibold text-[#86EFAC] flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-[#22C55E] animate-pulse" />
+                Receita Contínua em Kwanzas
+              </span>
+            </div>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-3xl font-black font-mono text-[#22C55E] tracking-tight">
+                {financialMetrics.mrrFormatted}
+              </span>
+              <span className="text-xs text-[#A7B0BF]">
+                /mês • {financialMetrics.activeRecurringClients} contratos activos (
+                {financialMetrics.retentionRate}% retenção)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="rounded-[10px] bg-[#0E121A] border border-[#252C38] px-3.5 py-2">
+            <div className="text-[10px] text-[#A7B0BF] uppercase font-bold">ARR (12 Meses)</div>
+            <div className="text-xs font-bold font-mono text-[#F59E0B]">
+              {financialMetrics.arrFormatted}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigateTab("clients")}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-[#22C55E] hover:bg-[#16A34A] text-black font-bold text-xs shadow-[0_0_20px_rgba(34,197,94,0.35)] transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <span>Ver Clientes & Contratos</span>
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
+      </div>
+
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3.5">
+        {/* Card 1: Total Leads */}
         <div
           onClick={() => onNavigateTab("leads")}
           className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#3B82F6]/50 transition-all group"
@@ -244,7 +294,44 @@ export function DashboardView({
           </p>
         </div>
 
-        {/* Dedicated Commercial Form Requests Card (Recharts) */}
+        {/* Card 2: MRR Recorrente (Elevated to top row position 2!) */}
+        <div
+          id="mrr-kpi-card"
+          onClick={() => onNavigateTab("clients")}
+          title="Monthly Recurring Revenue: Suporte contínuo, hospedagem e operação dos agentes IA (Clique para abrir Clientes & Contratos)"
+          className="rounded-[16px] border-2 border-[#22C55E] bg-gradient-to-br from-[#10241A] via-[#13231B] to-[#151A23] p-4 shadow-[0_0_24px_rgba(34,197,94,0.2)] cursor-pointer hover:border-[#4ADE80] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] transition-all group relative overflow-hidden flex flex-col justify-between"
+        >
+          <div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#22C55E] flex items-center gap-1.5">
+                <Coins className="size-3.5 text-[#22C55E]" />
+                MRR Recorrente
+              </span>
+              <div className="size-7 rounded-[8px] bg-[#22C55E]/20 border border-[#22C55E]/40 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform">
+                <TrendingUp className="size-3.5" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono tracking-tight">
+              {financialMetrics.mrrFormatted}
+            </p>
+            <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+              {financialMetrics.retentionRate}% retenção • {financialMetrics.activeRecurringClients}{" "}
+              contratos
+            </p>
+          </div>
+
+          <div className="mt-2 pt-2 border-t border-[#22C55E]/20 flex items-center justify-between text-[10px]">
+            <span className="text-[#86EFAC] group-hover:text-white font-bold flex items-center gap-1 transition-colors">
+              <span>Gerir Clientes</span>
+              <ChevronRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
+            </span>
+            <span className="text-[#22C55E] font-mono font-bold bg-[#22C55E]/15 px-1.5 py-0.5 rounded">
+              Previsível
+            </span>
+          </div>
+        </div>
+
+        {/* Card 3: Dedicated Commercial Form Requests Card (Recharts) */}
         <div
           onClick={() => onNavigateTab("leads")}
           title="Solicitações recebidas pelo formulário de proposta comercial (armazenadas no Supabase)"
@@ -298,6 +385,7 @@ export function DashboardView({
           </div>
         </div>
 
+        {/* Card 4: Conversas IA */}
         <div
           onClick={() => onNavigateTab("conversations")}
           className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#8B5CF6] transition-all group"
@@ -315,6 +403,7 @@ export function DashboardView({
           </p>
         </div>
 
+        {/* Card 5: Reuniões Agendadas */}
         <div
           onClick={() => onNavigateTab("schedules")}
           className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#F59E0B]/50 transition-all group"
@@ -332,6 +421,7 @@ export function DashboardView({
           </p>
         </div>
 
+        {/* Card 6: Pipeline Estimado */}
         <div
           onClick={() => onNavigateTab("reports")}
           className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#22C55E]/50 transition-all group"
@@ -346,40 +436,7 @@ export function DashboardView({
           <p className="text-[11px] text-[#A7B0BF] mt-1">Valores em Kwanzas (AOA)</p>
         </div>
 
-        {/* MRR Recorrente (Monthly Recurring Revenue) */}
-        <div
-          onClick={() => onNavigateTab("clients")}
-          title="Monthly Recurring Revenue: Suporte contínuo, hospedagem e operação dos agentes IA (Clique para abrir Clientes & Contratos)"
-          className="rounded-[16px] border border-[#22C55E]/40 bg-gradient-to-br from-[#151A23] via-[#10141D] to-[#151A23] p-4 shadow-[0_8px_24px_rgba(34,197,94,0.12)] cursor-pointer hover:border-[#22C55E] hover:shadow-[0_0_24px_-4px_rgba(34,197,94,0.3)] transition-all group relative overflow-hidden flex flex-col justify-between"
-        >
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-[#22C55E] flex items-center gap-1">
-                <Coins className="size-3 text-[#22C55E]" />
-                MRR Recorrente
-              </span>
-              <div className="size-7 rounded-[8px] bg-[#22C55E]/15 border border-[#22C55E]/30 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform">
-                <TrendingUp className="size-3.5" />
-              </div>
-            </div>
-            <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono tracking-tight">
-              {financialMetrics.mrrFormatted}
-            </p>
-            <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-              {financialMetrics.retentionRate}% retenção • {financialMetrics.activeRecurringClients}{" "}
-              contratos
-            </p>
-          </div>
-
-          <div className="mt-2 pt-2 border-t border-[#252C38] flex items-center justify-between text-[10px]">
-            <span className="text-[#38BDF8] group-hover:text-[#7DD3FC] font-semibold flex items-center gap-1 transition-colors">
-              <span>Gerir Clientes</span>
-              <ChevronRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
-            </span>
-            <span className="text-[#667085] font-mono">Previsível</span>
-          </div>
-        </div>
-
+        {/* Card 7: Taxa de Conversão */}
         <div
           onClick={() => onNavigateTab("clients")}
           className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)] cursor-pointer hover:border-[#3B82F6]/50 transition-all group"

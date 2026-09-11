@@ -77,7 +77,13 @@ export function OperationsSidebar({
     badge?: number | string;
     badgeColor?: "violet" | "blue" | "green";
   }> = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    {
+      id: "dashboard",
+      label: "Dashboard Principal",
+      icon: LayoutDashboard,
+      badge: "MRR",
+      badgeColor: "green",
+    },
     {
       id: "ops",
       label: "Tarefas & Projetos",
@@ -100,7 +106,13 @@ export function OperationsSidebar({
       badge: "Skills",
       badgeColor: "violet",
     },
-    { id: "clients", label: "Clientes", icon: Briefcase },
+    {
+      id: "clients",
+      label: "Clientes & Contratos",
+      icon: Briefcase,
+      badge: "Contratos",
+      badgeColor: "green",
+    },
     { id: "schedules", label: "Agendamentos", icon: Calendar },
     { id: "automations", label: "Automações", icon: Zap },
     { id: "reports", label: "Relatórios", icon: BarChart3 },

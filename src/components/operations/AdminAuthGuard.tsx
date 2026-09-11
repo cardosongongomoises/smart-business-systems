@@ -149,6 +149,21 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
     setError("");
   };
 
+  const handleInstantDemoAccess = () => {
+    const sessionData = JSON.stringify({
+      authenticated: true,
+      email: "admin@agentes-digital.com",
+      timestamp: Date.now(),
+    });
+    try {
+      localStorage.setItem(AUTH_STORAGE_KEY, sessionData);
+    } catch {
+      /* ignore */
+    }
+    setIsAuthenticated(true);
+    toast.success("Bem-vindo ao Centro de Operações & Dashboard!");
+  };
+
   const logout = () => {
     try {
       localStorage.removeItem(AUTH_STORAGE_KEY);
@@ -304,6 +319,16 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
                 </>
               )}
             </button>
+
+            {/* Instant 1-Click Demo Entry Button */}
+            <button
+              type="button"
+              onClick={handleInstantDemoAccess}
+              className="w-full h-10 rounded-[10px] bg-[#22C55E]/15 hover:bg-[#22C55E]/25 border border-[#22C55E]/40 text-[#22C55E] font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <CheckCircle2 className="size-4 text-[#22C55E]" />
+              <span>Acesso Rápido ao Dashboard (1 Clique)</span>
+            </button>
           </form>
 
           {/* Quick Demo Helper */}
@@ -312,10 +337,10 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
               <span>Credenciais de Demonstração:</span>
               <button
                 type="button"
-                onClick={handleFillDemo}
-                className="text-[#3B82F6] hover:underline font-medium cursor-pointer"
+                onClick={handleInstantDemoAccess}
+                className="text-[#22C55E] hover:underline font-bold cursor-pointer"
               >
-                Preencher Automaticamente
+                Entrar com 1 Clique
               </button>
             </div>
             <div className="p-2.5 rounded-[8px] bg-[#151A23] border border-[#252C38] text-[11px] font-mono text-[#A7B0BF] flex flex-col gap-0.5">

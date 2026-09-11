@@ -1,4 +1,4 @@
-import { Users, Bot, CalendarCheck, TrendingUp, ArrowUpRight } from "lucide-react";
+import { Users, Bot, CalendarCheck, TrendingUp, ArrowUpRight, Coins } from "lucide-react";
 import { MetricData } from "./types";
 
 interface MetricsRowProps {
@@ -8,6 +8,8 @@ interface MetricsRowProps {
 export function MetricsRow({ metrics }: MetricsRowProps) {
   const getIcon = (type: MetricData["type"]) => {
     switch (type) {
+      case "mrr":
+        return <Coins className="size-5 text-[#22C55E]" />;
       case "leads":
         return <Users className="size-5 text-[#3B82F6]" />;
       case "qualification":
@@ -21,6 +23,8 @@ export function MetricsRow({ metrics }: MetricsRowProps) {
 
   const getBorderHighlight = (type: MetricData["type"]) => {
     switch (type) {
+      case "mrr":
+        return "border-[#22C55E]/40 hover:border-[#22C55E]";
       case "qualification":
         return "hover:border-[#8B5CF6]/50";
       case "conversion":
@@ -31,7 +35,7 @@ export function MetricsRow({ metrics }: MetricsRowProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {metrics.map((m) => (
         <div
           key={m.title}

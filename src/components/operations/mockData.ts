@@ -2,6 +2,14 @@ import { Lead, MetricData, FunnelStage } from "./types";
 
 export const initialMetrics: MetricData[] = [
   {
+    title: "MRR Recorrente",
+    value: "Kz 305.000",
+    change: "+15%",
+    isPositive: true,
+    timeframe: "4 contratos activos de suporte & IA",
+    type: "mrr",
+  },
+  {
     title: "Leads hoje",
     value: "0",
     change: "0%",
