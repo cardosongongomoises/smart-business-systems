@@ -92,9 +92,9 @@ export function OperationsCenter() {
       {
         title: "MRR Recorrente",
         value: fin.mrrFormatted,
-        change: `+${fin.retentionRate}%`,
-        isPositive: true,
-        timeframe: `${fin.activeRecurringClients} contratos activos (Mensalidades)`,
+        change: `${fin.mrrMomGrowthFormatted} MoM`,
+        isPositive: !fin.isChurn,
+        timeframe: `${fin.activeRecurringClients} contratos ativos (vs. ant: ${fin.mrrMomDiffFormatted})`,
         type: "mrr",
       },
       {

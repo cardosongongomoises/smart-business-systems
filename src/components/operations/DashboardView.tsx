@@ -25,11 +25,14 @@ import {
   Coins,
   DollarSign,
   Layers,
+  TrendingDown,
 } from "lucide-react";
 import { Lead } from "./types";
 import { FunnelOverview } from "./FunnelOverview";
 import { funnelStages } from "./mockData";
 import { ActiveTab } from "./OperationsSidebar";
+import { MRRCompositionTooltip } from "./MRRCompositionTooltip";
+import { RevenueAnalyticsSection } from "./RevenueAnalyticsSection";
 import {
   computeFinancialMetrics,
   INITIAL_CLIENTS,
@@ -244,12 +247,28 @@ export function DashboardView({
                 Receita Contínua em Kwanzas
               </span>
             </div>
-            <div className="flex items-baseline gap-2 mt-1">
+            <div className="flex items-baseline gap-2.5 mt-1 flex-wrap">
               <span className="text-3xl font-black font-mono text-[#22C55E] tracking-tight">
                 {financialMetrics.mrrFormatted}
               </span>
+              <div
+                className={`inline-flex items-center gap-1 text-xs font-mono font-bold px-2 py-0.5 rounded-full ${
+                  financialMetrics.isChurn
+                    ? "bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40"
+                    : "bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/40"
+                }`}
+                title={`Variação Mês sobre Mês (MoM): ${financialMetrics.mrrMomDiffFormatted} vs. mês anterior`}
+              >
+                {financialMetrics.isChurn ? (
+                  <TrendingDown className="size-3" />
+                ) : (
+                  <TrendingUp className="size-3" />
+                )}
+                <span>{financialMetrics.mrrMomGrowthFormatted} MoM</span>
+              </div>
+              <MRRCompositionTooltip financialMetrics={financialMetrics} align="left" />
               <span className="text-xs text-[#A7B0BF]">
-                /mês • {financialMetrics.activeRecurringClients} contratos activos (
+                • {financialMetrics.activeRecurringClients} contratos activos (
                 {financialMetrics.retentionRate}% retenção)
               </span>
             </div>
@@ -307,16 +326,39 @@ export function DashboardView({
                 <Coins className="size-3.5 text-[#22C55E]" />
                 MRR Recorrente
               </span>
-              <div className="size-7 rounded-[8px] bg-[#22C55E]/20 border border-[#22C55E]/40 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform">
-                <TrendingUp className="size-3.5" />
+              <div className="flex items-center gap-1.5">
+                <MRRCompositionTooltip financialMetrics={financialMetrics} align="right" />
+                <div className="size-7 rounded-[8px] bg-[#22C55E]/20 border border-[#22C55E]/40 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform">
+                  {financialMetrics.isChurn ? (
+                    <TrendingDown className="size-3.5 text-[#EF4444]" />
+                  ) : (
+                    <TrendingUp className="size-3.5" />
+                  )}
+                </div>
               </div>
             </div>
-            <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono tracking-tight">
-              {financialMetrics.mrrFormatted}
-            </p>
-            <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-              {financialMetrics.retentionRate}% retenção • {financialMetrics.activeRecurringClients}{" "}
-              contratos
+
+            <div className="flex items-baseline gap-2 mt-2">
+              <p className="text-2xl font-bold text-[#22C55E] font-mono tracking-tight">
+                {financialMetrics.mrrFormatted}
+              </p>
+              <span
+                className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-full ${
+                  financialMetrics.isChurn
+                    ? "bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40"
+                    : "bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/40"
+                }`}
+                title={`Variação MoM: ${financialMetrics.mrrMomDiffFormatted} vs. mês anterior`}
+              >
+                {financialMetrics.mrrMomGrowthFormatted}
+              </span>
+            </div>
+
+            <p className="text-[11px] text-[#A7B0BF] mt-0.5 flex items-center justify-between">
+              <span>{financialMetrics.activeRecurringClients} contratos ativos</span>
+              <span className="text-[10px] text-[#86EFAC] font-mono font-semibold">
+                {financialMetrics.mrrMomDiffFormatted}
+              </span>
             </p>
           </div>
 
@@ -574,146 +616,68 @@ export function DashboardView({
       {/* Visual Funnel Overview */}
       <FunnelOverview stages={funnelStages} />
 
-      {/* Financial Predictability & Revenue Composition (Setup Único vs MRR Recorrente) */}
-      <div className="rounded-[16px] border border-[#252C38] bg-gradient-to-br from-[#151A23] via-[#10141D] to-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-[#252C38]/70 mb-4">
+      {/* New Analytical Section: Setup vs MRR Recorrente (Recharts + MoM + Previsibilidade) */}
+      <RevenueAnalyticsSection financialMetrics={financialMetrics} onNavigateTab={onNavigateTab} />
+
+      {/* Breakdown by Plan pill list including Automate Pro */}
+      <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 pb-2.5 border-b border-[#252C38]/60">
           <div>
-            <div className="flex items-center gap-2">
-              <div className="size-6 rounded-[6px] bg-[#22C55E]/15 flex items-center justify-center text-[#22C55E]">
-                <Coins className="size-3.5" />
-              </div>
-              <h3 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
-                Previsibilidade de Caixa & Estrutura de Receita
-              </h3>
-            </div>
+            <span className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-1.5">
+              <Coins className="size-3.5 text-[#22C55E]" />
+              Distribuição do MRR por Plano Contratado
+            </span>
             <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-              Diferenciação clara entre Setup Único (desenvolvimento inicial) e Receita Recorrente
-              Mensal (MRR)
+              Contratos vigentes com cobrança mensal automática de suporte e IA
             </p>
           </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => onNavigateTab("clients")}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#0E121A] hover:bg-[#252C38] border border-[#252C38] text-xs font-semibold text-[#38BDF8] hover:text-[#7DD3FC] transition-all"
-            >
-              <span>Gestão de Contratos</span>
-              <ChevronRight className="size-3" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigateTab("reports")}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#22C55E]/15 hover:bg-[#22C55E]/25 border border-[#22C55E]/30 text-xs font-semibold text-[#22C55E] transition-all"
-            >
-              <span>Relatório Financeiro</span>
-              <ArrowUpRight className="size-3" />
-            </button>
-          </div>
+          <span className="text-[10px] text-[#38BDF8] font-mono font-medium px-2 py-0.5 rounded bg-[#38BDF8]/10 border border-[#38BDF8]/30">
+            5 Planos: Presença, Profissional, Autoridade, Domínio IA e Automate Pro
+          </span>
         </div>
 
-        {/* 3 Key Financial Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-4">
-          {/* Setup Único Acumulado */}
-          <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A]/70 p-3.5">
-            <div className="flex items-center justify-between text-[#667085]">
-              <span className="text-xs font-medium">Setup Único (Implementação)</span>
-              <Layers className="size-3.5 text-[#3B82F6]" />
-            </div>
-            <p className="text-xl font-bold font-mono text-[#F5F7FA] mt-1.5">
-              {financialMetrics.setupRevenueFormatted}
-            </p>
-            <p className="text-[11px] text-[#A7B0BF] mt-1">
-              Desenvolvimento de websites, integrações de APIs e engenharia de prompt inicial
-            </p>
-          </div>
-
-          {/* MRR Recorrente */}
-          <div className="rounded-[12px] border border-[#22C55E]/30 bg-[#22C55E]/5 p-3.5">
-            <div className="flex items-center justify-between text-[#22C55E]">
-              <span className="text-xs font-semibold">Receita Recorrente (MRR)</span>
-              <TrendingUp className="size-3.5 text-[#22C55E]" />
-            </div>
-            <p className="text-xl font-bold font-mono text-[#22C55E] mt-1.5">
-              {financialMetrics.mrrFormatted}
-            </p>
-            <p className="text-[11px] text-[#A7B0BF] mt-1">
-              Operação de IA 24/7, suporte contínuo, SLA de infraestrutura e hospedagem de alta
-              performance
-            </p>
-          </div>
-
-          {/* ARR Projetado */}
-          <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A]/70 p-3.5">
-            <div className="flex items-center justify-between text-[#667085]">
-              <span className="text-xs font-medium">ARR Projetado (12 Meses)</span>
-              <DollarSign className="size-3.5 text-[#F59E0B]" />
-            </div>
-            <p className="text-xl font-bold font-mono text-[#F59E0B] mt-1.5">
-              {financialMetrics.arrFormatted}
-            </p>
-            <p className="text-[11px] text-[#A7B0BF] mt-1">
-              {financialMetrics.retentionRate}% retenção histórica sem churn • Caixa 100% previsível
-            </p>
-          </div>
-        </div>
-
-        {/* Breakdown by Plan pill list including Automate Pro */}
-        <div className="pt-3 border-t border-[#252C38]/60">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-semibold text-[#667085] uppercase tracking-wider">
-              Composição das Mensalidades por Plano Ativo & Contratado
-            </span>
-            <span className="text-[10px] text-[#38BDF8] font-mono font-medium">
-              Inclui novo plano AUTOMATE PRO
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
-            {financialMetrics.mrrByPlan.map((item) => {
-              const cfg = PLANS_CATALOG[item.plan];
-              return (
-                <div
-                  key={item.plan}
-                  className={`p-2.5 rounded-[10px] border transition-all ${
-                    item.plan === "Automate Pro"
-                      ? "border-[#38BDF8]/40 bg-[#38BDF8]/10"
-                      : "border-[#252C38] bg-[#0E121A]/50 hover:bg-[#151A23]"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="text-[11px] font-bold text-[#F5F7FA] truncate">
-                      {item.plan}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+          {financialMetrics.mrrByPlan.map((item) => {
+            const cfg = PLANS_CATALOG[item.plan];
+            return (
+              <div
+                key={item.plan}
+                className={`p-2.5 rounded-[10px] border transition-all ${
+                  item.plan === "Automate Pro"
+                    ? "border-[#38BDF8]/40 bg-[#38BDF8]/10"
+                    : "border-[#252C38] bg-[#0E121A]/50 hover:bg-[#151A23]"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1">
+                  <span className="text-[11px] font-bold text-[#F5F7FA] truncate">{item.plan}</span>
+                  {cfg?.badge && (
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40 whitespace-nowrap font-medium">
+                      {cfg.badge}
                     </span>
-                    {cfg?.badge && (
-                      <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40 whitespace-nowrap font-medium">
-                        {cfg.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mt-1.5 flex items-baseline justify-between text-xs">
-                    <span className="text-[#A7B0BF] text-[10px]">MRR / mês:</span>
-                    <span className="font-mono font-semibold text-[#22C55E]">
-                      {cfg?.monthlyFormatted}
-                    </span>
-                  </div>
-
-                  <div className="mt-0.5 flex items-baseline justify-between text-xs text-[#667085]">
-                    <span className="text-[10px]">Setup inicial:</span>
-                    <span className="font-mono text-[10px]">{cfg?.setupFormatted}</span>
-                  </div>
-
-                  <div className="mt-1 pt-1 border-t border-[#252C38]/50 flex items-center justify-between text-[10px]">
-                    <span className="text-[#667085]">{item.count} ativos</span>
-                    <span className="font-mono font-semibold text-[#F5F7FA]">
-                      {formatKz(item.mrrSubtotal)}
-                    </span>
-                  </div>
+                  )}
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="mt-1.5 flex items-baseline justify-between text-xs">
+                  <span className="text-[#A7B0BF] text-[10px]">MRR / mês:</span>
+                  <span className="font-mono font-semibold text-[#22C55E]">
+                    {cfg?.monthlyFormatted}
+                  </span>
+                </div>
+
+                <div className="mt-0.5 flex items-baseline justify-between text-xs text-[#667085]">
+                  <span className="text-[10px]">Setup inicial:</span>
+                  <span className="font-mono text-[10px]">{cfg?.setupFormatted}</span>
+                </div>
+
+                <div className="mt-1 pt-1 border-t border-[#252C38]/50 flex items-center justify-between text-[10px]">
+                  <span className="text-[#667085]">{item.count} ativos</span>
+                  <span className="font-mono font-semibold text-[#F5F7FA]">
+                    {formatKz(item.mrrSubtotal)}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

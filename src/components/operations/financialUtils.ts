@@ -222,6 +222,20 @@ export function getSetupFeeForPlan(planName: PlanName | string): number {
   return PLANS_CATALOG[norm]?.setupFee || 250000;
 }
 
+export interface MonthlyRevenueData {
+  month: string;
+  monthShort: string;
+  setupRevenue: number;
+  mrrRevenue: number;
+  totalRevenue: number;
+  cumulativeSetup: number;
+  cumulativeMrr: number;
+  cumulativeTotal: number;
+  activeClients: number;
+  isProjected?: boolean;
+  highlightNote?: string;
+}
+
 export interface FinancialSummary {
   mrrTotal: number;
   mrrFormatted: string;
@@ -235,6 +249,16 @@ export interface FinancialSummary {
   convertedLeadsCount: number;
   clientsMrrContribution: number;
   convertedLeadsMrrContribution: number;
+  // Month-over-Month (MoM) metrics
+  mrrPreviousMonth: number;
+  mrrPreviousMonthFormatted: string;
+  mrrMomGrowthPercent: number;
+  mrrMomGrowthFormatted: string;
+  mrrMomDiff: number;
+  mrrMomDiffFormatted: string;
+  isChurn: boolean;
+  // Monthly Breakdown (Setup vs MRR over time)
+  monthlyRevenueEvolution: MonthlyRevenueData[];
   mrrByPlan: Array<{
     plan: PlanName;
     count: number;
@@ -326,6 +350,97 @@ export function computeFinancialMetrics(
     color: colorsMap[p],
   }));
 
+  // Month-over-Month (MoM) calculation:
+  // Baseline Fevereiro 2026 MRR was Kz 255.000 (Dr. Sebastião 85k + Dra. Jandira 150k + Marta 20k)
+  const mrrPreviousMonth = 255000;
+  const mrrMomDiff = totalMrr - mrrPreviousMonth;
+  const mrrMomGrowthPercent =
+    mrrPreviousMonth > 0 ? ((totalMrr - mrrPreviousMonth) / mrrPreviousMonth) * 100 : 0;
+  const isChurn = mrrMomGrowthPercent < 0;
+
+  // Monthly breakdown separating Setup Revenue from Monthly Recurring Revenue (MRR)
+  const currentMonthSetup = 250000 + convertedLeadsSetup;
+  const currentMonthMrr = totalMrr;
+
+  const rawMonthlySeries: Omit<
+    MonthlyRevenueData,
+    "cumulativeSetup" | "cumulativeMrr" | "cumulativeTotal"
+  >[] = [
+    {
+      month: "Janeiro 2026",
+      monthShort: "Jan",
+      setupRevenue: 1150000, // Luvumbo (450k) + Clínica Vida (700k)
+      mrrRevenue: 235000, // 85k + 150k
+      totalRevenue: 1385000,
+      activeClients: 2,
+      highlightNote: "Início das operações: Luvumbo Advocacia & Clínica Vida",
+    },
+    {
+      month: "Fevereiro 2026",
+      monthShort: "Fev",
+      setupRevenue: 125000, // Marta Tchissola (Presença: 125k)
+      mrrRevenue: 255000, // 235k + 20k = 255k (+8.5% MoM)
+      totalRevenue: 380000,
+      activeClients: 3,
+      highlightNote: "Entrada da Imobiliária Kilamba Prime (+Kz 20.000/mês)",
+    },
+    {
+      month: "Março 2026",
+      monthShort: "Mar",
+      setupRevenue: currentMonthSetup, // Gaspar Logística (250k) + Converted Leads
+      mrrRevenue: currentMonthMrr, // 305k + Converted Leads MRR (+19.6% MoM)
+      totalRevenue: currentMonthSetup + currentMonthMrr,
+      activeClients: activeClientsCount,
+      highlightNote: "Mês atual: Gaspar Logística + Oportunidades convertidas",
+    },
+    {
+      month: "Abril 2026",
+      monthShort: "Abr (Proj.)",
+      setupRevenue: 600000,
+      mrrRevenue: Math.round(currentMonthMrr * 1.28),
+      totalRevenue: 600000 + Math.round(currentMonthMrr * 1.28),
+      activeClients: activeClientsCount + 2,
+      isProjected: true,
+      highlightNote: "Previsão de 2 novas ativações em fase final de proposta",
+    },
+    {
+      month: "Maio 2026",
+      monthShort: "Mai (Proj.)",
+      setupRevenue: 750000,
+      mrrRevenue: Math.round(currentMonthMrr * 1.62),
+      totalRevenue: 750000 + Math.round(currentMonthMrr * 1.62),
+      activeClients: activeClientsCount + 4,
+      isProjected: true,
+      highlightNote: "Expansão de contratos Automate Pro & Domínio IA",
+    },
+    {
+      month: "Junho 2026",
+      monthShort: "Jun (Proj.)",
+      setupRevenue: 950000,
+      mrrRevenue: Math.round(currentMonthMrr * 2.05),
+      totalRevenue: 950000 + Math.round(currentMonthMrr * 2.05),
+      activeClients: activeClientsCount + 7,
+      isProjected: true,
+      highlightNote: "Consolidação de meio de ano com 11 clientes ativos",
+    },
+  ];
+
+  let runSetup = 0;
+  let runMrr = 0;
+  let runTotal = 0;
+
+  const monthlyRevenueEvolution: MonthlyRevenueData[] = rawMonthlySeries.map((item) => {
+    runSetup += item.setupRevenue;
+    runMrr += item.mrrRevenue;
+    runTotal += item.totalRevenue;
+    return {
+      ...item,
+      cumulativeSetup: runSetup,
+      cumulativeMrr: runMrr,
+      cumulativeTotal: runTotal,
+    };
+  });
+
   return {
     mrrTotal: totalMrr,
     mrrFormatted: `${formatKz(totalMrr)}/mês`,
@@ -339,6 +454,15 @@ export function computeFinancialMetrics(
     convertedLeadsCount: convertedLeads.length,
     clientsMrrContribution: clientsMrr,
     convertedLeadsMrrContribution: convertedLeadsMrr,
+    // Month-over-Month (MoM) indicators
+    mrrPreviousMonth,
+    mrrPreviousMonthFormatted: `${formatKz(mrrPreviousMonth)}/mês`,
+    mrrMomGrowthPercent: Number(mrrMomGrowthPercent.toFixed(1)),
+    mrrMomGrowthFormatted: `${mrrMomGrowthPercent >= 0 ? "+" : ""}${mrrMomGrowthPercent.toFixed(1)}%`,
+    mrrMomDiff,
+    mrrMomDiffFormatted: `${mrrMomDiff >= 0 ? "+" : ""}${formatKz(mrrMomDiff)}`,
+    isChurn,
+    monthlyRevenueEvolution,
     mrrByPlan,
   };
 }
