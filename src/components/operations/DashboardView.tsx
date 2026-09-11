@@ -33,6 +33,8 @@ import { funnelStages } from "./mockData";
 import { ActiveTab } from "./OperationsSidebar";
 import { MRRCompositionTooltip } from "./MRRCompositionTooltip";
 import { RevenueAnalyticsSection } from "./RevenueAnalyticsSection";
+import { MRRAlertsBanner } from "./MRRAlertsBanner";
+import { useMRRMonitoring } from "./mrrMonitoringStore";
 import {
   computeFinancialMetrics,
   INITIAL_CLIENTS,
@@ -131,10 +133,13 @@ export function DashboardView({
 
   const formattedPipeline = `Kz ${(pipelineKz / 1000).toLocaleString("pt-PT")}k`;
 
+  // Monitoring store integration for real-time churn/downgrade response
+  const { clients: monitoredClients } = useMRRMonitoring();
+
   // Dynamic Financial & MRR Calculation (Base clients + converted leads in real-time)
   const financialMetrics = useMemo(() => {
-    return computeFinancialMetrics(INITIAL_CLIENTS, safeLeads);
-  }, [safeLeads]);
+    return computeFinancialMetrics(monitoredClients, safeLeads);
+  }, [monitoredClients, safeLeads]);
 
   // Real Task & Project Store Connection
   const { tasks, projects, members, clients } = useTaskStore();
@@ -227,6 +232,9 @@ export function DashboardView({
           </button>
         </div>
       </div>
+
+      {/* Visual Monitoring System: Churn & Downgrade Alerts */}
+      <MRRAlertsBanner onNavigateToClients={() => onNavigateTab("clients")} />
 
       {/* High-Visibility MRR & Financial Highlight Banner */}
       <div
@@ -616,8 +624,13 @@ export function DashboardView({
       {/* Visual Funnel Overview */}
       <FunnelOverview stages={funnelStages} />
 
-      {/* New Analytical Section: Setup vs MRR Recorrente (Recharts + MoM + Previsibilidade) */}
-      <RevenueAnalyticsSection financialMetrics={financialMetrics} onNavigateTab={onNavigateTab} />
+      {/* New Analytical Section: Setup vs MRR Recorrente (Recharts + Barras Empilhadas + Projeção 6 Meses + Download) */}
+      <RevenueAnalyticsSection
+        financialMetrics={financialMetrics}
+        onNavigateTab={onNavigateTab}
+        conversionRatePercent={Number(conversionRate)}
+        totalPipelineLeads={totalLeads}
+      />
 
       {/* Breakdown by Plan pill list including Automate Pro */}
       <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">

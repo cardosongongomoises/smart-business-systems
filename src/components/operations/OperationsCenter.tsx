@@ -20,6 +20,7 @@ import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
 import { initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage, MetricData } from "./types";
 import { computeFinancialMetrics, INITIAL_CLIENTS } from "./financialUtils";
+import { useMRRMonitoring } from "./mrrMonitoringStore";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
 import {
@@ -78,9 +79,11 @@ export function OperationsCenter() {
     return leads.filter((l) => l.aiProcessingStatus === "ativo").length;
   }, [leads]);
 
-  // Real-time Dynamic Metrics including MRR
+  // Real-time Dynamic Metrics including MRR and monitored clients
+  const { clients: monitoredClients } = useMRRMonitoring();
+
   const dynamicMetrics = useMemo<MetricData[]>(() => {
-    const fin = computeFinancialMetrics(INITIAL_CLIENTS, leads);
+    const fin = computeFinancialMetrics(monitoredClients, leads);
     const convertedCount = leads.filter((l) => l.status === "convertido").length;
     const total = leads.length;
     const convRate = total > 0 ? ((convertedCount / total) * 100).toFixed(1) : "0.0";
@@ -130,7 +133,7 @@ export function OperationsCenter() {
         type: "conversion",
       },
     ];
-  }, [leads]);
+  }, [leads, monitoredClients]);
 
   // Filtered Leads
   const filteredLeads = useMemo(() => {
