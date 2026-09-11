@@ -37,17 +37,6 @@ export function Footer() {
             </p>
             <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
-                <a
-                  href="/operacoes"
-                  className="text-[#22C55E] font-semibold transition-colors hover:text-[#4ADE80] flex items-center gap-1.5"
-                >
-                  <span>Dashboard & Operações (MRR)</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#22C55E]/20 text-[#22C55E]">
-                    Gestão
-                  </span>
-                </a>
-              </li>
-              <li>
                 <a href="/#topo" className="text-[#A7B0BF] transition-colors hover:text-[#3B82F6]">
                   Início
                 </a>

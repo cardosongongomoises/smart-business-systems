@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight, ShieldCheck, LayoutDashboard, Coins } from "lucide-react";
+import { Menu, X, ArrowRight, ShieldCheck } from "lucide-react";
 import { CTA } from "@/lib/site-config";
 
 const links = [
@@ -65,22 +65,23 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Status + Primary CTA + Dashboard / MRR Button */}
-        <div className="hidden lg:flex items-center gap-3">
-          <a
-            href="/operacoes"
-            title="Aceder ao Dashboard de Operações & Indicador de MRR"
-            className="inline-flex h-[40px] items-center justify-center gap-1.5 rounded-[8px] border border-[#22C55E]/50 bg-[#22C55E]/10 hover:bg-[#22C55E]/20 px-3.5 text-xs font-semibold text-[#22C55E] transition-all shadow-[0_0_12px_rgba(34,197,94,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E]"
-          >
-            <Coins className="size-3.5" />
-            <span>Dashboard / MRR</span>
-          </a>
+        {/* Status + Primary CTA */}
+        <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-2 rounded-full border border-[#252C38] bg-[#0E121A] px-2.5 py-1 text-[11px] font-medium text-[#A7B0BF]">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
+              <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
+            </span>
+            <span className="font-mono text-[10px] text-[#22C55E] font-bold tracking-wider uppercase">
+              ONLINE 24/7
+            </span>
+          </div>
 
           <a
             href={CTA.specialist}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white shadow-sm transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
+            className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-5 text-xs font-semibold text-white shadow-sm transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
           >
             <span>Falar com especialista</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -128,19 +129,6 @@ export function Header() {
                   <ArrowRight className="size-3.5 text-[#667085]" aria-hidden="true" />
                 </a>
               ))}
-              <a
-                href="/operacoes"
-                onClick={() => setOpen(false)}
-                className="py-3.5 text-sm font-semibold text-[#22C55E] hover:text-[#4ADE80] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E]"
-              >
-                <div className="flex items-center gap-2">
-                  <Coins className="size-4 text-[#22C55E]" />
-                  <span>Dashboard & Indicador MRR</span>
-                </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#22C55E]/20 border border-[#22C55E]/40 text-[#22C55E]">
-                  Aceder
-                </span>
-              </a>
             </nav>
 
             <div className="mt-4 pt-4 border-t border-[#252C38] flex flex-col gap-2.5">
