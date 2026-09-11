@@ -43,7 +43,7 @@ export function SystemPromptView({ currentLead }: SystemPromptViewProps) {
       name: "Dra. Teste",
       company: "Clínica Teste",
       role: "Diretora",
-      phone: "+244 923 000 000",
+      phone: "+244 941 647 752",
       email: "teste@clinica.ao",
       channel: "whatsapp",
       status: "novo",
