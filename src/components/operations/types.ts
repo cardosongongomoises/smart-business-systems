@@ -3,7 +3,9 @@ export type LeadStatus = "novo" | "qualificado" | "agendado" | "convertido" | "p
 export type LeadChannel = "whatsapp" | "website" | "email" | "google";
 
 export type PackageInterestSlug =
-  "presenca" | "profissional" | "autoridade" | "dominio_ia" | "nao_definido";
+  "presenca" | "profissional" | "autoridade" | "dominio_ia" | "automate_pro" | "nao_definido";
+
+export type PlanName = "Presença" | "Profissional" | "Autoridade" | "Domínio IA" | "Automate Pro";
 
 export interface AIStructuredOutput {
   ai_intent: "qualificacao" | "agendamento" | "faq" | "escalonamento";
@@ -63,7 +65,7 @@ export interface Lead {
   location?: string;
   channel: LeadChannel;
   status: LeadStatus;
-  packageInterest: "Presença" | "Profissional" | "Autoridade" | "Domínio IA";
+  packageInterest: PlanName;
   aiQualified: boolean;
   qualificationScore: number; // 0-100
   estimatedValue: string;

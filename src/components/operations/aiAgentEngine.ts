@@ -30,9 +30,10 @@ Preferir:
 A Agentes Digital constrói sistemas digitais que ajudam empresas a: ser encontradas → construir confiança → atender → qualificar → agendar → converter.
 Não vende apenas sites: vende websites, agentes de IA, automação e sistemas.
 
-### Os 4 pacotes (nunca inventar preços ou itens além destes):
+### Os pacotes disponíveis (nunca inventar preços ou itens além destes):
 - Presença: Kz 125.000 (impl) | Kz 20.000/mês: Para quem precisa começar: landing page, domínio, hospedagem, WhatsApp, Google Maps
 - Profissional ⭐ mais escolhido: Kz 250.000 (impl) | Kz 50.000/mês: Website até 5 páginas + agendamento + IA básica + SEO local
+- Automate Pro: Kz 300.000 (impl) | Kz 65.000/mês: Infraestrutura de IA e automação conectada sobre website já existente do cliente (inclui 4h/mês de ajustes)
 - Autoridade: Kz 450.000 (impl) | Kz 85.000/mês: Website até 10 páginas + blog + IA avançada + CRM + automação
 - Domínio IA: Kz 700.000 (impl) | Kz 150.000/mês: Operação digital completa: sistemas personalizados, agentes de IA, dashboards
 
@@ -186,6 +187,32 @@ export function generateAIAgentResponse(
     };
   }
 
+  // Inquiries specifically about existing websites or automation
+  if (
+    lower.includes("já tenho site") ||
+    lower.includes("site existente") ||
+    lower.includes("só a ia") ||
+    lower.includes("só automação") ||
+    lower.includes("conectar ao site") ||
+    lower.includes("automate pro")
+  ) {
+    return {
+      replyText:
+        "Excelente! Para quem já possui website, temos o plano específico AUTOMATE PRO (Kz 300.000 setup único + Kz 65.000/mês de operação). Implementamos o agente de IA treinado, chat no site, integração direta com WhatsApp oficial, CRM e automação de agendamentos, com 4 horas mensais de suporte inclusas. Quer que façamos um diagnóstico do seu site atual?",
+      metadata: {
+        ai_intent: "qualificacao",
+        ai_confidence: 0.97,
+        lead_update: {
+          business_segment: lead.company,
+          package_interest: "automate_pro",
+          qualification_score: 92,
+          status: "qualificado",
+        },
+        escalate_to_human: false,
+      },
+    };
+  }
+
   // Pricing Inquiry
   if (
     lower.includes("preço") ||
@@ -196,7 +223,7 @@ export function generateAIAgentResponse(
   ) {
     return {
       replyText:
-        "Temos 4 pacotes estruturados em Kwanzas: Presença (Kz 125.000), Profissional (Kz 250.000, o mais escolhido), Autoridade (Kz 450.000) e Domínio IA (Kz 700.000). Para recomendar o mais adequado: hoje já tem site ou o seu atendimento é todo por WhatsApp?",
+        "Temos pacotes estruturados em Kwanzas: Presença (Kz 125.000 | Kz 20k/mês), Profissional (Kz 250.000 | Kz 50k/mês), Automate Pro para site existente (Kz 300.000 | Kz 65k/mês), Autoridade (Kz 450.000 | Kz 85k/mês) e Domínio IA (Kz 700.000 | Kz 150k/mês). Hoje a sua empresa já tem um website ativo ou precisa de construir um de raiz?",
       metadata: {
         ai_intent: "qualificacao",
         ai_confidence: 0.94,

@@ -13,116 +13,79 @@ import {
   Zap,
   DollarSign,
   TrendingUp,
+  Coins,
+  Layers,
+  Sparkles,
+  Info,
 } from "lucide-react";
 import { Lead } from "./types";
 import { toast } from "sonner";
+import {
+  INITIAL_CLIENTS,
+  PLANS_CATALOG,
+  ClientAccount,
+  computeFinancialMetrics,
+  normalizePlanName,
+  formatKz,
+} from "./financialUtils";
 
 interface ClientsViewProps {
   leads: Lead[];
   onOpenNewLead: () => void;
 }
 
-interface ClientAccount {
-  id: string;
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  plan: "Presença" | "Profissional" | "Autoridade" | "Domínio IA";
-  status: "no_ar" | "em_desenvolvimento" | "renovacao";
-  setupPrice: string;
-  monthlyFee: string;
-  launchedAt: string;
-  siteUrl?: string;
-  uptime: string;
-}
-
-const initialClients: ClientAccount[] = [
-  {
-    id: "cl-1",
-    name: "Dr. Sebastião Luvumbo",
-    company: "Luvumbo Advocacia Corporativa",
-    phone: "+244 923 881 204",
-    email: "sebastiao@luvumbo-adv.co.ao",
-    plan: "Autoridade",
-    status: "no_ar",
-    setupPrice: "Kz 450.000",
-    monthlyFee: "Kz 85.000/mês",
-    launchedAt: "12/01/2026",
-    siteUrl: "https://luvumbo-adv.co.ao",
-    uptime: "99.9%",
-  },
-  {
-    id: "cl-2",
-    name: "Dra. Jandira Kuanza",
-    company: "Clínica Vida Talatona",
-    phone: "+244 912 400 918",
-    email: "jandira@clinicavida.co.ao",
-    plan: "Domínio IA",
-    status: "no_ar",
-    setupPrice: "Kz 700.000",
-    monthlyFee: "Kz 150.000/mês",
-    launchedAt: "28/01/2026",
-    siteUrl: "https://clinicavida.co.ao",
-    uptime: "100%",
-  },
-  {
-    id: "cl-3",
-    name: "Eng. Arnaldo Gaspar",
-    company: "Gaspar Logística & Distribuição",
-    phone: "+244 934 112 390",
-    email: "arnaldo@gasparlog.ao",
-    plan: "Profissional",
-    status: "em_desenvolvimento",
-    setupPrice: "Kz 250.000",
-    monthlyFee: "Kz 50.000/mês",
-    launchedAt: "Previsão: 20/03/2026",
-    uptime: "Staging",
-  },
-  {
-    id: "cl-4",
-    name: "Marta Tchissola",
-    company: "Imobiliária Kilamba Prime",
-    phone: "+244 945 678 123",
-    email: "marta@kilambaprime.ao",
-    plan: "Presença",
-    status: "no_ar",
-    setupPrice: "Kz 125.000",
-    monthlyFee: "Kz 20.000/mês",
-    launchedAt: "05/02/2026",
-    siteUrl: "https://kilambaprime.ao",
-    uptime: "99.8%",
-  },
-];
-
 export function ClientsView({ leads, onOpenNewLead }: ClientsViewProps) {
-  const [clients, setClients] = useState<ClientAccount[]>(initialClients);
+  const [clients, setClients] = useState<ClientAccount[]>(INITIAL_CLIENTS);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("todos");
 
-  // Also include converted leads dynamically
+  // Converted leads dynamically join the client roster
   const convertedLeads = useMemo(() => {
-    return leads.filter((l) => l.status === "convertido");
+    return (leads || []).filter((l) => l?.status === "convertido");
   }, [leads]);
 
+  // Merge static initial clients with dynamically converted leads
+  const allClients = useMemo(() => {
+    const dynamicClients: ClientAccount[] = convertedLeads.map((lead) => {
+      const plan = normalizePlanName(lead.packageInterest);
+      const planCfg = PLANS_CATALOG[plan];
+      return {
+        id: `lead-conv-${lead.id}`,
+        name: lead.name,
+        company: lead.company,
+        phone: lead.phone,
+        email: lead.email,
+        plan,
+        status: "no_ar",
+        setupPrice: planCfg?.setupFormatted || lead.estimatedValue || "Kz 250.000",
+        monthlyFee: planCfg?.monthlyFormatted || "Kz 50.000/mês",
+        launchedAt: `Lead Convertido (${lead.lastActive || "Recente"})`,
+        uptime: "99.9%",
+      };
+    });
+    return [...clients, ...dynamicClients];
+  }, [clients, convertedLeads]);
+
   const filteredClients = useMemo(() => {
-    return clients.filter((client) => {
+    return allClients.filter((client) => {
       if (statusFilter !== "todos" && client.status !== statusFilter) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         return (
           client.company.toLowerCase().includes(q) ||
           client.name.toLowerCase().includes(q) ||
-          client.phone.includes(q)
+          client.phone.includes(q) ||
+          client.plan.toLowerCase().includes(q)
         );
       }
       return true;
     });
-  }, [clients, statusFilter, search]);
+  }, [allClients, statusFilter, search]);
 
-  const totalMrr = useMemo(() => {
-    return "Kz 305.000";
-  }, []);
+  // Dynamic real-time calculation of MRR and Setup
+  const financialMetrics = useMemo(() => {
+    return computeFinancialMetrics(clients, leads);
+  }, [clients, leads]);
 
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#080A0F]">
@@ -152,53 +115,115 @@ export function ClientsView({ leads, onOpenNewLead }: ClientsViewProps) {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Clientes Ativos</span>
+            <span className="text-xs text-[#667085]">Clientes & Contratos</span>
             <div className="size-7 rounded-[8px] bg-[#3B82F6]/15 flex items-center justify-center text-[#3B82F6]">
               <Briefcase className="size-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">{clients.length}</p>
-          <p className="text-[11px] text-[#22C55E] mt-1 font-semibold">100% de retenção no ano</p>
+          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">{allClients.length}</p>
+          <p className="text-[11px] text-[#22C55E] mt-1 font-semibold">
+            {financialMetrics.retentionRate}% retenção histórica
+          </p>
         </div>
 
-        <div className="rounded-[16px] border border-[#22C55E]/35 bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+        <div className="rounded-[16px] border border-[#22C55E]/40 bg-gradient-to-br from-[#151A23] via-[#10141D] to-[#151A23] p-4 shadow-[0_8px_24px_rgba(34,197,94,0.12)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">MRR Recorrência Mensal</span>
-            <div className="size-7 rounded-[8px] bg-[#22C55E]/15 flex items-center justify-center text-[#22C55E]">
+            <span className="text-xs text-[#22C55E] font-semibold flex items-center gap-1">
+              <Coins className="size-3 text-[#22C55E]" />
+              MRR Recorrência Mensal
+            </span>
+            <div className="size-7 rounded-[8px] bg-[#22C55E]/15 border border-[#22C55E]/30 flex items-center justify-center text-[#22C55E]">
               <TrendingUp className="size-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">{totalMrr}</p>
+          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">
+            {financialMetrics.mrrFormatted}
+          </p>
           <p className="text-[11px] text-[#A7B0BF] mt-1">Hospedagem, IA & Suporte contínuo</p>
         </div>
 
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Websites & Agentes No Ar</span>
+            <span className="text-xs text-[#667085]">Setup Único (Total)</span>
+            <div className="size-7 rounded-[8px] bg-[#3B82F6]/15 flex items-center justify-center text-[#3B82F6]">
+              <Layers className="size-3.5" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">
+            {financialMetrics.setupRevenueFormatted}
+          </p>
+          <p className="text-[11px] text-[#A7B0BF] mt-1">Desenvolvimento & Setup Inicial</p>
+        </div>
+
+        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-[#667085]">ARR Projetado (12m)</span>
+            <div className="size-7 rounded-[8px] bg-[#F59E0B]/15 flex items-center justify-center text-[#F59E0B]">
+              <DollarSign className="size-3.5" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-[#F59E0B] mt-2 font-mono">
+            {financialMetrics.arrFormatted}
+          </p>
+          <p className="text-[11px] text-[#A7B0BF] mt-1">Contratos com renovação ativa</p>
+        </div>
+
+        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-[#667085]">Sistemas No Ar</span>
             <div className="size-7 rounded-[8px] bg-[#8B5CF6]/15 flex items-center justify-center text-[#8B5CF6]">
               <Zap className="size-3.5" />
             </div>
           </div>
           <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">
-            {clients.filter((c) => c.status === "no_ar").length}
+            {allClients.filter((c) => c.status === "no_ar").length}
           </p>
           <p className="text-[11px] text-[#8B5CF6] mt-1">Uptime médio 99.9%</p>
         </div>
+      </div>
 
-        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Projetos em Produção</span>
-            <div className="size-7 rounded-[8px] bg-[#F59E0B]/15 flex items-center justify-center text-[#F59E0B]">
-              <Clock className="size-3.5" />
+      {/* Automate Pro Plan Banner Spotlight */}
+      <div className="rounded-[16px] border border-[#38BDF8]/30 bg-gradient-to-r from-[#0C1E30] via-[#101F2F] to-[#0E121A] p-4.5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="size-10 rounded-[10px] bg-[#38BDF8]/20 border border-[#38BDF8]/40 flex items-center justify-center text-[#38BDF8] shrink-0 mt-0.5">
+              <Sparkles className="size-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-sm font-bold text-[#F5F7FA]">
+                  Plano AUTOMATE PRO — Infraestrutura sobre Website Existente
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40 uppercase tracking-wider">
+                  Novo Plano Ativo
+                </span>
+              </div>
+              <p className="text-xs text-[#A7B0BF] mt-1 leading-relaxed max-w-3xl">
+                Implementação personalizada da infraestrutura de atendimento e automação de IA
+                conectada diretamente ao website existente do cliente.
+              </p>
+              <div className="flex items-center gap-3 mt-2 text-xs flex-wrap">
+                <span className="text-[#F5F7FA]">
+                  <strong className="text-[#38BDF8]">Implementação Única:</strong> Kz 300.000
+                  (Setup, engenharia de prompt e integrações)
+                </span>
+                <span className="text-[#667085]">•</span>
+                <span className="text-[#F5F7FA]">
+                  <strong className="text-[#22C55E]">Operação e Gestão:</strong> Kz 65.000 / mês
+                  (Manutenção, monitoramento e 4h/mês de ajustes)
+                </span>
+              </div>
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">
-            {clients.filter((c) => c.status === "em_desenvolvimento").length}
-          </p>
-          <p className="text-[11px] text-[#F59E0B] mt-1">Entrega em até 10 dias úteis</p>
+
+          <div className="flex items-center gap-2 self-start lg:self-center shrink-0">
+            <span className="text-[11px] px-2.5 py-1 rounded-[6px] bg-[#38BDF8]/15 border border-[#38BDF8]/30 text-[#38BDF8] font-mono font-semibold">
+              4h/mês de Suporte Inclusas
+            </span>
+          </div>
         </div>
       </div>
 

@@ -12,6 +12,10 @@ import {
   FileText,
   Clock,
   Filter,
+  Coins,
+  Layers,
+  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 import { Lead } from "./types";
 import {
@@ -30,24 +34,32 @@ import {
   Legend,
 } from "recharts";
 import { toast } from "sonner";
+import {
+  computeFinancialMetrics,
+  INITIAL_CLIENTS,
+  PLANS_CATALOG,
+  formatKz,
+} from "./financialUtils";
 
 interface ReportsViewProps {
   leads: Lead[];
 }
 
+// Monthly evolution separating Setup Único (Implementação) and MRR Recorrente (Operação/Manutenção)
 const monthlyRevenueData = [
-  { month: "Nov 2025", faturamento: 850000, projetos: 3 },
-  { month: "Dez 2025", faturamento: 1200000, projetos: 4 },
-  { month: "Jan 2026", faturamento: 1450000, projetos: 5 },
-  { month: "Fev 2026", faturamento: 1650000, projetos: 6 },
-  { month: "Mar 2026 (Atual)", faturamento: 1850000, projetos: 7 },
+  { month: "Nov 2025", setup: 650000, mrr: 200000, total: 850000, projetos: 3 },
+  { month: "Dez 2025", setup: 950000, mrr: 250000, total: 1200000, projetos: 4 },
+  { month: "Jan 2026", setup: 1165000, mrr: 285000, total: 1450000, projetos: 5 },
+  { month: "Fev 2026", setup: 1345000, mrr: 305000, total: 1650000, projetos: 6 },
+  { month: "Mar 2026 (Atual)", setup: 1525000, mrr: 325000, total: 1850000, projetos: 7 },
 ];
 
 const packageShareData = [
-  { name: "Profissional (Kz 250k)", value: 45, color: "#3B82F6" },
-  { name: "Domínio IA (Kz 700k)", value: 25, color: "#8B5CF6" },
-  { name: "Autoridade (Kz 450k)", value: 20, color: "#22C55E" },
-  { name: "Presença (Kz 125k)", value: 10, color: "#F59E0B" },
+  { name: "Profissional (Setup 250k | MRR 50k)", value: 35, color: "#3B82F6" },
+  { name: "Automate Pro (Setup 300k | MRR 65k)", value: 20, color: "#38BDF8" },
+  { name: "Domínio IA (Setup 700k | MRR 150k)", value: 25, color: "#8B5CF6" },
+  { name: "Autoridade (Setup 450k | MRR 85k)", value: 12, color: "#22C55E" },
+  { name: "Presença (Setup 125k | MRR 20k)", value: 8, color: "#F59E0B" },
 ];
 
 const conversionFunnelData = [
@@ -60,6 +72,11 @@ const conversionFunnelData = [
 
 export function ReportsView({ leads }: ReportsViewProps) {
   const [period, setPeriod] = useState<"7d" | "30d" | "trimestre" | "ano">("30d");
+
+  // Real-time financial calculations
+  const financialMetrics = useMemo(() => {
+    return computeFinancialMetrics(INITIAL_CLIENTS, leads);
+  }, [leads]);
 
   const exportCSV = () => {
     const headers = "ID,Nome,Empresa,Telefone,Email,Canal,Status,Pacote,Score,ValorEstimado\n";
@@ -147,68 +164,94 @@ export function ReportsView({ leads }: ReportsViewProps) {
         </div>
       </div>
 
-      {/* KPI Performance Highlights */}
+      {/* KPI Performance Highlights — Differentiating Setup Único from MRR Recorrente */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-[16px] border border-[#22C55E]/35 bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+        {/* MRR Recorrente */}
+        <div className="rounded-[16px] border border-[#22C55E]/40 bg-gradient-to-br from-[#151A23] via-[#10141D] to-[#151A23] p-4 shadow-[0_8px_24px_rgba(34,197,94,0.12)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Faturamento Total Gerado</span>
-            <div className="size-7 rounded-[8px] bg-[#22C55E]/15 flex items-center justify-center text-[#22C55E]">
-              <DollarSign className="size-3.5" />
+            <span className="text-xs font-semibold text-[#22C55E] flex items-center gap-1">
+              <Coins className="size-3 text-[#22C55E]" />
+              MRR Recorrência Mensal
+            </span>
+            <div className="size-7 rounded-[8px] bg-[#22C55E]/15 border border-[#22C55E]/30 flex items-center justify-center text-[#22C55E]">
+              <TrendingUp className="size-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">Kz 1.850.000</p>
-          <p className="text-[11px] text-[#22C55E] mt-1 font-semibold flex items-center gap-1">
-            <TrendingUp className="size-3" />
-            <span>+24.8% vs período anterior</span>
+          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">
+            {financialMetrics.mrrFormatted}
+          </p>
+          <p className="text-[11px] text-[#A7B0BF] mt-1 font-medium">
+            Previsibilidade de caixa • {financialMetrics.retentionRate}% de retenção
           </p>
         </div>
 
+        {/* Setup Único */}
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Custo Médio por Lead (CPL)</span>
+            <span className="text-xs text-[#667085] flex items-center gap-1">
+              <Layers className="size-3 text-[#3B82F6]" />
+              Setup Único (Implementações)
+            </span>
             <div className="size-7 rounded-[8px] bg-[#3B82F6]/15 flex items-center justify-center text-[#3B82F6]">
-              <Users className="size-3.5" />
+              <DollarSign className="size-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">Kz 1.250</p>
-          <p className="text-[11px] text-[#22C55E] mt-1">-18% em custos de tráfego</p>
+          <p className="text-2xl font-bold text-[#F5F7FA] mt-2 font-mono">
+            {financialMetrics.setupRevenueFormatted}
+          </p>
+          <p className="text-[11px] text-[#3B82F6] mt-1 font-medium">
+            Criação de sites, agentes IA e integrações
+          </p>
         </div>
 
+        {/* ARR Projetado */}
+        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-[#667085] flex items-center gap-1">
+              <DollarSign className="size-3 text-[#F59E0B]" />
+              ARR Projetado (12 Meses)
+            </span>
+            <div className="size-7 rounded-[8px] bg-[#F59E0B]/15 flex items-center justify-center text-[#F59E0B]">
+              <Calendar className="size-3.5" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold text-[#F59E0B] mt-2 font-mono">
+            {financialMetrics.arrFormatted}
+          </p>
+          <p className="text-[11px] text-[#A7B0BF] mt-1">
+            Receita anualizada contratada e renovável
+          </p>
+        </div>
+
+        {/* Autonomia do Agente IA */}
         <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-[#8B5CF6]">Autonomia do Agente IA</span>
+            <span className="text-xs text-[#8B5CF6] flex items-center gap-1">
+              <Bot className="size-3 text-[#8B5CF6]" />
+              Autonomia do Agente IA
+            </span>
             <div className="size-7 rounded-[8px] bg-[#8B5CF6]/15 flex items-center justify-center text-[#8B5CF6]">
-              <Bot className="size-3.5" />
+              <Sparkles className="size-3.5" />
             </div>
           </div>
           <p className="text-2xl font-bold text-[#C084FC] mt-2 font-mono">89.4%</p>
-          <p className="text-[11px] text-[#A7B0BF] mt-1">Qualificação sem intervenção</p>
-        </div>
-
-        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-[#667085]">Tempo Médio de Resposta</span>
-            <div className="size-7 rounded-[8px] bg-[#F59E0B]/15 flex items-center justify-center text-[#F59E0B]">
-              <Clock className="size-3.5" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold text-[#F59E0B] mt-2 font-mono">42 ms</p>
-          <p className="text-[11px] text-[#22C55E] mt-1">Atendimento imediato 24/7</p>
+          <p className="text-[11px] text-[#A7B0BF] mt-1">Qualificação sem intervenção humana</p>
         </div>
       </div>
 
       {/* Main Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Monthly Revenue BarChart */}
+        {/* Monthly Revenue BarChart: Setup Único vs MRR Recorrente */}
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <div className="flex items-center justify-between pb-3 border-b border-[#252C38] mb-4">
             <div>
               <h3 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
                 <BarChart3 className="size-4 text-[#22C55E]" />
-                Evolução do Faturamento Mensal (Kwanzas)
+                Composição do Faturamento: Setup Único vs MRR Recorrente
               </h3>
               <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-                Valores consolidados em AOA incluindo criação de sites e planos mensais
+                Demonstrativo de barras empilhadas separando receita pontual da receita mensal
+                contínua
               </p>
             </div>
           </div>
@@ -228,9 +271,9 @@ export function ReportsView({ leads }: ReportsViewProps) {
                   tickFormatter={(val) => `${val / 1000}k`}
                 />
                 <Tooltip
-                  formatter={(val: number | string | Array<number | string>) => [
+                  formatter={(val: number | string | Array<number | string>, name: string) => [
                     `Kz ${Number(val).toLocaleString("pt-PT")}`,
-                    "Faturamento",
+                    name,
                   ]}
                   contentStyle={{
                     backgroundColor: "#0E121A",
@@ -240,11 +283,26 @@ export function ReportsView({ leads }: ReportsViewProps) {
                     color: "#F5F7FA",
                   }}
                 />
+                <Legend
+                  verticalAlign="top"
+                  height={36}
+                  formatter={(val) => (
+                    <span className="text-xs text-[#A7B0BF] font-medium">{val}</span>
+                  )}
+                />
                 <Bar
-                  dataKey="faturamento"
+                  dataKey="setup"
+                  stackId="receita"
+                  fill="#3B82F6"
+                  radius={[0, 0, 0, 0]}
+                  name="Setup Único (Implementação)"
+                />
+                <Bar
+                  dataKey="mrr"
+                  stackId="receita"
                   fill="#22C55E"
                   radius={[6, 6, 0, 0]}
-                  name="Faturamento"
+                  name="MRR Recorrente (Operação/IA)"
                 />
               </BarChart>
             </ResponsiveContainer>
@@ -288,12 +346,14 @@ export function ReportsView({ leads }: ReportsViewProps) {
             ))}
           </div>
 
-          <div className="mt-4 p-3 rounded-[10px] bg-[#0E121A] border border-[#252C38] text-xs text-[#A7B0BF]">
-            <span className="text-white font-semibold">Insight Comercial:</span> O pacote{" "}
-            <strong className="text-[#3B82F6]">Profissional (Kz 250.000)</strong> representa o maior
-            volume, enquanto o pacote{" "}
-            <strong className="text-[#8B5CF6]">Domínio IA (Kz 700.000)</strong> entrega a maior
-            margem e LTV em Luanda.
+          <div className="mt-4 p-3 rounded-[10px] bg-[#0E121A] border border-[#252C38] text-xs text-[#A7B0BF] leading-relaxed">
+            <span className="text-white font-semibold">Insight Comercial & MRR:</span> O pacote{" "}
+            <strong className="text-[#3B82F6]">Profissional</strong> lidera em volume para novos
+            sites; o novo{" "}
+            <strong className="text-[#38BDF8]">Automate Pro (Kz 300k Setup | Kz 65k MRR)</strong>{" "}
+            acelera adesão de empresas com site existente; e o{" "}
+            <strong className="text-[#8B5CF6]">Domínio IA (Kz 700k Setup | Kz 150k MRR)</strong>{" "}
+            consolida o maior LTV e retenção em Angola.
           </div>
         </div>
       </div>

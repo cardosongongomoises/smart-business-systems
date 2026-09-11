@@ -40,9 +40,11 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
           ? "Kz 700.000"
           : packageInterest === "Autoridade"
             ? "Kz 450.000"
-            : packageInterest === "Profissional"
-              ? "Kz 250.000"
-              : "Kz 125.000",
+            : packageInterest === "Automate Pro"
+              ? "Kz 300.000"
+              : packageInterest === "Profissional"
+                ? "Kz 250.000"
+                : "Kz 125.000",
       firstContactAt: "Agora mesmo",
       lastActive: "há 1m",
       aiProcessingStatus: "ativo",
@@ -202,10 +204,15 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
               onChange={(e) => setPackageInterest(e.target.value as Lead["packageInterest"])}
               className="w-full h-9 rounded-[8px] border border-[#252C38] bg-[#0E121A] px-3 text-[#F5F7FA] focus:outline-none focus:border-[#3B82F6]"
             >
-              <option value="Presença">Presença (Kz 125.000)</option>
-              <option value="Profissional">Profissional ⭐ Mais Escolhido (Kz 250.000)</option>
-              <option value="Autoridade">Autoridade (Kz 450.000)</option>
-              <option value="Domínio IA">Domínio IA (Kz 700.000)</option>
+              <option value="Presença">Presença (Kz 125.000 | MRR Kz 20.000/mês)</option>
+              <option value="Profissional">
+                Profissional ⭐ Mais Escolhido (Kz 250.000 | MRR Kz 50.000/mês)
+              </option>
+              <option value="Automate Pro">
+                Automate Pro 🤖 Infraestrutura IA no Site Existente (Kz 300.000 | MRR Kz 65.000/mês)
+              </option>
+              <option value="Autoridade">Autoridade (Kz 450.000 | MRR Kz 85.000/mês)</option>
+              <option value="Domínio IA">Domínio IA (Kz 700.000 | MRR Kz 150.000/mês)</option>
             </select>
           </div>
 
