@@ -94,7 +94,7 @@ export function TaskCard({
         "Dez",
       ];
       const day = parts[2] ?? "";
-      const monthIndex = parseInt(parts[1], 10) - 1;
+      const monthIndex = parseInt(parts[1] ?? "1", 10) - 1;
       return `${day} ${monthNames[monthIndex] || ""}`;
     }
     return dateStr;
