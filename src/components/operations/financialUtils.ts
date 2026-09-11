@@ -461,6 +461,7 @@ export function computeFinancialMetrics(
     totalClientContracts: totalContracts,
     activeRecurringClients: activeClientsCount,
     retentionRate: 100, // 100% de retenção histórica no ano
+    averageTicketMrr: totalContracts > 0 ? Math.round(totalMrr / totalContracts) : 0,
     convertedLeadsCount: convertedLeads.length,
     clientsMrrContribution: clientsMrr,
     convertedLeadsMrrContribution: convertedLeadsMrr,
