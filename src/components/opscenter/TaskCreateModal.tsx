@@ -14,8 +14,8 @@ import { nowIso } from "./useTaskStore";
 
 interface TaskCreateModalProps {
   isOpen: boolean;
-  initialStatus?: TaskStatus;
-  initialProjectId?: string;
+  initialStatus?: TaskStatus | undefined;
+  initialProjectId?: string | undefined;
   projects: Project[];
   clients: Client[];
   members: Member[];
@@ -75,7 +75,7 @@ export function TaskCreateModal({
       description: description.trim(),
       projectId,
       clientId,
-      assigneeId: assigneeId || null,
+      assigneeId: assigneeId || "",
       status,
       priority,
       dueDate: dueDate || null,

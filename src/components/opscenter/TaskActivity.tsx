@@ -1,5 +1,5 @@
 import { History } from "lucide-react";
-import { TaskActivity as ITaskActivity } from "./types";
+import { ActivityEntry as ITaskActivity } from "./types";
 
 interface TaskActivityProps {
   activity: ITaskActivity[];

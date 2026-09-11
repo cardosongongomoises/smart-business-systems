@@ -110,7 +110,7 @@ export function MRRProjectionChart({
       runningConsMrr += addedMrrCons;
 
       return {
-        month: monthsShort[idx],
+        month: monthsShort[idx] ?? "",
         monthIndex: idx + 1,
         mrrBase: Math.round(runningBaseMrr),
         newClientsBase,
@@ -118,7 +118,7 @@ export function MRRProjectionChart({
         mrrAccelerated: Math.round(runningAccMrr),
         mrrConservative: Math.round(runningConsMrr),
         mrrRange: [Math.round(runningConsMrr), Math.round(runningAccMrr)],
-        note: notes[idx],
+        note: notes[idx] ?? "",
       };
     });
   }, [currentMrr, effectiveConvRate, totalPipelineLeads, averageTicketMrr]);
@@ -330,7 +330,7 @@ export function MRRProjectionChart({
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
-                    const data = payload[0].payload as ProjectionMonthData;
+                    const data = payload[0]!.payload as ProjectionMonthData;
                     return (
                       <div className="rounded-[12px] border border-[#252C38] bg-[#0E141D] p-3 shadow-2xl backdrop-blur-md min-w-[220px] text-xs">
                         <div className="flex items-center justify-between pb-1.5 border-b border-[#252C38]">

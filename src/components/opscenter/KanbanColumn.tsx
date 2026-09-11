@@ -11,7 +11,7 @@ interface KanbanColumnProps {
   onSelectTask: (task: Task) => void;
   onEditTask: (task: Task) => void;
   onMoveTask: (id: string, status: TaskStatus) => void;
-  onAssigneeChange?: (id: string, assigneeId: string) => void;
+  onAssigneeChange?: ((id: string, assigneeId: string) => void) | undefined;
   onDuplicateTask: (id: string) => void;
   onArchiveTask: (id: string) => void;
   onDeleteTask: (id: string) => void;

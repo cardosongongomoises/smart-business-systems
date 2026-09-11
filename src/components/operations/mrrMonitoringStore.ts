@@ -8,6 +8,8 @@ import {
   formatKz,
 } from "./financialUtils";
 
+export type MRRPlanName = PlanName;
+
 export interface MRRAlert {
   id: string;
   type: "churn" | "downgrade";
@@ -116,6 +118,7 @@ export function recordPlanDowngrade(
   if (clientIndex === -1) return null;
 
   const client = activeClientsState[clientIndex];
+  if (!client) return null;
   const oldPlan = normalizePlanName(client.plan);
   const newPlan = normalizePlanName(newPlanName);
 
@@ -179,6 +182,7 @@ export function recordClientCancellation(
   if (clientIndex === -1) return null;
 
   const client = activeClientsState[clientIndex];
+  if (!client) return null;
   const plan = normalizePlanName(client.plan);
   const lostFee = PLANS_CATALOG[plan]?.monthlyFee || 50000;
 
@@ -204,7 +208,7 @@ export function recordClientCancellation(
   // Update client status to cancelado
   activeClientsState[clientIndex] = {
     ...client,
-    status: "renovacao" as const, // will be treated as non-active or marked cancelled
+    status: "cancelado" as const,
     monthlyFee: "Kz 0 (Contrato Cancelado)",
   };
 
@@ -221,13 +225,15 @@ export function resolveAlertAndRestoreClient(alertId: string): boolean {
   if (alertIndex === -1) return false;
 
   const alert = activeAlertsState[alertIndex];
+  if (!alert) return false;
   const clientIndex = activeClientsState.findIndex((c) => c.id === alert.clientId);
 
-  if (clientIndex !== -1) {
+  const existingClient = activeClientsState[clientIndex];
+  if (clientIndex !== -1 && existingClient) {
     const originalPlan = alert.previousPlan;
     const originalFee = PLANS_CATALOG[originalPlan]?.monthlyFormatted || "Kz 50.000/mês";
     activeClientsState[clientIndex] = {
-      ...activeClientsState[clientIndex],
+      ...existingClient,
       plan: originalPlan,
       monthlyFee: originalFee,
       status: "no_ar",

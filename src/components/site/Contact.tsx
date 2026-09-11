@@ -10,7 +10,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { CTA, EMAIL, WHATSAPP_NUMBER } from "@/lib/site-config";
+import { CTA, EMAIL, WHATSAPP_DISPLAY } from "@/lib/site-config";
 import { submitContactForm } from "@/lib/supabaseService";
 import { toast } from "sonner";
 
@@ -186,8 +186,7 @@ export function Contact() {
                         WhatsApp Oficial
                       </p>
                       <p className="mt-0.5 text-sm font-bold text-[#F5F7FA] font-mono">
-                        +{WHATSAPP_NUMBER.slice(0, 3)} {WHATSAPP_NUMBER.slice(3, 6)}{" "}
-                        {WHATSAPP_NUMBER.slice(6)}
+                        {WHATSAPP_DISPLAY}
                       </p>
                     </div>
                   </a>
@@ -315,7 +314,7 @@ export function Contact() {
                           required
                           value={telefone}
                           onChange={(e) => setTelefone(e.target.value)}
-                          placeholder="+244 923 000 000"
+                          placeholder="+244 941 647 752"
                           className="mt-2 w-full rounded-[8px] border border-[#252C38] bg-[#0E121A] px-4 py-3 text-sm text-[#F5F7FA] placeholder:text-[#667085] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
                         />
                       </div>

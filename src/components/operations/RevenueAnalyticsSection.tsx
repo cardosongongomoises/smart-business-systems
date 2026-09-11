@@ -479,7 +479,7 @@ export function RevenueAnalyticsSection({
                 <Tooltip
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
-                      const data = payload[0].payload;
+                      const data = payload[0]!.payload;
                       const setupKz = data.setupRevenue;
                       const mrrKz = data.mrrRevenue;
                       const totalKz = data.totalRevenue;
@@ -676,7 +676,7 @@ export function RevenueAnalyticsSection({
                 <Tooltip
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
-                      const data = payload[0].payload as MonthlyRevenueData;
+                      const data = payload[0]!.payload as MonthlyRevenueData;
                       const setupVal =
                         viewMode === "monthly" ? data.setupRevenue : data.cumulativeSetup;
                       const mrrVal = viewMode === "monthly" ? data.mrrRevenue : data.cumulativeMrr;

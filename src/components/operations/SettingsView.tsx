@@ -25,7 +25,7 @@ export function SettingsView({ onNavigateTab }: SettingsViewProps) {
   const [companyName, setCompanyName] = useState("Agentes Digital");
   const [websiteUrl, setWebsiteUrl] = useState("https://agentes-digital.com");
   const [currency, setCurrency] = useState("AOA - Kwanza Angolano");
-  const [whatsappNumber, setWhatsappNumber] = useState("+244 923 000 000");
+  const [whatsappNumber, setWhatsappNumber] = useState("+244 941 647 752");
   const [aiModel, setAiModel] = useState("claude-3-5-sonnet");
   const [temperature, setTemperature] = useState(0.2);
   const [autoEscalate, setAutoEscalate] = useState(true);

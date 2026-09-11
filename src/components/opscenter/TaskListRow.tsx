@@ -14,8 +14,8 @@ import { isOverdue, isDueToday } from "./ui-bits";
 
 interface TaskListRowProps {
   task: Task;
-  project?: Project;
-  assignee?: Member;
+  project?: Project | undefined;
+  assignee?: Member | undefined;
   onSelect: (task: Task) => void;
   onEdit: (task: Task) => void;
   onMoveStatus: (id: string, status: TaskStatus) => void;
@@ -80,7 +80,7 @@ export function TaskListRow({
       {/* 2. Projeto */}
       <td className="py-3 px-4 min-w-[160px]">
         <span className="text-xs text-[#A7B0BF] line-clamp-1">
-          {project?.name ? project.name.split("—")[0].trim() : "—"}
+          {project?.name ? (project.name.split("—")[0] ?? project.name).trim() : "—"}
         </span>
       </td>
 

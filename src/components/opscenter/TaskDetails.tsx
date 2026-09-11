@@ -31,8 +31,8 @@ import { isOverdue } from "./ui-bits";
 
 interface TaskDetailsProps {
   task: Task;
-  project?: Project;
-  client?: Client;
+  project?: Project | undefined;
+  client?: Client | undefined;
   members: Member[];
   onClose: () => void;
   onEdit: (task: Task) => void;
