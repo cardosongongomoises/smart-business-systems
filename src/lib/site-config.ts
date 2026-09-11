@@ -1,4 +1,5 @@
-export const WHATSAPP_NUMBER = "244923000000"; // Número oficial Angola (+244)
+export const WHATSAPP_NUMBER = "244941647752"; // Número oficial Angola (+244)
+export const WHATSAPP_DISPLAY = "+244 941 647 752";
 export const DOMAIN = "agentes-digital.com";
 export const EMAIL = "contacto@agentes-digital.com";
 
