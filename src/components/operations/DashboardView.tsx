@@ -15,11 +15,28 @@ import {
   Zap,
   FileSpreadsheet,
   Globe,
+  LayoutGrid,
+  CheckSquare,
+  AlertTriangle,
+  FolderKanban,
+  ListTodo,
+  ShieldAlert,
+  ChevronRight,
 } from "lucide-react";
 import { Lead } from "./types";
 import { FunnelOverview } from "./FunnelOverview";
 import { funnelStages } from "./mockData";
 import { ActiveTab } from "./OperationsSidebar";
+import { useTaskStore } from "@/components/opscenter/useTaskStore";
+import {
+  isOverdue,
+  isDueToday,
+  formatShortDate,
+  ProgressBar,
+  MemberAvatar,
+  PriorityDot,
+} from "@/components/opscenter/ui-bits";
+import { PRIORITY_META, STATUS_META } from "@/components/opscenter/types";
 import {
   AreaChart,
   Area,
@@ -97,6 +114,48 @@ export function DashboardView({
 
   const formattedPipeline = `Kz ${(pipelineKz / 1000).toLocaleString("pt-PT")}k`;
 
+  // Real Task & Project Store Connection
+  const { tasks, projects, members, clients } = useTaskStore();
+
+  const totalTasks = tasks.length;
+  const inProgressTasks = tasks.filter((t) => t.status === "IN_PROGRESS").length;
+  const reviewTasks = tasks.filter((t) => t.status === "REVIEW").length;
+  const doneTasks = tasks.filter((t) => t.status === "DONE").length;
+  const activeTasks = tasks.filter((t) => t.status !== "DONE").length;
+  const overdueTasks = tasks.filter((t) => isOverdue(t.dueDate, t.status));
+  const dueTodayTasks = tasks.filter((t) => isDueToday(t.dueDate, t.status));
+  const completionRate = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+  // Projects with calculated live progress
+  const projectsWithProgress = useMemo(() => {
+    return projects.map((project) => {
+      const projTasks = tasks.filter((t) => t.projectId === project.id);
+      const projDone = projTasks.filter((t) => t.status === "DONE").length;
+      const projProgress =
+        projTasks.length > 0 ? Math.round((projDone / projTasks.length) * 100) : 0;
+      const client = clients.find((c) => c.id === project.clientId);
+      return {
+        ...project,
+        totalTasks: projTasks.length,
+        doneTasks: projDone,
+        progress: projProgress,
+        clientName: client?.company || "Cliente Agentes Digital",
+      };
+    });
+  }, [projects, tasks, clients]);
+
+  // Critical operational attention queue
+  const criticalTasks = useMemo(() => {
+    return tasks
+      .filter(
+        (t) =>
+          isOverdue(t.dueDate, t.status) ||
+          isDueToday(t.dueDate, t.status) ||
+          t.status === "REVIEW",
+      )
+      .slice(0, 5);
+  }, [tasks]);
+
   return (
     <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#080A0F]">
       {/* Header with Quick Actions */}
@@ -109,11 +168,25 @@ export function DashboardView({
             </span>
           </h1>
           <p className="text-xs text-[#A7B0BF] mt-1">
-            Visão unificada de captação, conversas automáticas e pipeline comercial em Angola
+            Visão unificada de captação comercial, conversas automáticas e gestão operacional de
+            tarefas em Angola
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <button
+            type="button"
+            onClick={() => onNavigateTab("ops")}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-[8px] bg-[#3B82F6]/15 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/40 text-[#60A5FA] text-xs font-semibold shadow-sm transition-all"
+          >
+            <LayoutGrid className="size-4 text-[#3B82F6]" />
+            <span>Quadro Kanban ({activeTasks} tarefas)</span>
+            {overdueTasks.length > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-[#EF4444] text-white text-[10px] font-bold animate-pulse">
+                {overdueTasks.length} atrasadas
+              </span>
+            )}
+          </button>
           <button
             type="button"
             onClick={onOpenNewLead}
@@ -269,6 +342,125 @@ export function DashboardView({
         </div>
       </div>
 
+      {/* Operational Pulse: Tasks & Projects KPIs */}
+      <div className="rounded-[16px] border border-[#252C38] bg-gradient-to-r from-[#151A23] via-[#10141D] to-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#252C38]/70 mb-3">
+          <div className="flex items-center gap-2">
+            <div className="size-6 rounded-[6px] bg-[#3B82F6]/15 flex items-center justify-center text-[#3B82F6]">
+              <LayoutGrid className="size-3.5" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                Pulso Operacional & Entregas (Kanban)
+              </span>
+              <span className="ml-2 text-[11px] text-[#A7B0BF]">
+                {activeTasks} tarefas em execução em {projects.length} projetos
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigateTab("ops")}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#3B82F6] hover:text-[#60A5FA] transition-colors"
+          >
+            <span>Acessar Quadro Kanban Completo</span>
+            <ArrowUpRight className="size-3.5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {/* Active Tasks */}
+          <div
+            onClick={() => onNavigateTab("ops")}
+            className="rounded-[12px] border border-[#252C38] bg-[#0E121A]/70 hover:bg-[#1B212C] p-3 transition-all cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-medium text-[#667085]">Tarefas Ativas</span>
+              <CheckSquare className="size-3.5 text-[#3B82F6] group-hover:scale-110 transition-transform" />
+            </div>
+            <p className="text-xl font-bold font-mono text-[#F5F7FA] mt-1">{activeTasks}</p>
+            <p className="text-[10px] text-[#A7B0BF] mt-0.5">
+              {inProgressTasks} em progresso • {reviewTasks} em revisão
+            </p>
+          </div>
+
+          {/* Critical Deadlines */}
+          <div
+            onClick={() => onNavigateTab("ops")}
+            className={`rounded-[12px] border p-3 transition-all cursor-pointer group ${
+              overdueTasks.length > 0
+                ? "border-[#EF4444]/40 bg-[#EF4444]/10 hover:bg-[#EF4444]/15"
+                : "border-[#252C38] bg-[#0E121A]/70 hover:bg-[#1B212C]"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span
+                className={`text-[11px] font-medium ${
+                  overdueTasks.length > 0 ? "text-[#F87171]" : "text-[#667085]"
+                }`}
+              >
+                Prazos & Atenção
+              </span>
+              <AlertTriangle
+                className={`size-3.5 ${
+                  overdueTasks.length > 0 ? "text-[#EF4444] animate-bounce" : "text-[#F59E0B]"
+                }`}
+              />
+            </div>
+            <p
+              className={`text-xl font-bold font-mono mt-1 ${
+                overdueTasks.length > 0 ? "text-[#F87171]" : "text-[#F5F7FA]"
+              }`}
+            >
+              {overdueTasks.length > 0
+                ? `${overdueTasks.length} Atrasadas`
+                : `${dueTodayTasks.length} Para Hoje`}
+            </p>
+            <p className="text-[10px] text-[#A7B0BF] mt-0.5">
+              {overdueTasks.length > 0
+                ? `${dueTodayTasks.length} entregas agendadas para hoje`
+                : "Nenhum prazo vencido no momento"}
+            </p>
+          </div>
+
+          {/* Completion Rate */}
+          <div
+            onClick={() => onNavigateTab("ops")}
+            className="rounded-[12px] border border-[#252C38] bg-[#0E121A]/70 hover:bg-[#1B212C] p-3 transition-all cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-medium text-[#667085]">Conclusão de Entregas</span>
+              <span className="text-[11px] font-mono font-bold text-[#22C55E]">
+                {completionRate}%
+              </span>
+            </div>
+            <p className="text-xl font-bold font-mono text-[#F5F7FA] mt-1">
+              {doneTasks}{" "}
+              <span className="text-xs font-normal text-[#667085]">/ {totalTasks} feitas</span>
+            </p>
+            <div className="mt-1.5">
+              <ProgressBar value={completionRate} tone="green" />
+            </div>
+          </div>
+
+          {/* Active Projects */}
+          <div
+            onClick={() => onNavigateTab("ops")}
+            className="rounded-[12px] border border-[#252C38] bg-[#0E121A]/70 hover:bg-[#1B212C] p-3 transition-all cursor-pointer group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-medium text-[#667085]">Projetos em Produção</span>
+              <FolderKanban className="size-3.5 text-[#8B5CF6] group-hover:scale-110 transition-transform" />
+            </div>
+            <p className="text-xl font-bold font-mono text-[#F5F7FA] mt-1">{projects.length}</p>
+            <p className="text-[10px] text-[#22C55E] mt-0.5 flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#22C55E]" />
+              <span>100% monitorados no Kanban</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Visual Funnel Overview */}
       <FunnelOverview stages={funnelStages} />
 
@@ -407,6 +599,152 @@ export function DashboardView({
               <strong className="text-[#22C55E]">91%</strong> sem necessidade de intervenção humana.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Integrated Operations & Project Kanban Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Active Projects Showcase (2 cols) */}
+        <div className="lg:col-span-2 rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+          <div className="flex items-center justify-between pb-3 border-b border-[#252C38] mb-4">
+            <div>
+              <h3 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
+                <FolderKanban className="size-4 text-[#3B82F6]" />
+                Projetos & Implementações em Andamento
+              </h3>
+              <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+                Acompanhamento dinâmico do avanço de automações e desenvolvimento de agentes IA
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigateTab("ops")}
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#3B82F6] hover:text-[#60A5FA] transition-colors"
+            >
+              <span>Abrir no Quadro Kanban</span>
+              <ArrowUpRight className="size-3.5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {projectsWithProgress.map((proj) => (
+              <div
+                key={proj.id}
+                onClick={() => onNavigateTab("ops")}
+                className="p-4 rounded-[12px] border border-[#252C38] bg-[#0E121A]/80 hover:border-[#3B82F6]/50 hover:bg-[#1B212C] transition-all cursor-pointer group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-[10px] font-semibold tracking-wider text-[#3B82F6] uppercase">
+                      {proj.clientName}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-medium border border-[#252C38] bg-[#151A23] text-[#A7B0BF]">
+                      {proj.status === "ACTIVE" ? "Em Produção" : proj.status}
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-semibold text-[#F5F7FA] mt-1.5 group-hover:text-[#60A5FA] transition-colors line-clamp-1">
+                    {proj.name}
+                  </h4>
+                  <p className="text-[11px] text-[#667085] mt-0.5 line-clamp-2 leading-relaxed">
+                    {proj.description}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-[#252C38]/60">
+                  <div className="flex items-center justify-between text-[11px] mb-1.5">
+                    <span className="text-[#A7B0BF]">
+                      Progresso ({proj.doneTasks}/{proj.totalTasks} tarefas)
+                    </span>
+                    <span className="font-mono font-bold text-[#F5F7FA]">{proj.progress}%</span>
+                  </div>
+                  <ProgressBar
+                    value={proj.progress}
+                    tone={proj.progress === 100 ? "green" : "blue"}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Critical Attention Queue (1 col) */}
+        <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-[#252C38] mb-4">
+              <div>
+                <h3 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
+                  <ShieldAlert className="size-4 text-[#F59E0B]" />
+                  Fila de Atenção Operacional
+                </h3>
+                <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+                  Tarefas críticas, prazos iminentes e revisões pendentes
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5">
+              {criticalTasks.length === 0 ? (
+                <div className="p-6 text-center text-[#667085] text-xs">
+                  Nenhuma tarefa com prazo crítico ou pendência imediata. Todas as operações em dia!
+                </div>
+              ) : (
+                criticalTasks.map((t) => {
+                  const member = members.find((m) => m.id === t.assigneeId);
+                  const isTaskOverdue = isOverdue(t.dueDate, t.status);
+                  const isTaskDueToday = isDueToday(t.dueDate, t.status);
+
+                  return (
+                    <div
+                      key={t.id}
+                      onClick={() => onNavigateTab("ops")}
+                      className={`p-3 rounded-[10px] border transition-all cursor-pointer group ${
+                        isTaskOverdue
+                          ? "border-[#EF4444]/30 bg-[#EF4444]/5 hover:bg-[#EF4444]/10"
+                          : "border-[#252C38] bg-[#0E121A]/70 hover:bg-[#1B212C]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 text-[10px]">
+                        <span className="font-mono text-[#3B82F6] font-semibold">{t.id}</span>
+                        <PriorityDot priority={t.priority} />
+                      </div>
+                      <p className="text-xs font-semibold text-[#F5F7FA] mt-1 line-clamp-1 group-hover:text-[#60A5FA] transition-colors">
+                        {t.title}
+                      </p>
+                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#252C38]/50 text-[10px]">
+                        <span
+                          className={`font-medium ${
+                            isTaskOverdue
+                              ? "text-[#EF4444] font-semibold"
+                              : isTaskDueToday
+                                ? "text-[#F59E0B]"
+                                : "text-[#A7B0BF]"
+                          }`}
+                        >
+                          {isTaskOverdue ? "Atrasada • " : isTaskDueToday ? "Hoje • " : ""}
+                          {formatShortDate(t.dueDate)}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <MemberAvatar member={member} size="sm" />
+                          <span className="text-[#A7B0BF] text-[10px] truncate max-w-[80px]">
+                            {member?.name.split(" ")[0]}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab("ops")}
+            className="w-full mt-4 py-2.5 px-3 rounded-[8px] border border-[#252C38] bg-[#0E121A] hover:bg-[#252C38] text-xs font-semibold text-[#3B82F6] hover:text-[#60A5FA] flex items-center justify-center gap-1.5 transition-all"
+          >
+            <span>Gerir no Quadro Kanban</span>
+            <ChevronRight className="size-3.5" />
+          </button>
         </div>
       </div>
 

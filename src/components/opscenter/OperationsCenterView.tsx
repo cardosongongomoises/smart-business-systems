@@ -21,11 +21,7 @@ interface OperationsCenterViewProps {
 }
 
 export function OperationsCenterView({ onNavigateTab }: OperationsCenterViewProps) {
-  return (
-    <TaskStoreProvider>
-      <OperationsCenterMain onNavigateTab={onNavigateTab} />
-    </TaskStoreProvider>
-  );
+  return <OperationsCenterMain onNavigateTab={onNavigateTab} />;
 }
 
 const INITIAL_FILTERS: FilterState = {

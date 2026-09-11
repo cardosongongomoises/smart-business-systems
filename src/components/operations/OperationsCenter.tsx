@@ -16,6 +16,7 @@ import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
 import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
+import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
 import { initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
@@ -361,137 +362,139 @@ export function OperationsCenter() {
   };
 
   return (
-    <div className="flex h-screen w-full bg-[#080A0F] text-[#F5F7FA] font-sans antialiased overflow-hidden">
-      {/* 1. Left Sidebar (Collapsible 240px / 72px desktop, slide-over drawer mobile) */}
-      <OperationsSidebar
-        currentTab={currentTab}
-        onSelectTab={setCurrentTab}
-        activeChatsCount={activeChatsCount}
-        isCollapsed={isSidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-        onLogout={logout}
-        isMobileOpen={isMobileSidebarOpen}
-        onCloseMobile={() => setIsMobileSidebarOpen(false)}
-      />
-
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
-        {/* Topbar */}
-        <OperationsTopbar
-          onOpenNewLead={() => setIsNewLeadModalOpen(true)}
-          onSimulateIncomingLead={handleSimulateIncomingLead}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          isSidebarCollapsed={isSidebarCollapsed}
-          onToggleSidebar={handleToggleSidebar}
-          onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+    <TaskStoreProvider>
+      <div className="flex h-screen w-full bg-[#080A0F] text-[#F5F7FA] font-sans antialiased overflow-hidden">
+        {/* 1. Left Sidebar (Collapsible 240px / 72px desktop, slide-over drawer mobile) */}
+        <OperationsSidebar
+          currentTab={currentTab}
+          onSelectTab={setCurrentTab}
+          activeChatsCount={activeChatsCount}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={handleToggleSidebar}
           onLogout={logout}
-          adminEmail={adminEmail}
-          supabaseSource={supabaseSource}
-          onRefresh={loadLeads}
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
         />
 
-        {/* Views Router */}
-        {currentTab === "ops" && (
-          <div className="flex-1 overflow-hidden flex flex-col min-h-0">
-            <OperationsCenterView onNavigateTab={(tab) => setCurrentTab(tab as ActiveTab)} />
-          </div>
-        )}
-
-        {currentTab === "dashboard" && (
-          <DashboardView
-            leads={leads}
-            onSelectLead={(id) => {
-              handleSelectLeadResponsive(id);
-              setCurrentTab("leads");
-            }}
-            onNavigateTab={setCurrentTab}
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden w-full">
+          {/* Topbar */}
+          <OperationsTopbar
             onOpenNewLead={() => setIsNewLeadModalOpen(true)}
+            onSimulateIncomingLead={handleSimulateIncomingLead}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            isSidebarCollapsed={isSidebarCollapsed}
+            onToggleSidebar={handleToggleSidebar}
+            onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+            onLogout={logout}
+            adminEmail={adminEmail}
+            supabaseSource={supabaseSource}
+            onRefresh={loadLeads}
           />
-        )}
 
-        {currentTab === "leads" && (
-          <div className="flex-1 overflow-y-auto flex flex-col">
-            {/* Top Metrics & Journey Funnel */}
-            <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
-              <MetricsRow metrics={initialMetrics} />
-              <FunnelOverview stages={funnelStages} />
+          {/* Views Router */}
+          {currentTab === "ops" && (
+            <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+              <OperationsCenterView onNavigateTab={(tab) => setCurrentTab(tab as ActiveTab)} />
             </div>
+          )}
 
-            {/* CRM Main Columns */}
-            <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
-              {/* Leads List: visible on desktop, or on mobile when mobileLeadView === 'list' */}
-              <div
-                className={`w-full lg:w-[380px] shrink-0 ${
-                  mobileLeadView === "list" ? "block" : "hidden lg:block"
-                }`}
-              >
-                <LeadsList
-                  leads={filteredLeads}
-                  selectedLeadId={selectedLead?.id || null}
-                  onSelectLead={handleSelectLeadResponsive}
-                  statusFilter={statusFilter}
-                  onChangeStatusFilter={setStatusFilter}
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
-                />
+          {currentTab === "dashboard" && (
+            <DashboardView
+              leads={leads}
+              onSelectLead={(id) => {
+                handleSelectLeadResponsive(id);
+                setCurrentTab("leads");
+              }}
+              onNavigateTab={setCurrentTab}
+              onOpenNewLead={() => setIsNewLeadModalOpen(true)}
+            />
+          )}
+
+          {currentTab === "leads" && (
+            <div className="flex-1 overflow-y-auto flex flex-col">
+              {/* Top Metrics & Journey Funnel */}
+              <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
+                <MetricsRow metrics={initialMetrics} />
+                <FunnelOverview stages={funnelStages} />
               </div>
 
-              {/* Lead Detail Panel: visible on desktop, or on mobile when mobileLeadView === 'detail' */}
-              <div
-                className={`flex-1 min-w-0 ${
-                  mobileLeadView === "detail" ? "block" : "hidden lg:block"
-                }`}
-              >
-                <LeadDetailPanel
-                  lead={selectedLead}
-                  onUpdateStatus={handleUpdateStatus}
-                  onAddMessage={handleAddMessage}
-                  onAddNote={handleAddNote}
-                  onToggleAiStatus={handleToggleAiStatus}
-                  onBackToList={() => setMobileLeadView("list")}
-                />
+              {/* CRM Main Columns */}
+              <div className="flex-1 flex flex-col lg:flex-row min-h-[600px] border-t border-[#252C38] mt-4">
+                {/* Leads List: visible on desktop, or on mobile when mobileLeadView === 'list' */}
+                <div
+                  className={`w-full lg:w-[380px] shrink-0 ${
+                    mobileLeadView === "list" ? "block" : "hidden lg:block"
+                  }`}
+                >
+                  <LeadsList
+                    leads={filteredLeads}
+                    selectedLeadId={selectedLead?.id || null}
+                    onSelectLead={handleSelectLeadResponsive}
+                    statusFilter={statusFilter}
+                    onChangeStatusFilter={setStatusFilter}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onOpenNewLeadModal={() => setIsNewLeadModalOpen(true)}
+                  />
+                </div>
+
+                {/* Lead Detail Panel: visible on desktop, or on mobile when mobileLeadView === 'detail' */}
+                <div
+                  className={`flex-1 min-w-0 ${
+                    mobileLeadView === "detail" ? "block" : "hidden lg:block"
+                  }`}
+                >
+                  <LeadDetailPanel
+                    lead={selectedLead}
+                    onUpdateStatus={handleUpdateStatus}
+                    onAddMessage={handleAddMessage}
+                    onAddNote={handleAddNote}
+                    onToggleAiStatus={handleToggleAiStatus}
+                    onBackToList={() => setMobileLeadView("list")}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {currentTab === "conversations" && (
-          <ConversationsView
-            leads={leads}
-            selectedLeadId={selectedLead?.id || null}
-            onSelectLead={setSelectedLeadId}
-            onAddMessage={handleAddMessage}
-            onToggleAiStatus={handleToggleAiStatus}
-          />
-        )}
+          {currentTab === "conversations" && (
+            <ConversationsView
+              leads={leads}
+              selectedLeadId={selectedLead?.id || null}
+              onSelectLead={setSelectedLeadId}
+              onAddMessage={handleAddMessage}
+              onToggleAiStatus={handleToggleAiStatus}
+            />
+          )}
 
-        {currentTab === "clients" && (
-          <ClientsView leads={leads} onOpenNewLead={() => setIsNewLeadModalOpen(true)} />
-        )}
+          {currentTab === "clients" && (
+            <ClientsView leads={leads} onOpenNewLead={() => setIsNewLeadModalOpen(true)} />
+          )}
 
-        {currentTab === "schedules" && (
-          <SchedulesView leads={leads} onSelectLead={setSelectedLeadId} />
-        )}
+          {currentTab === "schedules" && (
+            <SchedulesView leads={leads} onSelectLead={setSelectedLeadId} />
+          )}
 
-        {currentTab === "automations" && <AutomationsView />}
+          {currentTab === "automations" && <AutomationsView />}
 
-        {currentTab === "reports" && <ReportsView leads={leads} />}
+          {currentTab === "reports" && <ReportsView leads={leads} />}
 
-        {currentTab === "settings" && <SettingsView onNavigateTab={setCurrentTab} />}
+          {currentTab === "settings" && <SettingsView onNavigateTab={setCurrentTab} />}
 
-        {currentTab === "knowledge_base" && <KnowledgeBaseView />}
+          {currentTab === "knowledge_base" && <KnowledgeBaseView />}
 
-        {currentTab === "system_prompt" && <SystemPromptView currentLead={selectedLead} />}
+          {currentTab === "system_prompt" && <SystemPromptView currentLead={selectedLead} />}
+        </div>
+
+        {/* Modal: New Manual Lead */}
+        <NewLeadModal
+          isOpen={isNewLeadModalOpen}
+          onClose={() => setIsNewLeadModalOpen(false)}
+          onCreateLead={handleCreateLead}
+        />
       </div>
-
-      {/* Modal: New Manual Lead */}
-      <NewLeadModal
-        isOpen={isNewLeadModalOpen}
-        onClose={() => setIsNewLeadModalOpen(false)}
-        onCreateLead={handleCreateLead}
-      />
-    </div>
+    </TaskStoreProvider>
   );
 }
