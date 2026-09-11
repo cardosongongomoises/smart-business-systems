@@ -15,9 +15,11 @@ import {
   PanelLeftOpen,
   LogOut,
   GraduationCap,
+  LayoutGrid,
 } from "lucide-react";
 
 export type ActiveTab =
+  | "ops"
   | "dashboard"
   | "leads"
   | "conversations"
@@ -76,6 +78,13 @@ export function OperationsSidebar({
     badgeColor?: "violet" | "blue" | "green";
   }> = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    {
+      id: "ops",
+      label: "Tarefas & Projetos",
+      icon: LayoutGrid,
+      badge: "Kanban",
+      badgeColor: "blue",
+    },
     { id: "leads", label: "Leads", icon: Users },
     {
       id: "conversations",

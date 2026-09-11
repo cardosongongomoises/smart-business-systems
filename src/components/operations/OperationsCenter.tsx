@@ -15,6 +15,7 @@ import { AutomationsView } from "./AutomationsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
+import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
 import { initialMetrics, funnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage } from "./types";
 import { toast } from "sonner";
@@ -391,6 +392,12 @@ export function OperationsCenter() {
         />
 
         {/* Views Router */}
+        {currentTab === "ops" && (
+          <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+            <OperationsCenterView onNavigateTab={(tab) => setCurrentTab(tab as ActiveTab)} />
+          </div>
+        )}
+
         {currentTab === "dashboard" && (
           <DashboardView
             leads={leads}

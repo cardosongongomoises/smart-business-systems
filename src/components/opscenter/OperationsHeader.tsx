@@ -35,16 +35,19 @@ export function OperationsHeader({
             >
               <Menu className="h-4 w-4" />
             </button>
-            <nav aria-label="Trilho de navegação" className="text-[11px] tracking-wide text-[#667085]">
+            <nav
+              aria-label="Trilho de navegação"
+              className="text-[11px] tracking-wide text-[#667085]"
+            >
               Operações <span className="px-1">/</span>
-              <span className="text-[#A7B0BF]">Centro de Operações</span>
+              <span className="text-[#3B82F6] font-medium">Tarefas & Projetos</span>
             </nav>
           </div>
-          <h1 className="mt-2 text-[28px] font-semibold leading-tight tracking-tight text-[#F5F7FA] sm:text-[34px]">
-            Centro de Operações
+          <h1 className="mt-1.5 text-[22px] font-semibold leading-tight tracking-tight text-[#F5F7FA] sm:text-[26px]">
+            Gestão de Tarefas & Projetos
           </h1>
-          <p className="mt-1 max-w-2xl text-[13px] text-[#A7B0BF] sm:text-sm">
-            Acompanhe projetos, tarefas e operações da Agentes Digital em um único lugar.
+          <p className="mt-0.5 max-w-2xl text-[12px] text-[#A7B0BF] sm:text-[13px]">
+            Quadro Kanban operacional, controle de prazos, entregas e equipes da Agentes Digital.
           </p>
         </div>
 

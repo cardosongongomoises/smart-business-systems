@@ -2,7 +2,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { PRIORITY_META, STATUS_META, TaskPriority, TaskStatus, TagSlug, Member } from "./types";
 import { cn } from "@/lib/utils";
 
-export function PriorityDot({ priority, showLabel = true }: { priority: TaskPriority; showLabel?: boolean }) {
+export function PriorityDot({
+  priority,
+  showLabel = true,
+}: {
+  priority: TaskPriority;
+  showLabel?: boolean;
+}) {
   const meta = PRIORITY_META[priority];
   return (
     <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold tracking-wide">
@@ -123,7 +129,5 @@ export function isOverdue(dueDate: string | null, status: TaskStatus) {
 export function isDueToday(dueDate: string | null, status: TaskStatus) {
   if (!dueDate || status === "DONE") return false;
   const today = new Date();
-  return (
-    new Date(`${dueDate}T00:00:00`).toDateString() === today.toDateString()
-  );
+  return new Date(`${dueDate}T00:00:00`).toDateString() === today.toDateString();
 }

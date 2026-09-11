@@ -11,6 +11,7 @@ import { clients, members, projects, seedTasks } from "./seedData";
 import { Task, TaskStatus, STATUS_META } from "./types";
 
 const STORAGE_KEY = "ad_ops_tasks_v1";
+const PROJECTS_STORAGE_KEY = "ad_ops_projects_v1";
 const CURRENT_USER = "m1";
 
 interface TaskStoreValue {
@@ -23,11 +24,15 @@ interface TaskStoreValue {
   updateTask: (id: string, patch: Partial<Task>, activityText?: string) => void;
   moveTask: (id: string, status: TaskStatus) => void;
   deleteTask: (id: string) => void;
+  archiveTask: (id: string) => void;
   duplicateTask: (id: string) => void;
+  approveTask: (id: string) => void;
+  requestTaskChanges: (id: string, note: string) => void;
   addComment: (id: string, text: string) => void;
   toggleChecklistItem: (id: string, itemId: string) => void;
   addChecklistItem: (id: string, text: string) => void;
   addAttachment: (id: string, name: string, size: string) => void;
+  createProject: (project: (typeof projects)[0]) => void;
 }
 
 const TaskStoreContext = createContext<TaskStoreValue | null>(null);
@@ -38,6 +43,7 @@ export function nowIso() {
 
 export function TaskStoreProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
+  const [projectList, setProjectList] = useState<typeof projects>(projects);
 
   useEffect(() => {
     try {
@@ -45,6 +51,13 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed) && parsed.length > 0) setTasks(parsed as Task[]);
+      }
+      const rawProjects = localStorage.getItem(PROJECTS_STORAGE_KEY);
+      if (rawProjects) {
+        const parsedProjects = JSON.parse(rawProjects);
+        if (Array.isArray(parsedProjects) && parsedProjects.length > 0) {
+          setProjectList(parsedProjects);
+        }
       }
     } catch {
       /* ignore */
@@ -59,32 +72,35 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
     }
   }, [tasks]);
 
-  const patchTask = useCallback(
-    (id: string, patch: Partial<Task>, activityText?: string) => {
-      setTasks((prev) =>
-        prev.map((task) => {
-          if (task.id !== id) return task;
-          const activity = activityText
-            ? [
-                { id: `act-${Date.now()}`, text: activityText, at: nowIso() },
-                ...task.activity,
-              ]
-            : task.activity;
-          return { ...task, ...patch, activity, updatedAt: nowIso() };
-        }),
-      );
-    },
-    [],
-  );
+  useEffect(() => {
+    try {
+      localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projectList));
+    } catch {
+      /* ignore */
+    }
+  }, [projectList]);
+
+  const patchTask = useCallback((id: string, patch: Partial<Task>, activityText?: string) => {
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (task.id !== id) return task;
+        const activity = activityText
+          ? [{ id: `act-${Date.now()}`, text: activityText, at: nowIso() }, ...task.activity]
+          : task.activity;
+        return { ...task, ...patch, activity, updatedAt: nowIso() };
+      }),
+    );
+  }, []);
 
   const value = useMemo<TaskStoreValue>(
     () => ({
       tasks,
       members,
       clients,
-      projects,
+      projects: projectList,
       currentUserId: CURRENT_USER,
       createTask: (task) => setTasks((prev) => [task, ...prev]),
+      createProject: (project) => setProjectList((prev) => [project, ...prev]),
       updateTask: patchTask,
       moveTask: (id, status) => {
         setTasks((prev) =>
@@ -108,6 +124,78 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
         );
       },
       deleteTask: (id) => setTasks((prev) => prev.filter((t) => t.id !== id)),
+      archiveTask: (id) => {
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === id
+              ? {
+                  ...t,
+                  status: "DONE" as TaskStatus,
+                  activity: [
+                    { id: `act-${Date.now()}`, text: `${me} arquivou a tarefa`, at: nowIso() },
+                    ...t.activity,
+                  ],
+                  updatedAt: nowIso(),
+                }
+              : t,
+          ),
+        );
+      },
+      approveTask: (id) => {
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === id
+              ? {
+                  ...t,
+                  needsApproval: false,
+                  status: "DONE" as TaskStatus,
+                  activity: [
+                    {
+                      id: `act-${Date.now()}`,
+                      text: `${me} aprovou a entrega com sucesso`,
+                      at: nowIso(),
+                    },
+                    ...t.activity,
+                  ],
+                  updatedAt: nowIso(),
+                }
+              : t,
+          ),
+        );
+      },
+      requestTaskChanges: (id, note) => {
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === id
+              ? {
+                  ...t,
+                  status: "IN_PROGRESS" as TaskStatus,
+                  comments: [
+                    ...t.comments,
+                    {
+                      id: `cm-${Date.now()}`,
+                      authorId: CURRENT_USER,
+                      text: `[Alterações Solicitadas]: ${note}`,
+                      createdAt: nowIso(),
+                    },
+                  ],
+                  activity: [
+                    {
+                      id: `act-${Date.now()}`,
+                      text: `${me} solicitou alterações: "${note}"`,
+                      at: nowIso(),
+                    },
+                    ...t.activity,
+                  ],
+                  updatedAt: nowIso(),
+                }
+              : t,
+          ),
+        );
+      },
       duplicateTask: (id) =>
         setTasks((prev) => {
           const original = prev.find((t) => t.id === id);
@@ -135,7 +223,11 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
                     { id: `cm-${Date.now()}`, authorId: CURRENT_USER, text, createdAt: nowIso() },
                   ],
                   activity: [
-                    { id: `act-${Date.now()}`, text: `${me} adicionou um comentário`, at: nowIso() },
+                    {
+                      id: `act-${Date.now()}`,
+                      text: `${me} adicionou um comentário`,
+                      at: nowIso(),
+                    },
                     ...task.activity,
                   ],
                   updatedAt: nowIso(),
@@ -164,10 +256,7 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
             task.id === id
               ? {
                   ...task,
-                  checklist: [
-                    ...task.checklist,
-                    { id: `ck-${Date.now()}`, text, done: false },
-                  ],
+                  checklist: [...task.checklist, { id: `ck-${Date.now()}`, text, done: false }],
                 }
               : task,
           ),
@@ -190,7 +279,7 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
         );
       },
     }),
-    [tasks, patchTask],
+    [tasks, projectList, patchTask],
   );
 
   return <TaskStoreContext.Provider value={value}>{children}</TaskStoreContext.Provider>;
