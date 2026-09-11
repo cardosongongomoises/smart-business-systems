@@ -266,7 +266,15 @@ function OperationsCenterMain({ onNavigateTab }: OperationsCenterViewProps) {
       {/* Scrollable Center Content */}
       <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 space-y-6">
         {/* 3. Fast Metrics Row */}
-        <OperationsMetrics tasks={tasks} />
+        <OperationsMetrics
+          tasks={tasks}
+          projectsCount={projects.length}
+          teamCount={members.length}
+          onFilterStatus={(st) =>
+            setFilters((f) => ({ ...f, status: (st as TaskStatus) ?? "ALL" }))
+          }
+          onFilterOverdue={() => setFilters((f) => ({ ...f, dueRange: "OVERDUE" }))}
+        />
 
         {/* 4. Attention Panel (Overdue, Due Today, Awaiting Approval) */}
         <AttentionPanel

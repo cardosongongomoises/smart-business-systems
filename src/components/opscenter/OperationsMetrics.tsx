@@ -7,19 +7,23 @@ import {
   Users2,
   TrendingUp,
 } from "lucide-react";
+import { Task } from "./types";
+import { isOverdue } from "./ui-bits";
 
 interface OperationsMetricsProps {
-  activeTasksCount: number;
-  inProgressCount: number;
-  overdueCount: number;
-  completedCount: number;
-  projectsCount: number;
-  teamCount: number;
+  tasks?: Task[];
+  activeTasksCount?: number;
+  inProgressCount?: number;
+  overdueCount?: number;
+  completedCount?: number;
+  projectsCount?: number;
+  teamCount?: number;
   onFilterStatus?: (status: string | null) => void;
   onFilterOverdue?: () => void;
 }
 
 export function OperationsMetrics({
+  tasks,
   activeTasksCount,
   inProgressCount,
   overdueCount,
@@ -29,7 +33,23 @@ export function OperationsMetrics({
   onFilterStatus,
   onFilterOverdue,
 }: OperationsMetricsProps) {
-  const format = (n: number) => (n < 10 ? `0${n}` : `${n}`);
+  const effectiveActive =
+    activeTasksCount ?? (tasks ? tasks.filter((t) => t.status !== "DONE").length : 0);
+  const effectiveInProgress =
+    inProgressCount ?? (tasks ? tasks.filter((t) => t.status === "IN_PROGRESS").length : 0);
+  const effectiveOverdue =
+    overdueCount ?? (tasks ? tasks.filter((t) => isOverdue(t.dueDate, t.status)).length : 0);
+  const effectiveCompleted =
+    completedCount ?? (tasks ? tasks.filter((t) => t.status === "DONE").length : 0);
+  const effectiveProjects =
+    projectsCount ?? (tasks ? new Set(tasks.map((t) => t.projectId).filter(Boolean)).size : 0);
+  const effectiveTeam =
+    teamCount ?? (tasks ? new Set(tasks.map((t) => t.assigneeId).filter(Boolean)).size : 0);
+
+  const format = (n?: number) => {
+    const val = typeof n === "number" && !isNaN(n) ? n : 0;
+    return val < 10 ? `0${val}` : `${val}`;
+  };
 
   return (
     <section
@@ -49,11 +69,11 @@ export function OperationsMetrics({
             <Layers className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#F5F7FA] tracking-tight">
-            {format(activeTasksCount)}
+            {format(effectiveActive)}
           </span>
-          <span className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-[#22C55E]">
+          <span className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-[#22C55E] whitespace-nowrap shrink-0">
             <TrendingUp className="size-3" />
             +8%
           </span>
@@ -74,11 +94,11 @@ export function OperationsMetrics({
             <Clock className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#3B82F6] tracking-tight">
-            {format(inProgressCount)}
+            {format(effectiveInProgress)}
           </span>
-          <span className="text-[10px] font-mono text-[#3B82F6]/80 font-bold uppercase">
+          <span className="text-[10px] font-mono text-[#3B82F6]/90 font-bold uppercase whitespace-nowrap shrink-0">
             Execução
           </span>
         </div>
@@ -98,11 +118,11 @@ export function OperationsMetrics({
             <AlertTriangle className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#EF4444] tracking-tight">
-            {format(overdueCount)}
+            {format(effectiveOverdue)}
           </span>
-          <span className="rounded-full bg-[#EF4444]/20 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#EF4444] uppercase">
+          <span className="rounded-full bg-[#EF4444]/20 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#EF4444] uppercase whitespace-nowrap shrink-0">
             Crítico
           </span>
         </div>
@@ -122,11 +142,11 @@ export function OperationsMetrics({
             <CheckCircle2 className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#22C55E] tracking-tight">
-            {format(completedCount)}
+            {format(effectiveCompleted)}
           </span>
-          <span className="text-[10px] font-mono text-[#22C55E]/80 font-bold uppercase">
+          <span className="text-[10px] font-mono text-[#22C55E]/90 font-bold uppercase whitespace-nowrap shrink-0">
             Entregues
           </span>
         </div>
@@ -143,11 +163,13 @@ export function OperationsMetrics({
             <FolderGit2 className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#F5F7FA] tracking-tight">
-            {format(projectsCount)}
+            {format(effectiveProjects)}
           </span>
-          <span className="text-[10px] font-mono text-[#8B5CF6] font-bold uppercase">Ativos</span>
+          <span className="text-[10px] font-mono text-[#8B5CF6] font-bold uppercase whitespace-nowrap shrink-0">
+            Ativos
+          </span>
         </div>
         <p className="mt-1 text-[10px] text-[#667085] truncate">clientes corporativos</p>
       </div>
@@ -162,11 +184,13 @@ export function OperationsMetrics({
             <Users2 className="size-3.5" />
           </div>
         </div>
-        <div className="mt-2.5 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline justify-between gap-1">
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#F5F7FA] tracking-tight">
-            {format(teamCount)}
+            {format(effectiveTeam)}
           </span>
-          <span className="text-[10px] font-mono text-[#22C55E] font-bold uppercase">Online</span>
+          <span className="text-[10px] font-mono text-[#22C55E] font-bold uppercase whitespace-nowrap shrink-0">
+            Online
+          </span>
         </div>
         <p className="mt-1 text-[10px] text-[#667085] truncate">especialistas alocados</p>
       </div>
