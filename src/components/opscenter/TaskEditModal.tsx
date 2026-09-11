@@ -57,7 +57,7 @@ export function TaskEditModal({
       title: title.trim(),
       description: description.trim(),
       projectId,
-      assigneeId: assigneeId || null,
+      assigneeId: assigneeId || "",
       status,
       priority,
       dueDate: dueDate || null,

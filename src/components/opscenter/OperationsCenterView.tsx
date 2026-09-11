@@ -17,7 +17,7 @@ import { TaskEditModal } from "./TaskEditModal";
 import { ProjectCreateModal } from "./ProjectCreateModal";
 
 interface OperationsCenterViewProps {
-  onNavigateTab?: (tab: string) => void;
+  onNavigateTab?: ((tab: string) => void) | undefined;
 }
 
 export function OperationsCenterView({ onNavigateTab }: OperationsCenterViewProps) {
@@ -278,19 +278,40 @@ function OperationsCenterMain({ onNavigateTab }: OperationsCenterViewProps) {
 
         {/* 4. Attention Panel (Overdue, Due Today, Awaiting Approval) */}
         <AttentionPanel
-          tasks={tasks}
-          projects={projects}
-          members={members}
-          onSelectTask={(task) => setSelectedTaskId(task.id)}
+          overdueCount={tasks.filter((t) => isOverdue(t.dueDate, t.status)).length}
+          dueTodayCount={
+            tasks.filter((t) => isDueToday(t.dueDate) && t.status !== "DONE").length
+          }
+          awaitingApprovalCount={
+            tasks.filter((t) => t.status === "REVIEW" || t.needsApproval).length
+          }
+          activeQuickFilter={
+            filters.dueRange === "OVERDUE"
+              ? "overdue"
+              : filters.dueRange === "TODAY"
+                ? "today"
+                : filters.status === "REVIEW"
+                  ? "approval"
+                  : null
+          }
+          onSelectQuickFilter={(quick) => {
+            if (quick === "overdue")
+              setFilters((f) => ({ ...f, dueRange: "OVERDUE", status: "ALL" }));
+            else if (quick === "today")
+              setFilters((f) => ({ ...f, dueRange: "TODAY", status: "ALL" }));
+            else if (quick === "approval")
+              setFilters((f) => ({ ...f, status: "REVIEW", dueRange: "ALL" }));
+            else setFilters((f) => ({ ...f, status: "ALL", dueRange: "ALL" }));
+          }}
         />
 
         {/* 5. Project Progress Overview */}
         <ProjectProgress
           projects={projects}
           tasks={tasks}
-          clients={clients}
+          selectedProjectId={filters.projectId === "ALL" ? null : filters.projectId}
           onSelectProject={(projId) => {
-            setFilters((f) => ({ ...f, projectId: projId }));
+            setFilters((f) => ({ ...f, projectId: projId ?? "ALL" }));
           }}
         />
 
@@ -317,12 +338,12 @@ function OperationsCenterMain({ onNavigateTab }: OperationsCenterViewProps) {
         {/* 7. Main View Canvas (Kanban or List or Empty State) */}
         {filteredTasks.length === 0 ? (
           <EmptyState
-            hasActiveFilters={activeFilterCount > 0 || !!searchQuery}
-            onResetFilters={() => {
+            type={activeFilterCount > 0 || !!searchQuery ? "filtered" : "no_tasks"}
+            onClearFilters={() => {
               setFilters(INITIAL_FILTERS);
               setSearchQuery("");
             }}
-            onNewTask={() => {
+            onCreateTask={() => {
               setCreateInitialStatus("TODO");
               setIsCreateTaskOpen(true);
             }}

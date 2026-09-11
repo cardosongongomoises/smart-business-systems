@@ -28,13 +28,13 @@ import { isOverdue, isDueToday } from "./ui-bits";
 
 interface TaskCardProps {
   task: Task;
-  project?: Project;
-  assignee?: Member;
-  allMembers?: Member[];
+  project?: Project | undefined;
+  assignee?: Member | undefined;
+  allMembers?: Member[] | undefined;
   onSelect: (task: Task) => void;
   onEdit: (task: Task) => void;
   onMoveStatus: (id: string, status: TaskStatus) => void;
-  onAssigneeChange?: (id: string, assigneeId: string) => void;
+  onAssigneeChange?: ((id: string, assigneeId: string) => void) | undefined;
   onDuplicate: (id: string) => void;
   onArchive: (id: string) => void;
   onDelete: (id: string) => void;
@@ -93,7 +93,7 @@ export function TaskCard({
         "Nov",
         "Dez",
       ];
-      const day = parts[2];
+      const day = parts[2] ?? "";
       const monthIndex = parseInt(parts[1], 10) - 1;
       return `${day} ${monthNames[monthIndex] || ""}`;
     }
@@ -121,7 +121,7 @@ export function TaskCard({
               title={project.name}
               className="truncate rounded-[4px] bg-[#151A23] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#A7B0BF] border border-[#252C38]"
             >
-              {project.name.split("—")[0].trim()}
+              {(project.name.split("—")[0] ?? project.name).trim()}
             </span>
           )}
           {task.needsApproval && (
