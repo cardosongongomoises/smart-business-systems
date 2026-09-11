@@ -1,9 +1,13 @@
 import { Lead, PlanName } from "./types";
 
+export type { PlanName };
+
 export interface PlanConfig {
   name: PlanName;
   setupFee: number;
   monthlyFee: number;
+  /** Alias numérico da mensalidade (Kz) */
+  monthlyKz: number;
   setupFormatted: string;
   monthlyFormatted: string;
   badge?: string;
@@ -17,6 +21,7 @@ export const PLANS_CATALOG: Record<PlanName, PlanConfig> = {
     name: "Presença",
     setupFee: 125000,
     monthlyFee: 20000,
+    monthlyKz: 20000,
     setupFormatted: "Kz 125.000",
     monthlyFormatted: "Kz 20.000/mês",
     tagline: "Presença digital essencial",
@@ -33,6 +38,7 @@ export const PLANS_CATALOG: Record<PlanName, PlanConfig> = {
     name: "Profissional",
     setupFee: 250000,
     monthlyFee: 50000,
+    monthlyKz: 50000,
     setupFormatted: "Kz 250.000",
     monthlyFormatted: "Kz 50.000/mês",
     badge: "Mais Escolhido",
@@ -50,6 +56,7 @@ export const PLANS_CATALOG: Record<PlanName, PlanConfig> = {
     name: "Autoridade",
     setupFee: 450000,
     monthlyFee: 85000,
+    monthlyKz: 85000,
     setupFormatted: "Kz 450.000",
     monthlyFormatted: "Kz 85.000/mês",
     tagline: "Posicionamento premium no mercado",
@@ -65,6 +72,7 @@ export const PLANS_CATALOG: Record<PlanName, PlanConfig> = {
     name: "Domínio IA",
     setupFee: 700000,
     monthlyFee: 150000,
+    monthlyKz: 150000,
     setupFormatted: "Kz 700.000",
     monthlyFormatted: "Kz 150.000/mês",
     badge: "Ecossistema Completo",
@@ -82,6 +90,7 @@ export const PLANS_CATALOG: Record<PlanName, PlanConfig> = {
     name: "Automate Pro",
     setupFee: 300000,
     monthlyFee: 65000,
+    monthlyKz: 65000,
     setupFormatted: "Kz 300.000",
     monthlyFormatted: "Kz 65.000/mês",
     badge: "Infraestrutura Completa",
@@ -114,7 +123,7 @@ export interface ClientAccount {
   phone: string;
   email: string;
   plan: PlanName;
-  status: "no_ar" | "em_desenvolvimento" | "renovacao";
+  status: "no_ar" | "em_desenvolvimento" | "renovacao" | "cancelado";
   setupPrice: string;
   monthlyFee: string;
   launchedAt: string;
@@ -246,6 +255,7 @@ export interface FinancialSummary {
   totalClientContracts: number;
   activeRecurringClients: number;
   retentionRate: number;
+  averageTicketMrr: number;
   convertedLeadsCount: number;
   clientsMrrContribution: number;
   convertedLeadsMrrContribution: number;
