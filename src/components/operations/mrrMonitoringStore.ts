@@ -116,6 +116,7 @@ export function recordPlanDowngrade(
   if (clientIndex === -1) return null;
 
   const client = activeClientsState[clientIndex];
+  if (!client) return null;
   const oldPlan = normalizePlanName(client.plan);
   const newPlan = normalizePlanName(newPlanName);
 
