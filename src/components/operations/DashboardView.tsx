@@ -73,16 +73,20 @@ export function DashboardView({
   onOpenNewLead,
 }: DashboardViewProps) {
   // Aggregate KPI stats
-  const totalLeads = leads.length;
-  const activeChats = leads.filter((l) => l.aiProcessingStatus === "ativo").length;
-  const scheduledMeetings = leads.reduce((acc, l) => acc + l.appointments.length, 0);
-  const convertedCount = leads.filter((l) => l.status === "convertido").length;
+  const safeLeads = useMemo(() => leads || [], [leads]);
+  const totalLeads = safeLeads.length;
+  const activeChats = safeLeads.filter((l) => l?.aiProcessingStatus === "ativo").length;
+  const scheduledMeetings = safeLeads.reduce(
+    (acc, l) => acc + (Array.isArray(l?.appointments) ? l.appointments.length : 0),
+    0,
+  );
+  const convertedCount = safeLeads.filter((l) => l?.status === "convertido").length;
   const conversionRate = totalLeads > 0 ? ((convertedCount / totalLeads) * 100).toFixed(1) : "0";
 
   // Form requests metrics (website channel submissions)
   const formLeads = useMemo(() => {
-    return leads.filter((l) => l.channel === "website" || l.channel === "email");
-  }, [leads]);
+    return safeLeads.filter((l) => l?.channel === "website" || l?.channel === "email");
+  }, [safeLeads]);
 
   const formRequestsCount = formLeads.length;
 
@@ -102,15 +106,16 @@ export function DashboardView({
 
   // Calculate Pipeline Value in Kwanzas
   const pipelineKz = useMemo(() => {
-    return leads.reduce((acc, lead) => {
-      const match = lead.estimatedValue.match(/[\d.]+/);
+    return safeLeads.reduce((acc, lead) => {
+      if (!lead?.estimatedValue) return acc;
+      const match = String(lead.estimatedValue).match(/[\d.]+/);
       if (match) {
         const num = parseInt(match[0].replace(/\./g, ""), 10);
         return acc + (isNaN(num) ? 0 : num);
       }
       return acc;
     }, 0);
-  }, [leads]);
+  }, [safeLeads]);
 
   const formattedPipeline = `Kz ${(pipelineKz / 1000).toLocaleString("pt-PT")}k`;
 
@@ -726,7 +731,7 @@ export function DashboardView({
                         <div className="flex items-center gap-1.5">
                           <MemberAvatar member={member} size="sm" />
                           <span className="text-[#A7B0BF] text-[10px] truncate max-w-[80px]">
-                            {member?.name.split(" ")[0]}
+                            {member?.name ? member.name.split(" ")[0] : "Equipa"}
                           </span>
                         </div>
                       </div>

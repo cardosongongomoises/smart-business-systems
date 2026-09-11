@@ -44,7 +44,11 @@ export function OperationsCenter() {
   const [mobileLeadView, setMobileLeadView] = useState<"list" | "detail">("list");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("sbs_sidebar_collapsed") === "true";
+      try {
+        return localStorage.getItem("sbs_sidebar_collapsed") === "true";
+      } catch {
+        return false;
+      }
     }
     return false;
   });

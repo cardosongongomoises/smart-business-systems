@@ -8,13 +8,13 @@ import {
   type ReactNode,
 } from "react";
 import { clients, members, projects, seedTasks } from "./seedData";
-import { Task, TaskStatus, STATUS_META } from "./types";
+import { Task, TaskStatus, TaskPriority, STATUS_META, PRIORITY_META } from "./types";
 
 const STORAGE_KEY = "ad_ops_tasks_v1";
 const PROJECTS_STORAGE_KEY = "ad_ops_projects_v1";
 const CURRENT_USER = "m1";
 
-interface TaskStoreValue {
+export interface TaskStoreValue {
   tasks: Task[];
   members: typeof members;
   clients: typeof clients;
@@ -22,7 +22,12 @@ interface TaskStoreValue {
   currentUserId: string;
   createTask: (task: Task) => void;
   updateTask: (id: string, patch: Partial<Task>, activityText?: string) => void;
+  updateTaskData: (id: string, patch: Partial<Task>) => void;
   moveTask: (id: string, status: TaskStatus) => void;
+  moveTaskStatus: (id: string, status: TaskStatus) => void;
+  updateTaskPriority: (id: string, priority: TaskPriority) => void;
+  updateTaskAssignee: (id: string, assigneeId: string) => void;
+  updateTaskDueDate: (id: string, dueDate: string | null) => void;
   deleteTask: (id: string) => void;
   archiveTask: (id: string) => void;
   duplicateTask: (id: string) => void;
@@ -102,6 +107,10 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
       createTask: (task) => setTasks((prev) => [task, ...prev]),
       createProject: (project) => setProjectList((prev) => [project, ...prev]),
       updateTask: patchTask,
+      updateTaskData: (id, patch) => {
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        patchTask(id, patch, `${me} actualizou os dados da tarefa`);
+      },
       moveTask: (id, status) => {
         setTasks((prev) =>
           prev.map((task) => {
@@ -122,6 +131,45 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
             };
           }),
         );
+      },
+      moveTaskStatus: (id, status) => {
+        setTasks((prev) =>
+          prev.map((task) => {
+            if (task.id !== id || task.status === status) return task;
+            const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+            return {
+              ...task,
+              status,
+              updatedAt: nowIso(),
+              activity: [
+                {
+                  id: `act-${Date.now()}`,
+                  text: `${me} moveu "${task.title}" de ${STATUS_META[task.status].label} para ${STATUS_META[status].label}`,
+                  at: nowIso(),
+                },
+                ...task.activity,
+              ],
+            };
+          }),
+        );
+      },
+      updateTaskPriority: (id, priority) => {
+        const meta = PRIORITY_META[priority];
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        patchTask(id, { priority }, `${me} alterou a prioridade para ${meta.label}`);
+      },
+      updateTaskAssignee: (id, assigneeId) => {
+        const member = members.find((m) => m.id === assigneeId);
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        patchTask(
+          id,
+          { assigneeId },
+          `${me} atribuiu a tarefa a ${member?.name ?? "novo responsável"}`,
+        );
+      },
+      updateTaskDueDate: (id, dueDate) => {
+        const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
+        patchTask(id, { dueDate }, `${me} actualizou o prazo da tarefa`);
       },
       deleteTask: (id) => setTasks((prev) => prev.filter((t) => t.id !== id)),
       archiveTask: (id) => {
@@ -285,8 +333,33 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
   return <TaskStoreContext.Provider value={value}>{children}</TaskStoreContext.Provider>;
 }
 
-export function useTaskStore() {
+const defaultStoreValue: TaskStoreValue = {
+  tasks: seedTasks,
+  members,
+  clients,
+  projects,
+  currentUserId: CURRENT_USER,
+  createTask: () => {},
+  createProject: () => {},
+  updateTask: () => {},
+  updateTaskData: () => {},
+  moveTask: () => {},
+  moveTaskStatus: () => {},
+  updateTaskPriority: () => {},
+  updateTaskAssignee: () => {},
+  updateTaskDueDate: () => {},
+  deleteTask: () => {},
+  archiveTask: () => {},
+  duplicateTask: () => {},
+  approveTask: () => {},
+  requestTaskChanges: () => {},
+  addComment: () => {},
+  toggleChecklistItem: () => {},
+  addChecklistItem: () => {},
+  addAttachment: () => {},
+};
+
+export function useTaskStore(): TaskStoreValue {
   const ctx = useContext(TaskStoreContext);
-  if (!ctx) throw new Error("useTaskStore deve ser usado dentro de TaskStoreProvider");
-  return ctx;
+  return ctx ?? defaultStoreValue;
 }

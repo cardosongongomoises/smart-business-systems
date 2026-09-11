@@ -1,4 +1,4 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { PRIORITY_META, STATUS_META, TaskPriority, TaskStatus, TagSlug, Member } from "./types";
 import { cn } from "@/lib/utils";
 
@@ -59,27 +59,29 @@ export function MemberAvatar({
 }) {
   if (!member) return null;
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span
-          className={cn(
-            "inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-[#F5F7FA] ring-1 ring-[#252C38]",
-            size === "sm" ? "h-6 w-6 text-[10px]" : "h-9 w-9 text-xs",
+    <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span
+            className={cn(
+              "inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-[#F5F7FA] ring-1 ring-[#252C38]",
+              size === "sm" ? "h-6 w-6 text-[10px]" : "h-9 w-9 text-xs",
+            )}
+            style={{ background: "linear-gradient(135deg,#3B82F6,#8B5CF6)" }}
+            aria-label={`${member.name}, ${member.role}`}
+          >
+            {member.initials}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent className="border-[#252C38] bg-[#151A23] text-[#F5F7FA]">
+          <p className="text-xs font-semibold">{member.name}</p>
+          <p className="text-[11px] text-[#A7B0BF]">{member.role}</p>
+          {typeof activeTasks === "number" && (
+            <p className="text-[11px] text-[#667085]">{activeTasks} tarefas ativas</p>
           )}
-          style={{ background: "linear-gradient(135deg,#3B82F6,#8B5CF6)" }}
-          aria-label={`${member.name}, ${member.role}`}
-        >
-          {member.initials}
-        </span>
-      </TooltipTrigger>
-      <TooltipContent className="border-[#252C38] bg-[#151A23] text-[#F5F7FA]">
-        <p className="text-xs font-semibold">{member.name}</p>
-        <p className="text-[11px] text-[#A7B0BF]">{member.role}</p>
-        {typeof activeTasks === "number" && (
-          <p className="text-[11px] text-[#667085]">{activeTasks} tarefas ativas</p>
-        )}
-      </TooltipContent>
-    </Tooltip>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -119,15 +121,21 @@ export function formatTime(iso: string) {
   return d.toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
 }
 
-export function isOverdue(dueDate: string | null, status: TaskStatus) {
+export function isOverdue(dueDate: string | null, status?: TaskStatus) {
   if (!dueDate || status === "DONE") return false;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return new Date(`${dueDate}T00:00:00`).getTime() < today.getTime();
+  const dateStr = dueDate.includes("T") ? dueDate : `${dueDate}T00:00:00`;
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return false;
+  return d.getTime() < today.getTime();
 }
 
-export function isDueToday(dueDate: string | null, status: TaskStatus) {
+export function isDueToday(dueDate: string | null, status?: TaskStatus) {
   if (!dueDate || status === "DONE") return false;
   const today = new Date();
-  return new Date(`${dueDate}T00:00:00`).toDateString() === today.toDateString();
+  const dateStr = dueDate.includes("T") ? dueDate : `${dueDate}T00:00:00`;
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return false;
+  return d.toDateString() === today.toDateString();
 }

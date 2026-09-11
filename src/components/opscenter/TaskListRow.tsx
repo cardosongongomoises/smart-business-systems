@@ -80,7 +80,7 @@ export function TaskListRow({
       {/* 2. Projeto */}
       <td className="py-3 px-4 min-w-[160px]">
         <span className="text-xs text-[#A7B0BF] line-clamp-1">
-          {project ? project.name.split("—")[0].trim() : "—"}
+          {project?.name ? project.name.split("—")[0].trim() : "—"}
         </span>
       </td>
 
@@ -89,9 +89,11 @@ export function TaskListRow({
         {assignee ? (
           <div className="flex items-center gap-2">
             <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#151A23] border border-[#252C38] font-mono text-[10px] font-bold text-[#3B82F6]">
-              {assignee.initials}
+              {assignee.initials || "AD"}
             </div>
-            <span className="text-xs text-[#F5F7FA] truncate">{assignee.name.split(" ")[0]}</span>
+            <span className="text-xs text-[#F5F7FA] truncate">
+              {assignee.name ? assignee.name.split(" ")[0] : "Equipa"}
+            </span>
           </div>
         ) : (
           <span className="text-xs text-[#667085]">Sem responsável</span>

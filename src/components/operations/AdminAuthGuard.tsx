@@ -12,6 +12,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { toast } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
@@ -41,33 +42,38 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if session exists in localStorage or sessionStorage
-    const localSession = localStorage.getItem(AUTH_STORAGE_KEY);
-    const sessionSession = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    try {
+      if (typeof window !== "undefined") {
+        const localSession = window.localStorage?.getItem(AUTH_STORAGE_KEY);
+        const sessionSession = window.sessionStorage?.getItem(AUTH_STORAGE_KEY);
 
-    if (localSession) {
-      try {
-        const parsed = JSON.parse(localSession);
-        if (parsed?.authenticated) {
-          setIsAuthenticated(true);
-          setEmail(parsed.email || "admin@agentes-digital.com");
+        if (localSession) {
+          try {
+            const parsed = JSON.parse(localSession);
+            if (parsed?.authenticated) {
+              setIsAuthenticated(true);
+              setEmail(parsed.email || "admin@agentes-digital.com");
+            }
+          } catch {
+            window.localStorage?.removeItem(AUTH_STORAGE_KEY);
+          }
+        } else if (sessionSession) {
+          try {
+            const parsed = JSON.parse(sessionSession);
+            if (parsed?.authenticated) {
+              setIsAuthenticated(true);
+              setEmail(parsed.email || "admin@agentes-digital.com");
+            }
+          } catch {
+            window.sessionStorage?.removeItem(AUTH_STORAGE_KEY);
+          }
         }
-      } catch {
-        localStorage.removeItem(AUTH_STORAGE_KEY);
       }
-    } else if (sessionSession) {
-      try {
-        const parsed = JSON.parse(sessionSession);
-        if (parsed?.authenticated) {
-          setIsAuthenticated(true);
-          setEmail(parsed.email || "admin@agentes-digital.com");
-        }
-      } catch {
-        sessionStorage.removeItem(AUTH_STORAGE_KEY);
-      }
+    } catch (err) {
+      console.warn("Storage check failed in AdminAuthGuard:", err);
+    } finally {
+      setIsLoadingCheck(false);
     }
-
-    setIsLoadingCheck(false);
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -90,7 +96,12 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
     setIsSubmitting(true);
 
     setTimeout(() => {
-      const storedCustomPass = localStorage.getItem(CUSTOM_PASSWORD_KEY);
+      let storedCustomPass: string | null = null;
+      try {
+        storedCustomPass = localStorage.getItem(CUSTOM_PASSWORD_KEY);
+      } catch {
+        /* ignore */
+      }
       // Valid credentials check:
       // Accepts master passwords: admin2026, admin, admin123, 123456, or custom password set by admin
       const validPasswords = [
@@ -111,10 +122,14 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
           timestamp: Date.now(),
         });
 
-        if (rememberMe) {
-          localStorage.setItem(AUTH_STORAGE_KEY, sessionData);
-        } else {
-          sessionStorage.setItem(AUTH_STORAGE_KEY, sessionData);
+        try {
+          if (rememberMe) {
+            localStorage.setItem(AUTH_STORAGE_KEY, sessionData);
+          } else {
+            sessionStorage.setItem(AUTH_STORAGE_KEY, sessionData);
+          }
+        } catch {
+          /* ignore */
         }
 
         setIsAuthenticated(true);
@@ -135,8 +150,12 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    try {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
     setIsAuthenticated(false);
     setPassword("");
     toast.info("Sessão administrativa encerrada.");
@@ -322,7 +341,7 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
 
   return (
     <AdminAuthContext.Provider value={{ isAuthenticated, adminEmail: email, logout }}>
-      {children}
+      <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
     </AdminAuthContext.Provider>
   );
 }
