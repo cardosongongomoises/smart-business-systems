@@ -34,7 +34,6 @@ import { generateAIAgentResponse } from "./aiAgentEngine";
 import {
   verifyWhatsAppNumber,
   verifyWhatsAppNumberAsync,
-  setStoredVerification,
   WhatsAppVerificationResult,
 } from "./whatsappVerification";
 import { toast } from "sonner";
@@ -72,15 +71,12 @@ export function LeadDetailPanel({
   );
   const [isVerifying, setIsVerifying] = useState(false);
   const [isQualifying, setIsQualifying] = useState(false);
-  const [verdictReady, setVerdictReady] = useState(true);
-  const [showVerifyMenu, setShowVerifyMenu] = useState(false);
 
   // Execução AUTOMÁTICA de verificação e qualificação quando o lead é selecionado ou alterado
   useEffect(() => {
     if (!lead) return;
 
     setIsVerifying(true);
-    setVerdictReady(false);
 
     const needsQual = !lead.aiQualified;
     if (needsQual) {
@@ -92,7 +88,6 @@ export function LeadDetailPanel({
       const autoResult = verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp);
       setVerification(autoResult);
       setIsVerifying(false);
-      setVerdictReady(true);
 
       // Notifica se houver handler e não estiver definido
       if (onUpdateWhatsAppStatus && lead.hasWhatsApp === undefined) {
@@ -127,7 +122,6 @@ export function LeadDetailPanel({
   const handleRunVerification = async () => {
     if (!lead?.phone) return;
     setIsVerifying(true);
-    setShowVerifyMenu(false);
     try {
       const res = await verifyWhatsAppNumberAsync(lead.phone);
       setVerification(res);
@@ -136,11 +130,11 @@ export function LeadDetailPanel({
       }
       if (res.isRegistered) {
         toast.success(`✓ WhatsApp Ativo (${res.carrier})`, {
-          description: `O número ${res.formattedNumber} está cadastrado no WhatsApp. Veredito: Ativo.`,
+          description: `O número ${res.formattedNumber} está cadastrado no WhatsApp.`,
         });
       } else {
         toast.error(`✕ Sem WhatsApp (${res.carrier})`, {
-          description: `${res.reason} Veredito: Sem WhatsApp.`,
+          description: `${res.reason}`,
         });
       }
     } catch {
@@ -150,31 +144,18 @@ export function LeadDetailPanel({
     }
   };
 
-  const handleManualToggleWhatsApp = (targetRegistered: boolean) => {
-    if (!lead?.phone) return;
-    const digits = lead.phone.replace(/\D/g, "");
-    setStoredVerification(
-      digits,
-      targetRegistered,
-      targetRegistered
-        ? "Confirmado manualmente pelo operador comercial"
-        : "Marcado manualmente como não cadastrado no WhatsApp",
-    );
-    const updated = verifyWhatsAppNumber(lead.phone, targetRegistered);
-    setVerification(updated);
-    if (onUpdateWhatsAppStatus) {
-      onUpdateWhatsAppStatus(lead.id, targetRegistered);
-    }
-    setShowVerifyMenu(false);
-    if (targetRegistered) {
-      toast.success("Veredito: Cadastrado no WhatsApp", {
-        description: "Botão verde de WhatsApp ativado conforme anexo.",
+  const handleRunAiQualification = () => {
+    if (!lead) return;
+    setIsQualifying(true);
+    setTimeout(() => {
+      setIsQualifying(false);
+      if (onUpdateStatus && lead.status === "novo") {
+        onUpdateStatus(lead.id, "qualificado");
+      }
+      toast.success("Qualificação por IA concluída", {
+        description: `Lead qualificado com Score ${lead.qualificationScore || 94}/100 para ${lead.company}.`,
       });
-    } else {
-      toast.warning("Veredito: Sem WhatsApp", {
-        description: "Botão vermelho 'Sem WhatsApp' ativado conforme anexo.",
-      });
-    }
+    }, 600);
   };
 
   const toggleJsonExpand = (messageId: string) => {
@@ -336,100 +317,62 @@ export function LeadDetailPanel({
               </select>
             </div>
 
-            {/* Veredito Final de WhatsApp: Automático com design idêntico às imagens anexas */}
+            {/* Botão A qualificar por IA... */}
+            {isQualifying ? (
+              <button
+                type="button"
+                disabled
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#8B5CF6]/70 bg-[#0E121A] px-3.5 text-xs font-semibold text-[#C084FC] animate-pulse cursor-wait select-none"
+              >
+                <Loader2 className="size-3.5 animate-spin text-[#8B5CF6]" />
+                <span>A qualificar por IA...</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleRunAiQualification}
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#8B5CF6]/40 bg-[#0E121A] hover:bg-[#8B5CF6]/10 px-3.5 text-xs font-semibold text-[#C084FC] hover:text-[#D8B4FE] transition-all shadow-sm active:scale-95"
+                title="Executar qualificação automática por IA"
+              >
+                <Sparkles className="size-3.5 text-[#8B5CF6]" />
+                <span>A qualificar por IA...</span>
+              </button>
+            )}
+
+            {/* Veredito Final de WhatsApp ou Botão A verificar... */}
             {isVerifying ? (
-              <div
-                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#3B82F6]/60 bg-[#0E121A] px-3.5 text-xs font-semibold text-[#60A5FA] animate-pulse cursor-wait select-none"
-                title="A verificar número no WhatsApp automaticamente..."
+              <button
+                type="button"
+                disabled
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#3B82F6]/70 bg-[#0E121A] px-3.5 text-xs font-semibold text-[#60A5FA] animate-pulse cursor-wait select-none"
               >
                 <Loader2 className="size-3.5 animate-spin text-[#3B82F6]" />
                 <span>A verificar...</span>
-              </div>
+              </button>
             ) : verification.isRegistered && verification.waLink ? (
-              /* FOTO 2: Botão verde "WhatsApp" */
+              /* Conforme FOTO 2 em anexo: Botão verde com borda e texto WhatsApp */
               <a
                 href={verification.waLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E] bg-[#0E121A] hover:bg-[#22C55E]/10 px-3.5 text-xs font-semibold text-[#22C55E] transition-all shadow-sm active:scale-95"
-                title={`Veredito Final: Cadastrado no WhatsApp (${verification.carrier})`}
+                title={`Veredito: Cadastrado no WhatsApp (${verification.carrier})`}
               >
                 <Phone className="size-3.5 text-[#22C55E]" />
                 <span>WhatsApp</span>
               </a>
             ) : (
-              /* FOTO 1: Botão vermelho "Sem WhatsApp" */
-              <div
-                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#EF4444] bg-[#0E121A] px-3.5 text-xs font-semibold text-[#EF4444] cursor-default select-none shadow-sm transition-all"
-                title={`Veredito Final: Sem WhatsApp (${verification.reason})`}
+              /* Conforme FOTO 1 em anexo: Botão vermelho com borda e texto Sem WhatsApp */
+              <button
+                type="button"
+                onClick={handleRunVerification}
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#EF4444] bg-[#0E121A] hover:bg-[#EF4444]/10 px-3.5 text-xs font-semibold text-[#EF4444] transition-all shadow-sm active:scale-95"
+                title={`Veredito: Sem WhatsApp (${verification.reason}). Clique para verificar novamente.`}
               >
                 <PhoneOff className="size-3.5 text-[#EF4444]" />
                 <span>Sem WhatsApp</span>
-              </div>
-            )}
-
-            {/* Menu de Verificação / Auditoria Manual */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowVerifyMenu((prev) => !prev)}
-                className="inline-flex items-center justify-center size-9 rounded-[8px] border border-[#252C38] bg-[#0E121A] hover:bg-[#151A23] hover:border-[#3B82F6]/50 text-[#A7B0BF] hover:text-[#F5F7FA] transition-colors"
-                title="Detalhes do Veredito & Opções"
-              >
-                <ChevronDown className="size-3.5 text-[#667085]" />
               </button>
-
-              {showVerifyMenu && (
-                <div className="absolute right-0 top-full mt-1.5 w-64 rounded-[10px] border border-[#252C38] bg-[#151A23] shadow-2xl p-2.5 z-50 text-xs">
-                  <div className="px-2 py-1.5 border-b border-[#252C38] mb-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-[#F5F7FA]">Validação WhatsApp</span>
-                      {verification.isRegistered ? (
-                        <span className="text-[10px] font-semibold text-[#22C55E] bg-[#22C55E]/15 px-1.5 py-0.5 rounded">
-                          Cadastrado
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-semibold text-[#EF4444] bg-[#EF4444]/15 px-1.5 py-0.5 rounded">
-                          Sem Cadastro
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-[#A7B0BF] mt-0.5">{verification.carrier}</p>
-                    <p className="text-[10px] text-[#667085] mt-0.5 leading-tight">
-                      {verification.reason}
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleRunVerification}
-                    disabled={isVerifying}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#3B82F6] font-medium transition-colors mb-1"
-                  >
-                    <RefreshCw className={`size-3.5 ${isVerifying ? "animate-spin" : ""}`} />
-                    <span>Verificar em Tempo Real</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleManualToggleWhatsApp(true)}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#22C55E] transition-colors mb-1"
-                  >
-                    <Check className="size-3.5" />
-                    <span>Marcar como: Cadastrado</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleManualToggleWhatsApp(false)}
-                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#EF4444] transition-colors"
-                  >
-                    <X className="size-3.5" />
-                    <span>Marcar como: Sem WhatsApp</span>
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
 
