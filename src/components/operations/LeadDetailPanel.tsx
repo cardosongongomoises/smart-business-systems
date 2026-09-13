@@ -29,6 +29,7 @@ import {
   X,
   Info,
   AlertTriangle,
+  Users,
 } from "lucide-react";
 import { Lead, LeadStatus, ChatMessage, LeadNote } from "./types";
 import { generateAIAgentResponse } from "./aiAgentEngine";
@@ -282,17 +283,45 @@ export function LeadDetailPanel({
   };
 
   const handleSaveNote = () => {
-    if (!newNoteInput.trim()) return;
+    if (!newNoteInput.trim() || !lead) return;
     onAddNote(lead.id, newNoteInput.trim());
     setNewNoteInput("");
   };
 
-  const initials = lead.name
-    .split(" ")
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
+  if (!lead) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center h-full bg-[#080A0F] p-8 text-center min-h-[400px]">
+        <div className="size-16 rounded-2xl bg-[#151A23] border border-[#252C38] flex items-center justify-center text-[#667085] mb-4 shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
+          <Users className="size-8 text-[#3B82F6]/70" />
+        </div>
+        <h3 className="text-base font-bold text-[#F5F7FA]">Nenhum lead selecionado</h3>
+        <p className="text-xs text-[#A7B0BF] max-w-sm mt-1.5 leading-relaxed">
+          Selecione um lead na lista lateral para visualizar detalhes de contacto, histórico da
+          conversa com a IA e auditoria de qualificação.
+        </p>
+        {onBackToList && (
+          <button
+            type="button"
+            onClick={onBackToList}
+            className="mt-5 lg:hidden inline-flex items-center gap-2 px-4 py-2 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+          >
+            <ArrowLeft className="size-3.5" />
+            <span>Ver lista de leads</span>
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  const initials =
+    (lead.name || "Lead")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((n) => n[0] || "")
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "LD";
 
   const statusOptions: Array<{ id: LeadStatus; label: string; color: string }> = [
     { id: "novo", label: "Novo", color: "text-[#3B82F6]" },
@@ -510,12 +539,12 @@ export function LeadDetailPanel({
             {
               id: "chat" as DetailTab,
               label: "Conversa IA",
-              badge: lead.conversation.length,
+              badge: (lead.conversation || []).length,
             },
             {
               id: "schedules" as DetailTab,
               label: "Agendamentos",
-              badge: lead.appointments.length || undefined,
+              badge: (lead.appointments || []).length || undefined,
             },
             { id: "notes" as DetailTab, label: "Notas" },
             { id: "activity" as DetailTab, label: "Atividade" },
@@ -904,69 +933,79 @@ export function LeadDetailPanel({
 
                   {/* Chat snippet */}
                   <div className="mt-4 space-y-3">
-                    {lead.conversation.slice(-3).map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`flex ${msg.sender === "client" ? "justify-start" : "justify-end"}`}
-                      >
+                    {(lead.conversation || []).length === 0 ? (
+                      <p className="text-xs text-[#667085] italic">
+                        Nenhuma mensagem trocada ainda.
+                      </p>
+                    ) : (
+                      (lead.conversation || []).slice(-3).map((msg) => (
                         <div
-                          className={`max-w-[85%] rounded-[12px] p-3 text-xs ${
-                            msg.sender === "client"
-                              ? "bg-[#252C38] text-[#F5F7FA]"
-                              : "bg-[#3B82F6]/10 border border-[#3B82F6]/25 text-[#F5F7FA]"
-                          }`}
+                          key={msg.id}
+                          className={`flex ${msg.sender === "client" ? "justify-start" : "justify-end"}`}
                         >
-                          <div className="flex items-center justify-between gap-3 mb-1 text-[10px] text-[#A7B0BF]">
-                            <span className="font-semibold">
-                              {msg.sender === "client" ? lead.name : "Agente IA (Agentes Digital)"}
-                            </span>
-                            <span className="font-mono">{msg.timestamp}</span>
+                          <div
+                            className={`max-w-[85%] rounded-[12px] p-3 text-xs ${
+                              msg.sender === "client"
+                                ? "bg-[#252C38] text-[#F5F7FA]"
+                                : "bg-[#3B82F6]/10 border border-[#3B82F6]/25 text-[#F5F7FA]"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-3 mb-1 text-[10px] text-[#A7B0BF]">
+                              <span className="font-semibold">
+                                {msg.sender === "client"
+                                  ? lead.name
+                                  : "Agente IA (Agentes Digital)"}
+                              </span>
+                              <span className="font-mono">{msg.timestamp}</span>
+                            </div>
+                            <p className="leading-relaxed">{msg.text}</p>
                           </div>
-                          <p className="leading-relaxed">{msg.text}</p>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
 
                 {/* Agendamentos Snippet */}
-                {lead.appointments.length > 0 && lead.appointments[0] && (
-                  <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-                    <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
-                      <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
-                        <Calendar className="size-4 text-[#3B82F6]" />
-                        Próximo Agendamento
-                      </h4>
-                      <span className="text-xs font-mono text-[#22C55E] font-semibold">
-                        {lead.appointments[0]?.status}
-                      </span>
-                    </div>
-
-                    <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
-                      <div>
-                        <p className="text-xs font-bold text-[#F5F7FA]">
-                          {lead.appointments[0]?.title}
-                        </p>
-                        <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-                          {lead.appointments[0]?.dateFormatted} •{" "}
-                          {lead.appointments[0]?.timeFormatted}
-                        </p>
+                {Array.isArray(lead.appointments) &&
+                  lead.appointments.length > 0 &&
+                  lead.appointments[0] && (
+                    <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+                      <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                        <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
+                          <Calendar className="size-4 text-[#3B82F6]" />
+                          Próximo Agendamento
+                        </h4>
+                        <span className="text-xs font-mono text-[#22C55E] font-semibold">
+                          {lead.appointments[0]?.status}
+                        </span>
                       </div>
 
-                      {lead.appointments[0]?.meetUrl && (
-                        <a
-                          href={lead.appointments[0].meetUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
-                        >
-                          <Video className="size-3.5" />
-                          <span>Abrir Google Meet</span>
-                        </a>
-                      )}
+                      <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
+                        <div>
+                          <p className="text-xs font-bold text-[#F5F7FA]">
+                            {lead.appointments[0]?.title}
+                          </p>
+                          <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+                            {lead.appointments[0]?.dateFormatted} •{" "}
+                            {lead.appointments[0]?.timeFormatted}
+                          </p>
+                        </div>
+
+                        {lead.appointments[0]?.meetUrl && (
+                          <a
+                            href={lead.appointments[0].meetUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+                          >
+                            <Video className="size-3.5" />
+                            <span>Abrir Google Meet</span>
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             );
           })()}
@@ -1018,7 +1057,7 @@ export function LeadDetailPanel({
 
             {/* Chat Messages Stream */}
             <div className="flex-1 py-4 space-y-3 overflow-y-auto">
-              {lead.conversation.map((msg) => {
+              {(lead.conversation || []).map((msg) => {
                 const isClient = msg.sender === "client";
                 const isAI = msg.sender === "ai";
 
@@ -1148,7 +1187,7 @@ export function LeadDetailPanel({
           <div className="space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
               <h3 className="text-sm font-bold text-[#F5F7FA]">
-                Agendamentos ({lead.appointments.length})
+                Agendamentos ({(lead.appointments || []).length})
               </h3>
               <button
                 type="button"
@@ -1159,13 +1198,13 @@ export function LeadDetailPanel({
               </button>
             </div>
 
-            {lead.appointments.length === 0 ? (
+            {(lead.appointments || []).length === 0 ? (
               <div className="p-8 text-center rounded-[16px] border border-[#252C38] bg-[#151A23] text-[#667085]">
                 <Calendar className="size-8 mx-auto mb-2 opacity-50" />
                 <p className="text-xs">Nenhuma reunião agendada no momento.</p>
               </div>
             ) : (
-              lead.appointments.map((apt) => (
+              (lead.appointments || []).map((apt) => (
                 <div
                   key={apt.id}
                   className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
@@ -1235,18 +1274,25 @@ export function LeadDetailPanel({
 
             {/* Notes List */}
             <div className="space-y-3">
-              {lead.notes.map((note) => (
-                <div
-                  key={note.id}
-                  className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-4 text-xs"
-                >
-                  <div className="flex items-center justify-between pb-1.5 border-b border-[#252C38]/60 mb-2">
-                    <span className="font-semibold text-[#F5F7FA]">{note.author}</span>
-                    <span className="text-[10px] text-[#667085]">{note.createdAt}</span>
-                  </div>
-                  <p className="text-[#A7B0BF] leading-relaxed">{note.text}</p>
+              {(lead.notes || []).length === 0 ? (
+                <div className="p-8 text-center rounded-[16px] border border-[#252C38] bg-[#151A23] text-[#667085]">
+                  <FileText className="size-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-xs">Nenhuma nota comercial registrada.</p>
                 </div>
-              ))}
+              ) : (
+                (lead.notes || []).map((note) => (
+                  <div
+                    key={note.id}
+                    className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-4 text-xs"
+                  >
+                    <div className="flex items-center justify-between pb-1.5 border-b border-[#252C38]/60 mb-2">
+                      <span className="font-semibold text-[#F5F7FA]">{note.author}</span>
+                      <span className="text-[10px] text-[#667085]">{note.createdAt}</span>
+                    </div>
+                    <p className="text-[#A7B0BF] leading-relaxed">{note.text}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
@@ -1259,18 +1305,24 @@ export function LeadDetailPanel({
             </h3>
 
             <div className="mt-4 relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#252C38]">
-              {lead.activities.map((act) => (
-                <div key={act.id} className="relative group">
-                  <span className="absolute -left-6 top-0.5 size-3 rounded-full bg-[#3B82F6] ring-4 ring-[#151A23]" />
-                  <div>
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-xs font-bold text-[#F5F7FA]">{act.title}</p>
-                      <span className="text-[10px] text-[#667085] font-mono">{act.timestamp}</span>
+              {(lead.activities || []).length === 0 ? (
+                <p className="text-xs text-[#667085]">Nenhum registo de atividade recente.</p>
+              ) : (
+                (lead.activities || []).map((act) => (
+                  <div key={act.id} className="relative group">
+                    <span className="absolute -left-6 top-0.5 size-3 rounded-full bg-[#3B82F6] ring-4 ring-[#151A23]" />
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-xs font-bold text-[#F5F7FA]">{act.title}</p>
+                        <span className="text-[10px] text-[#667085] font-mono">
+                          {act.timestamp}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#A7B0BF] mt-0.5">{act.description}</p>
                     </div>
-                    <p className="text-xs text-[#A7B0BF] mt-0.5">{act.description}</p>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         )}

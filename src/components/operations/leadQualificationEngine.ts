@@ -1,11 +1,32 @@
 import { Lead } from "./types";
 import { isKnownUnregisteredNumber, normalizePhoneNumber } from "./whatsappVerification";
 
+export interface QualificationCriteriaBreakdown {
+  contactability: {
+    hasValidPhone: boolean;
+    hasWhatsAppAccount: boolean;
+    hasValidEmail: boolean;
+    score: number;
+  };
+  identity: {
+    hasRealName: boolean;
+    hasRealCompany: boolean;
+    isSuspicious: boolean;
+    score: number;
+  };
+  commercial: {
+    hasPackageInterest: boolean;
+    hasEstimatedBudget: boolean;
+    score: number;
+  };
+}
+
 export interface QualificationAudit {
   score: number; // 0 a 100
   isQualified: boolean; // score >= 60
   verdict: "aprovado" | "parcial" | "desqualificado";
   statusText: string;
+  criteria: QualificationCriteriaBreakdown;
   breakdown: {
     contactability: {
       score: number;
@@ -38,10 +59,61 @@ export interface QualificationAudit {
  * 2. Identidade empresarial (Nome, Empresa, se não são apenas caracteres de teste como "f", "df")
  * 3. Contexto comercial (Pacote, necessidade descrita, detalhe da mensagem)
  */
-export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAudit {
+export function evaluateLeadQualification(lead?: Partial<Lead> | null): QualificationAudit {
   const blockers: string[] = [];
   const reasons: string[] = [];
   const recommendations: string[] = [];
+
+  if (!lead) {
+    return {
+      score: 0,
+      isQualified: false,
+      verdict: "desqualificado",
+      statusText: "Lead não selecionado",
+      criteria: {
+        contactability: {
+          hasValidPhone: false,
+          hasWhatsAppAccount: false,
+          hasValidEmail: false,
+          score: 0,
+        },
+        identity: {
+          hasRealName: false,
+          hasRealCompany: false,
+          isSuspicious: true,
+          score: 0,
+        },
+        commercial: {
+          hasPackageInterest: false,
+          hasEstimatedBudget: false,
+          score: 0,
+        },
+      },
+      breakdown: {
+        contactability: {
+          score: 0,
+          max: 40,
+          detail: "Sem dados de contacto",
+          hasWhatsApp: false,
+          channelRecommendation: "Pendente",
+        },
+        identity: {
+          score: 0,
+          max: 30,
+          detail: "Sem dados cadastrais",
+          isSuspicious: true,
+        },
+        commercialContext: {
+          score: 0,
+          max: 30,
+          detail: "Sem dados comerciais",
+        },
+      },
+      reasons: [],
+      blockers: ["Lead vazio ou inexistente."],
+      recommendations: [],
+    };
+  }
 
   // ==========================================
   // 1. CONTACTABILIDADE (Máx. 40 Pontos)
@@ -78,7 +150,8 @@ export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAud
 
   // Avaliação de E-mail (Máx. 10 pts)
   const email = (lead.email || "").trim().toLowerCase();
-  if (email && email.includes("@") && email.includes(".")) {
+  const hasValidEmail = Boolean(email && email.includes("@") && email.includes("."));
+  if (hasValidEmail) {
     const isPublicDomain =
       email.includes("@gmail.") ||
       email.includes("@yahoo.") ||
@@ -96,6 +169,9 @@ export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAud
     blockers.push("Sem endereço de e-mail corporativo válido.");
   }
 
+  const hasValidPhone = Boolean(rawPhone && rawPhone.replace(/\D/g, "").length >= 9);
+  const hasWhatsAppAccount = Boolean(hasWhatsApp);
+
   // ==========================================
   // 2. IDENTIDADE & LEGITIMIDADE (Máx. 30 Pontos)
   // ==========================================
@@ -108,6 +184,11 @@ export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAud
     name.toLowerCase() === "teste" ||
     company.toLowerCase() === "teste" ||
     (name.length <= 2 && company.length <= 2);
+
+  const hasRealName = Boolean(name && name.length >= 3 && name.toLowerCase() !== "teste");
+  const hasRealCompany = Boolean(
+    company && company.length >= 3 && company.toLowerCase() !== "teste",
+  );
 
   if (isSuspicious) {
     identityScore = 0;
@@ -130,7 +211,10 @@ export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAud
   // 3. CONTEXTO COMERCIAL (Máx. 30 Pontos)
   // ==========================================
   let commercialScore = 0;
-  if (lead.packageInterest) {
+  const hasPackageInterest = Boolean(lead.packageInterest);
+  const hasEstimatedBudget = Boolean(lead.estimatedValue && lead.estimatedValue !== "Kz 0");
+
+  if (hasPackageInterest) {
     commercialScore += 10;
     reasons.push(`Pacote de interesse selecionado: ${lead.packageInterest}.`);
   }
@@ -184,6 +268,25 @@ export function evaluateLeadQualification(lead: Partial<Lead>): QualificationAud
     isQualified,
     verdict,
     statusText,
+    criteria: {
+      contactability: {
+        hasValidPhone,
+        hasWhatsAppAccount,
+        hasValidEmail,
+        score: contactScore,
+      },
+      identity: {
+        hasRealName,
+        hasRealCompany,
+        isSuspicious,
+        score: identityScore,
+      },
+      commercial: {
+        hasPackageInterest,
+        hasEstimatedBudget,
+        score: commercialScore,
+      },
+    },
     breakdown: {
       contactability: {
         score: contactScore,

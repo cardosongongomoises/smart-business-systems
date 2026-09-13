@@ -139,12 +139,14 @@ export function OperationsCenter() {
 
   // Filtered Leads
   const filteredLeads = useMemo(() => {
-    return leads.filter((lead) => {
+    return (leads || []).filter((lead) => {
+      if (!lead) return false;
+
       // Tab filter
       if (currentTab === "conversations" && lead.aiProcessingStatus !== "ativo") {
         return false;
       }
-      if (currentTab === "schedules" && lead.appointments.length === 0) {
+      if (currentTab === "schedules" && (!lead.appointments || lead.appointments.length === 0)) {
         return false;
       }
       if (currentTab === "clients" && lead.status !== "convertido") {
@@ -159,11 +161,11 @@ export function OperationsCenter() {
       // Search query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchName = lead.name.toLowerCase().includes(q);
-        const matchCompany = lead.company.toLowerCase().includes(q);
-        const matchPhone = lead.phone.toLowerCase().includes(q);
-        const matchEmail = lead.email.toLowerCase().includes(q);
-        const matchPackage = lead.packageInterest.toLowerCase().includes(q);
+        const matchName = (lead.name || "").toLowerCase().includes(q);
+        const matchCompany = (lead.company || "").toLowerCase().includes(q);
+        const matchPhone = (lead.phone || "").toLowerCase().includes(q);
+        const matchEmail = (lead.email || "").toLowerCase().includes(q);
+        const matchPackage = (lead.packageInterest || "").toLowerCase().includes(q);
         return matchName || matchCompany || matchPhone || matchEmail || matchPackage;
       }
 

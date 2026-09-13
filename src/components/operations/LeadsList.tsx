@@ -158,13 +158,16 @@ export function LeadsList({
           leads.map((lead) => {
             const isSelected = lead.id === selectedLeadId;
 
-            // Generate initials
-            const initials = lead.name
-              .split(" ")
-              .map((n) => n[0])
-              .slice(0, 2)
-              .join("")
-              .toUpperCase();
+            // Generate initials safely
+            const initials =
+              (lead.name || "Lead")
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean)
+                .map((n) => n[0] || "")
+                .slice(0, 2)
+                .join("")
+                .toUpperCase() || "LD";
 
             return (
               <div
