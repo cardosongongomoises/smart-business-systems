@@ -8,8 +8,11 @@ import {
   Filter,
   Plus,
   Compass,
+  Phone,
+  PhoneOff,
 } from "lucide-react";
 import { Lead, LeadStatus, LeadChannel } from "./types";
+import { isPhoneRegisteredOnWhatsApp } from "./whatsappVerification";
 
 interface LeadsListProps {
   leads: Lead[];
@@ -216,7 +219,40 @@ export function LeadsList({
                       </span>
                     </div>
 
-                    <p className="text-[11px] text-[#A7B0BF] truncate mt-0.5">{lead.company}</p>
+                    <div className="flex items-center justify-between text-[11px] text-[#A7B0BF] mt-0.5">
+                      <span className="truncate">{lead.company}</span>
+                      {lead.hasWhatsApp !== undefined ? (
+                        lead.hasWhatsApp ? (
+                          <span
+                            className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#22C55E] shrink-0"
+                            title="WhatsApp Ativo"
+                          >
+                            <Phone className="size-2.5" /> WA
+                          </span>
+                        ) : (
+                          <span
+                            className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#EF4444] shrink-0"
+                            title="Sem WhatsApp"
+                          >
+                            <PhoneOff className="size-2.5" /> Sem WA
+                          </span>
+                        )
+                      ) : isPhoneRegisteredOnWhatsApp(lead.phone) ? (
+                        <span
+                          className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#22C55E] shrink-0"
+                          title="WhatsApp Ativo"
+                        >
+                          <Phone className="size-2.5" /> WA
+                        </span>
+                      ) : (
+                        <span
+                          className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#EF4444] shrink-0"
+                          title="Sem WhatsApp"
+                        >
+                          <PhoneOff className="size-2.5" /> Sem WA
+                        </span>
+                      )}
+                    </div>
 
                     <div className="flex items-center justify-between mt-2 pt-1 border-t border-[#252C38]/40">
                       <span className="text-[10px] font-medium text-[#667085] truncate max-w-[140px]">

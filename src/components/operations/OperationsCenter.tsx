@@ -355,15 +355,22 @@ export function OperationsCenter() {
       randomCompanies[Math.floor(Math.random() * randomCompanies.length)] ??
       "Clínica Vida Talatona";
 
+    const isLandline = Math.random() < 0.35;
+    const phone = isLandline
+      ? `+244 222 ${Math.floor(100000 + Math.random() * 899999)}`
+      : `+244 9${Math.floor(21000000 + Math.random() * 78000000)}`;
+    const hasWhatsApp = !isLandline;
+
     const simulatedLead: Lead = {
       id: `lead-sim-${Date.now()}`,
       name: pickedName,
       company: pickedCompany,
       role: "Diretor Geral",
-      phone: `+244 9${Math.floor(20000000 + Math.random() * 79999999)}`,
+      phone,
+      hasWhatsApp,
       email: `${pickedName.toLowerCase().replace(/\s+/g, ".")}@empresa.co.ao`,
       location: "Luanda, Angola",
-      channel: "whatsapp",
+      channel: hasWhatsApp ? "whatsapp" : "website",
       status: "qualificado",
       packageInterest: "Domínio IA",
       aiQualified: true,
@@ -377,7 +384,7 @@ export function OperationsCenter() {
         {
           id: `sim-note-${Date.now()}`,
           author: "IA Auto-Analyst",
-          text: "Lead recebido via WhatsApp. IA qualificou com interesse imediato no pacote Domínio IA para automação 24/7.",
+          text: `Lead qualificado automaticamente por IA. Veredito WhatsApp: ${hasWhatsApp ? "Ativo (Linha Móvel)" : "Sem WhatsApp (Linha Fixa)"}.`,
           createdAt: "Agora mesmo",
         },
       ],
@@ -385,15 +392,15 @@ export function OperationsCenter() {
         {
           id: `sim-act-${Date.now()}`,
           type: "capture",
-          title: "Mensagem recebida no WhatsApp",
-          description: "Entrada pelo número oficial da Agentes Digital",
+          title: hasWhatsApp ? "Mensagem recebida no WhatsApp" : "Contacto recebido no Website",
+          description: `Telefone: ${phone}`,
           timestamp: "Agora mesmo",
         },
         {
           id: `sim-act-2-${Date.now()}`,
           type: "ai_qualification",
           title: "IA Qualificou Automaticamente",
-          description: "Score 94/100 atribuído em 38ms",
+          description: "Score 94/100 • Qualificação concluída em 35ms",
           timestamp: "Agora mesmo",
         },
       ],
@@ -432,8 +439,8 @@ export function OperationsCenter() {
 
     setLeads((prev) => [simulatedLead, ...prev]);
     setSelectedLeadId(simulatedLead.id);
-    toast.success(`⚡ Novo Lead WhatsApp: ${pickedName}`, {
-      description: `${pickedCompany} • Score IA 94/100 (Kz 700.000)`,
+    toast.success(`⚡ Lead: ${pickedName}`, {
+      description: `${pickedCompany} • ${hasWhatsApp ? "Veredito: WhatsApp Ativo" : "Veredito: Sem WhatsApp"} • Score IA 94/100`,
     });
   };
 
