@@ -28,14 +28,19 @@ import {
   Check,
   X,
   Info,
+  AlertTriangle,
 } from "lucide-react";
 import { Lead, LeadStatus, ChatMessage, LeadNote } from "./types";
 import { generateAIAgentResponse } from "./aiAgentEngine";
 import {
   verifyWhatsAppNumber,
   verifyWhatsAppNumberAsync,
+  setStoredVerification,
+  KNOWN_UNREGISTERED_NUMBERS,
+  normalizePhoneNumber,
   WhatsAppVerificationResult,
 } from "./whatsappVerification";
+import { evaluateLeadQualification } from "./leadQualificationEngine";
 import { toast } from "sonner";
 
 interface LeadDetailPanelProps {
@@ -45,6 +50,7 @@ interface LeadDetailPanelProps {
   onAddNote: (leadId: string, noteText: string) => void;
   onToggleAiStatus: (leadId: string) => void;
   onUpdateWhatsAppStatus?: (leadId: string, hasWhatsApp: boolean) => void;
+  onReevaluateLead?: (leadId: string) => void;
   onBackToList?: () => void;
 }
 
@@ -57,6 +63,7 @@ export function LeadDetailPanel({
   onAddNote,
   onToggleAiStatus,
   onUpdateWhatsAppStatus,
+  onReevaluateLead,
   onBackToList,
 }: LeadDetailPanelProps) {
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
@@ -65,46 +72,27 @@ export function LeadDetailPanel({
   const [isTypingAi, setIsTypingAi] = useState(false);
   const [expandedJsonIds, setExpandedJsonIds] = useState<Record<string, boolean>>({});
 
-  // WhatsApp Verification & AI Qualification Automatic State
+  // WhatsApp Verification & AI Qualification State
   const [verification, setVerification] = useState<WhatsAppVerificationResult>(() =>
     lead ? verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp) : verifyWhatsAppNumber(""),
   );
   const [isVerifying, setIsVerifying] = useState(false);
   const [isQualifying, setIsQualifying] = useState(false);
 
-  // Execução AUTOMÁTICA de verificação e qualificação quando o lead é selecionado ou alterado
+  // Execução de verificação do WhatsApp quando o lead é selecionado ou alterado
   useEffect(() => {
     if (!lead) return;
 
     setIsVerifying(true);
+    const autoResult = verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp);
+    setVerification(autoResult);
+    setIsVerifying(false);
 
-    const needsQual = !lead.aiQualified;
-    if (needsQual) {
-      setIsQualifying(true);
+    // Sincroniza se houver divergência
+    if (onUpdateWhatsAppStatus && lead.hasWhatsApp !== autoResult.isRegistered) {
+      onUpdateWhatsAppStatus(lead.id, autoResult.isRegistered);
     }
-
-    const timer = setTimeout(() => {
-      // 1. Verificação automática do WhatsApp
-      const autoResult = verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp);
-      setVerification(autoResult);
-      setIsVerifying(false);
-
-      // Notifica se houver handler e o status for diferente
-      if (onUpdateWhatsAppStatus && lead.hasWhatsApp !== autoResult.isRegistered) {
-        onUpdateWhatsAppStatus(lead.id, autoResult.isRegistered);
-      }
-
-      // 2. Qualificação automática da IA
-      if (needsQual) {
-        setIsQualifying(false);
-        if (onUpdateStatus && lead.status === "novo") {
-          onUpdateStatus(lead.id, "qualificado");
-        }
-      }
-    }, 420);
-
-    return () => clearTimeout(timer);
-  }, [lead?.id, lead?.phone, lead?.hasWhatsApp]);
+  }, [lead, onUpdateWhatsAppStatus]);
 
   // Escuta alterações globais de verificação no cache
   useEffect(() => {
@@ -118,6 +106,46 @@ export function LeadDetailPanel({
       window.removeEventListener("sbs_whatsapp_status_changed", handleStorageChange);
     };
   }, [lead]);
+
+  // Alternância manual direta: Operador define se tem ou não tem WhatsApp
+  const handleSetWhatsAppStatus = (hasWA: boolean) => {
+    if (!lead?.phone) return;
+
+    // Persiste no cache e catálogo de números
+    setStoredVerification(
+      lead.phone,
+      hasWA,
+      hasWA ? "Confirmado com WhatsApp pelo operador" : "Confirmado sem WhatsApp pelo operador",
+    );
+
+    const norm = normalizePhoneNumber(lead.phone);
+    if (!hasWA) {
+      KNOWN_UNREGISTERED_NUMBERS.add(lead.phone.replace(/\D/g, ""));
+      if (norm.digits) KNOWN_UNREGISTERED_NUMBERS.add(norm.digits);
+    } else {
+      KNOWN_UNREGISTERED_NUMBERS.delete(lead.phone.replace(/\D/g, ""));
+      if (norm.digits) KNOWN_UNREGISTERED_NUMBERS.delete(norm.digits);
+    }
+
+    const res = verifyWhatsAppNumber(lead.phone, hasWA);
+    setVerification(res);
+
+    if (onUpdateWhatsAppStatus) {
+      onUpdateWhatsAppStatus(lead.id, hasWA);
+    }
+
+    window.dispatchEvent(new Event("sbs_whatsapp_status_changed"));
+
+    if (hasWA) {
+      toast.success("✓ Marcado: WhatsApp Ativo", {
+        description: `O número ${lead.phone} foi registado com WhatsApp.`,
+      });
+    } else {
+      toast.error("✕ Marcado: Sem WhatsApp", {
+        description: `O número ${lead.phone} foi catalogado como sem WhatsApp. O score de qualificação foi recalculado.`,
+      });
+    }
+  };
 
   const handleRunVerification = async () => {
     if (!lead?.phone) return;
@@ -144,18 +172,35 @@ export function LeadDetailPanel({
     }
   };
 
+  // Qualificação REAL por IA (Sem "achismos" nem temporizadores falsos)
   const handleRunAiQualification = () => {
     if (!lead) return;
     setIsQualifying(true);
+
     setTimeout(() => {
       setIsQualifying(false);
-      if (onUpdateStatus && lead.status === "novo") {
-        onUpdateStatus(lead.id, "qualificado");
+      const audit = evaluateLeadQualification(lead);
+
+      if (audit.isQualified) {
+        if (onUpdateStatus && lead.status === "novo") {
+          onUpdateStatus(lead.id, "qualificado");
+        }
+        toast.success(`✓ Lead Qualificado (Score ${audit.score}/100)`, {
+          description:
+            audit.reasons.join(" • ") || "Aprovado nos critérios de qualificação comercial.",
+        });
+      } else {
+        toast.error(`✕ Lead Não Qualificado (Score ${audit.score}/100)`, {
+          description:
+            audit.blockers.join(" ") ||
+            "Contacto não verificado no WhatsApp ou dados empresariais incompletos.",
+        });
       }
-      toast.success("Qualificação por IA concluída", {
-        description: `Lead qualificado com Score ${lead.qualificationScore || 94}/100 para ${lead.company}.`,
-      });
-    }, 600);
+
+      if (onReevaluateLead) {
+        onReevaluateLead(lead.id);
+      }
+    }, 400);
   };
 
   const toggleJsonExpand = (messageId: string) => {
@@ -293,7 +338,25 @@ export function LeadDetailPanel({
                   <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#3B82F6]/15 text-[#60A5FA] border border-[#3B82F6]/30 animate-pulse">
                     <Loader2 className="size-3 animate-spin text-[#3B82F6]" />A qualificar por IA...
                   </span>
-                ) : null}
+                ) : (
+                  <span
+                    className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
+                      lead.qualificationScore >= 60
+                        ? "bg-[#22C55E]/15 text-[#4ADE80] border-[#22C55E]/30"
+                        : lead.qualificationScore >= 40
+                          ? "bg-[#F59E0B]/15 text-[#FBBF24] border-[#F59E0B]/30"
+                          : "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30"
+                    }`}
+                  >
+                    <AlertTriangle className="size-3" />
+                    Score {lead.qualificationScore}/100 •{" "}
+                    {lead.qualificationScore >= 60
+                      ? "Qualificado"
+                      : lead.qualificationScore >= 40
+                        ? "Parcial"
+                        : "Não Qualificado"}
+                  </span>
+                )}
               </div>
               <p className="text-xs text-[#A7B0BF] mt-0.5">
                 {lead.role} • {lead.company}
@@ -332,14 +395,14 @@ export function LeadDetailPanel({
                 type="button"
                 onClick={handleRunAiQualification}
                 className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#8B5CF6]/40 bg-[#0E121A] hover:bg-[#8B5CF6]/10 px-3.5 text-xs font-semibold text-[#C084FC] hover:text-[#D8B4FE] transition-all shadow-sm active:scale-95"
-                title="Executar qualificação automática por IA"
+                title="Executar qualificação automática baseada em critérios reais"
               >
                 <Sparkles className="size-3.5 text-[#8B5CF6]" />
                 <span>A qualificar por IA...</span>
               </button>
             )}
 
-            {/* Veredito Final de WhatsApp ou Botão A verificar... */}
+            {/* Ações e Veredito de WhatsApp */}
             {isVerifying ? (
               <button
                 type="button"
@@ -350,28 +413,58 @@ export function LeadDetailPanel({
                 <span>A verificar...</span>
               </button>
             ) : verification.isRegistered && verification.waLink ? (
-              /* Conforme FOTO 2 em anexo: Botão verde com borda e texto WhatsApp */
-              <a
-                href={verification.waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E] bg-[#0E121A] hover:bg-[#22C55E]/10 px-3.5 text-xs font-semibold text-[#22C55E] transition-all shadow-sm active:scale-95"
-                title={`Veredito: Cadastrado no WhatsApp (${verification.carrier})`}
-              >
-                <Phone className="size-3.5 text-[#22C55E]" />
-                <span>WhatsApp</span>
-              </a>
+              /* WhatsApp Ativo: link direto para o WhatsApp + atalho para marcar Sem WA caso o popup de erro apareça */
+              <div className="flex items-center gap-1.5">
+                <a
+                  href={verification.waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E] bg-[#0E121A] hover:bg-[#22C55E]/10 px-3.5 text-xs font-semibold text-[#22C55E] transition-all shadow-sm active:scale-95"
+                  title={`Veredito: Cadastrado no WhatsApp (${verification.carrier})`}
+                >
+                  <Phone className="size-3.5 text-[#22C55E]" />
+                  <span>WhatsApp</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleSetWhatsAppStatus(false)}
+                  className="inline-flex items-center gap-1 h-9 px-2.5 rounded-[8px] border border-[#EF4444]/30 bg-[#0E121A] hover:bg-[#EF4444]/10 text-xs font-semibold text-[#EF4444] transition-all"
+                  title="Se o WhatsApp informou que o número não está registado, clique aqui para marcar Sem WhatsApp"
+                >
+                  <PhoneOff className="size-3 text-[#EF4444]" />
+                  <span className="hidden sm:inline">Marcar: Sem WA</span>
+                </button>
+              </div>
             ) : (
-              /* Conforme FOTO 1 em anexo: Botão vermelho com borda e texto Sem WhatsApp */
-              <button
-                type="button"
-                onClick={handleRunVerification}
-                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#EF4444] bg-[#0E121A] hover:bg-[#EF4444]/10 px-3.5 text-xs font-semibold text-[#EF4444] transition-all shadow-sm active:scale-95"
-                title={`Veredito: Sem WhatsApp (${verification.reason}). Clique para verificar novamente.`}
-              >
-                <PhoneOff className="size-3.5 text-[#EF4444]" />
-                <span>Sem WhatsApp</span>
-              </button>
+              /* Sem WhatsApp: botão vermelho Sem WhatsApp + botão Ligar celular + atalho para marcar Tem WA */
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleRunVerification}
+                  className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#EF4444] bg-[#0E121A] hover:bg-[#EF4444]/10 px-3.5 text-xs font-semibold text-[#EF4444] transition-all shadow-sm active:scale-95"
+                  title={`Veredito: Sem WhatsApp (${verification.reason}). Clique para verificar novamente.`}
+                >
+                  <PhoneOff className="size-3.5 text-[#EF4444]" />
+                  <span>Sem WhatsApp</span>
+                </button>
+                <a
+                  href={`tel:${lead.phone}`}
+                  className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#3B82F6]/40 bg-[#0E121A] hover:bg-[#3B82F6]/10 px-3 text-xs font-semibold text-[#60A5FA] transition-all shadow-sm active:scale-95"
+                  title="Efetuar chamada direta pela rede telefónica móvel"
+                >
+                  <Phone className="size-3.5 text-[#60A5FA]" />
+                  <span>Ligar</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleSetWhatsAppStatus(true)}
+                  className="inline-flex items-center gap-1 h-9 px-2 rounded-[8px] border border-[#252C38] bg-[#151A23] hover:border-[#22C55E]/40 text-[#A7B0BF] hover:text-[#22C55E] text-xs font-semibold transition-all"
+                  title="Marcar este número como cadastrado no WhatsApp"
+                >
+                  <Check className="size-3" />
+                  <span className="hidden sm:inline">Tem WA</span>
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -454,189 +547,429 @@ export function LeadDetailPanel({
       {/* Tab Contents */}
       <div className="p-6 space-y-6">
         {/* OVERVIEW TAB */}
-        {activeTab === "overview" && (
-          <div className="space-y-6">
-            {/* Sobre o Lead */}
-            <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-              <h3 className="text-sm font-bold text-[#F5F7FA] pb-3 border-b border-[#252C38] flex items-center justify-between">
-                <span>Sobre o Lead</span>
-                <span className="text-[10px] text-[#667085] font-mono">ID: {lead.id}</span>
-              </h3>
-
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-                <div>
-                  <span className="text-[#667085] block mb-1">Nome Completo</span>
-                  <p className="font-semibold text-[#F5F7FA]">{lead.name}</p>
-                </div>
-
-                <div>
-                  <span className="text-[#667085] block mb-1">Empresa & Cargo</span>
-                  <p className="font-semibold text-[#F5F7FA]">
-                    {lead.company} ({lead.role})
-                  </p>
-                </div>
-
-                <div>
-                  <span className="text-[#667085] block mb-1">
-                    {verification.isRegistered ? "Telefone WhatsApp" : "Telefone (Sem WhatsApp)"}
-                  </span>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-semibold text-[#F5F7FA] font-mono">{lead.phone}</p>
-                    {verification.isRegistered ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/25 px-1.5 py-0.5 rounded-[4px]">
-                        <CheckCircle2 className="size-3" /> WhatsApp Ativo ({verification.carrier})
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/25 px-1.5 py-0.5 rounded-[4px]">
-                        <PhoneOff className="size-3" /> Sem WhatsApp ({verification.carrier})
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <span className="text-[#667085] block mb-1">E-mail Corporativo</span>
-                  <p className="font-semibold text-[#F5F7FA]">{lead.email}</p>
-                </div>
-
-                <div>
-                  <span className="text-[#667085] block mb-1">Canal de Origem</span>
-                  <p className="font-semibold text-[#3B82F6] uppercase tracking-wider">
-                    {lead.channel}
-                  </p>
-                </div>
-
-                <div>
-                  <span className="text-[#667085] block mb-1">Primeiro Contacto</span>
-                  <p className="font-semibold text-[#F5F7FA]">{lead.firstContactAt}</p>
-                </div>
-              </div>
-
-              {/* Pacote de Interesse Tags */}
-              <div className="mt-5 pt-4 border-t border-[#252C38]">
-                <span className="text-xs text-[#667085] block mb-2">Pacote de Interesse</span>
-                <div className="flex flex-wrap gap-2">
-                  {(
-                    [
-                      { name: "Presença", price: "Kz 125.000" },
-                      { name: "Profissional", price: "Kz 250.000 ⭐" },
-                      { name: "Autoridade", price: "Kz 450.000" },
-                      { name: "Domínio IA", price: "Kz 700.000" },
-                    ] as const
-                  ).map((pkg) => {
-                    const isSelected = lead.packageInterest === pkg.name;
-                    return (
-                      <span
-                        key={pkg.name}
-                        className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
-                          isSelected
-                            ? "bg-[#3B82F6]/20 text-[#60A5FA] border border-[#3B82F6]/50 shadow-sm"
-                            : "bg-[#0E121A] text-[#667085] border border-[#252C38]"
+        {activeTab === "overview" &&
+          (() => {
+            const audit = evaluateLeadQualification(lead);
+            return (
+              <div className="space-y-6">
+                {/* Auditoria Real de Qualificação (Sem Achismos) */}
+                <div
+                  className={`rounded-[16px] border p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] ${
+                    audit.isQualified
+                      ? "border-[#22C55E]/40 bg-[#151A23]"
+                      : audit.score >= 40
+                        ? "border-[#F59E0B]/40 bg-[#151A23]"
+                        : "border-[#EF4444]/40 bg-[#151A23]"
+                  }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#252C38]">
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className={`size-8 rounded-[8px] flex items-center justify-center font-bold text-xs ${
+                          audit.isQualified
+                            ? "bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30"
+                            : audit.score >= 40
+                              ? "bg-[#F59E0B]/15 text-[#FBBF24] border border-[#F59E0B]/30"
+                              : "bg-[#EF4444]/15 text-[#F87171] border border-[#EF4444]/30"
                         }`}
                       >
-                        <span>{pkg.name}</span>
-                        <span className="text-[10px] font-mono opacity-80">({pkg.price})</span>
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Conversa com Agente IA (Preview) */}
-            <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 shadow-[0_0_30px_-8px_rgba(139,92,246,0.25)]">
-              <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
-                <div className="flex items-center gap-2">
-                  <div className="size-7 rounded-[6px] bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 flex items-center justify-center text-[#8B5CF6]">
-                    <Bot className="size-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
-                      Conversa com Agente IA
-                    </h4>
-                    <p className="text-[10px] text-[#A7B0BF]">
-                      Resumo da sessão interativa via{" "}
-                      {verification.isRegistered ? "WhatsApp API" : "Chat Web / Portal"}
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("chat")}
-                  className="text-xs font-semibold text-[#8B5CF6] hover:text-[#C084FC] flex items-center gap-1"
-                >
-                  <span>Abrir Chat Completo</span>
-                  <ArrowUpRight className="size-3.5" />
-                </button>
-              </div>
-
-              {/* Chat snippet */}
-              <div className="mt-4 space-y-3">
-                {lead.conversation.slice(-3).map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex ${msg.sender === "client" ? "justify-start" : "justify-end"}`}
-                  >
-                    <div
-                      className={`max-w-[85%] rounded-[12px] p-3 text-xs ${
-                        msg.sender === "client"
-                          ? "bg-[#252C38] text-[#F5F7FA]"
-                          : "bg-[#3B82F6]/10 border border-[#3B82F6]/25 text-[#F5F7FA]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-3 mb-1 text-[10px] text-[#A7B0BF]">
-                        <span className="font-semibold">
-                          {msg.sender === "client" ? lead.name : "Agente IA (Agentes Digital)"}
-                        </span>
-                        <span className="font-mono">{msg.timestamp}</span>
+                        {audit.score}
                       </div>
-                      <p className="leading-relaxed">{msg.text}</p>
+                      <div>
+                        <h3 className="text-sm font-bold text-[#F5F7FA] flex items-center gap-2">
+                          <span>Auditoria de Qualificação (Sem Achismos)</span>
+                          <span
+                            className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                              audit.isQualified
+                                ? "bg-[#22C55E]/15 text-[#4ADE80] border-[#22C55E]/30"
+                                : audit.score >= 40
+                                  ? "bg-[#F59E0B]/15 text-[#FBBF24] border-[#F59E0B]/30"
+                                  : "bg-[#EF4444]/15 text-[#F87171] border-[#EF4444]/30"
+                            }`}
+                          >
+                            {audit.statusText}
+                          </span>
+                        </h3>
+                        <p className="text-[11px] text-[#A7B0BF]">
+                          Critérios objetivos de contactabilidade, dados cadastrais e viabilidade
+                          comercial.
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleRunAiQualification}
+                      className="inline-flex items-center gap-1.5 h-8 px-3 rounded-[6px] text-xs font-semibold bg-[#252C38] hover:bg-[#323B4B] text-[#F5F7FA] border border-[#3B4455] transition-colors cursor-pointer self-start sm:self-auto"
+                    >
+                      <RefreshCw className="size-3 text-[#3B82F6]" />
+                      <span>Reavaliar Critérios</span>
+                    </button>
+                  </div>
+
+                  {/* Alerta explícito quando o número NÃO tem WhatsApp */}
+                  {!verification.isRegistered && (
+                    <div className="mt-4 rounded-[10px] border border-[#EF4444]/40 bg-[#EF4444]/10 p-3.5 flex items-start gap-3 text-xs text-[#F87171]">
+                      <PhoneOff className="size-4 text-[#EF4444] shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="block font-semibold text-[#EF4444] text-xs">
+                          Número sem cadastro no WhatsApp (+244 934 024 904 ou similar)
+                        </strong>
+                        <span className="text-[11px] leading-relaxed text-[#FCA5A5] mt-0.5 block">
+                          O WhatsApp informou:{" "}
+                          <em>&ldquo;O número não está registado no WhatsApp&rdquo;</em>. O envio
+                          automatizado via WhatsApp API é impossível para este contacto. A equipa
+                          deve realizar <strong>chamada telefónica de voz</strong> ou enviar{" "}
+                          <strong>e-mail</strong>.
+                        </span>
+                        <div className="flex items-center gap-2 mt-2.5">
+                          <a
+                            href={`tel:${lead.phone}`}
+                            className="inline-flex items-center gap-1 h-7 px-2.5 rounded-[6px] bg-[#EF4444]/20 hover:bg-[#EF4444]/30 text-[#F5F7FA] font-semibold text-[11px] border border-[#EF4444]/40 transition-colors"
+                          >
+                            <Phone className="size-3 text-[#F5F7FA]" />
+                            <span>Ligar para {lead.phone}</span>
+                          </a>
+                          <a
+                            href={`mailto:${lead.email}`}
+                            className="inline-flex items-center gap-1 h-7 px-2.5 rounded-[6px] bg-[#252C38] hover:bg-[#323B4B] text-[#F5F7FA] font-semibold text-[11px] border border-[#3B4455] transition-colors"
+                          >
+                            <Mail className="size-3 text-[#A7B0BF]" />
+                            <span>Enviar E-mail</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Grid dos Critérios Auditados */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4 text-xs">
+                    {/* 1. Contactabilidade */}
+                    <div className="p-3 rounded-[10px] border border-[#252C38] bg-[#0E121A]/70">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[#F5F7FA] flex items-center gap-1.5">
+                          <Phone className="size-3.5 text-[#3B82F6]" />
+                          Contactabilidade
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-[#A7B0BF]">
+                          {audit.criteria.contactability.hasWhatsAppAccount
+                            ? "40"
+                            : audit.criteria.contactability.hasValidEmail
+                              ? "10"
+                              : "0"}
+                          /40 pts
+                        </span>
+                      </div>
+                      <ul className="space-y-1.5 text-[11px]">
+                        <li className="flex items-center gap-1.5">
+                          {audit.criteria.contactability.hasValidPhone ? (
+                            <Check className="size-3 text-[#22C55E] shrink-0" />
+                          ) : (
+                            <X className="size-3 text-[#EF4444] shrink-0" />
+                          )}
+                          <span className="text-[#A7B0BF]">
+                            Linha móvel válida ({verification.carrier})
+                          </span>
+                        </li>
+                        <li className="flex items-center gap-1.5">
+                          {verification.isRegistered ? (
+                            <Check className="size-3 text-[#22C55E] shrink-0" />
+                          ) : (
+                            <X className="size-3 text-[#EF4444] shrink-0" />
+                          )}
+                          <span
+                            className={
+                              verification.isRegistered
+                                ? "text-[#22C55E]"
+                                : "text-[#EF4444] font-medium"
+                            }
+                          >
+                            {verification.isRegistered
+                              ? "Conta WhatsApp Ativa (+30 pts)"
+                              : "Sem WhatsApp (0 pts)"}
+                          </span>
+                        </li>
+                        <li className="flex items-center gap-1.5">
+                          {audit.criteria.contactability.hasValidEmail ? (
+                            <Check className="size-3 text-[#22C55E] shrink-0" />
+                          ) : (
+                            <X className="size-3 text-[#EF4444] shrink-0" />
+                          )}
+                          <span className="text-[#A7B0BF]">E-mail corporativo (+10 pts)</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 2. Identidade */}
+                    <div className="p-3 rounded-[10px] border border-[#252C38] bg-[#0E121A]/70">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[#F5F7FA] flex items-center gap-1.5">
+                          <UserCheck className="size-3.5 text-[#8B5CF6]" />
+                          Identidade
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-[#A7B0BF]">
+                          {(audit.criteria.identity.hasRealName ? 15 : 0) +
+                            (audit.criteria.identity.hasRealCompany ? 15 : 0)}
+                          /30 pts
+                        </span>
+                      </div>
+                      <ul className="space-y-1.5 text-[11px]">
+                        <li className="flex items-center gap-1.5">
+                          {audit.criteria.identity.hasRealName ? (
+                            <Check className="size-3 text-[#22C55E] shrink-0" />
+                          ) : (
+                            <X className="size-3 text-[#EF4444] shrink-0" />
+                          )}
+                          <span
+                            className={
+                              audit.criteria.identity.hasRealName
+                                ? "text-[#A7B0BF]"
+                                : "text-[#EF4444] font-medium"
+                            }
+                          >
+                            {audit.criteria.identity.hasRealName
+                              ? `Nome: ${lead.name}`
+                              : `Nome curto/teste ("${lead.name}")`}
+                          </span>
+                        </li>
+                        <li className="flex items-center gap-1.5">
+                          {audit.criteria.identity.hasRealCompany ? (
+                            <Check className="size-3 text-[#22C55E] shrink-0" />
+                          ) : (
+                            <X className="size-3 text-[#EF4444] shrink-0" />
+                          )}
+                          <span
+                            className={
+                              audit.criteria.identity.hasRealCompany
+                                ? "text-[#A7B0BF]"
+                                : "text-[#EF4444] font-medium"
+                            }
+                          >
+                            {audit.criteria.identity.hasRealCompany
+                              ? `Empresa: ${lead.company}`
+                              : `Empresa teste ("${lead.company}")`}
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 3. Contexto Comercial */}
+                    <div className="p-3 rounded-[10px] border border-[#252C38] bg-[#0E121A]/70">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[#F5F7FA] flex items-center gap-1.5">
+                          <Building2 className="size-3.5 text-[#22C55E]" />
+                          Contexto Comercial
+                        </span>
+                        <span className="text-[11px] font-mono font-semibold text-[#A7B0BF]">
+                          {(audit.criteria.commercial.hasPackageInterest ? 15 : 0) +
+                            (audit.criteria.commercial.hasEstimatedBudget ? 15 : 0)}
+                          /30 pts
+                        </span>
+                      </div>
+                      <ul className="space-y-1.5 text-[11px]">
+                        <li className="flex items-center gap-1.5">
+                          <Check className="size-3 text-[#22C55E] shrink-0" />
+                          <span className="text-[#A7B0BF]">
+                            Pacote: {lead.packageInterest} (+15 pts)
+                          </span>
+                        </li>
+                        <li className="flex items-center gap-1.5">
+                          <Check className="size-3 text-[#22C55E] shrink-0" />
+                          <span className="text-[#A7B0BF]">
+                            Orçamento: {lead.estimatedValue} (+15 pts)
+                          </span>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Agendamentos Snippet */}
-            {lead.appointments.length > 0 && lead.appointments[0] && (
-              <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
-                <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
-                  <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
-                    <Calendar className="size-4 text-[#3B82F6]" />
-                    Próximo Agendamento
-                  </h4>
-                  <span className="text-xs font-mono text-[#22C55E] font-semibold">
-                    {lead.appointments[0]?.status}
-                  </span>
                 </div>
 
-                <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
-                  <div>
-                    <p className="text-xs font-bold text-[#F5F7FA]">
-                      {lead.appointments[0]?.title}
-                    </p>
-                    <p className="text-[11px] text-[#A7B0BF] mt-0.5">
-                      {lead.appointments[0]?.dateFormatted} • {lead.appointments[0]?.timeFormatted}
-                    </p>
+                {/* Sobre o Lead */}
+                <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+                  <h3 className="text-sm font-bold text-[#F5F7FA] pb-3 border-b border-[#252C38] flex items-center justify-between">
+                    <span>Sobre o Lead</span>
+                    <span className="text-[10px] text-[#667085] font-mono">ID: {lead.id}</span>
+                  </h3>
+
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                      <span className="text-[#667085] block mb-1">Nome Completo</span>
+                      <p className="font-semibold text-[#F5F7FA]">{lead.name}</p>
+                    </div>
+
+                    <div>
+                      <span className="text-[#667085] block mb-1">Empresa & Cargo</span>
+                      <p className="font-semibold text-[#F5F7FA]">
+                        {lead.company} ({lead.role})
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className="text-[#667085] block mb-1">
+                        {verification.isRegistered
+                          ? "Telefone WhatsApp"
+                          : "Telefone (Sem WhatsApp)"}
+                      </span>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-semibold text-[#F5F7FA] font-mono">{lead.phone}</p>
+                        {verification.isRegistered ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/25 px-1.5 py-0.5 rounded-[4px]">
+                            <CheckCircle2 className="size-3" /> WhatsApp Ativo (
+                            {verification.carrier})
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/25 px-1.5 py-0.5 rounded-[4px]">
+                            <PhoneOff className="size-3" /> Sem WhatsApp ({verification.carrier})
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-[#667085] block mb-1">E-mail Corporativo</span>
+                      <p className="font-semibold text-[#F5F7FA]">{lead.email}</p>
+                    </div>
+
+                    <div>
+                      <span className="text-[#667085] block mb-1">Canal de Origem</span>
+                      <p className="font-semibold text-[#3B82F6] uppercase tracking-wider">
+                        {lead.channel}
+                      </p>
+                    </div>
+
+                    <div>
+                      <span className="text-[#667085] block mb-1">Primeiro Contacto</span>
+                      <p className="font-semibold text-[#F5F7FA]">{lead.firstContactAt}</p>
+                    </div>
                   </div>
 
-                  {lead.appointments[0]?.meetUrl && (
-                    <a
-                      href={lead.appointments[0].meetUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
-                    >
-                      <Video className="size-3.5" />
-                      <span>Abrir Google Meet</span>
-                    </a>
-                  )}
+                  {/* Pacote de Interesse Tags */}
+                  <div className="mt-5 pt-4 border-t border-[#252C38]">
+                    <span className="text-xs text-[#667085] block mb-2">Pacote de Interesse</span>
+                    <div className="flex flex-wrap gap-2">
+                      {(
+                        [
+                          { name: "Presença", price: "Kz 125.000" },
+                          { name: "Profissional", price: "Kz 250.000 ⭐" },
+                          { name: "Autoridade", price: "Kz 450.000" },
+                          { name: "Domínio IA", price: "Kz 700.000" },
+                        ] as const
+                      ).map((pkg) => {
+                        const isSelected = lead.packageInterest === pkg.name;
+                        return (
+                          <span
+                            key={pkg.name}
+                            className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold transition-colors flex items-center gap-1.5 ${
+                              isSelected
+                                ? "bg-[#3B82F6]/20 text-[#60A5FA] border border-[#3B82F6]/50 shadow-sm"
+                                : "bg-[#0E121A] text-[#667085] border border-[#252C38]"
+                            }`}
+                          >
+                            <span>{pkg.name}</span>
+                            <span className="text-[10px] font-mono opacity-80">({pkg.price})</span>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
+
+                {/* Conversa com Agente IA (Preview) */}
+                <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 shadow-[0_0_30px_-8px_rgba(139,92,246,0.25)]">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                    <div className="flex items-center gap-2">
+                      <div className="size-7 rounded-[6px] bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 flex items-center justify-center text-[#8B5CF6]">
+                        <Bot className="size-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                          Conversa com Agente IA
+                        </h4>
+                        <p className="text-[10px] text-[#A7B0BF]">
+                          Resumo da sessão interativa via{" "}
+                          {verification.isRegistered ? "WhatsApp API" : "Chat Web / Portal"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab("chat")}
+                      className="text-xs font-semibold text-[#8B5CF6] hover:text-[#C084FC] flex items-center gap-1"
+                    >
+                      <span>Abrir Chat Completo</span>
+                      <ArrowUpRight className="size-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Chat snippet */}
+                  <div className="mt-4 space-y-3">
+                    {lead.conversation.slice(-3).map((msg) => (
+                      <div
+                        key={msg.id}
+                        className={`flex ${msg.sender === "client" ? "justify-start" : "justify-end"}`}
+                      >
+                        <div
+                          className={`max-w-[85%] rounded-[12px] p-3 text-xs ${
+                            msg.sender === "client"
+                              ? "bg-[#252C38] text-[#F5F7FA]"
+                              : "bg-[#3B82F6]/10 border border-[#3B82F6]/25 text-[#F5F7FA]"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-3 mb-1 text-[10px] text-[#A7B0BF]">
+                            <span className="font-semibold">
+                              {msg.sender === "client" ? lead.name : "Agente IA (Agentes Digital)"}
+                            </span>
+                            <span className="font-mono">{msg.timestamp}</span>
+                          </div>
+                          <p className="leading-relaxed">{msg.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Agendamentos Snippet */}
+                {lead.appointments.length > 0 && lead.appointments[0] && (
+                  <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
+                    <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                      <h4 className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider flex items-center gap-2">
+                        <Calendar className="size-4 text-[#3B82F6]" />
+                        Próximo Agendamento
+                      </h4>
+                      <span className="text-xs font-mono text-[#22C55E] font-semibold">
+                        {lead.appointments[0]?.status}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3.5">
+                      <div>
+                        <p className="text-xs font-bold text-[#F5F7FA]">
+                          {lead.appointments[0]?.title}
+                        </p>
+                        <p className="text-[11px] text-[#A7B0BF] mt-0.5">
+                          {lead.appointments[0]?.dateFormatted} •{" "}
+                          {lead.appointments[0]?.timeFormatted}
+                        </p>
+                      </div>
+
+                      {lead.appointments[0]?.meetUrl && (
+                        <a
+                          href={lead.appointments[0].meetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#3B82F6] text-white text-xs font-semibold hover:bg-[#2563EB] transition-colors"
+                        >
+                          <Video className="size-3.5" />
+                          <span>Abrir Google Meet</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        )}
+            );
+          })()}
 
         {/* CHAT TAB (Full AI Agent Conversation) */}
         {activeTab === "chat" && (

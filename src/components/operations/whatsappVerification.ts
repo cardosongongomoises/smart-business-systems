@@ -29,9 +29,16 @@ const STORAGE_KEY = "sbs_whatsapp_verified_cache_v1";
 
 /**
  * Conjunto de números confirmados SEM cadastro no WhatsApp.
- * Inclui explicitamente o número +244928538739 (e variações).
+ * Inclui explicitamente:
+ * - +244934024904 (Unitel - confirmado pelo utilizador que não tem WhatsApp)
+ * - +244928538739 (Unitel - confirmado sem WhatsApp)
+ * e todas as suas variações de formatação.
  */
 export const KNOWN_UNREGISTERED_NUMBERS = new Set([
+  "244934024904",
+  "934024904",
+  "+244934024904",
+  "00244934024904",
   "244928538739",
   "928538739",
   "+244928538739",
@@ -56,15 +63,15 @@ if (typeof window !== "undefined") {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (parsed["244928538739"]?.isRegistered || parsed["928538739"]?.isRegistered) {
-        parsed["244928538739"] = {
+      const invalidNumbers = ["244934024904", "934024904", "244928538739", "928538739"];
+      for (const num of invalidNumbers) {
+        parsed[num] = {
           isRegistered: false,
-          reason: "Sem cadastro no WhatsApp (Unitel - Móvel)",
+          reason: "Sem cadastro no WhatsApp (Confirmado)",
           updatedAt: new Date().toISOString(),
         };
-        delete parsed["928538739"];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
     }
   } catch {
     // Ignora
@@ -361,17 +368,18 @@ export function verifyWhatsAppNumber(
     };
   }
 
-  // 5. Linhas móveis sem confirmação prévia
+  // 5. Linhas móveis sem confirmação prévia: NÃO presumir que tem WhatsApp!
+  // Evita falsos positivos e "achismos". O operador deve testar e confirmar.
   return {
-    isRegistered: true,
-    status: "registered",
+    isRegistered: false,
+    status: "not_registered",
     formattedNumber: norm.formatted || phone,
     rawPhone: phone,
     digits: norm.digits,
     carrier,
     lineType,
-    waLink: `https://wa.me/${norm.digits}`,
-    reason: `Número móvel válido (${carrier}).`,
+    waLink: norm.digits ? `https://wa.me/${norm.digits}` : null,
+    reason: `Número móvel (${carrier}) ainda não testado. Teste o link ou marque o status real.`,
     checkedAt: nowStr,
     checkedVia: "carrier_format",
   };

@@ -24,6 +24,7 @@ import { useMRRMonitoring } from "./mrrMonitoringStore";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
 import { isKnownUnregisteredNumber } from "./whatsappVerification";
+import { evaluateLeadQualification } from "./leadQualificationEngine";
 import {
   fetchLeadsFromSupabase,
   updateLeadStatusInSupabase,
@@ -181,10 +182,15 @@ export function OperationsCenter() {
     try {
       const res = await fetchLeadsFromSupabase();
       const sanitized = res.leads.map((l) => {
-        if (l.phone && isKnownUnregisteredNumber(l.phone)) {
-          return { ...l, hasWhatsApp: false };
-        }
-        return l;
+        const isKnownNoWA = l.phone && isKnownUnregisteredNumber(l.phone);
+        const hasWhatsApp = isKnownNoWA ? false : l.hasWhatsApp;
+        const audit = evaluateLeadQualification({ ...l, hasWhatsApp });
+        return {
+          ...l,
+          hasWhatsApp,
+          aiQualified: audit.isQualified,
+          qualificationScore: audit.score,
+        };
       });
       setLeads(sanitized);
       setSupabaseSource(res.source);
@@ -322,19 +328,38 @@ export function OperationsCenter() {
     );
   };
 
-  const handleUpdateWhatsAppStatus = (leadId: string, hasWhatsApp: boolean) => {
+  const handleUpdateWhatsAppStatus = useCallback((leadId: string, hasWhatsApp: boolean) => {
     setLeads((prev) =>
       prev.map((lead) => {
         if (lead.id === leadId) {
+          const audit = evaluateLeadQualification({ ...lead, hasWhatsApp });
           return {
             ...lead,
             hasWhatsApp,
+            aiQualified: audit.isQualified,
+            qualificationScore: audit.score,
           };
         }
         return lead;
       }),
     );
-  };
+  }, []);
+
+  const handleReevaluateLead = useCallback((leadId: string) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          const audit = evaluateLeadQualification(lead);
+          return {
+            ...lead,
+            aiQualified: audit.isQualified,
+            qualificationScore: audit.score,
+          };
+        }
+        return lead;
+      }),
+    );
+  }, []);
 
   const handleCreateLead = async (newLead: Lead) => {
     const sanitizedLead: Lead = {
@@ -548,6 +573,7 @@ export function OperationsCenter() {
                     onAddNote={handleAddNote}
                     onToggleAiStatus={handleToggleAiStatus}
                     onUpdateWhatsAppStatus={handleUpdateWhatsAppStatus}
+                    onReevaluateLead={handleReevaluateLead}
                     onBackToList={() => setMobileLeadView("list")}
                   />
                 </div>
