@@ -221,23 +221,7 @@ export function LeadsList({
 
                     <div className="flex items-center justify-between text-[11px] text-[#A7B0BF] mt-0.5">
                       <span className="truncate">{lead.company}</span>
-                      {lead.hasWhatsApp !== undefined ? (
-                        lead.hasWhatsApp ? (
-                          <span
-                            className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#22C55E] shrink-0"
-                            title="WhatsApp Ativo"
-                          >
-                            <Phone className="size-2.5" /> WA
-                          </span>
-                        ) : (
-                          <span
-                            className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#EF4444] shrink-0"
-                            title="Sem WhatsApp"
-                          >
-                            <PhoneOff className="size-2.5" /> Sem WA
-                          </span>
-                        )
-                      ) : isPhoneRegisteredOnWhatsApp(lead.phone) ? (
+                      {isPhoneRegisteredOnWhatsApp(lead.phone, lead.hasWhatsApp) ? (
                         <span
                           className="inline-flex items-center gap-0.5 text-[10px] font-medium text-[#22C55E] shrink-0"
                           title="WhatsApp Ativo"

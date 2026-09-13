@@ -89,8 +89,8 @@ export function LeadDetailPanel({
       setVerification(autoResult);
       setIsVerifying(false);
 
-      // Notifica se houver handler e não estiver definido
-      if (onUpdateWhatsAppStatus && lead.hasWhatsApp === undefined) {
+      // Notifica se houver handler e o status for diferente
+      if (onUpdateWhatsAppStatus && lead.hasWhatsApp !== autoResult.isRegistered) {
         onUpdateWhatsAppStatus(lead.id, autoResult.isRegistered);
       }
 
@@ -555,7 +555,8 @@ export function LeadDetailPanel({
                       Conversa com Agente IA
                     </h4>
                     <p className="text-[10px] text-[#A7B0BF]">
-                      Resumo da sessão interativa via WhatsApp API
+                      Resumo da sessão interativa via{" "}
+                      {verification.isRegistered ? "WhatsApp API" : "Chat Web / Portal"}
                     </p>
                   </div>
                 </div>
@@ -651,7 +652,9 @@ export function LeadDetailPanel({
                     Conversa Ativa com Agente IA
                   </h3>
                   <p className="text-[10px] text-[#A7B0BF]">
-                    Canal: WhatsApp Business API • Latência média 42ms
+                    Canal:{" "}
+                    {verification.isRegistered ? "WhatsApp Business API" : "Chat Web / Portal"} •
+                    Latência média 42ms
                   </p>
                 </div>
               </div>

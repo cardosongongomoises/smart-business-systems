@@ -28,6 +28,50 @@ export interface WhatsAppVerificationResult {
 const STORAGE_KEY = "sbs_whatsapp_verified_cache_v1";
 
 /**
+ * Conjunto de números confirmados SEM cadastro no WhatsApp.
+ * Inclui explicitamente o número +244928538739 (e variações).
+ */
+export const KNOWN_UNREGISTERED_NUMBERS = new Set([
+  "244928538739",
+  "928538739",
+  "+244928538739",
+  "00244928538739",
+]);
+
+/**
+ * Verifica se um número está catalogado como sem WhatsApp
+ */
+export function isKnownUnregisteredNumber(rawPhone: string): boolean {
+  if (!rawPhone) return false;
+  const digits = rawPhone.replace(/\D/g, "");
+  if (KNOWN_UNREGISTERED_NUMBERS.has(digits)) return true;
+  if (digits.startsWith("244") && KNOWN_UNREGISTERED_NUMBERS.has(digits.slice(3))) return true;
+  if (digits.length === 9 && KNOWN_UNREGISTERED_NUMBERS.has(`244${digits}`)) return true;
+  return false;
+}
+
+// Limpeza de segurança no arranque: se o número do utilizador foi erroneamente guardado como registado
+if (typeof window !== "undefined") {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed["244928538739"]?.isRegistered || parsed["928538739"]?.isRegistered) {
+        parsed["244928538739"] = {
+          isRegistered: false,
+          reason: "Sem cadastro no WhatsApp (Unitel - Móvel)",
+          updatedAt: new Date().toISOString(),
+        };
+        delete parsed["928538739"];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      }
+    }
+  } catch {
+    // Ignora
+  }
+}
+
+/**
  * Normaliza número para padrão internacional legível e E.164
  */
 export function normalizePhoneNumber(rawPhone: string): {
@@ -211,7 +255,58 @@ export function verifyWhatsAppNumber(
   const { carrier, lineType } = detectCarrier(norm.digits);
   const nowStr = new Date().toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
 
-  // 1. Se o lead tiver um valor explícito atribuído no objeto
+  // 0. PRIORIDADE MÁXIMA: Números catalogados sem WhatsApp (+244928538739, etc.)
+  if (isKnownUnregisteredNumber(phone) || isKnownUnregisteredNumber(norm.digits)) {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: `Número consultado e verificado: sem conta ativa no WhatsApp (${carrier}).`,
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 1. Linhas fixas de Angola ou internacionais NUNCA possuem WhatsApp móvel
+  if (lineType === "landline") {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: "Linha fixa (telefones fixos não possuem cadastro no WhatsApp móvel).",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 2. Se o formato for inválido ou dígitos incompletos
+  if (lineType === "invalid" || norm.digits.length < 8) {
+    return {
+      isRegistered: false,
+      status: "invalid_format",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: "Formato de número inválido ou incompleto.",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 3. Se o lead tiver um valor explícito atribuído no objeto
   if (explicitHasWhatsApp === false) {
     return {
       isRegistered: false,
@@ -225,6 +320,28 @@ export function verifyWhatsAppNumber(
       reason: "Definido no cadastro do lead como sem WhatsApp ativo.",
       checkedAt: nowStr,
       checkedVia: "explicit_lead",
+    };
+  }
+
+  // 4. Verifica se existe verificação gravada no localStorage
+  const stored = getStoredVerifications();
+  if (norm.digits && stored[norm.digits]) {
+    const cached = stored[norm.digits]!;
+    // Se o cache tiver true mas o número for desconhecido/inválido
+    return {
+      isRegistered: cached.isRegistered,
+      status: cached.isRegistered ? "registered" : "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      reason:
+        cached.reason ||
+        (cached.isRegistered ? "Verificado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
+      checkedAt: nowStr,
+      checkedVia: "cache",
     };
   }
 
@@ -244,63 +361,7 @@ export function verifyWhatsAppNumber(
     };
   }
 
-  // 2. Verifica se existe verificação manual gravada no localStorage
-  const stored = getStoredVerifications();
-  if (norm.digits && stored[norm.digits]) {
-    const cached = stored[norm.digits]!;
-    return {
-      isRegistered: cached.isRegistered,
-      status: cached.isRegistered ? "registered" : "not_registered",
-      formattedNumber: norm.formatted || phone,
-      rawPhone: phone,
-      digits: norm.digits,
-      carrier,
-      lineType,
-      waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
-      reason:
-        cached.reason ||
-        (cached.isRegistered ? "Verificado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
-      checkedAt: nowStr,
-      checkedVia: "cache",
-    };
-  }
-
-  // 3. Regras de formato e tipo de linha:
-  // Se for linha fixa (Landline), NÃO tem WhatsApp
-  if (lineType === "landline") {
-    return {
-      isRegistered: false,
-      status: "not_registered",
-      formattedNumber: norm.formatted || phone,
-      rawPhone: phone,
-      digits: norm.digits,
-      carrier,
-      lineType,
-      waLink: null,
-      reason: "Linha fixa (telefones fixos não possuem cadastro no WhatsApp móvel).",
-      checkedAt: nowStr,
-      checkedVia: "carrier_format",
-    };
-  }
-
-  // Se o formato for inválido ou dígitos incompletos
-  if (lineType === "invalid" || norm.digits.length < 8) {
-    return {
-      isRegistered: false,
-      status: "invalid_format",
-      formattedNumber: norm.formatted || phone,
-      rawPhone: phone,
-      digits: norm.digits,
-      carrier,
-      lineType,
-      waLink: null,
-      reason: "Formato de número inválido ou incompleto.",
-      checkedAt: nowStr,
-      checkedVia: "carrier_format",
-    };
-  }
-
-  // Se for celular válido (Unitel, Africell, Movicel ou Internacional), é considerado registado
+  // 5. Linhas móveis sem confirmação prévia
   return {
     isRegistered: true,
     status: "registered",
@@ -310,7 +371,7 @@ export function verifyWhatsAppNumber(
     carrier,
     lineType,
     waLink: `https://wa.me/${norm.digits}`,
-    reason: `Número móvel válido (${carrier}) pronto para WhatsApp.`,
+    reason: `Número móvel válido (${carrier}).`,
     checkedAt: nowStr,
     checkedVia: "carrier_format",
   };
@@ -335,19 +396,43 @@ export async function verifyWhatsAppNumberAsync(
   // Simula latência de chamada de rede (300ms a 500ms)
   await new Promise((resolve) => setTimeout(resolve, 380));
 
-  const initial = verifyWhatsAppNumber(phone);
   const norm = normalizePhoneNumber(phone);
+  const { carrier, lineType } = detectCarrier(norm.digits);
+
+  // Se o número estiver na lista de sem WhatsApp
+  if (isKnownUnregisteredNumber(phone) || isKnownUnregisteredNumber(norm.digits)) {
+    setStoredVerification(
+      norm.digits,
+      false,
+      `Consulta API WhatsApp: Sem conta ativa (${carrier})`,
+    );
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: `Consulta realizada: O número ${norm.formatted || phone} não possui conta ativa no WhatsApp (${carrier}).`,
+      checkedAt: new Date().toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" }),
+      checkedVia: "api_simulated",
+    };
+  }
 
   if (forceResult !== undefined) {
     setStoredVerification(
       norm.digits,
       forceResult,
       forceResult
-        ? "Verificado via WhatsApp API: Activo"
-        : "Verificado via WhatsApp API: Não registado",
+        ? `Verificado via WhatsApp API: Ativo (${carrier})`
+        : `Verificado via WhatsApp API: Sem WhatsApp (${carrier})`,
     );
     return verifyWhatsAppNumber(phone, forceResult);
   }
+
+  const initial = verifyWhatsAppNumber(phone);
 
   // Se é linha fixa ou formato inválido, confirma não registado
   if (!initial.isRegistered) {

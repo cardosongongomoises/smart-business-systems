@@ -23,6 +23,7 @@ import { computeFinancialMetrics, INITIAL_CLIENTS } from "./financialUtils";
 import { useMRRMonitoring } from "./mrrMonitoringStore";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
+import { isKnownUnregisteredNumber } from "./whatsappVerification";
 import {
   fetchLeadsFromSupabase,
   updateLeadStatusInSupabase,
@@ -179,10 +180,16 @@ export function OperationsCenter() {
     setIsLoadingLeads(true);
     try {
       const res = await fetchLeadsFromSupabase();
-      setLeads(res.leads);
+      const sanitized = res.leads.map((l) => {
+        if (l.phone && isKnownUnregisteredNumber(l.phone)) {
+          return { ...l, hasWhatsApp: false };
+        }
+        return l;
+      });
+      setLeads(sanitized);
       setSupabaseSource(res.source);
-      if (res.leads.length > 0 && res.leads[0]) {
-        setSelectedLeadId((current) => current || res.leads[0]?.id || null);
+      if (sanitized.length > 0 && sanitized[0]) {
+        setSelectedLeadId((current) => current || sanitized[0]?.id || null);
       }
     } catch (err) {
       console.error("Erro ao carregar dados do Supabase:", err);
@@ -330,10 +337,15 @@ export function OperationsCenter() {
   };
 
   const handleCreateLead = async (newLead: Lead) => {
-    setLeads((prev) => [newLead, ...prev]);
-    setSelectedLeadId(newLead.id);
-    await createManualLeadInSupabase(newLead);
-    toast.success(`Lead criado: ${newLead.name}`);
+    const sanitizedLead: Lead = {
+      ...newLead,
+      hasWhatsApp:
+        newLead.phone && isKnownUnregisteredNumber(newLead.phone) ? false : newLead.hasWhatsApp,
+    };
+    setLeads((prev) => [sanitizedLead, ...prev]);
+    setSelectedLeadId(sanitizedLead.id);
+    await createManualLeadInSupabase(sanitizedLead);
+    toast.success(`Lead criado: ${sanitizedLead.name}`);
   };
 
   const handleSimulateIncomingLead = () => {

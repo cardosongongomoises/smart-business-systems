@@ -17,7 +17,7 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
   const [channel, setChannel] = useState<LeadChannel>("whatsapp");
   const [packageInterest, setPackageInterest] = useState<Lead["packageInterest"]>("Domínio IA");
   const [autoAiQualify, setAutoAiQualify] = useState(true);
-  const [hasWhatsApp, setHasWhatsApp] = useState<boolean>(true);
+  const [hasWhatsApp, setHasWhatsApp] = useState<boolean>(false);
   const [whatsappVerif, setWhatsappVerif] = useState<WhatsAppVerificationResult | null>(null);
 
   useEffect(() => {
@@ -27,6 +27,7 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
       setHasWhatsApp(res.isRegistered);
     } else {
       setWhatsappVerif(null);
+      setHasWhatsApp(false);
     }
   }, [phone]);
 
@@ -199,13 +200,21 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Ex: +244 928 538 739"
+                placeholder="Ex: +244 923 111 222"
                 className="w-full h-9 rounded-[8px] border border-[#252C38] bg-[#0E121A] px-3 text-[#F5F7FA] placeholder-[#667085] focus:outline-none focus:border-[#3B82F6]"
               />
               {whatsappVerif && (
                 <div className="mt-1 flex items-center justify-between text-[11px]">
                   <span className="text-[#A7B0BF] truncate">
-                    Operadora: <strong className="text-[#F5F7FA]">{whatsappVerif.carrier}</strong>
+                    {whatsappVerif.isRegistered ? (
+                      <span className="text-[#22C55E] font-medium">
+                        ✓ WhatsApp Ativo ({whatsappVerif.carrier})
+                      </span>
+                    ) : (
+                      <span className="text-[#EF4444] font-medium">
+                        ✕ Sem WhatsApp ({whatsappVerif.carrier})
+                      </span>
+                    )}
                   </span>
                   <label className="inline-flex items-center gap-1 text-[#667085] hover:text-[#A7B0BF] cursor-pointer">
                     <input
