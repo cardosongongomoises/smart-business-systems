@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Phone,
+  PhoneOff,
   Mail,
   Building2,
   Calendar,
@@ -22,9 +23,20 @@ import {
   Code2,
   ChevronDown,
   ChevronUp,
+  RefreshCw,
+  Loader2,
+  Check,
+  X,
+  Info,
 } from "lucide-react";
 import { Lead, LeadStatus, ChatMessage, LeadNote } from "./types";
 import { generateAIAgentResponse } from "./aiAgentEngine";
+import {
+  verifyWhatsAppNumber,
+  verifyWhatsAppNumberAsync,
+  setStoredVerification,
+  WhatsAppVerificationResult,
+} from "./whatsappVerification";
 import { toast } from "sonner";
 
 interface LeadDetailPanelProps {
@@ -33,6 +45,7 @@ interface LeadDetailPanelProps {
   onAddMessage: (leadId: string, message: ChatMessage) => void;
   onAddNote: (leadId: string, noteText: string) => void;
   onToggleAiStatus: (leadId: string) => void;
+  onUpdateWhatsAppStatus?: (leadId: string, hasWhatsApp: boolean) => void;
   onBackToList?: () => void;
 }
 
@@ -44,6 +57,7 @@ export function LeadDetailPanel({
   onAddMessage,
   onAddNote,
   onToggleAiStatus,
+  onUpdateWhatsAppStatus,
   onBackToList,
 }: LeadDetailPanelProps) {
   const [activeTab, setActiveTab] = useState<DetailTab>("overview");
@@ -51,6 +65,85 @@ export function LeadDetailPanel({
   const [customReplyInput, setCustomReplyInput] = useState("");
   const [isTypingAi, setIsTypingAi] = useState(false);
   const [expandedJsonIds, setExpandedJsonIds] = useState<Record<string, boolean>>({});
+
+  // WhatsApp Verification State
+  const [verification, setVerification] = useState<WhatsAppVerificationResult>(() =>
+    lead ? verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp) : verifyWhatsAppNumber(""),
+  );
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [showVerifyMenu, setShowVerifyMenu] = useState(false);
+
+  useEffect(() => {
+    if (lead) {
+      setVerification(verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp));
+    }
+  }, [lead]);
+
+  // Escuta alterações globais de verificação no cache
+  useEffect(() => {
+    const handleStorageChange = () => {
+      if (lead) {
+        setVerification(verifyWhatsAppNumber(lead.phone, lead.hasWhatsApp));
+      }
+    };
+    window.addEventListener("sbs_whatsapp_status_changed", handleStorageChange);
+    return () => {
+      window.removeEventListener("sbs_whatsapp_status_changed", handleStorageChange);
+    };
+  }, [lead]);
+
+  const handleRunVerification = async () => {
+    if (!lead?.phone) return;
+    setIsVerifying(true);
+    setShowVerifyMenu(false);
+    try {
+      const res = await verifyWhatsAppNumberAsync(lead.phone);
+      setVerification(res);
+      if (onUpdateWhatsAppStatus) {
+        onUpdateWhatsAppStatus(lead.id, res.isRegistered);
+      }
+      if (res.isRegistered) {
+        toast.success(`✓ WhatsApp Ativo (${res.carrier})`, {
+          description: `O número ${res.formattedNumber} está cadastrado no WhatsApp. Botão habilitado.`,
+        });
+      } else {
+        toast.error(`✕ Sem WhatsApp (${res.carrier})`, {
+          description: `${res.reason} O botão de abrir WhatsApp foi removido.`,
+        });
+      }
+    } catch {
+      toast.error("Erro ao verificar número no WhatsApp.");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleManualToggleWhatsApp = (targetRegistered: boolean) => {
+    if (!lead?.phone) return;
+    const digits = lead.phone.replace(/\D/g, "");
+    setStoredVerification(
+      digits,
+      targetRegistered,
+      targetRegistered
+        ? "Confirmado manualmente pelo operador comercial"
+        : "Marcado manualmente como não cadastrado no WhatsApp",
+    );
+    const updated = verifyWhatsAppNumber(lead.phone, targetRegistered);
+    setVerification(updated);
+    if (onUpdateWhatsAppStatus) {
+      onUpdateWhatsAppStatus(lead.id, targetRegistered);
+    }
+    setShowVerifyMenu(false);
+    if (targetRegistered) {
+      toast.success("Marcado como Cadastrado no WhatsApp", {
+        description: "O botão de abrir WhatsApp está agora visível.",
+      });
+    } else {
+      toast.warning("Marcado como Não Cadastrado no WhatsApp", {
+        description: "O botão de abrir WhatsApp foi desativado.",
+      });
+    }
+  };
 
   const toggleJsonExpand = (messageId: string) => {
     setExpandedJsonIds((prev) => ({ ...prev, [messageId]: !prev[messageId] }));
@@ -207,23 +300,115 @@ export function LeadDetailPanel({
               </select>
             </div>
 
-            <a
-              href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E]/40 bg-[#22C55E]/10 px-3 text-xs font-semibold text-[#22C55E] hover:bg-[#22C55E]/20 transition-colors"
-            >
-              <Phone className="size-3.5" />
-              <span>WhatsApp</span>
-            </a>
+            {/* Se o número não tiver cadastro no WhatsApp NÃO PODE TER o botão de abrir o WhatsApp */}
+            {verification.isRegistered && verification.waLink ? (
+              <a
+                href={verification.waLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#22C55E]/40 bg-[#22C55E]/10 px-3 text-xs font-semibold text-[#22C55E] hover:bg-[#22C55E]/20 transition-colors shadow-sm"
+                title={`Abrir WhatsApp (${verification.carrier})`}
+              >
+                <Phone className="size-3.5" />
+                <span>WhatsApp</span>
+              </a>
+            ) : (
+              <div
+                className="inline-flex items-center gap-1.5 h-9 rounded-[8px] border border-[#EF4444]/30 bg-[#EF4444]/10 px-3 text-xs font-semibold text-[#EF4444] cursor-default"
+                title={verification.reason}
+              >
+                <PhoneOff className="size-3.5" />
+                <span>Sem WhatsApp</span>
+              </div>
+            )}
+
+            {/* Menu de Verificação de WhatsApp */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowVerifyMenu((prev) => !prev)}
+                className="inline-flex items-center gap-1 h-9 rounded-[8px] border border-[#252C38] bg-[#151A23] hover:bg-[#252C38] px-2.5 text-xs text-[#A7B0BF] hover:text-[#F5F7FA] transition-colors"
+                title="Verificar cadastro no WhatsApp"
+              >
+                {isVerifying ? (
+                  <Loader2 className="size-3.5 animate-spin text-[#3B82F6]" />
+                ) : (
+                  <RefreshCw className="size-3.5 text-[#667085]" />
+                )}
+                <span className="hidden sm:inline">
+                  {isVerifying ? "A verificar..." : "Verificar"}
+                </span>
+                <ChevronDown className="size-3 text-[#667085]" />
+              </button>
+
+              {showVerifyMenu && (
+                <div className="absolute right-0 top-full mt-1.5 w-64 rounded-[10px] border border-[#252C38] bg-[#151A23] shadow-2xl p-2.5 z-50 text-xs">
+                  <div className="px-2 py-1.5 border-b border-[#252C38] mb-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-[#F5F7FA]">Validação WhatsApp</span>
+                      {verification.isRegistered ? (
+                        <span className="text-[10px] font-semibold text-[#22C55E] bg-[#22C55E]/15 px-1.5 py-0.5 rounded">
+                          Cadastrado
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-semibold text-[#EF4444] bg-[#EF4444]/15 px-1.5 py-0.5 rounded">
+                          Sem Cadastro
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-[#A7B0BF] mt-0.5">{verification.carrier}</p>
+                    <p className="text-[10px] text-[#667085] mt-0.5 leading-tight">
+                      {verification.reason}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleRunVerification}
+                    disabled={isVerifying}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#3B82F6] font-medium transition-colors mb-1"
+                  >
+                    <RefreshCw className={`size-3.5 ${isVerifying ? "animate-spin" : ""}`} />
+                    <span>Verificar em Tempo Real</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleManualToggleWhatsApp(true)}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#22C55E] transition-colors mb-1"
+                  >
+                    <Check className="size-3.5" />
+                    <span>Marcar como: Cadastrado</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleManualToggleWhatsApp(false)}
+                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-[6px] hover:bg-[#252C38] text-left text-[#EF4444] transition-colors"
+                  >
+                    <X className="size-3.5" />
+                    <span>Marcar como: Sem WhatsApp</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Quick Contact & Metadata Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-[#252C38]/60 text-xs">
-          <div className="flex items-center gap-2 text-[#A7B0BF]">
-            <Phone className="size-3.5 text-[#667085]" />
-            <span className="text-[#F5F7FA] font-mono">{lead.phone}</span>
+          <div className="flex items-center gap-2 text-[#A7B0BF] truncate">
+            {verification.isRegistered ? (
+              <Phone className="size-3.5 text-[#22C55E] shrink-0" />
+            ) : (
+              <PhoneOff className="size-3.5 text-[#EF4444] shrink-0" />
+            )}
+            <span className="text-[#F5F7FA] font-mono truncate">{lead.phone}</span>
+            {verification.isRegistered ? (
+              <span className="text-[10px] text-[#22C55E] font-medium shrink-0">• WA</span>
+            ) : (
+              <span className="text-[10px] text-[#EF4444] font-medium shrink-0">• Sem WA</span>
+            )}
           </div>
 
           <div className="flex items-center gap-2 text-[#A7B0BF] truncate">
@@ -311,8 +496,21 @@ export function LeadDetailPanel({
                 </div>
 
                 <div>
-                  <span className="text-[#667085] block mb-1">Telefone WhatsApp</span>
-                  <p className="font-semibold text-[#F5F7FA] font-mono">{lead.phone}</p>
+                  <span className="text-[#667085] block mb-1">
+                    {verification.isRegistered ? "Telefone WhatsApp" : "Telefone (Sem WhatsApp)"}
+                  </span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className="font-semibold text-[#F5F7FA] font-mono">{lead.phone}</p>
+                    {verification.isRegistered ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/25 px-1.5 py-0.5 rounded-[4px]">
+                        <CheckCircle2 className="size-3" /> WhatsApp Ativo ({verification.carrier})
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/25 px-1.5 py-0.5 rounded-[4px]">
+                        <PhoneOff className="size-3" /> Sem WhatsApp ({verification.carrier})
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div>

@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { X, Bot, Sparkles, UserPlus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, Bot, Sparkles, UserPlus, Phone, PhoneOff, CheckCircle2 } from "lucide-react";
 import { Lead, LeadStatus, LeadChannel } from "./types";
+import { verifyWhatsAppNumber, WhatsAppVerificationResult } from "./whatsappVerification";
 
 interface NewLeadModalProps {
   isOpen: boolean;
@@ -16,6 +17,18 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
   const [channel, setChannel] = useState<LeadChannel>("whatsapp");
   const [packageInterest, setPackageInterest] = useState<Lead["packageInterest"]>("Domínio IA");
   const [autoAiQualify, setAutoAiQualify] = useState(true);
+  const [hasWhatsApp, setHasWhatsApp] = useState<boolean>(true);
+  const [whatsappVerif, setWhatsappVerif] = useState<WhatsAppVerificationResult | null>(null);
+
+  useEffect(() => {
+    if (phone.trim().length >= 4) {
+      const res = verifyWhatsAppNumber(phone);
+      setWhatsappVerif(res);
+      setHasWhatsApp(res.isRegistered);
+    } else {
+      setWhatsappVerif(null);
+    }
+  }, [phone]);
 
   if (!isOpen) return null;
 
@@ -29,7 +42,8 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
       company: company.trim() || "Empresa a confirmar",
       role: "Responsável Comercial",
       phone: phone.trim(),
-      email: email.trim() || "contacto@empresa.pt",
+      hasWhatsApp: hasWhatsApp,
+      email: email.trim() || "contacto@empresa.ao",
       channel,
       status: autoAiQualify ? "qualificado" : "novo",
       packageInterest,
@@ -156,17 +170,54 @@ export function NewLeadModal({ isOpen, onClose, onCreateLead }: NewLeadModalProp
             </div>
 
             <div>
-              <label className="block text-[#A7B0BF] mb-1 font-semibold">
-                Telefone / WhatsApp *
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[#A7B0BF] font-semibold">Telefone / Contacto *</label>
+                {whatsappVerif && (
+                  <span
+                    className={`inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                      whatsappVerif.isRegistered
+                        ? "text-[#22C55E] bg-[#22C55E]/15 border border-[#22C55E]/30"
+                        : "text-[#EF4444] bg-[#EF4444]/15 border border-[#EF4444]/30"
+                    }`}
+                  >
+                    {whatsappVerif.isRegistered ? (
+                      <>
+                        <CheckCircle2 className="size-2.5" />
+                        <span>WA Ativo</span>
+                      </>
+                    ) : (
+                      <>
+                        <PhoneOff className="size-2.5" />
+                        <span>Sem WA</span>
+                      </>
+                    )}
+                  </span>
+                )}
+              </div>
               <input
                 type="text"
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Ex: +351 912 345 678"
+                placeholder="Ex: +244 928 538 739"
                 className="w-full h-9 rounded-[8px] border border-[#252C38] bg-[#0E121A] px-3 text-[#F5F7FA] placeholder-[#667085] focus:outline-none focus:border-[#3B82F6]"
               />
+              {whatsappVerif && (
+                <div className="mt-1 flex items-center justify-between text-[11px]">
+                  <span className="text-[#A7B0BF] truncate">
+                    Operadora: <strong className="text-[#F5F7FA]">{whatsappVerif.carrier}</strong>
+                  </span>
+                  <label className="inline-flex items-center gap-1 text-[#667085] hover:text-[#A7B0BF] cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={hasWhatsApp}
+                      onChange={(e) => setHasWhatsApp(e.target.checked)}
+                      className="rounded border-[#252C38] bg-[#0E121A] text-[#22C55E] focus:ring-0 size-3"
+                    />
+                    <span>Possui WhatsApp?</span>
+                  </label>
+                </div>
+              )}
             </div>
           </div>
 

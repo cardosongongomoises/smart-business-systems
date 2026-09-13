@@ -77,6 +77,7 @@ export interface Lead {
   conversation: ChatMessage[];
   aiProcessingStatus: "ativo" | "escalado" | "concluido";
   unreadMessagesCount?: number;
+  hasWhatsApp?: boolean;
 }
 
 export interface MetricData {

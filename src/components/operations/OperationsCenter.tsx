@@ -315,6 +315,20 @@ export function OperationsCenter() {
     );
   };
 
+  const handleUpdateWhatsAppStatus = (leadId: string, hasWhatsApp: boolean) => {
+    setLeads((prev) =>
+      prev.map((lead) => {
+        if (lead.id === leadId) {
+          return {
+            ...lead,
+            hasWhatsApp,
+          };
+        }
+        return lead;
+      }),
+    );
+  };
+
   const handleCreateLead = async (newLead: Lead) => {
     setLeads((prev) => [newLead, ...prev]);
     setSelectedLeadId(newLead.id);
@@ -514,6 +528,7 @@ export function OperationsCenter() {
                     onAddMessage={handleAddMessage}
                     onAddNote={handleAddNote}
                     onToggleAiStatus={handleToggleAiStatus}
+                    onUpdateWhatsAppStatus={handleUpdateWhatsAppStatus}
                     onBackToList={() => setMobileLeadView("list")}
                   />
                 </div>

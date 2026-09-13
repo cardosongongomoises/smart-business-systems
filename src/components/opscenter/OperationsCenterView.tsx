@@ -279,9 +279,7 @@ function OperationsCenterMain({ onNavigateTab }: OperationsCenterViewProps) {
         {/* 4. Attention Panel (Overdue, Due Today, Awaiting Approval) */}
         <AttentionPanel
           overdueCount={tasks.filter((t) => isOverdue(t.dueDate, t.status)).length}
-          dueTodayCount={
-            tasks.filter((t) => isDueToday(t.dueDate) && t.status !== "DONE").length
-          }
+          dueTodayCount={tasks.filter((t) => isDueToday(t.dueDate) && t.status !== "DONE").length}
           awaitingApprovalCount={
             tasks.filter((t) => t.status === "REVIEW" || t.needsApproval).length
           }

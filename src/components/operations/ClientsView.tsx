@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Lead } from "./types";
 import { toast } from "sonner";
+import { isPhoneRegisteredOnWhatsApp } from "./whatsappVerification";
 import {
   PLANS_CATALOG,
   ClientAccount,
@@ -452,15 +453,18 @@ export function ClientsView({ leads, onOpenNewLead }: ClientsViewProps) {
                     </button>
                   )}
 
-                  <a
-                    href={`https://wa.me/${client.phone.replace(/[^0-9]/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-2.5 py-1 rounded-[6px] bg-[#0E121A] border border-[#252C38] text-[#22C55E] hover:border-[#22C55E]/50 flex items-center gap-1 transition-all text-[11px]"
-                  >
-                    <Phone className="size-3" />
-                    <span>WhatsApp</span>
-                  </a>
+                  {/* WhatsApp Button only if registered */}
+                  {isPhoneRegisteredOnWhatsApp(client.phone) && (
+                    <a
+                      href={`https://wa.me/${client.phone.replace(/[^0-9]/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 rounded-[6px] bg-[#0E121A] border border-[#252C38] text-[#22C55E] hover:border-[#22C55E]/50 flex items-center gap-1 transition-all text-[11px]"
+                    >
+                      <Phone className="size-3" />
+                      <span>WhatsApp</span>
+                    </a>
+                  )}
 
                   {client.siteUrl && (
                     <a
