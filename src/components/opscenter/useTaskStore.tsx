@@ -8,17 +8,27 @@ import {
   type ReactNode,
 } from "react";
 import { clients, members, projects, seedTasks } from "./seedData";
-import { Task, TaskStatus, TaskPriority, STATUS_META, PRIORITY_META } from "./types";
+import {
+  Client,
+  Member,
+  Project,
+  Task,
+  TaskStatus,
+  TaskPriority,
+  STATUS_META,
+  PRIORITY_META,
+} from "./types";
 
-const STORAGE_KEY = "ad_ops_tasks_v1";
-const PROJECTS_STORAGE_KEY = "ad_ops_projects_v1";
+const STORAGE_KEY = "ad_ops_tasks_v2";
+const PROJECTS_STORAGE_KEY = "ad_ops_projects_v2";
+const CLIENTS_STORAGE_KEY = "ad_ops_clients_v2";
 const CURRENT_USER = "m1";
 
 export interface TaskStoreValue {
   tasks: Task[];
-  members: typeof members;
-  clients: typeof clients;
-  projects: typeof projects;
+  members: Member[];
+  clients: Client[];
+  projects: Project[];
   currentUserId: string;
   createTask: (task: Task) => void;
   updateTask: (id: string, patch: Partial<Task>, activityText?: string) => void;
@@ -37,7 +47,8 @@ export interface TaskStoreValue {
   toggleChecklistItem: (id: string, itemId: string) => void;
   addChecklistItem: (id: string, text: string) => void;
   addAttachment: (id: string, name: string, size: string) => void;
-  createProject: (project: (typeof projects)[0]) => void;
+  createProject: (project: Project, newClient?: Client) => void;
+  createClient: (client: Client) => void;
 }
 
 const TaskStoreContext = createContext<TaskStoreValue | null>(null);
@@ -47,21 +58,45 @@ export function nowIso() {
 }
 
 export function TaskStoreProvider({ children }: { children: ReactNode }) {
-  const [tasks, setTasks] = useState<Task[]>(seedTasks);
-  const [projectList, setProjectList] = useState<typeof projects>(projects);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [projectList, setProjectList] = useState<Project[]>([]);
+  const [clientList, setClientList] = useState<Client[]>([]);
 
   useEffect(() => {
     try {
+      // Purge old mock storage keys
+      localStorage.removeItem("ad_ops_tasks_v1");
+      localStorage.removeItem("ad_ops_projects_v1");
+
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) setTasks(parsed as Task[]);
+        if (Array.isArray(parsed)) {
+          // Exclude any legacy mock tasks
+          const validTasks = parsed.filter(
+            (t: Task) => t && t.id && !/^t([1-9]|1\d|2[0-2])$/.test(t.id),
+          );
+          setTasks(validTasks);
+        }
       }
+
       const rawProjects = localStorage.getItem(PROJECTS_STORAGE_KEY);
       if (rawProjects) {
         const parsedProjects = JSON.parse(rawProjects);
-        if (Array.isArray(parsedProjects) && parsedProjects.length > 0) {
-          setProjectList(parsedProjects);
+        if (Array.isArray(parsedProjects)) {
+          // Exclude any legacy mock projects
+          const validProjects = parsedProjects.filter(
+            (p: Project) => p && p.id && !/^p[1-8]$/.test(p.id),
+          );
+          setProjectList(validProjects);
+        }
+      }
+
+      const rawClients = localStorage.getItem(CLIENTS_STORAGE_KEY);
+      if (rawClients) {
+        const parsedClients = JSON.parse(rawClients);
+        if (Array.isArray(parsedClients)) {
+          setClientList(parsedClients);
         }
       }
     } catch {
@@ -85,6 +120,14 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
     }
   }, [projectList]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem(CLIENTS_STORAGE_KEY, JSON.stringify(clientList));
+    } catch {
+      /* ignore */
+    }
+  }, [clientList]);
+
   const patchTask = useCallback((id: string, patch: Partial<Task>, activityText?: string) => {
     setTasks((prev) =>
       prev.map((task) => {
@@ -101,11 +144,38 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
     () => ({
       tasks,
       members,
-      clients,
+      clients: clientList,
       projects: projectList,
       currentUserId: CURRENT_USER,
       createTask: (task) => setTasks((prev) => [task, ...prev]),
-      createProject: (project) => setProjectList((prev) => [project, ...prev]),
+      createProject: (project, newClient) => {
+        setProjectList((prev) => [project, ...prev]);
+        if (newClient) {
+          setClientList((prev) => {
+            if (
+              prev.some(
+                (c) =>
+                  c.id === newClient.id || c.name.toLowerCase() === newClient.name.toLowerCase(),
+              )
+            ) {
+              return prev;
+            }
+            return [...prev, newClient];
+          });
+        }
+      },
+      createClient: (client) => {
+        setClientList((prev) => {
+          if (
+            prev.some(
+              (c) => c.id === client.id || c.name.toLowerCase() === client.name.toLowerCase(),
+            )
+          ) {
+            return prev;
+          }
+          return [...prev, client];
+        });
+      },
       updateTask: patchTask,
       updateTaskData: (id, patch) => {
         const me = members.find((m) => m.id === CURRENT_USER)?.name ?? "Utilizador";
@@ -327,20 +397,21 @@ export function TaskStoreProvider({ children }: { children: ReactNode }) {
         );
       },
     }),
-    [tasks, projectList, patchTask],
+    [tasks, projectList, clientList, patchTask],
   );
 
   return <TaskStoreContext.Provider value={value}>{children}</TaskStoreContext.Provider>;
 }
 
 const defaultStoreValue: TaskStoreValue = {
-  tasks: seedTasks,
+  tasks: [],
   members,
-  clients,
-  projects,
+  clients: [],
+  projects: [],
   currentUserId: CURRENT_USER,
   createTask: () => {},
   createProject: () => {},
+  createClient: () => {},
   updateTask: () => {},
   updateTaskData: () => {},
   moveTask: () => {},

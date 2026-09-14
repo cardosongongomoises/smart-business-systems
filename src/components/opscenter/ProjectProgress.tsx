@@ -17,6 +17,10 @@ export function ProjectProgress({
 }: ProjectProgressProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
+  if (projects.length === 0) {
+    return null;
+  }
+
   // Compute metrics per project
   const projectStats = projects.map((project) => {
     const projectTasks = tasks.filter((t) => t.projectId === project.id);

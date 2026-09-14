@@ -73,12 +73,11 @@ export function OperationsMetrics({
           <span className="font-mono text-2xl sm:text-3xl font-black text-[#F5F7FA] tracking-tight">
             {format(effectiveActive)}
           </span>
-          <span className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-[#22C55E] whitespace-nowrap shrink-0">
-            <TrendingUp className="size-3" />
-            +8%
+          <span className="text-[10px] font-mono text-[#A7B0BF] font-bold uppercase whitespace-nowrap shrink-0">
+            {effectiveActive > 0 ? "Em fluxo" : "Vazio"}
           </span>
         </div>
-        <p className="mt-1 text-[10px] text-[#667085] truncate">esta semana no backlog e fluxo</p>
+        <p className="mt-1 text-[10px] text-[#667085] truncate">no backlog e fluxo</p>
       </div>
 
       {/* 2. Em Andamento */}
@@ -108,25 +107,49 @@ export function OperationsMetrics({
       {/* 3. Atrasadas */}
       <div
         onClick={() => onFilterOverdue?.()}
-        className="group cursor-pointer rounded-[12px] border border-[#EF4444]/40 bg-[#0E121A] p-3.5 sm:p-4 shadow-sm transition-all hover:border-[#EF4444] hover:bg-[#EF4444]/10"
+        className={`group cursor-pointer rounded-[12px] border bg-[#0E121A] p-3.5 sm:p-4 shadow-sm transition-all ${
+          effectiveOverdue > 0
+            ? "border-[#EF4444]/40 hover:border-[#EF4444] hover:bg-[#EF4444]/10"
+            : "border-[#252C38] hover:border-[#3B82F6]/60 hover:bg-[#151A23]"
+        }`}
       >
-        <div className="flex items-center justify-between text-[#EF4444]">
-          <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#EF4444]">
-            Atrasadas
-          </span>
-          <div className="flex size-7 items-center justify-center rounded-lg bg-[#EF4444]/15 text-[#EF4444]">
+        <div
+          className={`flex items-center justify-between ${effectiveOverdue > 0 ? "text-[#EF4444]" : "text-[#A7B0BF]"}`}
+        >
+          <span className="text-[11px] font-bold uppercase tracking-[0.14em]">Atrasadas</span>
+          <div
+            className={`flex size-7 items-center justify-center rounded-lg ${
+              effectiveOverdue > 0
+                ? "bg-[#EF4444]/15 text-[#EF4444]"
+                : "bg-[#252C38] text-[#667085]"
+            }`}
+          >
             <AlertTriangle className="size-3.5" />
           </div>
         </div>
         <div className="mt-2.5 flex items-baseline justify-between gap-1">
-          <span className="font-mono text-2xl sm:text-3xl font-black text-[#EF4444] tracking-tight">
+          <span
+            className={`font-mono text-2xl sm:text-3xl font-black tracking-tight ${
+              effectiveOverdue > 0 ? "text-[#EF4444]" : "text-[#F5F7FA]"
+            }`}
+          >
             {format(effectiveOverdue)}
           </span>
-          <span className="rounded-full bg-[#EF4444]/20 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#EF4444] uppercase whitespace-nowrap shrink-0">
-            Crítico
+          <span
+            className={`rounded-full px-1.5 py-0.5 text-[9px] font-mono font-bold uppercase whitespace-nowrap shrink-0 ${
+              effectiveOverdue > 0
+                ? "bg-[#EF4444]/20 text-[#EF4444]"
+                : "bg-[#22C55E]/10 text-[#22C55E]"
+            }`}
+          >
+            {effectiveOverdue > 0 ? "Crítico" : "Em dia"}
           </span>
         </div>
-        <p className="mt-1 text-[10px] text-[#EF4444]/80 truncate">prazo expirado</p>
+        <p
+          className={`mt-1 text-[10px] truncate ${effectiveOverdue > 0 ? "text-[#EF4444]/80" : "text-[#667085]"}`}
+        >
+          {effectiveOverdue > 0 ? "prazo expirado" : "nenhuma atrasada"}
+        </p>
       </div>
 
       {/* 4. Concluídas */}

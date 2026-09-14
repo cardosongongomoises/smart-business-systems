@@ -6,7 +6,7 @@ interface ProjectCreateModalProps {
   isOpen: boolean;
   clients: Client[];
   onClose: () => void;
-  onCreate: (project: Project) => void;
+  onCreate: (project: Project, newClient?: Client) => void;
 }
 
 export function ProjectCreateModal({
@@ -16,9 +16,13 @@ export function ProjectCreateModal({
   onCreate,
 }: ProjectCreateModalProps) {
   const [name, setName] = useState("");
+  const [clientInputType, setClientInputType] = useState<"select" | "new">(
+    clients.length > 0 ? "select" : "new",
+  );
   const [clientId, setClientId] = useState(clients[0]?.id ?? "");
-  const [dueDate, setDueDate] = useState("2026-11-30");
-  const [budget, setBudget] = useState("Kz 2.500.000");
+  const [newClientName, setNewClientName] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [budget, setBudget] = useState("");
 
   if (!isOpen) return null;
 
@@ -26,15 +30,25 @@ export function ProjectCreateModal({
     e.preventDefault();
     if (!name.trim()) return;
 
+    const resolvedClientId =
+      clientInputType === "new" && newClientName.trim()
+        ? `c-${Date.now()}`
+        : clientId || (clients[0]?.id ?? "interno");
+
+    const newClient: Client | undefined =
+      clientInputType === "new" && newClientName.trim()
+        ? { id: resolvedClientId, name: newClientName.trim() }
+        : undefined;
+
     const newProj: Project = {
       id: `proj-${Date.now()}`,
       name: name.trim(),
-      clientId,
+      clientId: resolvedClientId,
       dueDate,
       budget: budget.trim() || "Interno",
     };
 
-    onCreate(newProj);
+    onCreate(newProj, newClient);
     onClose();
   };
 
@@ -74,26 +88,48 @@ export function ProjectCreateModal({
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Ex: Agente Comercial IA — Banco Sol"
+              placeholder="Ex: Agente Comercial IA — Empresa Cliente"
               className="w-full rounded-[8px] border border-[#252C38] bg-[#151A23] px-3 py-2 text-xs text-[#F5F7FA] placeholder-[#667085] focus:border-[#3B82F6] focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#F5F7FA] mb-1">
-              Cliente <span className="text-[#EF4444]">*</span>
-            </label>
-            <select
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              className="w-full rounded-[8px] border border-[#252C38] bg-[#151A23] px-3 py-2 text-xs text-[#F5F7FA] focus:border-[#3B82F6] focus:outline-none"
-            >
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-semibold text-[#F5F7FA]">Cliente / Empresa</label>
+              {clients.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setClientInputType(clientInputType === "select" ? "new" : "select")
+                  }
+                  className="text-[11px] text-[#3B82F6] hover:underline"
+                >
+                  {clientInputType === "select" ? "+ Cadastrar novo cliente" : "Escolher existente"}
+                </button>
+              )}
+            </div>
+
+            {clientInputType === "select" && clients.length > 0 ? (
+              <select
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+                className="w-full rounded-[8px] border border-[#252C38] bg-[#151A23] px-3 py-2 text-xs text-[#F5F7FA] focus:border-[#3B82F6] focus:outline-none"
+              >
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={newClientName}
+                onChange={(e) => setNewClientName(e.target.value)}
+                placeholder="Ex: Empresa Parceira Lda."
+                className="w-full rounded-[8px] border border-[#252C38] bg-[#151A23] px-3 py-2 text-xs text-[#F5F7FA] placeholder-[#667085] focus:border-[#3B82F6] focus:outline-none"
+              />
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

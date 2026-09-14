@@ -67,14 +67,18 @@ export function TaskCreateModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !projectId) return;
+    if (!title.trim()) return;
+
+    const resolvedProjectId = projectId || (projects[0]?.id ?? "");
+    const currentProject = projects.find((p) => p.id === resolvedProjectId);
+    const resolvedClientId = currentProject?.clientId ?? clients[0]?.id ?? "";
 
     const newTask: Task = {
       id: `task-${Date.now()}`,
       title: title.trim(),
       description: description.trim(),
-      projectId,
-      clientId,
+      projectId: resolvedProjectId,
+      clientId: resolvedClientId,
       assigneeId: assigneeId || "",
       status,
       priority,
@@ -145,15 +149,13 @@ export function TaskCreateModal({
           {/* Project & Assignee */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-[#F5F7FA] mb-1">
-                Projeto <span className="text-[#EF4444]">*</span>
-              </label>
+              <label className="block text-xs font-semibold text-[#F5F7FA] mb-1">Projeto</label>
               <select
-                required
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
                 className="w-full rounded-[8px] border border-[#252C38] bg-[#151A23] px-3 py-2 text-xs text-[#F5F7FA] focus:border-[#3B82F6] focus:outline-none"
               >
+                {projects.length === 0 && <option value="">Geral / Sem projeto associado</option>}
                 {projects.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}

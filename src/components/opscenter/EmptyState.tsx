@@ -7,6 +7,31 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ type = "filtered", onClearFilters, onCreateTask }: EmptyStateProps) {
+  if (type === "no_tasks") {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-[12px] border border-dashed border-[#252C38] bg-[#0E121A]/60 px-6 py-16 text-center">
+        <div className="flex size-14 items-center justify-center rounded-2xl border border-[#252C38] bg-[#151A23] text-[#3B82F6] shadow-[0_0_24px_rgba(59,130,246,0.12)]">
+          <FolderKanban className="size-7" />
+        </div>
+        <h3 className="mt-4 text-base font-semibold text-[#F5F7FA]">Nenhuma tarefa registada</h3>
+        <p className="mt-1.5 max-w-sm text-sm text-[#A7B0BF]">
+          O Centro de Operações está pronto. Comece criando a primeira tarefa ou projeto para
+          organizar as entregas da sua equipa.
+        </p>
+        {onCreateTask && (
+          <button
+            type="button"
+            onClick={onCreateTask}
+            className="mt-5 inline-flex items-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[#2563EB] active:scale-[0.98]"
+          >
+            <Plus className="size-3.5" />
+            Criar primeira tarefa
+          </button>
+        )}
+      </div>
+    );
+  }
+
   if (type === "no_project_tasks") {
     return (
       <div className="flex flex-col items-center justify-center rounded-[12px] border border-dashed border-[#252C38] bg-[#0E121A]/60 px-6 py-16 text-center">
