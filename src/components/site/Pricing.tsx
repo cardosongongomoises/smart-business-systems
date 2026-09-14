@@ -1,14 +1,7 @@
 import { Reveal } from "./Reveal";
 import { Badge } from "@/components/ui/badge";
 import { site } from "@/lib/site-config";
-import {
-  ArrowUpRight,
-  Check,
-  Star,
-  Zap,
-  Shield,
-  Rocket,
-} from "lucide-react";
+import { ArrowUpRight, Check, Star, Zap, Shield, Rocket } from "lucide-react";
 
 const plans = [
   {
@@ -107,12 +100,11 @@ export function Pricing() {
               Investimento
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight">
-              O investimento que se paga no{" "}
-              <span className="text-[#22C55E]">primeiro mês</span>
+              O investimento que se paga no <span className="text-[#22C55E]">primeiro mês</span>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-              Cada plano é um investimento com retorno mensurável — não um custo. Se o
-              sistema fechar 2-3 negócios adicionais por mês, já pagou o investimento.
+              Cada plano é um investimento com retorno mensurável — não um custo. Se o sistema
+              fechar 2-3 negócios adicionais por mês, já pagou o investimento.
             </p>
           </div>
         </Reveal>
@@ -140,9 +132,7 @@ export function Pricing() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <p.icon
-                        className={`size-5 ${
-                          p.popular ? "text-[#22C55E]" : "text-[#A7B0BF]"
-                        }`}
+                        className={`size-5 ${p.popular ? "text-[#22C55E]" : "text-[#A7B0BF]"}`}
                       />
                       <h3
                         className={`text-xl font-bold tracking-tight ${
@@ -153,16 +143,12 @@ export function Pricing() {
                       </h3>
                     </div>
                   </div>
-                  <p className="mt-2 text-xs text-[#A7B0BF] leading-relaxed">
-                    {p.tagline}
-                  </p>
+                  <p className="mt-2 text-xs text-[#A7B0BF] leading-relaxed">{p.tagline}</p>
                 </div>
 
                 <div className="mt-5 pt-5 border-t border-[#252C38]/60">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-[11px] font-semibold text-[#A7B0BF]">
-                      Kz
-                    </span>
+                    <span className="text-[11px] font-semibold text-[#A7B0BF]">Kz</span>
                     <span
                       className={`text-3xl font-extrabold tracking-[-0.03em] font-mono ${
                         p.popular ? "text-[#22C55E]" : "text-[#F5F7FA]"
@@ -188,10 +174,7 @@ export function Pricing() {
 
                 <ul className="mt-5 space-y-2.5 flex-1">
                   {p.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2.5 text-[13px] text-[#A7B0BF]"
-                    >
+                    <li key={f} className="flex items-start gap-2.5 text-[13px] text-[#A7B0BF]">
                       <Check
                         className={`size-4 mt-0.5 shrink-0 ${
                           p.popular ? "text-[#22C55E]" : "text-[#A7B0BF]"
@@ -223,12 +206,14 @@ export function Pricing() {
         {/* Cálculo de ROI */}
         <Reveal delay={200}>
           <div className="mt-12 rounded-[16px] border border-[#8B5CF6]/30 bg-[#151A23] p-6 sm:p-8 text-center">
-            <h3 className="text-xl font-bold text-[#F5F7FA]">Quanto vale cada reunião que você perde hoje?</h3>
+            <h3 className="text-xl font-bold text-[#F5F7FA]">
+              Quanto vale cada reunião que você perde hoje?
+            </h3>
             <p className="mt-2 text-sm text-[#A7B0BF] max-w-xl mx-auto">
-              Se cada reunião que o sistema agendar valer Kz 200.000 ou mais em receita,
-              basta <strong className="text-[#22C55E]">2-3 reuniões adicionais por mês</strong> para o
-              sistema se pagar sozinho. No plano Profissional, isso são apenas 2 reuniões — o
-              resto é lucro.
+              Se cada reunião que o sistema agendar valer Kz 200.000 ou mais em receita, basta{" "}
+              <strong className="text-[#22C55E]">2-3 reuniões adicionais por mês</strong> para o
+              sistema se pagar sozinho. No plano Profissional, isso são apenas 2 reuniões — o resto
+              é lucro.
             </p>
             <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-xl mx-auto">
               <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3">

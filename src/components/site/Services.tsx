@@ -81,17 +81,16 @@ export function Services() {
             Nossos Serviços
           </span>
           <h2 className="mt-5 max-w-3xl text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-            Cada serviço é{" "}
-            <span className="text-[#22C55E]">um resultado</span> que entregamos ao
+            Cada serviço é <span className="text-[#22C55E]">um resultado</span> que entregamos ao
             seu negócio
           </h2>
         </Reveal>
 
         <Reveal delay={80}>
           <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-            Não vendemos "sites", "automação" ou "inteligência artificial". Vendemos o
-            que essas coisas fazem pelo seu negócio: mais contactos, menos tempo perdido,
-            e negócios fechados enquanto dorme.
+            Não vendemos "sites", "automação" ou "inteligência artificial". Vendemos o que essas
+            coisas fazem pelo seu negócio: mais contactos, menos tempo perdido, e negócios fechados
+            enquanto dorme.
           </p>
         </Reveal>
 
@@ -111,9 +110,7 @@ export function Services() {
                     {s.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-relaxed text-[#A7B0BF]">
-                    {s.description}
-                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-[#A7B0BF]">{s.description}</p>
 
                   {/* Result badge */}
                   <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-3 py-1.5 self-start">
@@ -126,10 +123,7 @@ export function Services() {
                   {/* Features */}
                   <ul className="mt-5 space-y-2.5 border-t border-[#252C38] pt-5">
                     {s.features.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2.5 text-sm text-[#A7B0BF]"
-                      >
+                      <li key={f} className="flex items-start gap-2.5 text-sm text-[#A7B0BF]">
                         <MessageSquare className="size-4 mt-0.5 text-[#22C55E]/80 shrink-0" />
                         {f}
                       </li>
@@ -165,19 +159,19 @@ export function Services() {
                   Já tem um site? Adicione Inteligência Artificial
                 </h4>
                 <p className="mt-1 text-sm text-[#A7B0BF]">
-                  O Motor ATQA integra-se ao seu site actual em dias, não em meses — com
-                  atendimento automático via WhatsApp, CRM e dashboard de conversas.
+                  O Motor ATQA integra-se ao seu site actual em dias, não em meses — com atendimento
+                  automático via WhatsApp, CRM e dashboard de conversas.
                 </p>
               </div>
             </div>
-            <Link
-              to="/automate-pro"
+            <a
+              href="/#automate-pro"
               className="shrink-0 inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] border border-[#3B82F6]/30 bg-[#3B82F6]/10 px-5 text-sm font-semibold text-[#60A5FA] transition-all hover:bg-[#3B82F6]/20 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]"
             >
               <BotMessageSquare className="size-4" />
               Ver Automate Pro
               <ArrowUpRight className="size-4" />
-            </Link>
+            </a>
           </div>
         </Reveal>
       </div>

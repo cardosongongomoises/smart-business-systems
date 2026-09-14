@@ -22,13 +22,12 @@ export function RoiCalculator() {
             Simulador de Impacto
           </span>
           <h2 className="text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-            Quanto dinheiro está a{" "}
-            <span className="text-[#EF4444]">deixar na mesa</span> todos os meses?
+            Quanto dinheiro está a <span className="text-[#EF4444]">deixar na mesa</span> todos os
+            meses?
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
             Use o simulador abaixo para ver o impacto real — com base nos seus números, não em
-            estimativas genéricas. Cada contacto sem resposta é receita que vai para a
-            concorrência.
+            estimativas genéricas. Cada contacto sem resposta é receita que vai para a concorrência.
           </p>
         </Reveal>
 
@@ -119,7 +118,9 @@ export function RoiCalculator() {
                 <p className="text-[11px] font-bold tracking-[0.18em] text-[#EF4444] uppercase">
                   Quanto está a perder por mês?
                 </p>
-                <p className="mt-5 text-xs text-[#A7B0BF]">Contactos a perder por falta de resposta:</p>
+                <p className="mt-5 text-xs text-[#A7B0BF]">
+                  Contactos a perder por falta de resposta:
+                </p>
                 <p className="text-3xl sm:text-4xl font-mono font-bold text-[#EF4444] tabular-nums mt-1">
                   {missedContacts}{" "}
                   <span className="text-sm font-sans font-normal text-[#A7B0BF]">

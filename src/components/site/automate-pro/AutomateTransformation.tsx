@@ -42,8 +42,11 @@ export function AutomateTransformation() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Enquanto o modelo manual perde leads por lentidão, o Automate Pro converte em segundos —{" "}
-              <span className="text-[#F5F7FA] font-semibold">sem férias, sem esquecimentos, sem folga.</span>
+              Enquanto o modelo manual perde leads por lentidão, o Automate Pro converte em segundos
+              —{" "}
+              <span className="text-[#F5F7FA] font-semibold">
+                sem férias, sem esquecimentos, sem folga.
+              </span>
             </p>
           </Reveal>
         </div>

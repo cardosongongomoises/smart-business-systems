@@ -33,7 +33,9 @@ export function AutomateArchitecture() {
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
               Cada camada foi projetada para operar sem perda de dados e sem latência —{" "}
-              <span className="text-[#F5F7FA] font-semibold">um sistema orquestrado, não uma collection de ferramentas soltas.</span>
+              <span className="text-[#F5F7FA] font-semibold">
+                um sistema orquestrado, não uma collection de ferramentas soltas.
+              </span>
             </p>
           </Reveal>
         </div>

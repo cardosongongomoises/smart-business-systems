@@ -127,7 +127,9 @@ export function AutomateInteractiveDemo() {
           <Reveal delay={140}>
             <p className="mt-4 text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
               Uma conversa que começa como dúvida do visitante e termina como reunião agendada —{" "}
-              <span className="text-[#F5F7FA] font-semibold">sem a sua equipa tocar em uma tecla.</span>
+              <span className="text-[#F5F7FA] font-semibold">
+                sem a sua equipa tocar em uma tecla.
+              </span>
             </p>
           </Reveal>
         </div>

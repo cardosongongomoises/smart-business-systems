@@ -29,8 +29,11 @@ export function AutomateNoNewSite() {
 
               <Reveal delay={140}>
                 <p className="mt-5 text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-                  Se a sua empresa já possui um website, não precisa de desperdiçar o investimento que já fez.{" "}
-                  <span className="text-[#F5F7FA] font-semibold">Nós adicionamos a camada inteligente por cima.</span>
+                  Se a sua empresa já possui um website, não precisa de desperdiçar o investimento
+                  que já fez.{" "}
+                  <span className="text-[#F5F7FA] font-semibold">
+                    Nós adicionamos a camada inteligente por cima.
+                  </span>
                 </p>
               </Reveal>
 
@@ -147,8 +150,11 @@ export function AutomateNoNewSite() {
 
                   <p className="mt-3 text-xs text-[#A7B0BF] leading-relaxed">
                     Mantemos o seu investimento intacto — design, conteúdo, domínio.{" "}
-                    <span className="text-[#4ADE80] font-semibold">Integramos scripts e webhooks</span>{" "}
-                    que habilitam o atendimento inteligente sem alterar uma única vírgula do seu site atual.
+                    <span className="text-[#4ADE80] font-semibold">
+                      Integramos scripts e webhooks
+                    </span>{" "}
+                    que habilitam o atendimento inteligente sem alterar uma única vírgula do seu
+                    site atual.
                   </p>
                 </div>
               </div>

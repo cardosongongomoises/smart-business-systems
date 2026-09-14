@@ -4,22 +4,22 @@ import { Reveal } from "./Reveal";
 const timeline = [
   {
     tag: "09:41 • Novo contacto",
-    text: ""Boa tarde, gostaria de marcar uma reunião com a direção comercial."",
+    text: "Boa tarde, gostaria de marcar uma reunião com a direção comercial.",
     ia: false,
   },
   {
     tag: "Agente Digital IA",
-    text: ""Olá! Com certeza. Será um prazer auxiliá-lo. Qual solução ou serviço da Agentes Digital procura?"",
+    text: "Olá! Com certeza. Será um prazer auxiliá-lo. Qual solução ou serviço da Agentes Digital procura?",
     ia: true,
   },
   {
     tag: "Cliente",
-    text: ""Consultoria de automação e implantação de website com IA."",
+    text: "Consultoria de automação e implantação de website com IA.",
     ia: false,
   },
   {
     tag: "Agente Digital IA",
-    text: ""Excelente escolha. Consultei a disponibilidade dos nossos especialistas e temos vagas amanhã às 10h ou às 15h. Qual horário é mais conveniente?"",
+    text: "Excelente escolha. Consultei a disponibilidade dos nossos especialistas e temos vagas amanhã às 10h ou às 15h. Qual horário é mais conveniente?",
     ia: true,
   },
 ];
@@ -39,15 +39,15 @@ export function LiveDemo() {
           </Reveal>
           <Reveal delay={80}>
             <h2 className="mt-5 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-              Assim o seu cliente seria{" "}
-              <span className="text-[#22C55E]">atendido e agendado</span> amanhã de manhã
+              Assim o seu cliente seria <span className="text-[#22C55E]">atendido e agendado</span>{" "}
+              amanhã de manhã
             </h2>
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-4 text-base text-[#A7B0BF] leading-relaxed">
-              Este não é um exemplo fictício — é exactamente o que acontece no seu WhatsApp
-              quando um lead entra. Resposta em 8 segundos. Qualificação automática.
-              Reunião agendada sem ninguém tocar no telemóvel.
+              Este não é um exemplo fictício — é exactamente o que acontece no seu WhatsApp quando
+              um lead entra. Resposta em 8 segundos. Qualificação automática. Reunião agendada sem
+              ninguém tocar no telemóvel.
             </p>
           </Reveal>
         </div>

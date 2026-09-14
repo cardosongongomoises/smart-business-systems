@@ -77,8 +77,8 @@ export function Benefits() {
               <span className="text-[#22C55E]">começa a fechar negócios 24/7</span>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-              Não vendemos ferramentas — entregamos resultados. Veja a diferença entre um
-              negócio que perde leads e um que os converte automaticamente.
+              Não vendemos ferramentas — entregamos resultados. Veja a diferença entre um negócio
+              que perde leads e um que os converte automaticamente.
             </p>
           </div>
         </Reveal>

@@ -68,7 +68,9 @@ export function AutomateHero() {
                 Não reconstruímos o que já funciona. Adicionamos inteligência ao que você já tem.
               </p>
               <p className="text-sm sm:text-base text-[#A7B0BF]">
-                Um fluxo completo: visitante entra no site → IA atende em &lt;8 segundos → qualifica o lead → agenda reunião → faz follow-up automático. Tudo no seu website actual, sem código invasivo.
+                Um fluxo completo: visitante entra no site → IA atende em &lt;8 segundos → qualifica
+                o lead → agenda reunião → faz follow-up automático. Tudo no seu website actual, sem
+                código invasivo.
               </p>
             </div>
           </Reveal>

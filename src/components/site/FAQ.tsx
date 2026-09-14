@@ -77,9 +77,7 @@ export function FAQ() {
                     onClick={() => setOpen(open === i ? null : i)}
                     className="flex w-full items-center justify-between gap-4 p-5 text-left"
                   >
-                    <span className="text-sm font-semibold text-[#F5F7FA]">
-                      {f.q}
-                    </span>
+                    <span className="text-sm font-semibold text-[#F5F7FA]">{f.q}</span>
                     <ChevronDown
                       className={`size-5 shrink-0 text-[#A7B0BF] transition-transform duration-200 ${
                         open === i ? "rotate-180 text-[#60A5FA]" : ""
@@ -101,9 +99,7 @@ export function FAQ() {
                 <div className="flex size-10 items-center justify-center rounded-full border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#60A5FA]">
                   <HelpCircle className="size-5" />
                 </div>
-                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">
-                  Ainda tem dúvidas?
-                </h3>
+                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">Ainda tem dúvidas?</h3>
                 <p className="mt-2 text-sm text-[#A7B0BF] leading-relaxed">
                   Fale directamente com um especialista. Sem compromisso, sem pressão — apenas
                   respostas claras para o seu caso.
@@ -123,13 +119,10 @@ export function FAQ() {
                 <div className="flex size-10 items-center justify-center rounded-full border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 text-[#C084FC]">
                   <MessageSquare className="size-5" />
                 </div>
-                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">
-                  Diagnóstico gratuito
-                </h3>
+                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">Diagnóstico gratuito</h3>
                 <p className="mt-2 text-sm text-[#A7B0BF] leading-relaxed">
-                  Apenas 5 empresas/mês recebem um diagnóstico personalizado — análise
-                  completa do seu funil de vendas, identificação de gargalos, e plano de
-                  acção concreto.
+                  Apenas 5 empresas/mês recebem um diagnóstico personalizado — análise completa do
+                  seu funil de vendas, identificação de gargalos, e plano de acção concreto.
                 </p>
                 <a
                   href={site.ctaSecond.href}
@@ -149,13 +142,7 @@ export function FAQ() {
   );
 }
 
-function Badge({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function Badge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase ${className}`}

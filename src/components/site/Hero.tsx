@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  ArrowRight,
-  PlayCircle,
-  Bot,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, PlayCircle, Bot, CheckCircle2, Sparkles } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTA } from "@/lib/site-config";
 
@@ -67,9 +61,7 @@ export function Hero() {
           <Reveal delay={80}>
             <h1 className="mt-6 text-4xl leading-[1.05] font-bold tracking-[-0.04em] text-[#F5F7FA] sm:text-6xl">
               Enquanto sua equipa dorme,{" "}
-              <span className="text-gradient">
-                o seu negócio pode estar a fechar negócios.
-              </span>
+              <span className="text-gradient">o seu negócio pode estar a fechar negócios.</span>
             </h1>
           </Reveal>
 
@@ -118,7 +110,9 @@ export function Hero() {
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
                     <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
                   </span>
-                  <span className="font-medium text-[#F5F7FA]">+50 empresas a fechar negócios 24/7</span>
+                  <span className="font-medium text-[#F5F7FA]">
+                    +50 empresas a fechar negócios 24/7
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#3B82F6]" />
@@ -230,8 +224,8 @@ export function Hero() {
 
             <div className="mt-4 flex items-center justify-between border-t border-[#252C38] pt-3 text-[11px] text-[#A7B0BF]">
               <span className="flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                A fechar negócios enquanto dorme
+                <span className="size-1.5 rounded-full bg-[#22C55E]" />A fechar negócios enquanto
+                dorme
               </span>
               <span className="font-mono text-[#22C55E]">24/7/365</span>
             </div>

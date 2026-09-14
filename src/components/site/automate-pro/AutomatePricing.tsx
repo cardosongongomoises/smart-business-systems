@@ -50,7 +50,8 @@ export function AutomatePricing() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Um investimento que se paga na primeira semana — com cada lead atendido automaticamente.
+              Um investimento que se paga na primeira semana — com cada lead atendido
+              automaticamente.
             </p>
           </Reveal>
         </div>

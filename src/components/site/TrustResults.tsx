@@ -1,13 +1,7 @@
 import { Reveal } from "./Reveal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Users,
-  TrendingUp,
-  Clock,
-  BotMessageSquare,
-  ArrowUpRight,
-} from "lucide-react";
+import { Users, TrendingUp, Clock, BotMessageSquare, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function TrustResults() {
@@ -57,9 +51,8 @@ export function TrustResults() {
                 Resultados comprovados
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight">
-                Resultados reais que{" "}
-                <span className="text-[#22C55E]">empresas em Angola</span> já estão a
-                alcançar
+                Resultados reais que <span className="text-[#22C55E]">empresas em Angola</span> já
+                estão a alcançar
               </h2>
             </div>
           </div>
@@ -67,28 +60,21 @@ export function TrustResults() {
 
         <Reveal delay={80}>
           <p className="mt-4 text-base sm:text-lg text-[#A7B0BF] max-w-2xl leading-relaxed">
-            Não prometemos — mostramos. São números reais de empresas que transformaram o
-            seu atendimento em máquinas de fechar negócios.
+            Não prometemos — mostramos. São números reais de empresas que transformaram o seu
+            atendimento em máquinas de fechar negócios.
           </p>
         </Reveal>
 
         <Reveal delay={120}>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {metrics.map((m) => (
-              <Card
-                key={m.value}
-                className="border-[#252C38] bg-[#151A23]/50 backdrop-blur-sm"
-              >
+              <Card key={m.value} className="border-[#252C38] bg-[#151A23]/50 backdrop-blur-sm">
                 <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
                   <div className="flex size-11 items-center justify-center rounded-[10px] border border-[#22C55E]/30 bg-[#22C55E]/10 text-[#22C55E]">
                     <m.icon className="size-5" />
                   </div>
-                  <p className="mt-4 text-3xl font-bold text-[#22C55E] font-mono">
-                    {m.value}
-                  </p>
-                  <p className="mt-1.5 text-sm font-semibold text-[#F5F7FA]">
-                    {m.label}
-                  </p>
+                  <p className="mt-4 text-3xl font-bold text-[#22C55E] font-mono">{m.value}</p>
+                  <p className="mt-1.5 text-sm font-semibold text-[#F5F7FA]">{m.label}</p>
                   <p className="mt-1 text-xs text-[#A7B0BF]">{m.detail}</p>
                 </CardContent>
               </Card>
@@ -119,14 +105,13 @@ export function TrustResults() {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#EF4444] font-bold">✕</span>
-                  <span>
-                    Equipa sobrecarregada a repetir as mesmas perguntas o dia todo
-                  </span>
+                  <span>Equipa sobrecarregada a repetir as mesmas perguntas o dia todo</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#EF4444] font-bold">✕</span>
                   <span>
-                    Mensagens perdidas em telemóveis individuais — sem visibilidade de onde estão os leads
+                    Mensagens perdidas em telemóveis individuais — sem visibilidade de onde estão os
+                    leads
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
@@ -146,20 +131,17 @@ export function TrustResults() {
               <ul className="mt-5 space-y-3 text-sm text-[#F5F7FA]">
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#22C55E] font-bold">✓</span>
-                  <span>
-                    Resposta em menos de 10 segundos, 24 horas por dia, 7 dias por semana
-                  </span>
+                  <span>Resposta em menos de 10 segundos, 24 horas por dia, 7 dias por semana</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-[#22C55E] font-bold">✓</span>
+                  <span>Atendimento automático que qualifica e agenda sem depender de ninguém</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="text-[#22C55E] font-bold">✓</span>
                   <span>
-                    Atendimento automático que qualifica e agenda sem depender de ninguém
-                  </span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#22C55E] font-bold">✓</span>
-                  <span>
-                    Equipa liberta para tarefas de maior valor — fechar negócios, não responder perguntas
+                    Equipa liberta para tarefas de maior valor — fechar negócios, não responder
+                    perguntas
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
@@ -212,7 +194,9 @@ export function TrustResults() {
               </div>
             </div>
             <div className="mt-6 text-center text-sm text-[#A7B0BF]">
-              Se cada reunião valer <strong className="text-[#F5F7FA]">Kz 200.000</strong> ou mais em receita, o ROI do sistema paga-se no <strong className="text-[#22C55E]">primeiro mês</strong>.
+              Se cada reunião valer <strong className="text-[#F5F7FA]">Kz 200.000</strong> ou mais
+              em receita, o ROI do sistema paga-se no{" "}
+              <strong className="text-[#22C55E]">primeiro mês</strong>.
             </div>
           </div>
         </Reveal>
@@ -227,7 +211,8 @@ export function TrustResults() {
               </div>
               <p className="mt-3 text-lg font-bold text-[#F5F7FA]">Clínica em Luanda</p>
               <p className="mt-2 text-sm text-[#A7B0BF]">
-                Antes: 20+ leads/mês sem resposta. Agora: 35% mais agendamentos, follow-ups automáticos, confirmações de consulta sem falha.
+                Antes: 20+ leads/mês sem resposta. Agora: 35% mais agendamentos, follow-ups
+                automáticos, confirmações de consulta sem falha.
               </p>
               <div className="mt-4 flex items-center gap-2 text-[#22C55E] text-sm font-semibold">
                 <ArrowUpRight className="size-4" />
@@ -242,7 +227,8 @@ export function TrustResults() {
               </div>
               <p className="mt-3 text-lg font-bold text-[#F5F7FA]">Escritório de advocacia</p>
               <p className="mt-2 text-sm text-[#A7B0BF]">
-                Consultas respondidas em 8 segundos via WhatsApp. Agenda automática — sem recepcionista 24/7, sem leads perdidos.
+                Consultas respondidas em 8 segundos via WhatsApp. Agenda automática — sem
+                recepcionista 24/7, sem leads perdidos.
               </p>
               <div className="mt-4 flex items-center gap-2 text-[#22C55E] text-sm font-semibold">
                 <ArrowUpRight className="size-4" />
@@ -257,7 +243,8 @@ export function TrustResults() {
               </div>
               <p className="mt-3 text-lg font-bold text-[#F5F7FA]">Construtora em Luanda</p>
               <p className="mt-2 text-sm text-[#A7B0BF]">
-                Lead qualificado automaticamente → reunião agendada em 2min. Equipa de vendas focada em fechar, não em responder.
+                Lead qualificado automaticamente → reunião agendada em 2min. Equipa de vendas focada
+                em fechar, não em responder.
               </p>
               <div className="mt-4 flex items-center gap-2 text-[#22C55E] text-sm font-semibold">
                 <ArrowUpRight className="size-4" />
@@ -270,13 +257,13 @@ export function TrustResults() {
         {/* CTA */}
         <Reveal delay={280}>
           <div className="mt-12 flex justify-center">
-            <Link
-              to="/contacto"
+            <a
+              href="/#contacto"
               className="group inline-flex h-12 items-center gap-2 rounded-full bg-[#22C55E] px-6 text-sm font-semibold text-white transition-all hover:bg-[#16A34A] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
             >
               Quero estes resultados para a minha empresa
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+            </a>
           </div>
         </Reveal>
       </div>

@@ -45,13 +45,14 @@ export function Problem() {
               interessados.
             </p>
             <p>
-              O problema não é a qualidade. É a velocidade. Cada minuto sem resposta é um
-              cliente que vai para a concorrência — e nunca volta. Em Angola, onde o
-              WhatsApp é o principal canal de contacto, isto acontece <strong className="text-[#EF4444]">todos os dias</strong>.
+              O problema não é a qualidade. É a velocidade. Cada minuto sem resposta é um cliente
+              que vai para a concorrência — e nunca volta. Em Angola, onde o WhatsApp é o principal
+              canal de contacto, isto acontece{" "}
+              <strong className="text-[#EF4444]">todos os dias</strong>.
             </p>
             <p className="text-sm text-[#EF4444] font-medium">
-              O resultado? Leads perdidos, receita que podia ter entrado, e concorrência que
-              cresce enquanto você dorme.
+              O resultado? Leads perdidos, receita que podia ter entrado, e concorrência que cresce
+              enquanto você dorme.
             </p>
           </div>
         </Reveal>
@@ -90,8 +91,9 @@ export function Problem() {
           <div className="mt-10 rounded-[12px] border border-[#EF4444]/30 bg-[#EF4444]/5 p-5 flex items-center gap-4">
             <span className="text-3xl sm:text-4xl font-bold font-mono text-[#EF4444]">70%</span>
             <p className="text-sm text-[#A7B0BF]">
-              dos leads desistem se não receberem resposta nos <strong className="text-[#F5F7FA]">primeiros 5 minutos</strong>.
-              Em Angola, a maioria das empresas leva 2 a 24 horas — ou nunca responde.
+              dos leads desistem se não receberem resposta nos{" "}
+              <strong className="text-[#F5F7FA]">primeiros 5 minutos</strong>. Em Angola, a maioria
+              das empresas leva 2 a 24 horas — ou nunca responde.
             </p>
           </div>
         </Reveal>
@@ -122,25 +124,29 @@ export function Problem() {
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#EF4444] font-bold">✕</span>
                     <span>
-                      <strong>Tempo de resposta:</strong> 2h a 24h — enquanto o lead procura outro fornecedor.
+                      <strong>Tempo de resposta:</strong> 2h a 24h — enquanto o lead procura outro
+                      fornecedor.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#EF4444] font-bold">✕</span>
                     <span>
-                      <strong>Noites e Fins de semana:</strong> 0% de resposta — cada mensagem é um lead perdido.
+                      <strong>Noites e Fins de semana:</strong> 0% de resposta — cada mensagem é um
+                      lead perdido.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#EF4444] font-bold">✕</span>
                     <span>
-                      <strong>Equipa sobrecarregada:</strong> Repetem as mesmas perguntas o dia todo em vez de fechar negócios.
+                      <strong>Equipa sobrecarregada:</strong> Repetem as mesmas perguntas o dia todo
+                      em vez de fechar negócios.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#EF4444] font-bold">✕</span>
                     <span>
-                      <strong>Gestão:</strong> Mensagens perdidas em telemóveis individuais — sem saber quantos leads ficaram sem resposta.
+                      <strong>Gestão:</strong> Mensagens perdidas em telemóveis individuais — sem
+                      saber quantos leads ficaram sem resposta.
                     </span>
                   </li>
                 </ul>
@@ -157,25 +163,29 @@ export function Problem() {
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#22C55E] font-bold">✓</span>
                     <span>
-                      <strong>Resposta imediata:</strong> Menos de 10 segundos, 24 horas por dia — sem depender de ninguém.
+                      <strong>Resposta imediata:</strong> Menos de 10 segundos, 24 horas por dia —
+                      sem depender de ninguém.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#22C55E] font-bold">✓</span>
                     <span>
-                      <strong>Qualificação automática:</strong> Filtra quem está pronto para comprar — sem desperdiçar tempo.
+                      <strong>Qualificação automática:</strong> Filtra quem está pronto para comprar
+                      — sem desperdiçar tempo.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#22C55E] font-bold">✓</span>
                     <span>
-                      <strong>Agendamento direto:</strong> Reuniões marcadas automaticamente — mais negócios fechados.
+                      <strong>Agendamento direto:</strong> Reuniões marcadas automaticamente — mais
+                      negócios fechados.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <span className="text-[#22C55E] font-bold">✓</span>
                     <span>
-                      <strong>Visibilidade total:</strong> Cada lead rastreável — saiba exactamente quantos negócios está a fechar.
+                      <strong>Visibilidade total:</strong> Cada lead rastreável — saiba exactamente
+                      quantos negócios está a fechar.
                     </span>
                   </li>
                 </ul>
@@ -214,11 +224,19 @@ export function Problem() {
 
             <div className="mt-8 grid md:grid-cols-2 gap-4">
               <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A] p-5">
-                <p className="text-sm text-[#F5F7FA] italic">"O sistema agendou 23 reuniões numa semana sem que a minha equipa tocasse num único WhatsApp."</p>
-                <p className="mt-3 text-xs text-[#A7B0BF]">— Diretor Comercial, Empresa de Construção Civil</p>
+                <p className="text-sm text-[#F5F7FA] italic">
+                  "O sistema agendou 23 reuniões numa semana sem que a minha equipa tocasse num
+                  único WhatsApp."
+                </p>
+                <p className="mt-3 text-xs text-[#A7B0BF]">
+                  — Diretor Comercial, Empresa de Construção Civil
+                </p>
               </div>
               <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A] p-5">
-                <p className="text-sm text-[#F5F7FA] italic">"Passámos de 2h para 8 segundos no primeiro contacto. A taxa de conversão subiu 35%."</p>
+                <p className="text-sm text-[#F5F7FA] italic">
+                  "Passámos de 2h para 8 segundos no primeiro contacto. A taxa de conversão subiu
+                  35%."
+                </p>
                 <p className="mt-3 text-xs text-[#A7B0BF]">— CEO, Clínica em Luanda</p>
               </div>
             </div>

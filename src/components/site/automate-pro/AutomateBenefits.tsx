@@ -60,7 +60,8 @@ export function AutomateBenefits() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Benefícios reais que a sua equipa sente no primeiro mês de uso — sem exageros, sem promessas vazias.
+              Benefícios reais que a sua equipa sente no primeiro mês de uso — sem exageros, sem
+              promessas vazias.
             </p>
           </Reveal>
         </div>

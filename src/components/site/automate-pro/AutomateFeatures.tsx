@@ -96,7 +96,8 @@ export function AutomateFeatures() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Cada módulo foi desenhado para funcionar como uma máquina de conversão — do primeiro clique ao contrato assinado.
+              Cada módulo foi desenhado para funcionar como uma máquina de conversão — do primeiro
+              clique ao contrato assinado.
             </p>
           </Reveal>
         </div>

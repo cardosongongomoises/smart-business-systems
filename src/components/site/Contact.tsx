@@ -32,9 +32,9 @@ export function Contact() {
               <span className="text-[#EF4444]">leads perdidos</span>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-              Não espere mais. Enquanto está a ler isto, a concorrência já está a fechar
-              negócios que podiam ser seus. Comece hoje — o primeiro mês é sobre recuperar
-              o que está a perder.
+              Não espere mais. Enquanto está a ler isto, a concorrência já está a fechar negócios
+              que podiam ser seus. Comece hoje — o primeiro mês é sobre recuperar o que está a
+              perder.
             </p>
           </div>
         </Reveal>
@@ -54,9 +54,7 @@ export function Contact() {
                 <form className="mt-6 space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-[#A7B0BF]">
-                        Nome da Empresa
-                      </label>
+                      <label className="text-xs font-medium text-[#A7B0BF]">Nome da Empresa</label>
                       <input
                         type="text"
                         placeholder="Ex: Construções Silva"
@@ -136,12 +134,10 @@ export function Contact() {
             <div className="space-y-6">
               <Card className="border-[#252C38] bg-[#151A23]/80 backdrop-blur-sm">
                 <CardContent className="p-6">
-                  <h3 className="text-base font-bold text-[#F5F7FA]">
-                    Contacte-nos directamente
-                  </h3>
+                  <h3 className="text-base font-bold text-[#F5F7FA]">Contacte-nos directamente</h3>
                   <p className="mt-2 text-sm text-[#A7B0BF]">
-                    Prefere falar directamente? Estamos disponíveis no WhatsApp — resposta
-                    em minutos, não em horas.
+                    Prefere falar directamente? Estamos disponíveis no WhatsApp — resposta em
+                    minutos, não em horas.
                   </p>
 
                   <ul className="mt-5 space-y-3.5 text-sm">
@@ -151,9 +147,7 @@ export function Contact() {
                       </div>
                       <div>
                         <p className="text-xs text-[#667085]">WhatsApp</p>
-                        <p className="font-medium text-[#F5F7FA]">
-                          {site.whatsapp.number}
-                        </p>
+                        <p className="font-medium text-[#F5F7FA]">{site.whatsapp.number}</p>
                       </div>
                     </li>
                     <li className="flex items-center gap-3">
@@ -199,9 +193,9 @@ export function Contact() {
                         Garantia de Satisfação 30 Dias
                       </h3>
                       <p className="mt-2 text-xs text-[#A7B0BF] leading-relaxed">
-                        Se o sistema não entregar o que prometemos nos primeiros 30 dias,
-                        devolvemos 100% do investimento. Sem perguntas, sem burocracia. O
-                        risco é nosso, não seu.
+                        Se o sistema não entregar o que prometemos nos primeiros 30 dias, devolvemos
+                        100% do investimento. Sem perguntas, sem burocracia. O risco é nosso, não
+                        seu.
                       </p>
                     </div>
                   </div>

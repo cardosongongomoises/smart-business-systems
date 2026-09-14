@@ -48,9 +48,9 @@ export function HumanControl() {
             <span className="text-[#22C55E]">foca no que importa</span>.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            O sistema resolve 80% do fluxo repetitivo — sem atrasos, sem esquecimentos, sem
-            horário de expediente. A sua equipa recebe apenas leads qualificados, prontos para
-            fechar contrato. E mantém controlo total sobre cada conversa.
+            O sistema resolve 80% do fluxo repetitivo — sem atrasos, sem esquecimentos, sem horário
+            de expediente. A sua equipa recebe apenas leads qualificados, prontos para fechar
+            contrato. E mantém controlo total sobre cada conversa.
           </p>
         </Reveal>
 
@@ -116,8 +116,9 @@ export function HumanControl() {
         <Reveal delay={120}>
           <div className="mt-8 rounded-[12px] border border-[#22C55E]/30 bg-[#22C55E]/5 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm sm:text-base text-[#A7B0BF]">
-              A IA filtra e resolve <strong className="text-[#F5F7FA]">80% do fluxo repetitivo</strong> —
-              sem atrasos, sem esquecimentos, sem horário de expediente.{" "}
+              A IA filtra e resolve{" "}
+              <strong className="text-[#F5F7FA]">80% do fluxo repetitivo</strong> — sem atrasos, sem
+              esquecimentos, sem horário de expediente.{" "}
               <span className="font-semibold text-[#22C55E]">
                 A sua equipa recebe os leads prontos para fechar contrato.
               </span>
