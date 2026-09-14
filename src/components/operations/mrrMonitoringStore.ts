@@ -65,17 +65,30 @@ function notifyListeners() {
 
 // Initial state loader
 function loadStoredClients(): ClientAccount[] {
-  if (typeof window === "undefined") return INITIAL_CLIENTS;
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY_CLIENTS);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed)) {
+        // Filter out legacy mock clients
+        const validClients = parsed.filter(
+          (c) =>
+            c &&
+            c.id &&
+            !["cl-1", "cl-2", "cl-3", "cl-4"].includes(c.id) &&
+            !c.name?.includes("Luvumbo") &&
+            !c.name?.includes("Kuanza") &&
+            !c.name?.includes("Gaspar") &&
+            !c.name?.includes("Tchissola"),
+        );
+        return validClients;
+      }
     }
   } catch {
     /* fallback */
   }
-  return INITIAL_CLIENTS;
+  return [];
 }
 
 function loadStoredAlerts(): MRRAlert[] {
@@ -254,10 +267,10 @@ export function dismissAlert(alertId: string) {
 }
 
 /**
- * Restaura clientes e alertas para o padrão de fábrica
+ * Restaura clientes e alertas para o padrão limpo
  */
 export function resetMonitoringState() {
-  activeClientsState = [...INITIAL_CLIENTS];
+  activeClientsState = [];
   activeAlertsState = [];
   saveState();
 }
@@ -265,21 +278,23 @@ export function resetMonitoringState() {
 /**
  * Simula um alerta de teste para demonstração imediata do sistema de monitoramento
  */
-export function triggerSimulatedDowngradeAlert(): MRRAlert {
-  // Pick Dr. Sebastião (Autoridade -> Presença, perda de 65.000)
+export function triggerSimulatedDowngradeAlert(): MRRAlert | null {
+  const target = activeClientsState[0];
+  if (!target) return null;
   return recordPlanDowngrade(
-    "cl-1",
+    target.id,
     "Presença",
     "Cliente solicitou redução de custos após reestruturação interna",
-  )!;
+  );
 }
 
-export function triggerSimulatedChurnAlert(): MRRAlert {
-  // Pick Gaspar Logística or Clínica Vida
+export function triggerSimulatedChurnAlert(): MRRAlert | null {
+  const target = activeClientsState[0];
+  if (!target) return null;
   return recordClientCancellation(
-    "cl-2",
+    target.id,
     "Suspensão de atividades no departamento de IA por 60 dias",
-  )!;
+  );
 }
 
 /**

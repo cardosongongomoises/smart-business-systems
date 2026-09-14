@@ -58,51 +58,6 @@ export function SchedulesView({ leads, onSelectLead }: SchedulesViewProps) {
       });
     });
 
-    // Default mock meetings if none yet
-    if (list.length === 0) {
-      list.push(
-        {
-          id: "m-1",
-          leadId: leads[0]?.id || "lead-1",
-          leadName: "Dr. Sebastião Luvumbo",
-          company: "Luvumbo Advocacia Corporativa",
-          phone: "+244 923 881 204",
-          packageInterest: "Autoridade",
-          title: "Diagnóstico Digital & Alinhamento de Escopo",
-          dateFormatted: "Hoje, 09 de Março",
-          timeFormatted: "15:00 WAT (Luanda)",
-          status: "confirmado",
-          meetUrl: "https://meet.google.com/agd-diag-corp",
-        },
-        {
-          id: "m-2",
-          leadId: leads[1]?.id || "lead-2",
-          leadName: "Dra. Jandira Kuanza",
-          company: "Clínica Vida Talatona",
-          phone: "+244 912 400 918",
-          packageInterest: "Domínio IA",
-          title: "Demonstração de Agente IA WhatsApp",
-          dateFormatted: "Amanhã, 10 de Março",
-          timeFormatted: "11:30 WAT (Luanda)",
-          status: "confirmado",
-          meetUrl: "https://meet.google.com/agd-clinica-ai",
-        },
-        {
-          id: "m-3",
-          leadId: leads[2]?.id || "lead-3",
-          leadName: "Eng. Arnaldo Gaspar",
-          company: "Gaspar Logística Luanda",
-          phone: "+244 934 112 390",
-          packageInterest: "Profissional",
-          title: "Apresentação da Proposta Comercial",
-          dateFormatted: "12 de Março de 2026",
-          timeFormatted: "16:00 WAT (Luanda)",
-          status: "confirmado",
-          meetUrl: "https://meet.google.com/agd-gaspar-prop",
-        },
-      );
-    }
-
     return list;
   }, [leads]);
 
@@ -162,13 +117,19 @@ export function SchedulesView({ leads, onSelectLead }: SchedulesViewProps) {
 
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <span className="text-xs text-[#667085]">Taxa de Comparência</span>
-          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">92.4%</p>
+          <p className="text-2xl font-bold text-[#22C55E] mt-2 font-mono">
+            {meetings.length > 0 ? "100%" : "0.0%"}
+          </p>
           <p className="text-[11px] text-[#A7B0BF] mt-1">Lembrete WhatsApp 1h antes</p>
         </div>
 
         <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.22)]">
           <span className="text-xs text-[#667085]">Conversão em Venda</span>
-          <p className="text-2xl font-bold text-[#8B5CF6] mt-2 font-mono">48.2%</p>
+          <p className="text-2xl font-bold text-[#8B5CF6] mt-2 font-mono">
+            {leads.filter((l) => l.status === "convertido").length > 0 && meetings.length > 0
+              ? `${Math.round((leads.filter((l) => l.status === "convertido").length / meetings.length) * 100)}%`
+              : "0.0%"}
+          </p>
           <p className="text-[11px] text-[#A7B0BF] mt-1">Pós-reunião de diagnóstico</p>
         </div>
       </div>
@@ -199,69 +160,82 @@ export function SchedulesView({ leads, onSelectLead }: SchedulesViewProps) {
 
       {/* Meetings Timeline Cards */}
       <div className="space-y-3.5">
-        {filteredMeetings.map((meeting) => (
-          <div
-            key={meeting.id}
-            className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-[#3B82F6]/50 transition-all"
-          >
-            <div className="flex items-start gap-3.5">
-              <div className="size-11 rounded-[12px] bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex flex-col items-center justify-center text-[#F59E0B] shrink-0 font-mono">
-                <CalendarDays className="size-5" />
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-[#F5F7FA]">{meeting.title}</h3>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                      meeting.status === "confirmado"
-                        ? "bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30"
-                        : "bg-[#667085]/20 text-[#A7B0BF]"
-                    }`}
-                  >
-                    {meeting.status}
-                  </span>
-                </div>
-
-                <p className="text-xs text-[#A7B0BF] mt-1">
-                  <strong className="text-white">{meeting.leadName}</strong> • {meeting.company} (
-                  <span className="text-[#3B82F6]">{meeting.packageInterest}</span>)
-                </p>
-
-                <div className="flex items-center gap-3 text-xs text-[#667085] mt-2 font-mono">
-                  <span className="flex items-center gap-1 text-[#F5F7FA]">
-                    <Clock className="size-3.5 text-[#F59E0B]" />
-                    {meeting.dateFormatted} às {meeting.timeFormatted}
-                  </span>
-                  <span>•</span>
-                  <span>{meeting.phone}</span>
-                </div>
-              </div>
+        {filteredMeetings.length === 0 ? (
+          <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-12 text-center flex flex-col items-center justify-center">
+            <div className="size-12 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 flex items-center justify-center text-[#3B82F6] mb-3">
+              <CalendarDays className="size-6" />
             </div>
-
-            {/* Meet Link & Action Buttons */}
-            <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
-              <button
-                type="button"
-                onClick={() => handleCopyLink(meeting.meetUrl)}
-                className="px-3 py-2 rounded-[8px] bg-[#0E121A] border border-[#252C38] text-[#A7B0BF] hover:text-[#F5F7FA] text-xs font-semibold flex items-center gap-1.5 transition-all"
-              >
-                <Copy className="size-3.5" />
-                <span>Copiar Link</span>
-              </button>
-
-              <a
-                href={meeting.meetUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
-              >
-                <Video className="size-3.5" />
-                <span>Entrar no Google Meet</span>
-              </a>
-            </div>
+            <h3 className="text-sm font-bold text-[#F5F7FA]">Nenhuma reunião agendada</h3>
+            <p className="text-xs text-[#A7B0BF] max-w-sm mt-1">
+              As reuniões agendadas pelo Agente IA ou marcadas na ficha do lead serão sincronizadas
+              aqui automaticamente via Supabase.
+            </p>
           </div>
-        ))}
+        ) : (
+          filteredMeetings.map((meeting) => (
+            <div
+              key={meeting.id}
+              className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-[#3B82F6]/50 transition-all"
+            >
+              <div className="flex items-start gap-3.5">
+                <div className="size-11 rounded-[12px] bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex flex-col items-center justify-center text-[#F59E0B] shrink-0 font-mono">
+                  <CalendarDays className="size-5" />
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-bold text-[#F5F7FA]">{meeting.title}</h3>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        meeting.status === "confirmado"
+                          ? "bg-[#22C55E]/15 text-[#22C55E] border border-[#22C55E]/30"
+                          : "bg-[#667085]/20 text-[#A7B0BF]"
+                      }`}
+                    >
+                      {meeting.status}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-[#A7B0BF] mt-1">
+                    <strong className="text-white">{meeting.leadName}</strong> • {meeting.company} (
+                    <span className="text-[#3B82F6]">{meeting.packageInterest}</span>)
+                  </p>
+
+                  <div className="flex items-center gap-3 text-xs text-[#667085] mt-2 font-mono">
+                    <span className="flex items-center gap-1 text-[#F5F7FA]">
+                      <Clock className="size-3.5 text-[#F59E0B]" />
+                      {meeting.dateFormatted} às {meeting.timeFormatted}
+                    </span>
+                    <span>•</span>
+                    <span>{meeting.phone}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Meet Link & Action Buttons */}
+              <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleCopyLink(meeting.meetUrl)}
+                  className="px-3 py-2 rounded-[8px] bg-[#0E121A] border border-[#252C38] text-[#A7B0BF] hover:text-[#F5F7FA] text-xs font-semibold flex items-center gap-1.5 transition-all"
+                >
+                  <Copy className="size-3.5" />
+                  <span>Copiar Link</span>
+                </button>
+
+                <a
+                  href={meeting.meetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
+                >
+                  <Video className="size-3.5" />
+                  <span>Entrar no Google Meet</span>
+                </a>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

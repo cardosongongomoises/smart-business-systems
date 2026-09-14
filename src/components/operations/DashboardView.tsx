@@ -29,18 +29,13 @@ import {
 } from "lucide-react";
 import { Lead } from "./types";
 import { FunnelOverview } from "./FunnelOverview";
-import { funnelStages } from "./mockData";
+import { calculateFunnelStages } from "./mockData";
 import { ActiveTab } from "./OperationsSidebar";
 import { MRRCompositionTooltip } from "./MRRCompositionTooltip";
 import { RevenueAnalyticsSection } from "./RevenueAnalyticsSection";
 import { MRRAlertsBanner } from "./MRRAlertsBanner";
 import { useMRRMonitoring } from "./mrrMonitoringStore";
-import {
-  computeFinancialMetrics,
-  INITIAL_CLIENTS,
-  PLANS_CATALOG,
-  formatKz,
-} from "./financialUtils";
+import { computeFinancialMetrics, PLANS_CATALOG, formatKz } from "./financialUtils";
 import { useTaskStore } from "@/components/opscenter/useTaskStore";
 import {
   isOverdue,
@@ -70,16 +65,6 @@ interface DashboardViewProps {
   onOpenNewLead: () => void;
 }
 
-const weeklyData = [
-  { day: "Seg", leads: 4, conversas: 9, agendados: 2 },
-  { day: "Ter", leads: 7, conversas: 14, agendados: 3 },
-  { day: "Qua", leads: 9, conversas: 18, agendados: 4 },
-  { day: "Qui", leads: 12, conversas: 22, agendados: 6 },
-  { day: "Sex", leads: 15, conversas: 28, agendados: 8 },
-  { day: "Sáb", leads: 8, conversas: 12, agendados: 3 },
-  { day: "Dom", leads: 5, conversas: 10, agendados: 2 },
-];
-
 export function DashboardView({
   leads,
   onSelectLead,
@@ -97,6 +82,9 @@ export function DashboardView({
   const convertedCount = safeLeads.filter((l) => l?.status === "convertido").length;
   const conversionRate = totalLeads > 0 ? ((convertedCount / totalLeads) * 100).toFixed(1) : "0";
 
+  // Dynamic Funnel Stages based on Supabase leads
+  const dynamicFunnelStages = useMemo(() => calculateFunnelStages(safeLeads), [safeLeads]);
+
   // Form requests metrics (website channel submissions)
   const formLeads = useMemo(() => {
     return safeLeads.filter((l) => l?.channel === "website" || l?.channel === "email");
@@ -105,18 +93,52 @@ export function DashboardView({
   const formRequestsCount = formLeads.length;
 
   // Mini trend data for the form card using Recharts
-  const formTrendData = useMemo(
-    () => [
-      { dia: "Seg", solicitacoes: 2 },
-      { dia: "Ter", solicitacoes: 4 },
-      { dia: "Qua", solicitacoes: 3 },
-      { dia: "Qui", solicitacoes: 7 },
-      { dia: "Sex", solicitacoes: 8 },
-      { dia: "Sáb", solicitacoes: 5 },
-      { dia: "Dom", solicitacoes: Math.max(formRequestsCount, 6) },
-    ],
-    [formRequestsCount],
-  );
+  const formTrendData = useMemo(() => {
+    const days = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+    const base = Math.floor(formRequestsCount / 7);
+    const remainder = formRequestsCount % 7;
+    return days.map((dia, idx) => ({
+      dia,
+      solicitacoes: base + (idx < remainder ? 1 : 0),
+    }));
+  }, [formRequestsCount]);
+
+  // Dynamic Weekly Activity Trend
+  const weeklyChartData = useMemo(() => {
+    const days = [
+      { day: "Seg", key: 1 },
+      { day: "Ter", key: 2 },
+      { day: "Qua", key: 3 },
+      { day: "Qui", key: 4 },
+      { day: "Sex", key: 5 },
+      { day: "Sáb", key: 6 },
+      { day: "Dom", key: 0 },
+    ];
+    if (safeLeads.length === 0) {
+      return days.map((d) => ({ day: d.day, leads: 0, conversas: 0, agendados: 0 }));
+    }
+    return days.map((d) => {
+      const dayLeads = safeLeads.filter((l) => {
+        const date = l.createdAt ? new Date(l.createdAt) : null;
+        return date && !isNaN(date.getTime()) ? date.getDay() === d.key : false;
+      });
+      const count = dayLeads.length;
+      const convCount = dayLeads.reduce(
+        (acc, l) => acc + (Array.isArray(l.conversation) ? l.conversation.length : 0),
+        0,
+      );
+      const aptCount = dayLeads.reduce(
+        (acc, l) => acc + (Array.isArray(l.appointments) ? l.appointments.length : 0),
+        0,
+      );
+      return {
+        day: d.day,
+        leads: count,
+        conversas: convCount,
+        agendados: aptCount,
+      };
+    });
+  }, [safeLeads]);
 
   // Calculate Pipeline Value in Kwanzas
   const pipelineKz = useMemo(() => {
@@ -622,7 +644,7 @@ export function DashboardView({
       </div>
 
       {/* Visual Funnel Overview */}
-      <FunnelOverview stages={funnelStages} />
+      <FunnelOverview stages={dynamicFunnelStages} />
 
       {/* New Analytical Section: Setup vs MRR Recorrente (Recharts + Barras Empilhadas + Projeção 6 Meses + Download) */}
       <RevenueAnalyticsSection
@@ -722,7 +744,10 @@ export function DashboardView({
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={weeklyData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart
+                data={weeklyChartData}
+                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+              >
                 <defs>
                   <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4} />

@@ -34,48 +34,108 @@ import {
   Legend,
 } from "recharts";
 import { toast } from "sonner";
-import {
-  computeFinancialMetrics,
-  INITIAL_CLIENTS,
-  PLANS_CATALOG,
-  formatKz,
-} from "./financialUtils";
+import { computeFinancialMetrics, PLANS_CATALOG, formatKz } from "./financialUtils";
+import { useMRRMonitoring } from "./mrrMonitoringStore";
 
 interface ReportsViewProps {
   leads: Lead[];
 }
 
-// Monthly evolution separating Setup Único (Implementação) and MRR Recorrente (Operação/Manutenção)
-const monthlyRevenueData = [
-  { month: "Nov 2025", setup: 650000, mrr: 200000, total: 850000, projetos: 3 },
-  { month: "Dez 2025", setup: 950000, mrr: 250000, total: 1200000, projetos: 4 },
-  { month: "Jan 2026", setup: 1165000, mrr: 285000, total: 1450000, projetos: 5 },
-  { month: "Fev 2026", setup: 1345000, mrr: 305000, total: 1650000, projetos: 6 },
-  { month: "Mar 2026 (Atual)", setup: 1525000, mrr: 325000, total: 1850000, projetos: 7 },
-];
-
-const packageShareData = [
-  { name: "Profissional (Setup 250k | MRR 50k)", value: 35, color: "#3B82F6" },
-  { name: "Automate Pro (Setup 300k | MRR 65k)", value: 20, color: "#38BDF8" },
-  { name: "Domínio IA (Setup 700k | MRR 150k)", value: 25, color: "#8B5CF6" },
-  { name: "Autoridade (Setup 450k | MRR 85k)", value: 12, color: "#22C55E" },
-  { name: "Presença (Setup 125k | MRR 20k)", value: 8, color: "#F59E0B" },
-];
-
-const conversionFunnelData = [
-  { etapa: "Visitantes Únicos", total: 1850, taxa: "100%" },
-  { etapa: "Conversas no WhatsApp", total: 420, taxa: "22.7%" },
-  { etapa: "Leads Qualificados (IA)", total: 185, taxa: "44.0%" },
-  { etapa: "Reuniões Agendadas", total: 64, taxa: "34.6%" },
-  { etapa: "Propostas Aceitas", total: 28, taxa: "43.7%" },
-];
-
 export function ReportsView({ leads }: ReportsViewProps) {
   const [period, setPeriod] = useState<"7d" | "30d" | "trimestre" | "ano">("30d");
+  const { clients } = useMRRMonitoring();
 
-  // Real-time financial calculations
+  // Real-time financial calculations using real clients and leads
   const financialMetrics = useMemo(() => {
-    return computeFinancialMetrics(INITIAL_CLIENTS, leads);
+    return computeFinancialMetrics(clients, leads);
+  }, [clients, leads]);
+
+  // Dynamic monthly evolution from financial metrics
+  const monthlyRevenueData = useMemo(() => {
+    return financialMetrics.monthlyRevenueEvolution.map((item) => ({
+      month: item.monthShort,
+      setup: item.setupRevenue,
+      mrr: item.mrrRevenue,
+      total: item.totalRevenue,
+      projetos: item.activeClients,
+    }));
+  }, [financialMetrics]);
+
+  // Dynamic package share calculated from real leads
+  const packageShareData = useMemo(() => {
+    const totalLeads = leads.length;
+    if (totalLeads === 0) {
+      return [
+        { name: "Profissional (Setup 250k | MRR 50k)", value: 0, color: "#3B82F6" },
+        { name: "Automate Pro (Setup 300k | MRR 65k)", value: 0, color: "#38BDF8" },
+        { name: "Domínio IA (Setup 700k | MRR 150k)", value: 0, color: "#8B5CF6" },
+        { name: "Autoridade (Setup 450k | MRR 85k)", value: 0, color: "#22C55E" },
+        { name: "Presença (Setup 125k | MRR 20k)", value: 0, color: "#F59E0B" },
+      ];
+    }
+    const counts: Record<string, number> = {};
+    leads.forEach((l) => {
+      const p = l.packageInterest || "Profissional";
+      counts[p] = (counts[p] || 0) + 1;
+    });
+
+    const colors: Record<string, string> = {
+      Profissional: "#3B82F6",
+      "Automate Pro": "#38BDF8",
+      "Domínio IA": "#8B5CF6",
+      Autoridade: "#22C55E",
+      Presença: "#F59E0B",
+    };
+
+    return Object.entries(PLANS_CATALOG).map(([key, plan]) => {
+      const c = counts[key] || 0;
+      const pct = Math.round((c / totalLeads) * 100);
+      return {
+        name: `${key} (Setup ${formatKz(plan.setupFee).replace("Kz ", "")} | MRR ${formatKz(plan.monthlyFee).replace("Kz ", "")})`,
+        value: pct,
+        color: colors[key] || "#3B82F6",
+      };
+    });
+  }, [leads]);
+
+  // Dynamic conversion funnel from real leads
+  const conversionFunnelData = useMemo(() => {
+    const total = leads.length;
+    const conversations = leads.filter(
+      (l) => (Array.isArray(l.conversation) && l.conversation.length > 0) || l.status !== "novo",
+    ).length;
+    const qualified = leads.filter(
+      (l) => l.aiQualified || ["qualificado", "agendado", "convertido"].includes(l.status),
+    ).length;
+    const scheduled = leads.filter(
+      (l) =>
+        (Array.isArray(l.appointments) && l.appointments.length > 0) ||
+        ["agendado", "convertido"].includes(l.status),
+    ).length;
+    const converted = leads.filter((l) => l.status === "convertido").length;
+
+    const rate = (val: number, base: number) => {
+      if (base === 0) return "0.0%";
+      return `${((val / base) * 100).toFixed(1)}%`;
+    };
+
+    return [
+      { etapa: "Total de Leads", total, taxa: "100%" },
+      { etapa: "Conversas Ativas", total: conversations, taxa: rate(conversations, total) },
+      {
+        etapa: "Qualificados (IA)",
+        total: qualified,
+        taxa: rate(qualified, conversations || total),
+      },
+      { etapa: "Reuniões Agendadas", total: scheduled, taxa: rate(scheduled, qualified || total) },
+      { etapa: "Clientes Convertidos", total: converted, taxa: rate(converted, total) },
+    ];
+  }, [leads]);
+
+  const aiAutonomyRate = useMemo(() => {
+    if (leads.length === 0) return "0.0%";
+    const qualified = leads.filter((l) => l.aiQualified).length;
+    return `${((qualified / leads.length) * 100).toFixed(1)}%`;
   }, [leads]);
 
   const exportCSV = () => {
@@ -234,7 +294,7 @@ export function ReportsView({ leads }: ReportsViewProps) {
               <Sparkles className="size-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-[#C084FC] mt-2 font-mono">89.4%</p>
+          <p className="text-2xl font-bold text-[#C084FC] mt-2 font-mono">{aiAutonomyRate}</p>
           <p className="text-[11px] text-[#A7B0BF] mt-1">Qualificação sem intervenção humana</p>
         </div>
       </div>

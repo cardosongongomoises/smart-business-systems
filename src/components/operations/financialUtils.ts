@@ -132,65 +132,9 @@ export interface ClientAccount {
 }
 
 /**
- * 4 clientes da base original (totalizam Kz 305.000/mês)
+ * Clientes com contratos ativos (inicialmente vazio, alimentado por leads convertidos e Supabase)
  */
-export const INITIAL_CLIENTS: ClientAccount[] = [
-  {
-    id: "cl-1",
-    name: "Dr. Sebastião Luvumbo",
-    company: "Luvumbo Advocacia Corporativa",
-    phone: "+244 923 881 204",
-    email: "sebastiao@luvumbo-adv.co.ao",
-    plan: "Autoridade",
-    status: "no_ar",
-    setupPrice: "Kz 450.000",
-    monthlyFee: "Kz 85.000/mês",
-    launchedAt: "12/01/2026",
-    siteUrl: "https://luvumbo-adv.co.ao",
-    uptime: "99.9%",
-  },
-  {
-    id: "cl-2",
-    name: "Dra. Jandira Kuanza",
-    company: "Clínica Vida Talatona",
-    phone: "+244 912 400 918",
-    email: "jandira@clinicavida.co.ao",
-    plan: "Domínio IA",
-    status: "no_ar",
-    setupPrice: "Kz 700.000",
-    monthlyFee: "Kz 150.000/mês",
-    launchedAt: "28/01/2026",
-    siteUrl: "https://clinicavida.co.ao",
-    uptime: "100%",
-  },
-  {
-    id: "cl-3",
-    name: "Eng. Arnaldo Gaspar",
-    company: "Gaspar Logística & Distribuição",
-    phone: "+244 934 112 390",
-    email: "arnaldo@gasparlog.ao",
-    plan: "Profissional",
-    status: "em_desenvolvimento",
-    setupPrice: "Kz 250.000",
-    monthlyFee: "Kz 50.000/mês",
-    launchedAt: "Previsão: 20/03/2026",
-    uptime: "Staging",
-  },
-  {
-    id: "cl-4",
-    name: "Marta Tchissola",
-    company: "Imobiliária Kilamba Prime",
-    phone: "+244 945 678 123",
-    email: "marta@kilambaprime.ao",
-    plan: "Presença",
-    status: "no_ar",
-    setupPrice: "Kz 125.000",
-    monthlyFee: "Kz 20.000/mês",
-    launchedAt: "05/02/2026",
-    siteUrl: "https://kilambaprime.ao",
-    uptime: "99.8%",
-  },
-];
+export const INITIAL_CLIENTS: ClientAccount[] = [];
 
 /**
  * Formata um número em formato padrão de Kwanzas (AOA)
@@ -361,15 +305,18 @@ export function computeFinancialMetrics(
   }));
 
   // Month-over-Month (MoM) calculation:
-  // Baseline Fevereiro 2026 MRR was Kz 255.000 (Dr. Sebastião 85k + Dra. Jandira 150k + Marta 20k)
-  const mrrPreviousMonth = 255000;
+  const mrrPreviousMonth = totalContracts > 0 ? Math.round(totalMrr * 0.9) : 0;
   const mrrMomDiff = totalMrr - mrrPreviousMonth;
   const mrrMomGrowthPercent =
-    mrrPreviousMonth > 0 ? ((totalMrr - mrrPreviousMonth) / mrrPreviousMonth) * 100 : 0;
+    mrrPreviousMonth > 0
+      ? ((totalMrr - mrrPreviousMonth) / mrrPreviousMonth) * 100
+      : totalMrr > 0
+        ? 100
+        : 0;
   const isChurn = mrrMomGrowthPercent < 0;
 
   // Monthly breakdown separating Setup Revenue from Monthly Recurring Revenue (MRR)
-  const currentMonthSetup = 250000 + convertedLeadsSetup;
+  const currentMonthSetup = totalSetup;
   const currentMonthMrr = totalMrr;
 
   const rawMonthlySeries: Omit<
@@ -379,59 +326,68 @@ export function computeFinancialMetrics(
     {
       month: "Janeiro 2026",
       monthShort: "Jan",
-      setupRevenue: 1150000, // Luvumbo (450k) + Clínica Vida (700k)
-      mrrRevenue: 235000, // 85k + 150k
-      totalRevenue: 1385000,
-      activeClients: 2,
-      highlightNote: "Início das operações: Luvumbo Advocacia & Clínica Vida",
+      setupRevenue: 0,
+      mrrRevenue: 0,
+      totalRevenue: 0,
+      activeClients: 0,
+      highlightNote: "Início do período",
     },
     {
       month: "Fevereiro 2026",
       monthShort: "Fev",
-      setupRevenue: 125000, // Marta Tchissola (Presença: 125k)
-      mrrRevenue: 255000, // 235k + 20k = 255k (+8.5% MoM)
-      totalRevenue: 380000,
-      activeClients: 3,
-      highlightNote: "Entrada da Imobiliária Kilamba Prime (+Kz 20.000/mês)",
+      setupRevenue: 0,
+      mrrRevenue: 0,
+      totalRevenue: 0,
+      activeClients: 0,
+      highlightNote: "Preparação do pipeline comercial",
     },
     {
       month: "Março 2026",
       monthShort: "Mar",
-      setupRevenue: currentMonthSetup, // Gaspar Logística (250k) + Converted Leads
-      mrrRevenue: currentMonthMrr, // 305k + Converted Leads MRR (+19.6% MoM)
+      setupRevenue: currentMonthSetup,
+      mrrRevenue: currentMonthMrr,
       totalRevenue: currentMonthSetup + currentMonthMrr,
       activeClients: activeClientsCount,
-      highlightNote: "Mês atual: Gaspar Logística + Oportunidades convertidas",
+      highlightNote:
+        activeClientsCount > 0
+          ? `${activeClientsCount} contratos ativos sincronizados com Supabase`
+          : "Aguardando primeiras conversões de leads",
     },
     {
       month: "Abril 2026",
       monthShort: "Abr (Proj.)",
-      setupRevenue: 600000,
-      mrrRevenue: Math.round(currentMonthMrr * 1.28),
-      totalRevenue: 600000 + Math.round(currentMonthMrr * 1.28),
-      activeClients: activeClientsCount + 2,
+      setupRevenue: currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.2) : 0,
+      mrrRevenue: currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.25) : 0,
+      totalRevenue:
+        (currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.2) : 0) +
+        (currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.25) : 0),
+      activeClients: activeClientsCount > 0 ? activeClientsCount + 1 : 0,
       isProjected: true,
-      highlightNote: "Previsão de 2 novas ativações em fase final de proposta",
+      highlightNote: "Projeção de novos contratos",
     },
     {
       month: "Maio 2026",
       monthShort: "Mai (Proj.)",
-      setupRevenue: 750000,
-      mrrRevenue: Math.round(currentMonthMrr * 1.62),
-      totalRevenue: 750000 + Math.round(currentMonthMrr * 1.62),
-      activeClients: activeClientsCount + 4,
+      setupRevenue: currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.5) : 0,
+      mrrRevenue: currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.5) : 0,
+      totalRevenue:
+        (currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.5) : 0) +
+        (currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.5) : 0),
+      activeClients: activeClientsCount > 0 ? activeClientsCount + 3 : 0,
       isProjected: true,
-      highlightNote: "Expansão de contratos Automate Pro & Domínio IA",
+      highlightNote: "Projeção de expansão",
     },
     {
       month: "Junho 2026",
       monthShort: "Jun (Proj.)",
-      setupRevenue: 950000,
-      mrrRevenue: Math.round(currentMonthMrr * 2.05),
-      totalRevenue: 950000 + Math.round(currentMonthMrr * 2.05),
-      activeClients: activeClientsCount + 7,
+      setupRevenue: currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.8) : 0,
+      mrrRevenue: currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.85) : 0,
+      totalRevenue:
+        (currentMonthSetup > 0 ? Math.round(currentMonthSetup * 1.8) : 0) +
+        (currentMonthMrr > 0 ? Math.round(currentMonthMrr * 1.85) : 0),
+      activeClients: activeClientsCount > 0 ? activeClientsCount + 5 : 0,
       isProjected: true,
-      highlightNote: "Consolidação de meio de ano com 11 clientes ativos",
+      highlightNote: "Meta semestral",
     },
   ];
 

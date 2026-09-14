@@ -17,9 +17,9 @@ import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
 import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
 import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
-import { initialMetrics, funnelStages } from "./mockData";
+import { calculateFunnelStages } from "./mockData";
 import { Lead, LeadStatus, ChatMessage, MetricData } from "./types";
-import { computeFinancialMetrics, INITIAL_CLIENTS } from "./financialUtils";
+import { computeFinancialMetrics } from "./financialUtils";
 import { useMRRMonitoring } from "./mrrMonitoringStore";
 import { toast } from "sonner";
 import { useAdminAuth } from "./AdminAuthGuard";
@@ -105,7 +105,7 @@ export function OperationsCenter() {
       {
         title: "Leads Totais",
         value: String(total),
-        change: "+28%",
+        change: total > 0 ? `${total} no pipeline` : "0 no pipeline",
         isPositive: true,
         timeframe: "No pipeline comercial",
         type: "leads",
@@ -113,7 +113,7 @@ export function OperationsCenter() {
       {
         title: "Qualificação IA",
         value: `${qualRate}%`,
-        change: "+12%",
+        change: qualifiedCount > 0 ? `${qualifiedCount} validados` : "0 validados",
         isPositive: true,
         timeframe: `${qualifiedCount} qualificados`,
         type: "qualification",
@@ -121,7 +121,7 @@ export function OperationsCenter() {
       {
         title: "Reuniões",
         value: String(appointmentsCount),
-        change: "+5%",
+        change: appointmentsCount > 0 ? `${appointmentsCount} agendadas` : "0 agendadas",
         isPositive: true,
         timeframe: "Sessões marcadas",
         type: "appointments",
@@ -129,13 +129,16 @@ export function OperationsCenter() {
       {
         title: "Conversão",
         value: `${convRate}%`,
-        change: "+8%",
+        change: convertedCount > 0 ? `${convertedCount} convertidos` : "0 convertidos",
         isPositive: true,
         timeframe: `${convertedCount} clientes fechados`,
         type: "conversion",
       },
     ];
   }, [leads, monitoredClients]);
+
+  // Dynamic Funnel Stages derived directly from real leads
+  const dynamicFunnelStages = useMemo(() => calculateFunnelStages(leads), [leads]);
 
   // Filtered Leads
   const filteredLeads = useMemo(() => {
@@ -478,6 +481,7 @@ export function OperationsCenter() {
 
     setLeads((prev) => [simulatedLead, ...prev]);
     setSelectedLeadId(simulatedLead.id);
+    createManualLeadInSupabase(simulatedLead);
     toast.success(`⚡ Lead: ${pickedName}`, {
       description: `${pickedCompany} • ${hasWhatsApp ? "Veredito: WhatsApp Ativo" : "Veredito: Sem WhatsApp"} • Score IA 94/100`,
     });
@@ -539,7 +543,7 @@ export function OperationsCenter() {
               {/* Top Metrics & Journey Funnel */}
               <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
                 <MetricsRow metrics={dynamicMetrics} />
-                <FunnelOverview stages={funnelStages} />
+                <FunnelOverview stages={dynamicFunnelStages} />
               </div>
 
               {/* CRM Main Columns */}
