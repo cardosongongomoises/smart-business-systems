@@ -100,26 +100,25 @@ export function Contact() {
     <>
       {/* SECTION 13: CTA FINAL */}
       <section className="relative overflow-hidden py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.06),transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(34,197,94,0.06),transparent_70%)]" />
         <div className="relative mx-auto w-full max-w-[1200px] px-5 text-center sm:px-8">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
-              Transformação Digital Corporativa
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#22C55E] uppercase">
+              Diagnóstico Gratuito · Apenas 5 empresas/mês
             </span>
           </Reveal>
 
           <Reveal delay={80}>
             <h2 className="mt-6 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl lg:text-5xl text-balance max-w-3xl mx-auto">
-              Sua empresa está pronta para operar de{" "}
-              <span className="text-gradient">forma mais inteligente?</span>
+              Cada minuto sem automação são{" "}
+              <span className="text-gradient">leads perdidos para a concorrência.</span>
             </h2>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#A7B0BF]">
-              Realizamos um diagnóstico minucioso da sua operação comercial para implementar o
-              website corporativo, agente de inteligência artificial ou automações adequadas ao seu
-              segmento em Angola.
+              O diagnóstico é gratuito e sem compromisso. Em 30 minutos, mapeamos os pontos
+              críticos da sua operação e mostramos exactamente como resolver — com números, não promessas.
             </p>
           </Reveal>
 
@@ -129,21 +128,21 @@ export function Contact() {
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-8 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB]"
+                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-8 text-sm font-semibold text-white transition-colors hover:bg-[#16A34A]"
               >
-                Falar com um especialista <ArrowRight className="size-4" aria-hidden="true" />
+                Ativar Agora <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href={CTA.diagnostic}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-8 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6]"
+                className="inline-flex h-[48px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-8 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#22C55E]"
               >
-                <Calendar className="size-4 text-[#3B82F6]" aria-hidden="true" /> Agendar
+                <Calendar className="size-4 text-[#22C55E]" aria-hidden="true" /> Agendar
                 diagnóstico gratuito
               </a>
             </div>
-            <p className="mt-4 text-xs text-[#667085]">Atendimento consultivo e sem compromisso.</p>
+            <p className="mt-4 text-xs text-[#667085]">Diagnóstico gratuito limitado a 5 empresas por mês.</p>
           </Reveal>
         </div>
       </section>
@@ -159,14 +158,13 @@ export function Contact() {
             <div>
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
-                  Canal Directo Institucional
+                  Fale Directamente com um Especialista
                 </span>
                 <h2 className="mt-6 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-                  Inicie a modernização digital da sua organização.
+                  Vai pensar que é mais um formulário que vai para o lixo.
                 </h2>
                 <p className="mt-4 text-base text-[#A7B0BF]">
-                  Envie o formulário técnico ao lado ou contacte-nos através dos canais de suporte
-                  oficial em Angola.
+                  Não é. Resposta pessoal em menos de 2 horas em dias úteis — do responsável técnico, não de um chatbot. Sem compromisso, sem pressão.
                 </p>
               </Reveal>
 
@@ -229,10 +227,9 @@ export function Contact() {
 
             <Reveal delay={120}>
               <div className="rounded-[16px] border border-[#252C38] bg-[#151A23] p-7 sm:p-9 shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
-                <h3 className="text-xl font-bold text-[#F5F7FA]">Solicitar proposta executiva</h3>
+                <h3 className="text-xl font-bold text-[#F5F7FA]">Solicitar proposta personalizada</h3>
                 <p className="mt-2 text-xs sm:text-sm text-[#A7B0BF]">
-                  Preencha as informações preliminares. Nossa equipa técnica entrará em contacto em
-                  menos de 24 horas úteis.
+                  Responda 6 perguntas rápidas — nossa equipa prepara uma proposta com números reais, não estimativas vagas. Resposta em menos de 24h úteis.
                 </p>
 
                 {submitted ? (
@@ -244,11 +241,11 @@ export function Contact() {
                       <CheckCircle2 className="size-6 text-[#22C55E]" aria-hidden="true" />
                     </div>
                     <p className="text-base font-bold text-[#F5F7FA]">
-                      Solicitação registada com sucesso
+                      Solicitação recebida — estamos a analisar
                     </p>
                     <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#A7B0BF]">
-                      Os seus dados foram encaminhados com segurança. Um especialista da Agentes
-                      Digital entrará em contacto em breve.
+                      Um especialista da Agentes Digital vai entrar em contacto pessoalmente
+                      em breve. A sua proposta será preparada com base nos dados que forneceu.
                     </p>
                     <p className="mt-3 text-[11px] text-[#667085]">
                       O formulário será reiniciado automaticamente em instantes.
@@ -409,16 +406,17 @@ export function Contact() {
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Processando
-                          solicitação…
+                          <Loader2 className="size-4 animate-spin" aria-hidden="true" /> A enviar a sua solicitação…
                         </>
                       ) : (
                         <>
-                          <Send className="size-4" aria-hidden="true" /> Enviar solicitação de
-                          proposta
+                          <Send className="size-4" aria-hidden="true" /> Quero minha proposta personalizada
                         </>
                       )}
                     </button>
+                    <p className="mt-3 text-center text-[11px] text-[#667085]">
+                      Sem compromisso · Resposta em 24h · Dados protegidos
+                    </p>
                   </form>
                 )}
               </div>

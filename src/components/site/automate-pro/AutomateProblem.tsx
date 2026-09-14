@@ -56,9 +56,8 @@ export function AutomateProblem() {
 
           <Reveal delay={140}>
             <p className="mt-4 text-base text-[#A7B0BF] leading-relaxed">
-              Muitas empresas já possuem um website profissional, mas continuam dependendo de
-              processos manuais para responder clientes, organizar contactos e acompanhar
-              oportunidades.
+              O website atrai visitantes, mas sem atendimento imediato e automação, cada lead
+              torna-se uma oportunidade perdida — independentemente da qualidade do design.
             </p>
           </Reveal>
         </div>

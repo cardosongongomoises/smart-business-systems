@@ -44,12 +44,19 @@ export function LiveDemo() {
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-4 text-base text-[#A7B0BF]">
-              Simulação de fluxo de qualificação e agendamento corporativo em tempo real.
+              Fluxo real de qualificação e agendamento — sem simulação. Assim o seu cliente seria atendido amanhã de manhã.
             </p>
           </Reveal>
         </div>
 
         <div className="mt-14 max-w-3xl mx-auto space-y-3">
+          {/* Timing Callout */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="text-xs font-mono text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/30 px-3 py-1 rounded-full">
+              Tempo total: &lt;30 segundos
+            </span>
+          </div>
+
           {timeline.map((t, i) => (
             <Reveal key={i} delay={i * 100}>
               <div>
@@ -93,8 +100,8 @@ export function LiveDemo() {
         <Reveal delay={160}>
           <p className="mt-12 flex items-center justify-center gap-2 text-center text-xs sm:text-sm text-[#A7B0BF]">
             <Bot className="size-4 text-[#3B82F6]" aria-hidden="true" />
-            Não construímos apenas presença digital. Construímos sistemas que trabalham para o seu
-            negócio.
+            Não construímos apenas presença digital. Construímos sistemas que trabalham 24/7 para o seu
+            negócio — enquanto a sua equipa foca em fechar negócios. Cada conversa é uma oportunidade capturada.
           </p>
         </Reveal>
       </div>

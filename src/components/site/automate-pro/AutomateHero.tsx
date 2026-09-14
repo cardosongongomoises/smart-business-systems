@@ -46,7 +46,7 @@ export function AutomateHero() {
           {/* Subtitle tag */}
           <Reveal delay={60}>
             <p className="mt-4 text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#A7B0BF]">
-              Automação de Atendimento para Empresas que Já Possuem Website
+              Adicione IA ao Seu Website Actual — Sem Reconstruir Nada
             </p>
           </Reveal>
 
@@ -55,9 +55,9 @@ export function AutomateHero() {
             <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-[#F5F7FA] leading-[1.12]">
               Seu website já existe. Agora faça ele{" "}
               <span className="bg-gradient-to-r from-[#3B82F6] via-[#60A5FA] to-[#8B5CF6] bg-clip-text text-transparent underline decoration-[#3B82F6]/40 decoration-4 underline-offset-8">
-                TRABALHAR
+                ATENDER, QUALIFICAR E VENDER
               </span>{" "}
-              para o seu negócio.
+              por você.
             </h2>
           </Reveal>
 
@@ -68,9 +68,7 @@ export function AutomateHero() {
                 Não reconstruímos o que já funciona. Adicionamos inteligência ao que você já tem.
               </p>
               <p className="text-sm sm:text-base text-[#A7B0BF]">
-                Transformamos o seu website em um canal inteligente de atendimento, qualificação e
-                acompanhamento, conectando IA, WhatsApp, CRM, agendamento e follow-up em um único
-                fluxo.
+                Um fluxo completo: visitante entra no site → IA atende em &lt;8 segundos → qualifica o lead → agenda reunião → faz follow-up automático. Tudo no seu website actual, sem código invasivo.
               </p>
             </div>
           </Reveal>

@@ -79,16 +79,21 @@ export function Hero() {
 
           <Reveal delay={80}>
             <h1 className="mt-6 text-4xl leading-[1.05] font-bold tracking-[-0.04em] text-[#F5F7FA] sm:text-6xl">
-              Sua empresa pode trabalhar <span className="text-gradient">enquanto você dorme.</span>
+              Enquanto sua equipa dorme,{" "}
+              <span className="text-gradient">
+                clientes enviam mensagens que ninguém responde.
+              </span>
             </h1>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-[#667085] italic">
+              "Como posso garantir que nenhum cliente volte a ficar sem resposta?"
+            </p>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[#A7B0BF] sm:text-lg">
-              Criamos websites profissionais, agentes de Inteligência Artificial e automações
-              comerciais em Angola. Ajudamos a sua empresa a ser encontrada no Google, atender
-              clientes 24/7 no WhatsApp, qualificar oportunidades e agendar reuniões
-              automaticamente.
+              Em 48 horas, seu website passa a atender, qualificar e agendar reuniões
+              automaticamente — 24 horas, 7 dias por semana. Sem contratar mais gente.
+              Sem perder mais tempo.
             </p>
           </Reveal>
 
@@ -98,9 +103,9 @@ export function Hero() {
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-6 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
+                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-6 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#16A34A] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
               >
-                <span>Falar com especialista</span>
+                <span>Falar com Especialista</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
@@ -108,7 +113,7 @@ export function Hero() {
                 className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-6 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
               >
                 <PlayCircle className="size-4 text-[#A7B0BF]" aria-hidden="true" />
-                <span>Ver como funciona</span>
+                <span>Ver o Sistema em Ação</span>
               </a>
             </div>
           </Reveal>
@@ -116,16 +121,20 @@ export function Hero() {
           {/* Enterprise Credibility Badges */}
           <Reveal delay={320}>
             <div className="mt-10 pt-7 border-t border-[#252C38]/70">
-              <p className="text-[11px] font-semibold tracking-wider text-[#667085] uppercase mb-3">
-                Padrões Operacionais & Tecnológicos
-              </p>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-2.5 py-1 text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
+                  <span className="size-1.5 rounded-full bg-[#22C55E] animate-pulse" />
+                  Diagnóstico Gratuito Limitado
+                </span>
+                <span className="text-[10px] text-[#667085]">Apenas 5 empresas/mês</span>
+              </div>
               <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-4 text-xs text-[#A7B0BF]">
                 <div className="flex items-center gap-2">
                   <span className="relative flex size-2">
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
                     <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
                   </span>
-                  <span className="font-medium text-[#F5F7FA]">Atendimento 24/7 Ativo</span>
+                  <span className="font-medium text-[#F5F7FA]">+50 empresas activas</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#3B82F6]" />
@@ -133,7 +142,7 @@ export function Hero() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#8B5CF6]" />
-                  <span>Supervisão Humana sem Alucinação</span>
+                  <span>Atendimento em &lt;8 segundos</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#22C55E]" />

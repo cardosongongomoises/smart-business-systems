@@ -8,7 +8,7 @@ const plans = [
     n: "01",
     setup: "Kz 125.000",
     monthly: "Kz 20.000/mês",
-    pitch: "Ideal para empresas que precisam começar.",
+    pitch: "Presença digital profissional sem enorme investimento. Uma landing page que converte visitantes em contactos — ideal para quem precisa de um website agora.",
     cta: "Começar agora",
     link: CTA.planPresenca,
     highlight: false,
@@ -29,10 +29,10 @@ const plans = [
   {
     name: "Profissional",
     n: "02",
-    badge: "Mais escolhido",
+    badge: "Mais escolhido · Pagou-se no 1º mês",
     setup: "Kz 250.000",
     monthly: "Kz 50.000/mês",
-    pitch: "Ideal para empresas que querem transformar presença digital em geração de contactos.",
+    pitch: "Este plano pagou-se a si mesmo no 1º mês com apenas 3 reuniões adicionais. Website + WhatsApp + IA que atende, qualifica e agenda — transformando visitantes em clientes enquanto dorme.",
     cta: "Quero este plano",
     link: CTA.planProfissional,
     highlight: true,
@@ -61,7 +61,7 @@ const plans = [
     n: "03",
     setup: "Kz 450.000",
     monthly: "Kz 85.000/mês",
-    pitch: "Para empresas que querem autoridade, automação e crescimento.",
+    pitch: "Website + Blog + SEO + IA + Automação completa. Para empresas que querem dominar o Google e converter tráfego em reuniões automaticamente.",
     cta: "Construir minha estrutura",
     link: CTA.planAutoridade,
     highlight: false,
@@ -89,7 +89,7 @@ const plans = [
     n: "04",
     setup: "Kz 700.000",
     monthly: "Kz 150.000/mês",
-    pitch: "Para empresas que querem uma operação digital completa.",
+    pitch: "Operação digital completa — website, IA, automação, CRM, dashboards e consultoria. Para empresas que querem escalar sem limites.",
     cta: "Falar com especialista",
     link: CTA.planDominioIA,
     highlight: false,
@@ -134,15 +134,41 @@ export function Pricing() {
           </Reveal>
           <Reveal delay={80}>
             <h2 className="mt-5 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-              Escolha o nível de transformação{" "}
-              <span className="text-gradient">da sua empresa.</span>
+              Quanto custa perder um cliente{" "}
+              <span className="text-gradient">por demora no atendimento?</span>
             </h2>
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-4 max-w-2xl mx-auto text-base text-[#A7B0BF]">
-              Estruturas precificadas em Kwanzas (Kz). Inicie com presença de alta conversão ou
-              implemente uma operação completa com inteligência artificial no WhatsApp.
+              Cada plano pagou-se a si mesmo com apenas poucas reuniões adicionais fechadas pelo sistema.
+              Preços em Kwanzas (Kz). Sem surpresas. Sem taxas ocultas. Aimplementação é única e os valores mensais incluem tudo: hospedagem, domínio, SSL, manutenção e suporte.
             </p>
+          </Reveal>
+
+          {/* ROI Callout */}
+          <Reveal delay={240}>
+            <div className="mt-6 inline-flex items-center gap-3 rounded-[10px] border border-[#22C55E]/30 bg-[#22C55E]/5 px-5 py-3">
+              <span className="text-lg font-bold text-[#22C55E]">1 reunião/mês</span>
+              <span className="text-xs text-[#A7B0BF]">→ o plano Profissional já se paga. Duas reuniões e você lucra. Quatro reuniões e o ROI é 4x.</span>
+            </div>
+          </Reveal>
+
+          {/* Trust Signals Below Pricing */}
+          <Reveal delay={320}>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#667085]">
+              <span className="flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-[#22C55E]" />
+                Sem fidelidade — cancele quando quiser
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-[#3B82F6]" />
+                Suporte técnico garantido
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="size-1.5 rounded-full bg-[#8B5CF6]" />
+                Dados protegidos com SSL
+              </span>
+            </div>
           </Reveal>
         </div>
 
@@ -206,7 +232,7 @@ export function Pricing() {
                   rel="noopener noreferrer"
                   className={`mt-8 inline-flex h-[44px] items-center justify-center rounded-[8px] px-5 text-xs font-semibold uppercase tracking-wider transition-colors ${
                     p.highlight
-                      ? "bg-[#3B82F6] text-white hover:bg-[#2563EB]"
+                      ? "bg-[#22C55E] text-white hover:bg-[#16A34A]"
                       : "border border-[#252C38] bg-[#0E121A] text-[#F5F7FA] hover:bg-[#151A23] hover:border-[#3B82F6]"
                   }`}
                 >

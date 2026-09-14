@@ -45,6 +45,7 @@ export function HumanControl() {
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
             A Inteligência Artificial atua com parâmetros corporativos definidos: responde o que é
             pré-autorizado e transfere imediatamente para a equipa sempre que necessário.
+            Você mantém o controlo total — a IA não decide por si. Pode rever todas as conversas a qualquer momento.
           </p>
         </Reveal>
 
@@ -105,7 +106,8 @@ export function HumanControl() {
         <Reveal delay={120}>
           <div className="mt-8 rounded-[12px] border border-[#252C38] bg-[#0E121A] p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm sm:text-base text-[#A7B0BF]">
-              A IA filtra e resolve 80% do fluxo repetitivo.{" "}
+              A IA filtra e resolve <strong className="text-[#F5F7FA]">80% do fluxo repetitivo</strong> —
+              sem atrasos, sem esquecimentos, sem horário de expediente.{" "}
               <span className="font-semibold text-[#F5F7FA]">
                 A sua equipa recebe os leads prontos para fechar contrato.
               </span>

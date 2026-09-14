@@ -199,11 +199,10 @@ export function Services() {
                 <span>Vitrine de Serviços & Soluções IA</span>
               </div>
               <h2 className="max-w-3xl text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-                Sistemas Digitais Integrados e Soluções Avançadas de IA Corporativa.
+                Soluções completas: Websites, IA e Automação — tudo integrado.
               </h2>
               <p className="mt-4 max-w-2xl text-base text-[#A7B0BF] leading-relaxed">
-                Desenvolvemos arquiteturas completas: desde websites e automações até agentes
-                inteligentes sob medida que operam 24/7 nos canais oficiais da sua organização.
+                Cada sistema é construído para converter visitantes em clientes. Sem fragmentação, sem integrações quebradas — tudo funciona junto, desde o dia 1.
               </p>
             </div>
 
@@ -260,11 +259,10 @@ export function Services() {
                     </span>
                   </div>
                   <h3 className="text-2xl font-bold text-[#F5F7FA] mt-1">
-                    Agentes Inteligentes Prontos para Integrar ao seu WhatsApp & CRM
+                    Agentes de IA para WhatsApp, CRM e Website
                   </h3>
                   <p className="text-sm text-[#A7B0BF] mt-1 max-w-xl">
-                    Cada agente opera com barreiras de proteção, linguagem corporativa e integração
-                    com dados reais da sua empresa.
+                    Cada agente resolve um problema específico — sem confusão, sem sobreposição. Prontos para integrar ao seu negócio.
                   </p>
                 </div>
                 <span className="hidden sm:inline-flex items-center gap-2 text-xs font-mono text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/30 px-3 py-1.5 rounded-full">
@@ -375,8 +373,8 @@ export function Services() {
                   Engenharia Web, Automação de Processos e Software de Gestão
                 </h3>
                 <p className="text-sm text-[#A7B0BF] mt-1 max-w-2xl">
-                  A base sólida onde as soluções de inteligência artificial são conectadas para
-                  garantir estabilidade, velocidade e presença digital de alto nível.
+                  A base sólida onde as soluções de IA são conectadas para garantir
+                  estabilidade, velocidade e presença digital de alto nível — sem systems que comunicam entre si.
                 </p>
               </div>
             </Reveal>
@@ -419,9 +417,9 @@ export function Services() {
                       <span className="text-[#667085]">Nível Empresarial</span>
                       <a
                         href="#contacto"
-                        className="font-semibold text-[#3B82F6] hover:text-[#2563EB] transition-colors"
+                        className="inline-flex items-center gap-1.5 font-semibold text-[#3B82F6] hover:text-[#2563EB] transition-colors"
                       >
-                        Consultar projeto →
+                        Solicitar proposta <ArrowRight className="size-3.5" aria-hidden="true" />
                       </a>
                     </div>
                   </article>
@@ -446,20 +444,21 @@ export function Services() {
                   Garantia de IA Confiável: Sem Alucinações e com Controle Humano
                 </h4>
                 <p className="mt-1.5 text-xs sm:text-sm text-[#A7B0BF] max-w-3xl leading-relaxed">
-                  Todos os nossos agentes de IA utilizam conhecimento estritamente delimitado pelas
-                  regras da sua empresa, trabalham sobre a API Oficial do WhatsApp e contam com
-                  encaminhamento transparente para atendentes humanos sempre que necessário.
+                  Pode pensar que IA é arriscado — e para muitos fornecedores, é. Os nossos agentes
+                  utilizam conhecimento estritamente delimitado pelas regras da sua empresa,
+                  trabalham sobre a API Oficial do WhatsApp e contam com encaminhamento transparente
+                  para atendentes humanos sempre que necessário. Nunca o cliente fica sem resposta humana.
                 </p>
               </div>
             </div>
 
-            <a
-              href="#contacto"
-              className="shrink-0 inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] px-6 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-all hover:opacity-95 active:scale-[0.98]"
-            >
-              <span>Solicitar Demonstração</span>
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </a>
+              <a
+                href="#contacto"
+                className="shrink-0 inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] px-6 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-all hover:opacity-95 active:scale-[0.98]"
+              >
+                <span>Agendar Demonstração</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </a>
           </div>
         </Reveal>
       </div>

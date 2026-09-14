@@ -4,37 +4,40 @@ import { Reveal } from "./Reveal";
 
 export const faqItems = [
   {
+    q: "Quanto tempo leva para o sistema estar operacional?",
+    a: "Em 48 horas, seu website pode estar a atender com IA — incluindo WhatsApp e formulários. O processo de configuração é ágil porque trabalhamos com templates testados e integrações prontas. Sem months de desenvolvimento. Muitos clientes começam a receber contactos no primeiro dia.",
+  },
+  {
+    q: "E se a IA não souber responder?",
+    a: "O sistema transfere imediatamente para um humano — nunca perde um cliente. A IA só responde o que está autorizada, dentro do conhecimento configurado para a sua empresa. Sem alucinações. Você pode testar a IA antes de activar, ajustando as respostas ao seu gosto.",
+  },
+  {
+    q: "Preciso de substituir meu website atual?",
+    a: "Não. O sistema integra-se ao seu website existente sem alterar nada. Você mantém o seu design e conteúdo. Muitos clientes começam apenas com automação e depois evoluem para um website novo. Não existe risco na transição.",
+  },
+  {
     q: "A IA responde meus clientes sozinha?",
-    a: "Sim, dentro dos fluxos e do conhecimento configurados para a sua empresa. Tudo o que sair desse âmbito é encaminhado para a sua equipa.",
+    a: "Sim, dentro dos fluxos e do conhecimento configurados para a sua empresa. Tudo o que sair desse âmbito é encaminhado para a sua equipa. Você mantém o controlo total e pode ver todas as conversas em tempo real.",
   },
   {
     q: "A IA funciona no WhatsApp?",
-    a: "Sim, mediante integração com a infraestrutura apropriada de WhatsApp.",
+    a: "Sim, mediante integração com a API oficial do WhatsApp Cloud da Meta — sem risco de bloqueio. É a mesma infraestrutura que grandes empresas usam. O seu número empresarial fica protegido e conforme às políticas da Meta.",
   },
   {
     q: "A IA pode agendar reuniões?",
-    a: "Sim, quando integrada ao calendário ou sistema de agendamento da sua empresa.",
+    a: "Sim, quando integrada ao calendário ou sistema de agendamento da sua empresa. O cliente agenda direto no chat, sem fricção. Reduz o no-show com lembretes automáticos. Funciona com Google Calendar e outros sistemas populares.",
   },
   {
     q: "Posso continuar atendendo manualmente?",
-    a: "Sim. A conversa pode ser encaminhada para um atendente humano a qualquer momento.",
+    a: "Sim. A conversa pode ser encaminhada para um atendente humano a qualquer momento. A IA complementa a sua equipa, não a substitui. A transição é transparente — o cliente nem percebe a mudança.",
   },
-  { q: "A IA pode responder e-mails?", a: "Sim, com respostas, classificação e encaminhamento." },
   {
     q: "Posso começar apenas com um website?",
-    a: "Sim. Muitas empresas começam pelo pacote Presença.",
-  },
-  {
-    q: "Posso adicionar IA depois?",
-    a: "Sim. Os sistemas são projetados para permitir evolução por etapas.",
+    a: "Sim. Muitas empresas começam pelo pacote Presença (Kz 125.000) e evoluem para automação depois. Sem compromisso de longo prazo no início. Pode cancelar a qualquer momento sem multas.",
   },
   {
     q: "A mensalidade inclui domínio e hospedagem?",
-    a: "Sim, conforme o pacote contratado.",
-  },
-  {
-    q: "A IA funciona 24 horas?",
-    a: "O sistema pode operar continuamente, sujeito à disponibilidade dos serviços e integrações utilizadas.",
+    a: "Sim, conforme o pacote contratado. Tudo incluso em Kwanzas (Kz) — sem surpresas na factura. Domínio, hospedagem, SSL, backup e suporte inclusos. Não existe taxa de setup escondida.",
   },
 ];
 
@@ -56,7 +59,8 @@ export function FAQ() {
               Perguntas frequentes
             </h2>
             <p className="mt-4 text-base text-[#A7B0BF]">
-              Respostas claras sobre implementação, segurança e operação dos agentes digitais.
+              Respostas claras sobre implementação, segurança e operação — sem jargão técnico.
+              Se a sua dúvida não estiver aqui, fale directamente com um especialista.
             </p>
           </Reveal>
         </div>

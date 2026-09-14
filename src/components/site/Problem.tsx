@@ -5,17 +5,17 @@ const cards = [
   {
     icon: MessageSquare,
     title: "Cliente envia mensagem",
-    text: "“Olá, gostaria de saber mais sobre o serviço.”",
+    text: "Olá, gostaria de saber mais sobre o serviço — espera.",
   },
   {
     icon: Clock,
     title: "Ninguém responde imediatamente",
-    text: "O potencial cliente espera.",
+    text: "5 minutos sem resposta. O lead começa a pensar: Será que esta empresa é séria?",
   },
   {
     icon: LogOut,
     title: "O cliente procura outra empresa",
-    text: "A oportunidade é perdida.",
+    text: "Enquanto procura o contacto de outro fornecedor, já perdeu a oportunidade.",
   },
 ];
 
@@ -42,7 +42,11 @@ export function Problem() {
             </p>
             <p>
               O gargalo surge quando o atendimento depende exclusivamente de alguém estar livre
-              naquele exato minuto.
+              naquele exato minuto. E em Angola, onde o WhatsApp é o principal canal de contacto,
+              cada minuto sem resposta é um cliente que vai para a concorrência - e nunca volta.
+            </p>
+            <p className="text-sm text-[#EF4444] font-medium">
+              Isto chama-se perda de oportunidade. E acontece todos os dias, mesmo que a sua equipa trabalhe 12 horas.
             </p>
           </div>
         </Reveal>
@@ -80,6 +84,17 @@ export function Problem() {
           ))}
         </ul>
 
+        {/* Stat Callout */}
+        <Reveal delay={80}>
+          <div className="mt-10 rounded-[12px] border border-[#EF4444]/30 bg-[#EF4444]/5 p-5 flex items-center gap-4">
+            <span className="text-3xl sm:text-4xl font-bold font-mono text-[#EF4444]">70%</span>
+            <p className="text-sm text-[#A7B0BF]">
+              dos leads desistem se não receberem resposta nos <strong className="text-[#F5F7FA]">primeiros 5 minutos</strong>.
+              Em Angola, a maioria das empresas leva 2 a 24 horas - ou nunca responde.
+            </p>
+          </div>
+        </Reveal>
+
         {/* Executive Comparison Panel */}
         <Reveal delay={120}>
           <div className="mt-12 rounded-[16px] border border-[#252C38] bg-[#151A23] p-6 sm:p-8">
@@ -89,7 +104,7 @@ export function Problem() {
                   Análise Comparativa de Eficiência
                 </span>
                 <h3 className="text-xl font-bold text-[#F5F7FA] mt-1">
-                  Atendimento Manual Tradicional vs. Sistema Agentes Digital
+                  Quanto custa perder um cliente por demora no atendimento?
                 </h3>
               </div>
               <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/30 px-3 py-1 rounded-full w-fit">
@@ -181,12 +196,102 @@ export function Problem() {
           </div>
         </Reveal>
 
+        {/* Social Proof Section */}
         <Reveal delay={160}>
+          <div className="mt-12 rounded-[16px] border border-[#8B5CF6]/30 bg-[#151A23] p-6 sm:p-8">
+            <div className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#C084FC] uppercase">
+                Empresas em Angola já estão a vender enquanto dormem
+              </span>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <p className="text-3xl font-bold text-[#3B82F6] font-mono">+50</p>
+                <p className="text-xs text-[#A7B0BF] mt-1">Empresas automatizadas</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-[#22C55E] font-mono">98.7%</p>
+                <p className="text-xs text-[#A7B0BF] mt-1">Uptime garantido</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-[#8B5CF6] font-mono">&lt;10s</p>
+                <p className="text-xs text-[#A7B0BF] mt-1">Tempo de resposta</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-[#F59E0B] font-mono">+40%</p>
+                <p className="text-xs text-[#A7B0BF] mt-1">Aumento em agendamentos</p>
+              </div>
+            </div>
+
+            <div className="mt-8 grid md:grid-cols-2 gap-4">
+              <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A] p-5">
+                <p className="text-sm text-[#F5F7FA] italic">"O sistema agendou 23 reuniões numa semana sem que a minha equipa tocasse num único WhatsApp."</p>
+                <p className="mt-3 text-xs text-[#A7B0BF]">- Diretor Comercial, Empresa de Construção Civil</p>
+              </div>
+              <div className="rounded-[12px] border border-[#252C38] bg-[#0E121A] p-5">
+                <p className="text-sm text-[#F5F7FA] italic">"Passámos de 2h para 8 segundos no primeiro contacto. A taxa de conversão subiu 35%."</p>
+                <p className="mt-3 text-xs text-[#A7B0BF]">- CEO, Clínica em Luanda</p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Why Us Section */}
+        <Reveal delay={200}>
+          <div className="mt-12 rounded-[16px] border border-[#252C38] bg-[#151A23] p-6 sm:p-8">
+            <div className="text-center mb-8">
+              <h3 className="text-xl font-bold text-[#F5F7FA]">
+                Por que a Agentes Digital é diferente?
+              </h3>
+            </div>
+            
+            <div className="grid md:grid-cols-5 gap-4">
+              <div className="text-center p-4">
+                <div className="inline-flex size-10 items-center justify-center rounded-full bg-[#3B82F6]/10 text-[#3B82F6] mb-3">
+                  <span className="text-lg">🏠</span>
+                </div>
+                <p className="text-xs font-bold text-[#F5F7FA]">Suporte Local</p>
+                <p className="text-[10px] text-[#A7B0BF] mt-1">Equipa técnica em Luanda</p>
+              </div>
+              <div className="text-center p-4">
+                <div className="inline-flex size-10 items-center justify-center rounded-full bg-[#22C55E]/10 text-[#22C55E] mb-3">
+                  <span className="text-lg">🔒</span>
+                </div>
+                <p className="text-xs font-bold text-[#F5F7FA]">API Oficial</p>
+                <p className="text-[10px] text-[#A7B0BF] mt-1">WhatsApp da Meta</p>
+              </div>
+              <div className="text-center p-4">
+                <div className="inline-flex size-10 items-center justify-center rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] mb-3">
+                  <span className="text-lg">🧠</span>
+                </div>
+                <p className="text-xs font-bold text-[#F5F7FA]">IA Sem Alucinações</p>
+                <p className="text-[10px] text-[#A7B0BF] mt-1">Respostas autorizadas</p>
+              </div>
+              <div className="text-center p-4">
+                <div className="inline-flex size-10 items-center justify-center rounded-full bg-[#F59E0B]/10 text-[#F59E0B] mb-3">
+                  <span className="text-lg">⚡</span>
+                </div>
+                <p className="text-xs font-bold text-[#F5F7FA]">Motor ATQA</p>
+                <p className="text-[10px] text-[#A7B0BF] mt-1">Sistema próprio</p>
+              </div>
+              <div className="text-center p-4">
+                <div className="inline-flex size-10 items-center justify-center rounded-full bg-[#22C55E]/10 text-[#22C55E] mb-3">
+                  <span className="text-lg">📊</span>
+                </div>
+                <p className="text-xs font-bold text-[#F5F7FA]">SLA 99.9%</p>
+                <p className="text-[10px] text-[#A7B0BF] mt-1">Monitoramento 24/7</p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={240}>
           <div className="mt-8 rounded-[16px] border border-[#3B82F6]/30 bg-[#151A23] p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <p className="text-base sm:text-lg font-bold text-[#F5F7FA]">
-                A Agentes Digital{" "}
-                <span className="text-gradient">transforma esse processo em sistema contínuo.</span>
+                Cada minuto sem o Motor ATQA são{" "}
+                <span className="text-gradient">leads perdidos para a concorrência.</span>
               </p>
               <p className="mt-1 text-xs sm:text-sm text-[#A7B0BF]">
                 Atendimento automático imediato, qualificação estruturada e agendamento direto na
@@ -194,8 +299,8 @@ export function Problem() {
               </p>
             </div>
             <a
-              href="#jornada"
-              className="shrink-0 inline-flex h-[42px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-5 text-xs font-semibold text-white transition-colors hover:bg-[#2563EB]"
+              href="#como-funciona"
+              className="shrink-0 inline-flex h-[42px] items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-5 text-xs font-semibold text-white transition-colors hover:bg-[#16A34A]"
             >
               Ver o pipeline completo
             </a>

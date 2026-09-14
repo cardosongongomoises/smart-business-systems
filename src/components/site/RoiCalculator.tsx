@@ -25,8 +25,8 @@ export function RoiCalculator() {
             Quanto custa uma oportunidade perdida por falta de resposta?
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            Avalie o impacto comercial das mensagens de clientes que chegam fora do horário ou ficam
-            sem atendimento imediato.
+            Use o simulador abaixo para calcular o impacto real — com base nos seus números, não em estimativas genéricas.
+            A automação visa assegurar que nenhum contacto fique sem resposta.
           </p>
         </Reveal>
 
@@ -115,7 +115,7 @@ export function RoiCalculator() {
             <div className="flex h-full flex-col justify-between rounded-[16px] p-7 border border-[#3B82F6]/35 bg-[#151A23] shadow-[0_8px_30px_rgba(59,130,246,0.12)]">
               <div>
                 <p className="text-[11px] font-bold tracking-[0.18em] text-[#3B82F6] uppercase">
-                  Estimativa Mensal de Oportunidades
+                  Quanto está a perder por mês?
                 </p>
                 <p className="mt-5 text-xs text-[#A7B0BF]">Leads com risco de evasão por espera:</p>
                 <p className="text-3xl sm:text-4xl font-mono font-bold text-[#F5F7FA] tabular-nums mt-1">
@@ -133,9 +133,12 @@ export function RoiCalculator() {
 
               <div className="mt-7 pt-4 border-t border-[#252C38]">
                 <p className="text-[11px] leading-relaxed text-[#667085]">
-                  * Simulação analítica com base nas variáveis informadas. A automação com Agente
-                  Digital visa assegurar taxa de resposta de 100% em menos de 10 segundos,
-                  convertendo contactos em agendamentos qualificados.
+                  * Simulação com base nas variáveis informadas. A automação visa assegurar taxa de
+                  resposta de 100% em menos de 10 segundos — convertendo contactos em reuniões
+                  qualificados.{" "}
+                  <span className="text-[#3B82F6] font-semibold">
+                    Cada contacto perdido é um cliente que vai para a concorrência. Este valor é recuperável.
+                  </span>
                 </p>
               </div>
             </div>

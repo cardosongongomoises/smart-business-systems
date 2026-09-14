@@ -38,17 +38,17 @@ export function AutomateCTA() {
           {/* Headline 2 lines */}
           <Reveal delay={80}>
             <h3 className="mt-5 text-2xl font-extrabold tracking-tight text-[#F5F7FA] sm:text-4xl lg:text-5xl leading-tight">
-              Seu website já trabalha para sua empresa.
+              Cada dia sem automação é um lead perdido.
               <br />
-              <span className="text-gradient">Agora faça ele trabalhar de forma inteligente.</span>
+              <span className="text-gradient">Comece hoje — sem reconstruir o site.</span>
             </h3>
           </Reveal>
 
           {/* Supporting Text */}
           <Reveal delay={140}>
             <p className="mt-5 max-w-2xl mx-auto text-base text-[#A7B0BF] leading-relaxed">
-              Descubra como podemos transformar o seu website existente em um sistema inteligente de
-              atendimento e automação.
+              Agende uma demonstração gratuita de 30 minutos e veja exactamente como a IA vai
+              atender, qualificar e agendar — enquanto a sua equipa foca em fechar negócios.
             </p>
           </Reveal>
 

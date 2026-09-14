@@ -14,19 +14,19 @@ const metrics = [
   {
     value: "< 10s",
     label: "Tempo Médio de Primeira Resposta",
-    desc: "Atendimento imediato no WhatsApp em qualquer horário, inclusive madrugadas e feriados.",
+    desc: "Resposta imediata no WhatsApp, 24/7 — sem depender de ninguém estar disponível para digitar.",
     icon: Clock,
   },
   {
     value: "+40%",
     label: "Taxa de Qualificação de Contactos",
-    desc: "Filtro automático de intenção, orçamento e urgência antes de passar ao vendedor humano.",
+    desc: "Filtro automático de intenção, orçamento e urgência — apenas leads qualificados chegam à sua equipa.",
     icon: TrendingUp,
   },
   {
     value: "100%",
-    label: "Sincronização com a Equipa",
-    desc: "Dados organizados, histórico registado e alertas instantâneos no CRM e telemóvel.",
+    label: "Dois Canais Activos em 48h",
+    desc: "WhatsApp + Website integrados e funcionais em 48 horas — sem months de desenvolvimento.",
     icon: Users,
   },
 ];
@@ -39,7 +39,7 @@ const industries = [
     problem: "Receção ocupada em horário de pico e perda de agendamentos à noite.",
     solution:
       "Agente IA esclarece especialidades, recolhe dados do paciente e agenda consultas no calendário oficial.",
-    result: "Fim das chamadas perdidas e aumento de 35% nos agendamentos confirmados.",
+    result: "Fim das chamadas perdidas e aumento de 35% nos agendamentos confirmados — sem aumentar a equipa de recepção.",
   },
   {
     icon: Building2,
@@ -48,7 +48,7 @@ const industries = [
     problem: "Centenas de mensagens no Instagram/WhatsApp sem triagem de capacidade financeira.",
     solution:
       "Qualificação instantânea por tipologia, orçamento e localização com envio automático de fichas técnicas.",
-    result: "Corretores atendem apenas compradores com perfil real de aquisição.",
+    result: "Corretores atendem apenas compradores com perfil real — reduzindo 60% do tempo em leads frios.",
   },
   {
     icon: Briefcase,
@@ -58,7 +58,7 @@ const industries = [
       "Sócios gastando horas respondendo dúvidas genéricas em vez de atender casos faturáveis.",
     solution:
       "Portal institucional de alta autoridade com triagem prévia e agendamento de diagnóstico preliminar.",
-    result: "Posicionamento de autoridade e valor hora preservado.",
+    result: "Posicionamento de autoridade e valor hora preservado — sócios dedicam mais tempo a casos faturáveis.",
   },
   {
     icon: Truck,
@@ -68,7 +68,7 @@ const industries = [
       "Dificuldade de clientes encontrarem tabela de serviços, localização e canais de cotação.",
     solution:
       "Website comercial indexado no Google + agente de cotações automáticas conectado ao WhatsApp.",
-    result: "Aumento de 4x no volume de pedidos de cotação corporativa online.",
+    result: "Aumento de 4x no volume de pedidos de cotação corporativa — com respostas automáticas em segundos.",
   },
 ];
 
@@ -95,7 +95,7 @@ export function TrustResults() {
             <p className="mt-4 text-base leading-relaxed text-[#A7B0BF]">
               Em Luanda e em todo o país, a diferença entre fechar um contrato corporativo ou perder
               para a concorrência está na rapidez da resposta e na credibilidade da sua estrutura
-              digital.
+              digital. Veja os números que os nossos clientes alcançam.
             </p>
           </Reveal>
         </div>
@@ -189,6 +189,7 @@ export function TrustResults() {
                 <h3 className="text-xl font-bold text-[#F5F7FA] mt-1">
                   Infraestrutura Corporativa Desenhada para Operações Críticas
                 </h3>
+                <p className="text-xs text-[#A7B0BF] mt-1">Mesma tecnologia usada por empresas multinacionais — agora acessível em Angola.</p>
               </div>
               <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#22C55E] bg-[#22C55E]/10 border border-[#22C55E]/30 px-3 py-1 rounded-full w-fit">
                 <span className="size-1.5 rounded-full bg-[#22C55E]" /> SLA 99.9% GARANTIDO
