@@ -1,118 +1,163 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { MessageSquare, ArrowUpRight, ChevronDown, HelpCircle } from "lucide-react";
+import { site } from "@/lib/site-config";
+import { Link } from "react-router-dom";
 
-export const faqItems = [
+const faqs = [
   {
-    q: "Quanto tempo leva para o sistema estar operacional?",
-    a: "Em 48 horas, seu website pode estar a atender com IA — incluindo WhatsApp e formulários. O processo de configuração é ágil porque trabalhamos com templates testados e integrações prontas. Sem months de desenvolvimento. Muitos clientes começam a receber contactos no primeiro dia.",
+    q: "Preciso de saber programar para usar o Motor ATQA?",
+    a: "Não. Nós tratamos de tudo: configuração, integração com WhatsApp, CRM e dashboard. Você apenas usa como qualquer outro ferramenta — como usa o WhatsApp. A sua equipa não precisa de nenhuma formação técnica.",
   },
   {
-    q: "E se a IA não souber responder?",
-    a: "O sistema transfere imediatamente para um humano — nunca perde um cliente. A IA só responde o que está autorizada, dentro do conhecimento configurado para a sua empresa. Sem alucinações. Você pode testar a IA antes de activar, ajustando as respostas ao seu gosto.",
+    q: "Quanto tempo demora a ver resultados?",
+    a: "A maioria dos nossos clientes vê resultados nas primeiras 48 horas — leads a receberem respostas imediatas. A qualificação automática e agendamento começam a funcionar no primeiro dia. A subida na taxa de conversão ao longo do primeiro mês é progressiva.",
   },
   {
-    q: "Preciso de substituir meu website atual?",
-    a: "Não. O sistema integra-se ao seu website existente sem alterar nada. Você mantém o seu design e conteúdo. Muitos clientes começam apenas com automação e depois evoluem para um website novo. Não existe risco na transição.",
+    q: "Funciona com o WhatsApp que já uso?",
+    a: "Sim. O Motor ATQA integra-se ao seu WhatsApp Business existente — não precisa de mudar número nem de criar uma conta nova. A integração é feita via API oficial da Meta, sem risco de banimento.",
   },
   {
-    q: "A IA responde meus clientes sozinha?",
-    a: "Sim, dentro dos fluxos e do conhecimento configurados para a sua empresa. Tudo o que sair desse âmbito é encaminhado para a sua equipa. Você mantém o controlo total e pode ver todas as conversas em tempo real.",
+    q: "O que acontece se houver um problema?",
+    a: "Temos suporte técnico dedicado. Cada cliente tem um ponto de contacto directo. Além disso, o sistema é monitorizado automaticamente — se algo falhar, a nossa equipa é notificada antes mesmo de você perceber.",
   },
   {
-    q: "A IA funciona no WhatsApp?",
-    a: "Sim, mediante integração com a API oficial do WhatsApp Cloud da Meta — sem risco de bloqueio. É a mesma infraestrutura que grandes empresas usam. O seu número empresarial fica protegido e conforme às políticas da Meta.",
+    q: "Quanto custa realmente?",
+    a: "Os pacotes começam em Kz 125.000/mês para presença digital básica, até Kz 700.000/mês para domínio total com IA avançada. O investimento paga-se no primeiro mês — se cada reunião que o sistema agendar valer Kz 200.000+, basta 2-3 reuniões adicionais por mês para cobrir o custo.",
   },
   {
-    q: "A IA pode agendar reuniões?",
-    a: "Sim, quando integrada ao calendário ou sistema de agendamento da sua empresa. O cliente agenda direto no chat, sem fricção. Reduz o no-show com lembretes automáticos. Funciona com Google Calendar e outros sistemas populares.",
+    q: "Preciso de mudar tudo o que já tenho?",
+    a: "Não. Trabalhamos com o que você já tem — site actual, WhatsApp, ferramentas existentes. O Motor ATQA integra-se e complementa. Não é preciso demolir para construir melhor.",
   },
   {
-    q: "Posso continuar atendendo manualmente?",
-    a: "Sim. A conversa pode ser encaminhada para um atendente humano a qualquer momento. A IA complementa a sua equipa, não a substitui. A transição é transparente — o cliente nem percebe a mudança.",
-  },
-  {
-    q: "Posso começar apenas com um website?",
-    a: "Sim. Muitas empresas começam pelo pacote Presença (Kz 125.000) e evoluem para automação depois. Sem compromisso de longo prazo no início. Pode cancelar a qualquer momento sem multas.",
-  },
-  {
-    q: "A mensalidade inclui domínio e hospedagem?",
-    a: "Sim, conforme o pacote contratado. Tudo incluso em Kwanzas (Kz) — sem surpresas na factura. Domínio, hospedagem, SSL, backup e suporte inclusos. Não existe taxa de setup escondida.",
+    q: "E se eu não gostar do resultado?",
+    a: "Oferecemos garantia de satisfação nos primeiros 30 dias. Se o sistema não entregar o que prometemos, devolvemos 100% do investimento. Sem perguntas, sem burocracia.",
   },
 ];
 
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
     <section
       id="faq"
-      className="py-20 sm:py-28 bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+      className="relative overflow-hidden bg-gradient-to-b from-[#0E121A] via-[#0E121A] to-[#111827] py-20 sm:py-28 scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
-              Esclarecimentos Técnicos & Comerciais
-            </span>
-            <h2 className="text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-              Perguntas frequentes
-            </h2>
-            <p className="mt-4 text-base text-[#A7B0BF]">
-              Respostas claras sobre implementação, segurança e operação — sem jargão técnico.
-              Se a sua dúvida não estiver aqui, fale directamente com um especialista.
-            </p>
-          </Reveal>
-        </div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-[#8B5CF6]/5 blur-[150px] rounded-full pointer-events-none" />
 
-        <div className="mt-12 max-w-3xl mx-auto space-y-3">
-          {faqItems.map((item, i) => {
-            const isOpen = open === i;
-            const questionId = `faq-q-${i}`;
-            const answerId = `faq-a-${i}`;
-            return (
-              <Reveal key={item.q} delay={i * 40}>
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+        <Reveal>
+          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <Badge className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#60A5FA]">
+                Perguntas Frequentes
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight">
+                Resultados rápidos, sem surpresas
+              </h2>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
+            Todas as respostas que precisa para tomar a decisão certa — sem enrolação.
+          </p>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_380px]">
+            {/* FAQ List */}
+            <div className="space-y-3">
+              {faqs.map((f, i) => (
                 <div
-                  className={`overflow-hidden rounded-[12px] border transition-all duration-200 ${
-                    isOpen
-                      ? "border-[#3B82F6]/40 bg-[#151A23] shadow-[0_2px_12px_rgba(0,0,0,0.2)]"
-                      : "border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/30"
-                  }`}
+                  key={i}
+                  className="rounded-[14px] border border-[#252C38] bg-[#151A23]/80 backdrop-blur-sm overflow-hidden transition-colors hover:border-[#3B82F6]/30"
                 >
-                  <h3>
-                    <button
-                      type="button"
-                      id={questionId}
-                      aria-expanded={isOpen}
-                      aria-controls={answerId}
-                      onClick={() => setOpen(isOpen ? null : i)}
-                      className="flex w-full items-center justify-between gap-4 p-5 text-left font-semibold text-[#F5F7FA] hover:text-[#3B82F6] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-inset touch-manipulation"
-                    >
-                      <span className="text-sm sm:text-base">{item.q}</span>
-                      <Plus
-                        aria-hidden="true"
-                        className={`size-4 shrink-0 text-[#3B82F6] transition-transform duration-200 ${
-                          isOpen ? "rotate-45" : ""
-                        }`}
-                      />
-                    </button>
-                  </h3>
-                  {isOpen && (
-                    <div
-                      id={answerId}
-                      role="region"
-                      aria-labelledby={questionId}
-                      className="px-5 pb-5 text-xs sm:text-sm leading-relaxed text-[#A7B0BF]"
-                    >
-                      <p>{item.a}</p>
+                  <button
+                    onClick={() => setOpen(open === i ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 p-5 text-left"
+                  >
+                    <span className="text-sm font-semibold text-[#F5F7FA]">
+                      {f.q}
+                    </span>
+                    <ChevronDown
+                      className={`size-5 shrink-0 text-[#A7B0BF] transition-transform duration-200 ${
+                        open === i ? "rotate-180 text-[#60A5FA]" : ""
+                      }`}
+                    />
+                  </button>
+                  {open === i && (
+                    <div className="px-5 pb-5 text-sm leading-relaxed text-[#A7B0BF] border-t border-[#252C38] pt-4">
+                      {f.a}
                     </div>
                   )}
                 </div>
-              </Reveal>
-            );
-          })}
-        </div>
+              ))}
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6 lg:sticky lg:top-28 lg:self-start">
+              <div className="rounded-[14px] border border-[#252C38] bg-[#151A23]/80 backdrop-blur-sm p-6">
+                <div className="flex size-10 items-center justify-center rounded-full border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#60A5FA]">
+                  <HelpCircle className="size-5" />
+                </div>
+                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">
+                  Ainda tem dúvidas?
+                </h3>
+                <p className="mt-2 text-sm text-[#A7B0BF] leading-relaxed">
+                  Fale directamente com um especialista. Sem compromisso, sem pressão — apenas
+                  respostas claras para o seu caso.
+                </p>
+                <Link
+                  to={site.ctaSecond.href}
+                  className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#16A34A]"
+                >
+                  {site.ctaSecond.label}
+                  <ArrowUpRight className="size-4" />
+                </Link>
+              </div>
+
+              <div className="rounded-[14px] border border-[#8B5CF6]/30 bg-[#8B5CF6]/5 p-6">
+                <div className="flex size-10 items-center justify-center rounded-full border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 text-[#C084FC]">
+                  <MessageSquare className="size-5" />
+                </div>
+                <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">
+                  Diagnóstico gratuito
+                </h3>
+                <p className="mt-2 text-sm text-[#A7B0BF] leading-relaxed">
+                  Apenas 5 empresas/mês recebem um diagnóstico personalizado — análise
+                  completa do seu funil de vendas, identificação de gargalos, e plano de
+                  acção concreto.
+                </p>
+                <Link
+                  to={site.ctaSecond.href}
+                  className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 px-5 text-sm font-semibold text-[#C084FC] transition-colors hover:bg-[#8B5CF6]/20"
+                >
+                  Pedir diagnóstico gratuito
+                  <ArrowUpRight className="size-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
+  );
+}
+
+function Badge({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase ${className}`}
+    >
+      {children}
+    </span>
   );
 }

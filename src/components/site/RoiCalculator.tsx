@@ -19,14 +19,16 @@ export function RoiCalculator() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
-            Simulador de Oportunidades
+            Simulador de Impacto
           </span>
           <h2 className="text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-            Quanto custa uma oportunidade perdida por falta de resposta?
+            Quanto dinheiro está a{" "}
+            <span className="text-[#EF4444]">deixar na mesa</span> todos os meses?
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
-            Use o simulador abaixo para calcular o impacto real — com base nos seus números, não em estimativas genéricas.
-            A automação visa assegurar que nenhum contacto fique sem resposta.
+            Use o simulador abaixo para ver o impacto real — com base nos seus números, não em
+            estimativas genéricas. Cada contacto sem resposta é receita que vai para a
+            concorrência.
           </p>
         </Reveal>
 
@@ -112,13 +114,13 @@ export function RoiCalculator() {
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="flex h-full flex-col justify-between rounded-[16px] p-7 border border-[#3B82F6]/35 bg-[#151A23] shadow-[0_8px_30px_rgba(59,130,246,0.12)]">
+            <div className="flex h-full flex-col justify-between rounded-[16px] p-7 border border-[#EF4444]/35 bg-[#151A23] shadow-[0_8px_30px_rgba(239,68,68,0.12)]">
               <div>
-                <p className="text-[11px] font-bold tracking-[0.18em] text-[#3B82F6] uppercase">
+                <p className="text-[11px] font-bold tracking-[0.18em] text-[#EF4444] uppercase">
                   Quanto está a perder por mês?
                 </p>
-                <p className="mt-5 text-xs text-[#A7B0BF]">Leads com risco de evasão por espera:</p>
-                <p className="text-3xl sm:text-4xl font-mono font-bold text-[#F5F7FA] tabular-nums mt-1">
+                <p className="mt-5 text-xs text-[#A7B0BF]">Contactos a perder por falta de resposta:</p>
+                <p className="text-3xl sm:text-4xl font-mono font-bold text-[#EF4444] tabular-nums mt-1">
                   {missedContacts}{" "}
                   <span className="text-sm font-sans font-normal text-[#A7B0BF]">
                     contactos/mês
@@ -126,18 +128,18 @@ export function RoiCalculator() {
                 </p>
 
                 <p className="mt-6 text-xs text-[#A7B0BF]">Receita potencial em risco mensal:</p>
-                <p className="text-gradient text-3xl sm:text-4xl font-mono font-bold tabular-nums mt-1">
+                <p className="text-[#EF4444] text-3xl sm:text-4xl font-mono font-bold tabular-nums mt-1">
                   Kz {fmt(potential)}
                 </p>
               </div>
 
               <div className="mt-7 pt-4 border-t border-[#252C38]">
                 <p className="text-[11px] leading-relaxed text-[#667085]">
-                  * Simulação com base nas variáveis informadas. A automação visa assegurar taxa de
-                  resposta de 100% em menos de 10 segundos — convertendo contactos em reuniões
-                  qualificados.{" "}
-                  <span className="text-[#3B82F6] font-semibold">
-                    Cada contacto perdido é um cliente que vai para a concorrência. Este valor é recuperável.
+                  * Simulação com base nas variáveis informadas. O Motor ATQA responde 100% dos
+                  contactos em menos de 10 segundos — convertendo leads em reuniões qualificadas.{" "}
+                  <span className="text-[#EF4444] font-semibold">
+                    Cada contacto perdido é um cliente que vai para a concorrência. Este valor é
+                    recuperável.
                   </span>
                 </p>
               </div>

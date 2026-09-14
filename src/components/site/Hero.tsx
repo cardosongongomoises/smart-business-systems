@@ -2,61 +2,47 @@ import { useState, useEffect } from "react";
 import {
   ArrowRight,
   PlayCircle,
-  Circle,
   Bot,
   CheckCircle2,
   Sparkles,
-  Activity,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTA } from "@/lib/site-config";
 
 const flow = [
   {
-    label: "NOVO CLIENTE",
-    detail: "Mensagem recebida de visitante interessado",
-    tag: "INBOUND",
-    desc: "“Olá, gostaria de informações sobre os serviços”",
+    label: "CLIENTE INTERESSADO",
+    detail: "Alguém manda mensagem às 2h da manhã",
+    tag: "LEAD",
+    desc: '"Quero saber o preço do vosso serviço"',
   },
   {
-    label: "WhatsApp",
-    detail: "Canal oficial da empresa conectado",
-    tag: "CANAL",
-    desc: "Sincronização imediata via API Cloud",
-  },
-  {
-    label: "AGENTE IA",
-    detail: "Atendimento imediato em linguagem natural",
-    tag: "IA ATIVA",
-    desc: "Análise de intenção e tom de voz",
+    label: "RESPOSTA IMEDIATA",
+    detail: "Em menos de 10 segundos, sem ninguém online",
+    tag: "8 SEGUNDOS",
+    desc: "A IA responde como um consultor humano faria",
   },
   {
     label: "QUALIFICAÇÃO",
-    detail: "Identificação de necessidade e perfil",
+    detail: "Filtro automático: orçamento, urgência, perfil",
     tag: "FILTRO",
-    desc: "Serviço, orçamento e prioridade",
+    desc: "Só leads qualificados chegam à sua equipa",
   },
   {
-    label: "AGENDAMENTO",
-    detail: "Calendário e horários integrados",
-    tag: "AGENDA",
-    desc: "Horário reservado e link enviado",
-  },
-  {
-    label: "CRM",
-    detail: "Oportunidade registada na base comercial",
+    label: "REUNIÃO AGENDADA",
+    detail: "O lead agenda direto no chat — sem vai-e-vem",
     tag: "CONVERSÃO",
-    desc: "Alerta em tempo real para a equipa",
+    desc: "Consulta marcada no Google Calendar automaticamente",
   },
 ];
 
 export function Hero() {
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % flow.length);
-    }, 2800);
+    }, 3200);
     return () => clearInterval(timer);
   }, []);
 
@@ -72,8 +58,9 @@ export function Hero() {
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-[#3B82F6] uppercase">
-              Websites • Inteligência Artificial • Automação Comercial
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-4 py-1.5 text-[11px] font-semibold tracking-[0.22em] text-[#22C55E] uppercase">
+              <span className="size-1.5 rounded-full bg-[#22C55E] animate-pulse" />
+              Resultados comprovados em Angola
             </span>
           </Reveal>
 
@@ -81,19 +68,17 @@ export function Hero() {
             <h1 className="mt-6 text-4xl leading-[1.05] font-bold tracking-[-0.04em] text-[#F5F7FA] sm:text-6xl">
               Enquanto sua equipa dorme,{" "}
               <span className="text-gradient">
-                clientes enviam mensagens que ninguém responde.
+                o seu negócio pode estar a fechar negócios.
               </span>
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-[#667085] italic">
-              "Como posso garantir que nenhum cliente volte a ficar sem resposta?"
-            </p>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-[#A7B0BF] sm:text-lg">
-              Em 48 horas, seu website passa a atender, qualificar e agendar reuniões
-              automaticamente — 24 horas, 7 dias por semana. Sem contratar mais gente.
-              Sem perder mais tempo.
+              Imagina: um cliente manda mensagem às 2h da manhã. Em{" "}
+              <strong className="text-[#22C55E]">menos de 10 segundos</strong>, o seu website
+              atende, qualifica e agenda uma reunião — sem ninguém da sua equipa tocar num
+              telemóvel. É isso que fazemos.
             </p>
           </Reveal>
 
@@ -105,7 +90,7 @@ export function Hero() {
                 rel="noopener noreferrer"
                 className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-6 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#16A34A] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22C55E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
               >
-                <span>Falar com Especialista</span>
+                <span>Quero este resultado</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
@@ -113,18 +98,17 @@ export function Hero() {
                 className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-6 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
               >
                 <PlayCircle className="size-4 text-[#A7B0BF]" aria-hidden="true" />
-                <span>Ver o Sistema em Ação</span>
+                <span>Ver como funciona</span>
               </a>
             </div>
           </Reveal>
 
-          {/* Enterprise Credibility Badges */}
           <Reveal delay={320}>
             <div className="mt-10 pt-7 border-t border-[#252C38]/70">
               <div className="flex items-center gap-2 mb-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-2.5 py-1 text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
                   <span className="size-1.5 rounded-full bg-[#22C55E] animate-pulse" />
-                  Diagnóstico Gratuito Limitado
+                  Diagnóstico gratuito
                 </span>
                 <span className="text-[10px] text-[#667085]">Apenas 5 empresas/mês</span>
               </div>
@@ -134,19 +118,19 @@ export function Hero() {
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
                     <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
                   </span>
-                  <span className="font-medium text-[#F5F7FA]">+50 empresas activas</span>
+                  <span className="font-medium text-[#F5F7FA]">+50 empresas a fechar negócios 24/7</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#3B82F6]" />
-                  <span>WhatsApp Cloud API Oficial</span>
+                  <span>Resposta em &lt;10 segundos</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#8B5CF6]" />
-                  <span>Atendimento em &lt;8 segundos</span>
+                  <span>Atendimento 24/7/365</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                  <span className="font-mono text-[11px] text-[#22C55E]">SLA 99.9%</span>
+                  <span className="font-mono text-[11px] text-[#22C55E]">Zero leads perdidos</span>
                 </div>
               </div>
             </div>
@@ -155,7 +139,6 @@ export function Hero() {
 
         <Reveal delay={200}>
           <div className="ai-card relative overflow-hidden rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 sm:p-6 shadow-[0_0_32px_-8px_rgba(139,92,246,0.25)]">
-            {/* Console Telemetry Topbar */}
             <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="flex size-7 items-center justify-center rounded-[6px] bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30">
@@ -163,35 +146,30 @@ export function Hero() {
                 </div>
                 <div>
                   <p className="text-xs font-bold tracking-wider text-[#F5F7FA] uppercase">
-                    AI AGENT SYSTEM
+                    O que acontece quando alguém te contacta
                   </p>
-                  <p className="text-[10px] font-mono text-[#A7B0BF]">AGENTES_CORE_v3.2</p>
+                  <p className="text-[10px] font-mono text-[#A7B0BF]">Em tempo real — 24/7</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-2.5 py-1">
                 <span className="size-2 rounded-full bg-[#22C55E] animate-pulse" />
                 <span className="font-mono text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
-                  ONLINE
+                  ATIVO
                 </span>
               </div>
             </div>
 
-            {/* Software Flow */}
             <div className="mt-4 space-y-2">
               {flow.map((step, i) => {
                 const isCurrent = activeStep === i;
-                const isAI = step.label === "AGENTE IA";
-
                 return (
                   <div key={step.label} className="group">
                     <div
                       onClick={() => setActiveStep(i)}
                       className={`cursor-pointer transition-all duration-200 rounded-[10px] border p-3 ${
                         isCurrent
-                          ? isAI
-                            ? "border-[#8B5CF6] bg-[#8B5CF6]/15 shadow-sm shadow-[#8B5CF6]/20"
-                            : "border-[#3B82F6] bg-[#3B82F6]/15 shadow-sm shadow-[#3B82F6]/20"
-                          : "border-[#252C38] bg-[#0E121A] hover:border-[#3B82F6]/40 hover:bg-[#151A23]"
+                          ? "border-[#22C55E] bg-[#22C55E]/10 shadow-sm shadow-[#22C55E]/20"
+                          : "border-[#252C38] bg-[#0E121A] hover:border-[#22C55E]/40 hover:bg-[#151A23]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -199,9 +177,7 @@ export function Hero() {
                           <span
                             className={`flex size-6 items-center justify-center rounded-[6px] font-mono text-[11px] font-bold transition-colors ${
                               isCurrent
-                                ? isAI
-                                  ? "bg-[#8B5CF6] text-white"
-                                  : "bg-[#3B82F6] text-white"
+                                ? "bg-[#22C55E] text-white"
                                 : "border border-[#252C38] bg-[#151A23] text-[#A7B0BF]"
                             }`}
                           >
@@ -211,19 +187,13 @@ export function Hero() {
                             <div className="flex items-center gap-2">
                               <p
                                 className={`text-xs font-bold tracking-wider uppercase ${
-                                  isAI ? "text-[#C084FC]" : "text-[#F5F7FA]"
+                                  isCurrent ? "text-[#22C55E]" : "text-[#F5F7FA]"
                                 }`}
                               >
                                 {step.label}
                               </p>
                               {isCurrent && (
-                                <span
-                                  className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold tracking-wider uppercase ${
-                                    isAI
-                                      ? "bg-[#8B5CF6]/20 text-[#C084FC]"
-                                      : "bg-[#3B82F6]/20 text-[#93C5FD]"
-                                  }`}
-                                >
+                                <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-semibold tracking-wider uppercase bg-[#22C55E]/20 text-[#22C55E]">
                                   <Sparkles className="size-2.5" /> EM EXECUÇÃO
                                 </span>
                               )}
@@ -239,7 +209,7 @@ export function Hero() {
                       {isCurrent && (
                         <div className="mt-2.5 border-t border-[#252C38] pt-2 text-xs font-mono flex items-center justify-between text-[#F5F7FA]">
                           <span className="text-[#A7B0BF]">{step.desc}</span>
-                          <span className="text-[10px] text-[#3B82F6]">42ms</span>
+                          <span className="text-[10px] text-[#22C55E]">8.2s</span>
                         </div>
                       )}
                     </div>
@@ -248,7 +218,7 @@ export function Hero() {
                       <div className="mx-auto flex h-2.5 items-center justify-center">
                         <div
                           className={`h-full w-0.5 transition-colors duration-200 ${
-                            isCurrent ? (isAI ? "bg-[#8B5CF6]" : "bg-[#3B82F6]") : "bg-[#252C38]"
+                            isCurrent ? "bg-[#22C55E]" : "bg-[#252C38]"
                           }`}
                         />
                       </div>
@@ -258,13 +228,12 @@ export function Hero() {
               })}
             </div>
 
-            {/* Sub-bar */}
             <div className="mt-4 flex items-center justify-between border-t border-[#252C38] pt-3 text-[11px] text-[#A7B0BF]">
               <span className="flex items-center gap-1.5">
                 <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                Automação contínua 24/7
+                A fechar negócios enquanto dorme
               </span>
-              <span className="font-mono text-[#3B82F6]">Disponibilidade 99.9%</span>
+              <span className="font-mono text-[#22C55E]">24/7/365</span>
             </div>
           </div>
         </Reveal>

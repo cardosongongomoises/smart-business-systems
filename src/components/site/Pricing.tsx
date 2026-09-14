@@ -1,119 +1,94 @@
-import { Check, Sparkles } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { CTA } from "@/lib/site-config";
+import { Badge } from "@/components/ui/badge";
+import { site } from "@/lib/site-config";
+import { Link } from "react-router-dom";
+import {
+  ArrowUpRight,
+  Check,
+  Star,
+  Zap,
+  Shield,
+  Rocket,
+} from "lucide-react";
 
 const plans = [
   {
     name: "Presença",
-    n: "01",
-    setup: "Kz 125.000",
-    monthly: "Kz 20.000/mês",
-    pitch: "Presença digital profissional sem enorme investimento. Uma landing page que converte visitantes em contactos — ideal para quem precisa de um website agora.",
-    cta: "Começar agora",
-    link: CTA.planPresenca,
-    highlight: false,
-    items: [
-      "Landing Page",
-      "Domínio",
-      "Hospedagem",
-      "SSL",
-      "Backup",
-      "WhatsApp",
-      "Google Maps",
-      "Formulário",
-      "Redes sociais",
-      "SEO básico",
-      "Manutenção",
+    icon: Star,
+    price: "125.000",
+    period: "/mês",
+    build: "20.000",
+    tagline: "Presença digital que transmite credibilidade",
+    description:
+      "Ideal para empresas que querem ser encontradas no Google e terem um site profissional — o primeiro passo para não depender apenas de indicações.",
+    result: "Mais visitas qualificadas ao site, mais pedidos de orçamento",
+    popular: false,
+    features: [
+      "Site institucional profissional",
+      "SEO básico para Google",
+      "Integração WhatsApp",
+      "Formulário de contacto",
+      "Suporte técnico",
     ],
   },
   {
     name: "Profissional",
-    n: "02",
-    badge: "Mais escolhido · Pagou-se no 1º mês",
-    setup: "Kz 250.000",
-    monthly: "Kz 50.000/mês",
-    pitch: "Este plano pagou-se a si mesmo no 1º mês com apenas 3 reuniões adicionais. Website + WhatsApp + IA que atende, qualifica e agenda — transformando visitantes em clientes enquanto dorme.",
-    cta: "Quero este plano",
-    link: CTA.planProfissional,
-    highlight: true,
-    items: [
-      "Website até 5 páginas",
-      "Domínio",
-      "Hospedagem",
-      "SSL",
-      "Backup",
-      "WhatsApp",
-      "Agendamento",
-      "Google Business Profile",
-      "SEO local",
-      "Google Analytics",
-      "Search Console",
-      "IA básica",
-      "Respostas automáticas",
-      "Qualificação inicial",
-      "E-mail automatizado",
-      "Manutenção",
-      "Suporte prioritário",
+    icon: Zap,
+    price: "250.000",
+    period: "/mês",
+    build: "50.000",
+    tagline: "Atendimento automático + presença + gestão",
+    description:
+      "Para empresas que querem fechar negócios automaticamente — atendimento 24/7 via WhatsApp, qualificação de leads e agendamento de reuniões sem depender de ninguém.",
+    result: "Resposta em <10s, +40% agendamentos, zero leads perdidos",
+    popular: true,
+    features: [
+      "Tudo do plano Presença",
+      "Motor ATQA activo",
+      "Atendimento 24/7 via WhatsApp",
+      "Agendamento automático de reuniões",
+      "CRM com gestão de leads",
+      "Dashboard de métricas",
     ],
   },
   {
     name: "Autoridade",
-    n: "03",
-    setup: "Kz 450.000",
-    monthly: "Kz 85.000/mês",
-    pitch: "Website + Blog + SEO + IA + Automação completa. Para empresas que querem dominar o Google e converter tráfego em reuniões automaticamente.",
-    cta: "Construir minha estrutura",
-    link: CTA.planAutoridade,
-    highlight: false,
-    items: [
-      "Website até 10 páginas",
-      "Blog",
-      "SEO avançado",
-      "IA avançada",
-      "WhatsApp automatizado",
-      "E-mail automatizado",
-      "Qualificação de leads",
-      "Agendamento automático",
-      "Follow-up",
-      "CRM",
-      "Analytics",
-      "Search Console",
-      "Automação de processos",
-      "Optimização contínua",
-      "Relatórios",
-      "Suporte prioritário",
+    icon: Shield,
+    price: "450.000",
+    period: "/mês",
+    build: "85.000",
+    tagline: "Máxima conversão + IA avançada +Automação",
+    description:
+      "Para empresas que querem dominar o seu mercado — presença premium, automação completa de funil, e IA avançada que optimiza continuamente a taxa de conversão.",
+    result: "Funil totalmente automatizado, presença premium no Google",
+    popular: false,
+    features: [
+      "Tudo do plano Profissional",
+      "Landing pages otimizadas para conversão",
+      "Automação de follow-ups",
+      "Lembretes automáticos de reunião",
+      "Relatórios semanais automáticos",
+      "Suporte prioritário 24/7",
     ],
   },
   {
     name: "Domínio IA",
-    n: "04",
-    setup: "Kz 700.000",
-    monthly: "Kz 150.000/mês",
-    pitch: "Operação digital completa — website, IA, automação, CRM, dashboards e consultoria. Para empresas que querem escalar sem limites.",
-    cta: "Falar com especialista",
-    link: CTA.planDominioIA,
-    highlight: false,
-    items: [
-      "Website personalizado",
-      "UX/UI personalizado",
-      "Agentes de IA",
-      "WhatsApp",
-      "E-mail",
-      "CRM",
-      "Agendamento",
-      "Automação",
-      "Follow-up",
-      "SEO avançado",
-      "Landing Pages",
-      "Analytics",
-      "Dashboards",
-      "Integrações",
-      "Sistemas personalizados",
-      "Segurança",
-      "Backup",
-      "Monitorização",
-      "Consultoria",
-      "Suporte premium",
+    icon: Rocket,
+    price: "700.000",
+    period: "/mês",
+    build: null,
+    tagline: "Máximo domínio + IA completa + Consultoria",
+    description:
+      "Solução completa para empresas que querem ser a referência no mercado — tudo automatizado, presença dominante, e consultoria estratégica contínua para optimizar resultados.",
+    result: "Máximo domínio de mercado, presença imparável, resultados optimizados",
+    popular: false,
+    features: [
+      "Tudo do plano Autoridade",
+      "Landing pages e funis completos",
+      "Sistema de pagamento integrado",
+      "Automação avançada com IA",
+      "Consultoria estratégica mensal",
+      "Suporte VIP 24/7",
     ],
   },
 ];
@@ -121,127 +96,170 @@ const plans = [
 export function Pricing() {
   return (
     <section
-      id="planos"
-      className="py-20 sm:py-28 relative bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+      id="precos"
+      className="relative overflow-hidden bg-gradient-to-b from-[#111827] via-[#111827] to-[#0E121A] py-20 sm:py-28 scroll-mt-20"
     >
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[42rem] rounded-full bg-[#3B82F6]/5 blur-[160px]" />
-      <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8">
-        <div className="text-center max-w-3xl mx-auto">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase">
-              Pacotes de Websites & Automação em Angola
-            </span>
-          </Reveal>
-          <Reveal delay={80}>
-            <h2 className="mt-5 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-              Quanto custa perder um cliente{" "}
-              <span className="text-gradient">por demora no atendimento?</span>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#3B82F6]/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+        <Reveal>
+          <div className="text-center">
+            <Badge className="mb-4 border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#60A5FA]">
+              Investimento
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight">
+              O investimento que se paga no{" "}
+              <span className="text-[#22C55E]">primeiro mês</span>
             </h2>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-4 max-w-2xl mx-auto text-base text-[#A7B0BF]">
-              Cada plano pagou-se a si mesmo com apenas poucas reuniões adicionais fechadas pelo sistema.
-              Preços em Kwanzas (Kz). Sem surpresas. Sem taxas ocultas. Aimplementação é única e os valores mensais incluem tudo: hospedagem, domínio, SSL, manutenção e suporte.
+            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
+              Cada plano é um investimento com retorno mensurável — não um custo. Se o
+              sistema fechar 2-3 negócios adicionais por mês, já pagou o investimento.
             </p>
-          </Reveal>
+          </div>
+        </Reveal>
 
-          {/* ROI Callout */}
-          <Reveal delay={240}>
-            <div className="mt-6 inline-flex items-center gap-3 rounded-[10px] border border-[#22C55E]/30 bg-[#22C55E]/5 px-5 py-3">
-              <span className="text-lg font-bold text-[#22C55E]">1 reunião/mês</span>
-              <span className="text-xs text-[#A7B0BF]">→ o plano Profissional já se paga. Duas reuniões e você lucra. Quatro reuniões e o ROI é 4x.</span>
-            </div>
-          </Reveal>
-
-          {/* Trust Signals Below Pricing */}
-          <Reveal delay={320}>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] text-[#667085]">
-              <span className="flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                Sem fidelidade — cancele quando quiser
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-[#3B82F6]" />
-                Suporte técnico garantido
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-[#8B5CF6]" />
-                Dados protegidos com SSL
-              </span>
-            </div>
-          </Reveal>
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4 items-stretch">
-          {plans.map((p, i) => (
-            <Reveal key={p.name} delay={i * 80}>
-              <article
-                className={`relative flex h-full flex-col justify-between rounded-[16px] p-6 sm:p-7 transition-all duration-200 ${
-                  p.highlight
-                    ? "border-2 border-[#3B82F6] bg-[#151A23] shadow-[0_8px_30px_rgba(59,130,246,0.18)]"
-                    : "border border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/40 hover:-translate-y-0.5"
+        <Reveal delay={80}>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {plans.map((p) => (
+              <div
+                key={p.name}
+                className={`relative flex flex-col rounded-[18px] border p-6 transition-all duration-300 hover:-translate-y-1 ${
+                  p.popular
+                    ? "border-[#22C55E]/40 bg-[#22C55E]/5 shadow-[0_0_40px_rgba(34,197,94,0.08)]"
+                    : "border-[#252C38] bg-[#151A23]/80 hover:border-[#22C5CE]/30"
                 }`}
               >
+                {p.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="rounded-full bg-[#22C55E] px-4 py-1.5 text-[11px] font-bold text-white tracking-wider uppercase shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                      Mais escolhido
+                    </span>
+                  </div>
+                )}
+
                 <div>
-                  {p.badge && (
-                    <span className="absolute -top-3 left-6 rounded-full border border-[#3B82F6]/40 bg-[#3B82F6] px-3 py-0.5 text-[10px] font-bold tracking-[0.16em] text-white uppercase shadow-sm flex items-center gap-1">
-                      <Sparkles className="size-2.5" aria-hidden="true" /> {p.badge}
-                    </span>
-                  )}
                   <div className="flex items-center justify-between">
-                    <p className="font-mono text-xs text-[#3B82F6] font-bold">0{i + 1}</p>
-                    <span className="text-[10px] font-mono tracking-wider text-[#667085] uppercase">
-                      PACOTE
-                    </span>
+                    <div className="flex items-center gap-2.5">
+                      <p.icon
+                        className={`size-5 ${
+                          p.popular ? "text-[#22C55E]" : "text-[#A7B0BF]"
+                        }`}
+                      />
+                      <h3
+                        className={`text-xl font-bold tracking-tight ${
+                          p.popular ? "text-[#22C55E]" : "text-[#F5F7FA]"
+                        }`}
+                      >
+                        {p.name}
+                      </h3>
+                    </div>
                   </div>
-
-                  <h3 className="mt-3 text-lg font-bold tracking-tight uppercase text-[#F5F7FA]">
-                    {p.name}
-                  </h3>
-
-                  <div className="mt-5 border-y border-[#252C38] py-4">
-                    <p className="text-2xl font-bold text-[#F5F7FA] tracking-tight tabular-nums">
-                      {p.setup}
-                    </p>
-                    <p className="text-xs text-[#A7B0BF]">Implementação única</p>
-                    <p className="mt-2 text-sm font-bold text-[#3B82F6] tabular-nums">
-                      {p.monthly}
-                    </p>
-                  </div>
-
-                  <p className="mt-4 text-xs leading-relaxed text-[#A7B0BF] min-h-[36px]">
-                    {p.pitch}
+                  <p className="mt-2 text-xs text-[#A7B0BF] leading-relaxed">
+                    {p.tagline}
                   </p>
-
-                  <ul className="mt-6 space-y-2.5 border-t border-[#252C38]/60 pt-4">
-                    {p.items.map((it) => (
-                      <li key={it} className="flex items-start gap-2.5 text-xs text-[#A7B0BF]">
-                        <Check
-                          className="mt-0.5 size-3.5 shrink-0 text-[#3B82F6]"
-                          aria-hidden="true"
-                        />
-                        <span>{it}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-8 inline-flex h-[44px] items-center justify-center rounded-[8px] px-5 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                    p.highlight
-                      ? "bg-[#22C55E] text-white hover:bg-[#16A34A]"
-                      : "border border-[#252C38] bg-[#0E121A] text-[#F5F7FA] hover:bg-[#151A23] hover:border-[#3B82F6]"
+                <div className="mt-5 pt-5 border-t border-[#252C38]/60">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[11px] font-semibold text-[#A7B0BF]">
+                      Kz
+                    </span>
+                    <span
+                      className={`text-3xl font-extrabold tracking-[-0.03em] font-mono ${
+                        p.popular ? "text-[#22C55E]" : "text-[#F5F7FA]"
+                      }`}
+                    >
+                      {p.price}
+                    </span>
+                    <span className="text-xs text-[#A7B0BF]">{p.period}</span>
+                  </div>
+                  {p.build && (
+                    <p className="mt-1.5 text-[11px] text-[#A7B0BF]">
+                      Setup: Kz {p.build} (pagamento único)
+                    </p>
+                  )}
+
+                  {/* Resultado */}
+                  <div className="mt-3 rounded-[8px] border border-[#22C55E]/20 bg-[#22C55E]/5 p-2.5">
+                    <p className="text-[11px] font-semibold text-[#22C55E]">
+                      Resultado: {p.result}
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="mt-5 space-y-2.5 flex-1">
+                  {p.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2.5 text-[13px] text-[#A7B0BF]"
+                    >
+                      <Check
+                        className={`size-4 mt-0.5 shrink-0 ${
+                          p.popular ? "text-[#22C55E]" : "text-[#A7B0BF]"
+                        }`}
+                      />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  to={site.ctaSecond.href}
+                  className={`mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] text-sm font-semibold transition-all ${
+                    p.popular
+                      ? "bg-[#22C55E] text-white hover:bg-[#16A34A] shadow-[0_0_20px_rgba(34,197,94,0.3)]"
+                      : "border border-[#252C38] bg-[#0E121A] text-[#F5F7FA] hover:border-[#22C55E]/50 hover:bg-[#22C55E]/5"
                   }`}
                 >
-                  {p.cta}
-                </a>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                  {site.ctaSecond.label}
+                  <ArrowUpRight className="size-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Cálculo de ROI */}
+        <Reveal delay={200}>
+          <div className="mt-12 rounded-[16px] border border-[#8B5CF6]/30 bg-[#151A23] p-6 sm:p-8 text-center">
+            <h3 className="text-xl font-bold text-[#F5F7FA]">Quanto vale cada reunião que você perde hoje?</h3>
+            <p className="mt-2 text-sm text-[#A7B0BF] max-w-xl mx-auto">
+              Se cada reunião que o sistema agendar valer Kz 200.000 ou mais em receita,
+              basta <strong className="text-[#22C55E]">2-3 reuniões adicionais por mês</strong> para o
+              sistema se pagar sozinho. No plano Profissional, isso são apenas 2 reuniões — o
+              resto é lucro.
+            </p>
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-xl mx-auto">
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3">
+                <p className="text-xs text-[#A7B0BF]">Reunião vale</p>
+                <p className="text-lg font-bold text-[#F5F7FA] font-mono">Kz 200k</p>
+              </div>
+              <div className="rounded-[10px] border border-[#252C38] bg-[#0E121A] p-3">
+                <p className="text-xs text-[#A7B0BF]">Investimento</p>
+                <p className="text-lg font-bold text-[#F5F7FA] font-mono">Kz 250k</p>
+              </div>
+              <div className="rounded-[10px] border border-[#22C55E]/30 bg-[#22C55E]/5 p-3">
+                <p className="text-xs text-[#22C55E]">Para cobrir</p>
+                <p className="text-lg font-bold text-[#22C55E] font-mono">~1.3</p>
+              </div>
+              <div className="rounded-[10px] border border-[#22C55E]/30 bg-[#22C55E]/5 p-3">
+                <p className="text-xs text-[#22C55E]">Reuniões/mês</p>
+                <p className="text-lg font-bold text-[#22C55E] font-mono">+8 a 12</p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Testimonial */}
+        <Reveal delay={240}>
+          <div className="mt-12 rounded-[16px] border border-[#252C38] bg-[#151A23]/80 p-6 sm:p-8 text-center max-w-2xl mx-auto">
+            <p className="text-sm text-[#A7B0BF] italic leading-relaxed">
+              "O sistema pagou-se no primeiro mês — com 4 reuniões que antes teriam sido leads
+              perdidos. Agora é o meu melhor vendedor, e nem precisa de férias."
+            </p>
+            <p className="mt-4 text-sm font-bold text-[#F5F7FA]">— CEO, Empresa de Consultoria</p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

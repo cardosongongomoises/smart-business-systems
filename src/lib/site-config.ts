@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = "244941647752"; // Número oficial Angola (+244)
+export const WHATSAPP_NUMBER = "244941647752";
 export const WHATSAPP_DISPLAY = "+244 941 647 752";
 export const DOMAIN = "agentes-digital.com";
 export const EMAIL = "contacto@agentes-digital.com";
@@ -9,30 +9,30 @@ export function whatsappLink(message: string) {
 
 export const CTA = {
   specialist: whatsappLink(
-    "Olá, Agentes Digital. Gostaria de falar com um especialista sobre website, IA e automação para a minha empresa.",
+    "Olá. Quero que a minha empresa comece a fechar negócios enquanto dorme. Gostaria de falar com um especialista.",
   ),
   diagnostic: whatsappLink(
-    "Olá, Agentes Digital. Gostaria de agendar um diagnóstico gratuito da operação digital da minha empresa.",
+    "Olá. Quero descobrir quantos leads a minha empresa está perdendo todos os dias. Gostaria de um diagnóstico gratuito.",
   ),
   meeting: whatsappLink(
-    "Olá, Agentes Digital. Gostaria de agendar uma reunião comercial para conhecer as soluções de IA e automação.",
+    "Olá. Quero ver como outras empresas em Angola estão a fechar negócios 24/7. Agende uma demonstração para mim.",
   ),
   planPresenca: whatsappLink(
-    "Olá, Agentes Digital. Tenho interesse no Pacote 01 - Presença (Kz 125.000). Gostaria de avançar com a implementação.",
+    "Olá. Quero que a minha empresa tenha presença digital profissional e comece a receber contactos automaticamente. Pacote Presença.",
   ),
   planProfissional: whatsappLink(
-    "Olá, Agentes Digital. Tenho interesse no Pacote 02 - Profissional (Kz 250.000). Gostaria de avançar com a implementação.",
+    "Olá. Quero que o meu website atenda, qualifique e agende reuniões automaticamente. Pacote Profissional — quero este.",
   ),
   planAutoridade: whatsappLink(
-    "Olá, Agentes Digital. Tenho interesse no Pacote 03 - Autoridade (Kz 450.000). Gostaria de avançar com a implementação.",
+    "Olá. Quero dominar o Google, automatizar o atendimento e escalar vendas. Pacote Autoridade.",
   ),
   planDominioIA: whatsappLink(
-    "Olá, Agentes Digital. Tenho interesse no Pacote 04 - Domínio IA (Kz 700.000). Gostaria de falar com um especialista sobre a operação completa.",
+    "Olá. Quero uma operação digital completa — website, IA, automação, CRM. Pacote Domínio IA. Falar com especialista.",
   ),
   automatePro: whatsappLink(
-    "Olá, Agentes Digital. Já tenho website e gostaria de implementar o AUTOMATE PRO para automatizar o atendimento e qualificação da minha empresa.",
+    "Olá. Já tenho website e quero que ele comece a fechar negócios sozinho. Quero o AUTOMATE PRO.",
   ),
   automateDemo: whatsappLink(
-    "Olá, Agentes Digital. Gostaria de agendar uma demonstração do AUTOMATE PRO para a minha empresa.",
+    "Olá. Quero ver o AUTOMATE PRO a fechar negócios em tempo real. Agende uma demonstração.",
   ),
 };
