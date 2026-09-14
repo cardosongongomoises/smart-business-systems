@@ -88,8 +88,8 @@ export function AutomateTimeline() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Uma sequência de 8 etapas orquestradas para que cada contacto seja aproveitado ao
-              máximo.
+              Cada etapa é automatizada. Do clique do visitante ao contrato assinado —{" "}
+              <span className="text-[#F5F7FA] font-semibold">o sistema nunca para.</span>
             </p>
           </Reveal>
         </div>

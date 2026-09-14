@@ -5,37 +5,37 @@ const benefits = [
   {
     icon: Clock,
     title: "ATENDIMENTO 24/7",
-    desc: "O sistema pode responder perguntas mesmo fora do horário comercial, conforme a configuração contratada.",
+    desc: "Respostas automáticas mesmo fora do horário comercial. Enquanto a concorrência dorme, o seu site continua a vender.",
     tag: "Disponibilidade",
   },
   {
     icon: Zap,
-    title: "RESPOSTAS MAIS RÁPIDAS",
-    desc: "Reduz o tempo entre a entrada do contacto e o primeiro atendimento, gerando melhor experiência para o visitante.",
+    title: "RESPOSTAS EM MENOS DE 1 SEGUNDO",
+    desc: "Elimina a fila de espera. O visitante não abandona o site por demora — a IA responde na hora, com precisão.",
     tag: "Velocidade",
   },
   {
     icon: Folders,
-    title: "LEADS ORGANIZADOS",
-    desc: "Centraliza e estrutura as informações dos potenciais clientes em um repositório único e rastreável.",
+    title: "LEADS ORGANIZADOS E CLASSIFICADOS",
+    desc: "Cada contacto fica registrado com score de qualidade, origem e histórico. Ninguém cai no esquecimento.",
     tag: "Organização",
   },
   {
     icon: Send,
-    title: "FOLLOW-UP AUTOMÁTICO",
-    desc: "Reduz a dependência de acompanhamento manual e garante que propostas enviadas recebam lembretes.",
+    title: "FOLLOW-UP QUE NUNCA ESQUECE",
+    desc: "Lembretes automáticos multicanal — WhatsApp, e-mail, SMS. Enquanto o vendedor manual esquece 70% dos leads, o sistema lembra todos.",
     tag: "Acompanhamento",
   },
   {
     icon: Users,
-    title: "EQUIPA MAIS PRODUTIVA",
-    desc: "A equipa pode concentrar-se nas situações que realmente precisam de intervenção humana e negociação.",
+    title: "EQUIPA SÓ LIDA COM LEADS QUENTES",
+    desc: "A IA qualifica e filtra. Só chega à equipa comercial quem já demonstrou intenção real de compra.",
     tag: "Eficiência",
   },
   {
     icon: TrendingUp,
-    title: "PROCESSO ESCALÁVEL",
-    desc: "A empresa pode automatizar mais etapas e absorver picos de procura sem inchar os custos operacionais.",
+    title: "PROCESSO ESCALÁVEL SEM INCHAR",
+    desc: "10 ou 10.000 visitantes por mês — o sistema absorve o volume sem precisar contratar mais gente.",
     tag: "Crescimento",
   },
 ];
@@ -53,14 +53,14 @@ export function AutomateBenefits() {
 
           <Reveal delay={80}>
             <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-[#F5F7FA] sm:text-5xl leading-tight">
-              Menos tarefas repetitivas. Mais organização.{" "}
-              <span className="text-gradient">Mais velocidade.</span>
+              O que muda na operação{" "}
+              <span className="text-gradient">quando a IA entra no atendimento.</span>
             </h3>
           </Reveal>
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Benefícios operacionais concretos para a rotina diária da sua empresa.
+              Benefícios reais que a sua equipa sente no primeiro mês de uso — sem exageros, sem promessas vazias.
             </p>
           </Reveal>
         </div>
@@ -85,7 +85,7 @@ export function AutomateBenefits() {
 
                   <div className="mt-4 pt-3 border-t border-[#252C38]/60 flex items-center gap-1.5 font-mono text-[10px] text-[#22C55E]">
                     <Sparkles className="size-3" />
-                    <span>IMPACTO OPERACIONAL</span>
+                    <span>MEDIDO NO 1º MÊS</span>
                   </div>
                 </div>
               </Reveal>

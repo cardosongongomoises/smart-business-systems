@@ -15,7 +15,7 @@ const features = [
     icon: Bot,
     title: "AGENTE DE IA",
     subtitle: "Atendimento Conversacional",
-    desc: "Responde perguntas e orienta visitantes com velocidade imediata e precisão sobre os produtos e serviços da sua empresa.",
+    desc: "Responde, orienta e qualifica visitantes em tempo real. Não é um chatbot genérico — é um agente treinado no seu negócio.",
     badge: "01",
     tag: "IA Contextual",
   },
@@ -23,7 +23,7 @@ const features = [
     icon: Filter,
     title: "QUALIFICAÇÃO",
     subtitle: "Filtro Comercial Ativo",
-    desc: "Identifica necessidades, descobre o orçamento disponível e coleta informações essenciais antes de passar para o time de vendas.",
+    desc: "Descobre o orçamento, a urgência e a necessidade antes de passar ao humano. Só leads qualificados chegam à equipa.",
     badge: "02",
     tag: "Score de Lead",
   },
@@ -31,7 +31,7 @@ const features = [
     icon: MessageSquare,
     title: "WHATSAPP",
     subtitle: "Canal de Alto Engajamento",
-    desc: "Conecta o atendimento digital à equipa comercial através do número oficial da sua empresa com automação segura.",
+    desc: "95% das mensagens de WhatsApp são lidas em menos de 3 minutos. Conectamos o seu site a esse poder.",
     badge: "03",
     tag: "API Oficial",
   },
@@ -39,7 +39,7 @@ const features = [
     icon: Database,
     title: "CRM",
     subtitle: "Centralização de Leads",
-    desc: "Organiza leads e oportunidades em estágios de funil para que nenhum contacto seja esquecido ou fique sem histórico.",
+    desc: "Cada lead fica com nome, telefone, interesse e histórico — tudo rastreável num só lugar. Sem planilhas perdidas.",
     badge: "04",
     tag: "Funil Visual",
   },
@@ -47,7 +47,7 @@ const features = [
     icon: Calendar,
     title: "AGENDAMENTO",
     subtitle: "Calendário Automático",
-    desc: "Permite marcar reuniões e serviços sem troca infinita de e-mails, sincronizando diretamente com os calendários da equipa.",
+    desc: "O cliente escolhe o horário. O sistema confirma, envia lembrete e bloqueia a agenda. Zero troca de e-mails.",
     badge: "05",
     tag: "Auto-Booking",
   },
@@ -55,7 +55,7 @@ const features = [
     icon: Clock,
     title: "FOLLOW-UP",
     subtitle: "Acompanhamento Inteligente",
-    desc: "Acompanha oportunidades automaticamente em intervalos programados, resgatando leads que pararam de responder.",
+    desc: "Dispara lembretes nos dias certos, no canal certo. Retoma leads que pararam de responder sem parecer insistente.",
     badge: "06",
     tag: "Cadência Ativa",
   },
@@ -63,7 +63,7 @@ const features = [
     icon: Mail,
     title: "E-MAIL",
     subtitle: "Confirmações e Lembretes",
-    desc: "Automatiza confirmações de reunião, lembretes 24h antes e e-mails de acompanhamento para reduzir faltas (no-show).",
+    desc: "Reduz faltas em reuniões com lembretes automáticos 24h antes. Confirmações instantâneas que transmitem profissionalismo.",
     badge: "07",
     tag: "Automação",
   },
@@ -71,7 +71,7 @@ const features = [
     icon: UserCheck,
     title: "TRANSFERÊNCIA HUMANA",
     subtitle: "Handoff Transparente",
-    desc: "Encaminha situações complexas ou clientes prontos para fechar contrato diretamente para os especialistas humanos.",
+    desc: "Quando o lead está pronto, a IA passa o bastão. O vendedor recebe o histórico completo e o lead quente para fechar.",
     badge: "08",
     tag: "Equipa Notificada",
   },
@@ -96,8 +96,7 @@ export function AutomateFeatures() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Cada módulo funciona de forma integrada para transformar o website existente em uma
-              máquina ativa de conversão e relacionamento.
+              Cada módulo foi desenhado para funcionar como uma máquina de conversão — do primeiro clique ao contrato assinado.
             </p>
           </Reveal>
         </div>

@@ -126,8 +126,8 @@ export function AutomateInteractiveDemo() {
 
           <Reveal delay={140}>
             <p className="mt-4 text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-              Uma conversa pode começar no website e terminar com uma reunião agendada, sem que a
-              equipa precise executar cada etapa manualmente.
+              Uma conversa que começa como dúvida do visitante e termina como reunião agendada —{" "}
+              <span className="text-[#F5F7FA] font-semibold">sem a sua equipa tocar em uma tecla.</span>
             </p>
           </Reveal>
         </div>
@@ -388,7 +388,7 @@ export function AutomateInteractiveDemo() {
                     <ArrowRight className="size-4" />
                   </a>
                   <p className="mt-2.5 text-center text-[11px] text-[#667085]">
-                    Demonstração interativa aplicada ao domínio da sua empresa
+                    Demonstração interativa aplicada ao domínio da sua empresa — sem compromisso
                   </p>
                 </div>
               </div>

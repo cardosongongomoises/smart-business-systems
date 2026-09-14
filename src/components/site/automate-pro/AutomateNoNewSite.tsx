@@ -29,8 +29,8 @@ export function AutomateNoNewSite() {
 
               <Reveal delay={140}>
                 <p className="mt-5 text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-                  Se sua empresa já possui um website, podemos trabalhar sobre a estrutura existente
-                  e adicionar uma camada inteligente de atendimento e automação.
+                  Se a sua empresa já possui um website, não precisa de desperdiçar o investimento que já fez.{" "}
+                  <span className="text-[#F5F7FA] font-semibold">Nós adicionamos a camada inteligente por cima.</span>
                 </p>
               </Reveal>
 
@@ -67,8 +67,10 @@ export function AutomateNoNewSite() {
               <Reveal delay={260}>
                 <div className="mt-7 rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/5 p-4 text-xs sm:text-sm text-[#F5F7FA] font-medium leading-relaxed">
                   <p className="text-gradient font-bold text-sm sm:text-base">
-                    "Não substituímos necessariamente o que você já possui. Nós fazemos isso
-                    trabalhar melhor."
+                    "Não substituímos o que você já construiu — fazemos isso trabalhar 10x melhor."
+                  </p>
+                  <p className="mt-2 text-[11px] text-[#A7B0BF] font-normal">
+                    Sem migração dolorosa. Sem downtime. Sem perder o que já funciona.
                   </p>
                 </div>
               </Reveal>
@@ -144,9 +146,9 @@ export function AutomateNoNewSite() {
                   </div>
 
                   <p className="mt-3 text-xs text-[#A7B0BF] leading-relaxed">
-                    Você mantém o investimento que já fez no seu site. Não alteramos sua identidade
-                    ou endereço: integramos scripts e webhooks para habilitar o atendimento
-                    inteligente.
+                    Mantemos o seu investimento intacto — design, conteúdo, domínio.{" "}
+                    <span className="text-[#4ADE80] font-semibold">Integramos scripts e webhooks</span>{" "}
+                    que habilitam o atendimento inteligente sem alterar uma única vírgula do seu site atual.
                   </p>
                 </div>
               </div>

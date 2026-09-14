@@ -35,15 +35,15 @@ export function AutomateTransformation() {
 
           <Reveal delay={80}>
             <h3 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F7FA] sm:text-4xl">
-              A evolução do atendimento:{" "}
-              <span className="text-gradient">Antes vs. Com Automate Pro</span>
+              O que acontece quando a IA{" "}
+              <span className="text-gradient">assume o atendimento.</span>
             </h3>
           </Reveal>
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Compare o modelo tradicional de dependência manual com um fluxo digital contínuo e
-              inteligente.
+              Enquanto o modelo manual perde leads por lentidão, o Automate Pro converte em segundos —{" "}
+              <span className="text-[#F5F7FA] font-semibold">sem férias, sem esquecimentos, sem folga.</span>
             </p>
           </Reveal>
         </div>
@@ -101,8 +101,8 @@ export function AutomateTransformation() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#252C38] text-center text-xs text-[#667085]">
-                Resultado: Oportunidades perdidas por lentidão e falta de acompanhamento ativo.
+              <div className="mt-6 pt-4 border-t border-[#252C38] text-center text-xs text-[#EF4444] font-semibold">
+                Cada hora sem automação = leads que vão para a concorrência.
               </div>
             </div>
           </Reveal>
@@ -162,7 +162,7 @@ export function AutomateTransformation() {
 
               <div className="mt-6 pt-4 border-t border-[#252C38] text-center text-xs font-semibold text-[#60A5FA] flex items-center justify-center gap-1.5">
                 <Sparkles className="size-3.5 text-[#8B5CF6]" />
-                Resultado: Resposta em segundos, lead no CRM e reunião agendada na hora.
+                Lead qualificado em 47 segundos. Reunião agendada na hora. Zero perdas.
               </div>
             </div>
           </Reveal>

@@ -32,8 +32,8 @@ export function AutomateArchitecture() {
 
           <Reveal delay={140}>
             <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Uma infraestrutura robusta onde cada serviço opera de forma orquestrada, sem perda de
-              dados ou latência entre as etapas.
+              Cada camada foi projetada para operar sem perda de dados e sem latência —{" "}
+              <span className="text-[#F5F7FA] font-semibold">um sistema orquestrado, não uma collection de ferramentas soltas.</span>
             </p>
           </Reveal>
         </div>
@@ -47,7 +47,7 @@ export function AutomateArchitecture() {
                 <Globe className="size-4 text-[#3B82F6]" /> WEBSITE EXISTENTE
               </div>
               <p className="text-[11px] text-[#A7B0BF] mt-1">
-                Interface de captação e apresentação
+                Interface de captação — onde o visitante decide se fica ou vai
               </p>
             </div>
 
@@ -62,7 +62,7 @@ export function AutomateArchitecture() {
                 <Bot className="size-4 text-[#8B5CF6]" /> NÚCLEO DE INTELIGÊNCIA ARTIFICIAL
               </div>
               <p className="text-[11px] text-[#A7B0BF] mt-1">
-                Compreensão semântica e triagem rápida
+                Compreensão semântica, triagem em tempo real e roteamento inteligente
               </p>
             </div>
 
@@ -139,7 +139,7 @@ export function AutomateArchitecture() {
                 <UserCheck className="size-4 text-[#22C55E]" /> EQUIPA COMERCIAL (HUMANO)
               </div>
               <p className="text-[11px] text-[#A7B0BF] mt-1">
-                Fechamento do negócio com lead qualificado
+                Lead qualificado + histórico completo = fechamento garantido
               </p>
             </div>
           </div>
