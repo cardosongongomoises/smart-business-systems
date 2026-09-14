@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Reveal } from "./Reveal";
 import { MessageSquare, ArrowUpRight, ChevronDown, HelpCircle } from "lucide-react";
 import { site } from "@/lib/site-config";
-import { Link } from "react-router-dom";
 
 const faqs = [
   {
@@ -109,13 +108,15 @@ export function FAQ() {
                   Fale directamente com um especialista. Sem compromisso, sem pressão — apenas
                   respostas claras para o seu caso.
                 </p>
-                <Link
-                  to={site.ctaSecond.href}
+                <a
+                  href={site.ctaSecond.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-[#22C55E] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#16A34A]"
                 >
                   {site.ctaSecond.label}
                   <ArrowUpRight className="size-4" />
-                </Link>
+                </a>
               </div>
 
               <div className="rounded-[14px] border border-[#8B5CF6]/30 bg-[#8B5CF6]/5 p-6">
@@ -130,13 +131,15 @@ export function FAQ() {
                   completa do seu funil de vendas, identificação de gargalos, e plano de
                   acção concreto.
                 </p>
-                <Link
-                  to={site.ctaSecond.href}
+                <a
+                  href={site.ctaSecond.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] border border-[#8B5CF6]/30 bg-[#8B5CF6]/10 px-5 text-sm font-semibold text-[#C084FC] transition-colors hover:bg-[#8B5CF6]/20"
                 >
                   Pedir diagnóstico gratuito
                   <ArrowUpRight className="size-4" />
-                </Link>
+                </a>
               </div>
             </div>
           </div>

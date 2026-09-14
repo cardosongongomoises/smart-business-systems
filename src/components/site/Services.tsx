@@ -10,7 +10,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { site } from "@/lib/site-config";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 const services = [
   {
@@ -137,13 +137,15 @@ export function Services() {
                   </ul>
 
                   <div className="mt-auto pt-5 border-t border-[#252C38]/60">
-                    <Link
-                      to={site.ctaSecond.href}
+                    <a
+                      href={site.ctaSecond.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#22C55E] transition-colors hover:text-[#16A34A]"
                     >
                       {site.ctaSecond.label}
                       <ArrowUpRight className="size-4" />
-                    </Link>
+                    </a>
                   </div>
                 </CardContent>
               </Card>

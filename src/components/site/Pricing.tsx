@@ -1,7 +1,6 @@
 import { Reveal } from "./Reveal";
 import { Badge } from "@/components/ui/badge";
 import { site } from "@/lib/site-config";
-import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
   Check,
@@ -203,8 +202,10 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <Link
-                  to={site.ctaSecond.href}
+                <a
+                  href={site.ctaSecond.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] text-sm font-semibold transition-all ${
                     p.popular
                       ? "bg-[#22C55E] text-white hover:bg-[#16A34A] shadow-[0_0_20px_rgba(34,197,94,0.3)]"
@@ -213,7 +214,7 @@ export function Pricing() {
                 >
                   {site.ctaSecond.label}
                   <ArrowUpRight className="size-4" />
-                </Link>
+                </a>
               </div>
             ))}
           </div>

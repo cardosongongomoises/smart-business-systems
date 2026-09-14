@@ -12,7 +12,6 @@ import {
   Shield,
 } from "lucide-react";
 import { site } from "@/lib/site-config";
-import { Link } from "react-router-dom";
 
 export function Contact() {
   return (

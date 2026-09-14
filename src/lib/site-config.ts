@@ -7,6 +7,22 @@ export function whatsappLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+export const LOCATION = "Luanda, Angola";
+
+export const site = {
+  ctaSecond: {
+    href: whatsappLink(
+      "Olá. Quero que a minha empresa comece a fechar negócios enquanto dorme. Gostaria de falar com um especialista.",
+    ),
+    label: "Falar com especialista",
+  },
+  whatsapp: {
+    number: WHATSAPP_DISPLAY,
+  },
+  email: EMAIL,
+  location: LOCATION,
+};
+
 export const CTA = {
   specialist: whatsappLink(
     "Olá. Quero que a minha empresa comece a fechar negócios enquanto dorme. Gostaria de falar com um especialista.",

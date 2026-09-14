@@ -8,7 +8,7 @@ import {
   BotMessageSquare,
   ArrowUpRight,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 export function TrustResults() {
   const metrics = [
