@@ -42,16 +42,18 @@ export function ConversationsView({
   const [isTypingAi, setIsTypingAi] = useState(false);
   const [expandedJsonIds, setExpandedJsonIds] = useState<Record<string, boolean>>({});
 
-  // Filter conversations
+  // Filter conversations with strict defensive checks
   const conversationLeads = useMemo(() => {
+    if (!Array.isArray(leads)) return [];
     return leads.filter((l) => {
+      if (!l) return false;
       if (filterAiOnly && l.aiProcessingStatus !== "ativo") return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         return (
-          l.name.toLowerCase().includes(q) ||
-          l.company.toLowerCase().includes(q) ||
-          l.phone.includes(q)
+          (l.name || "").toLowerCase().includes(q) ||
+          (l.company || "").toLowerCase().includes(q) ||
+          (l.phone || "").includes(q)
         );
       }
       return true;
@@ -59,7 +61,8 @@ export function ConversationsView({
   }, [leads, filterAiOnly, search]);
 
   const activeLead = useMemo(() => {
-    return conversationLeads.find((l) => l.id === selectedLeadId) || conversationLeads[0] || null;
+    if (!conversationLeads || conversationLeads.length === 0) return null;
+    return conversationLeads.find((l) => l && l.id === selectedLeadId) || conversationLeads[0] || null;
   }, [conversationLeads, selectedLeadId]);
 
   const toggleJsonExpand = (msgId: string) => {
@@ -212,7 +215,9 @@ export function ConversationsView({
         <div className="flex-1 overflow-y-auto divide-y divide-[#252C38]/50">
           {conversationLeads.map((lead) => {
             const isSelected = lead.id === activeLead?.id;
-            const lastMsg = lead.conversation[lead.conversation.length - 1];
+            const conv = Array.isArray(lead.conversation) ? lead.conversation : [];
+            const lastMsg = conv.length > 0 ? conv[conv.length - 1] : null;
+            const leadName = lead.name || "Contacto sem nome";
 
             return (
               <div
@@ -225,16 +230,16 @@ export function ConversationsView({
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-xs text-[#F5F7FA] truncate">{lead.name}</span>
+                  <span className="font-semibold text-xs text-[#F5F7FA] truncate">{leadName}</span>
                   <span className="text-[10px] text-[#667085] font-mono shrink-0">
-                    {lastMsg ? lastMsg.timestamp : lead.lastActive}
+                    {lastMsg ? lastMsg.timestamp : lead.lastActive || "Hoje"}
                   </span>
                 </div>
 
-                <div className="text-[11px] text-[#A7B0BF] truncate mb-1.5">{lead.company}</div>
+                <div className="text-[11px] text-[#A7B0BF] truncate mb-1.5">{lead.company || "Empresa a confirmar"}</div>
 
                 <div className="text-[11px] text-[#667085] line-clamp-1 italic mb-2">
-                  "{lastMsg ? lastMsg.text : "Sem mensagens ainda"}"
+                  "{lastMsg?.text ? lastMsg.text : "Sem mensagens ainda"}"
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -275,17 +280,17 @@ export function ConversationsView({
           <div className="p-4 border-b border-[#252C38] bg-[#0E121A] flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 rounded-[10px] bg-[#3B82F6]/20 border border-[#3B82F6]/40 flex items-center justify-center text-[#3B82F6] font-bold text-sm">
-                {activeLead.name.slice(0, 2).toUpperCase()}
+                {(activeLead.name || "CD").slice(0, 2).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-[#F5F7FA]">{activeLead.name}</h3>
-                  <span className="text-xs text-[#A7B0BF]">• {activeLead.company}</span>
+                  <h3 className="text-sm font-bold text-[#F5F7FA]">{activeLead.name || "Contacto sem nome"}</h3>
+                  <span className="text-xs text-[#A7B0BF]">• {activeLead.company || "Empresa a confirmar"}</span>
                 </div>
                 <div className="flex items-center gap-3 text-[11px] text-[#667085] mt-0.5">
-                  <span className="font-mono text-[#3B82F6]">{activeLead.phone}</span>
+                  <span className="font-mono text-[#3B82F6]">{activeLead.phone || "Sem telefone"}</span>
                   <span>Canal: WhatsApp Business</span>
-                  <span className="text-[#22C55E] font-semibold">{activeLead.estimatedValue}</span>
+                  <span className="text-[#22C55E] font-semibold">{activeLead.estimatedValue || "Kz 250.000"}</span>
                 </div>
               </div>
             </div>
@@ -328,13 +333,14 @@ export function ConversationsView({
 
           {/* Messages Stream */}
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
-            {activeLead.conversation.map((msg) => {
+            {(Array.isArray(activeLead.conversation) ? activeLead.conversation : []).map((msg) => {
+              if (!msg) return null;
               const isClient = msg.sender === "client";
               const isAi = msg.sender === "ai";
 
               return (
                 <div
-                  key={msg.id}
+                  key={msg.id || `m-${Math.random()}`}
                   className={`flex flex-col ${isClient ? "items-start" : "items-end"}`}
                 >
                   <div
@@ -349,7 +355,7 @@ export function ConversationsView({
                     <div className="flex items-center justify-between gap-4 mb-1 text-[10px]">
                       <span className="font-semibold text-[#A7B0BF] flex items-center gap-1">
                         {isClient ? (
-                          activeLead.name
+                          activeLead.name || "Cliente"
                         ) : isAi ? (
                           <>
                             <Bot className="size-3 text-[#8B5CF6]" /> Agente Digital (IA)
@@ -360,10 +366,10 @@ export function ConversationsView({
                           </>
                         )}
                       </span>
-                      <span className="font-mono text-[#667085]">{msg.timestamp}</span>
+                      <span className="font-mono text-[#667085]">{msg.timestamp || "Agora"}</span>
                     </div>
 
-                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text || ""}</p>
 
                     {/* AI Metadata Toggle */}
                     {msg.aiMetadata && (
