@@ -33,9 +33,9 @@ export function getLocalLeads(): Lead[] {
     if (cached) {
       const parsed = JSON.parse(cached);
       if (Array.isArray(parsed)) {
-        // Purga qualquer lead mockado que possa ter ficado no cache local
+        // Purga qualquer lead mockado, demo ou legado
         const cleaned = parsed.filter(
-          (l) => l && l.id && !l.id.startsWith("lead-0") && !l.name?.includes("Gonçalo"),
+          (l) => l && l.id && !l.id.startsWith("lead-") && !l.name?.includes("Gonçalo") && !l.name?.includes("Demonstração")
         );
         if (cleaned.length !== parsed.length) {
           localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(cleaned));
@@ -500,13 +500,42 @@ export function subscribeToLeadsChanges(onUpdate: () => void): () => void {
   }
 
   const channel = supabase
-    .channel("sbs-leads-channel")
-    .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
-      onUpdate();
-    })
-    .on("postgres_changes", { event: "INSERT", schema: "public", table: "lead_atividades" }, () => {
-      onUpdate();
-    })
+    .channel("sbs-leads-realtime-sync")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "leads" },
+      () => {
+        onUpdate();
+      },
+    )
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "lead_conversas" },
+      () => {
+        onUpdate();
+      },
+    )
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "lead_atividades" },
+      () => {
+        onUpdate();
+      },
+    )
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "lead_agendamentos" },
+      () => {
+        onUpdate();
+      },
+    )
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "lead_notas" },
+      () => {
+        onUpdate();
+      },
+    )
     .subscribe();
 
   return () => {
