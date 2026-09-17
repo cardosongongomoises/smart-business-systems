@@ -152,26 +152,37 @@ export function CampaignsView() {
     setActionLoading(true);
 
     try {
-      // 1. Aciona o bot local via API
-      const res = await fetch(`${LOCAL_BOT_API}/api/campanha/${campanhaId}/iniciar`, {
-        method: "POST",
-      });
-      const data = await res.json();
+      // 1. Atualiza diretamente no Supabase (o Bot monitora o Supabase e inicia automaticamente)
+      const { error } = await supabase
+        .from("campanhas_disparo")
+        .update({
+          status: "em_andamento",
+          iniciado_em: new Date().toISOString(),
+        })
+        .eq("id", campanhaId);
 
-      if (data.msg) {
-        toast.success(data.msg);
-        // Atualiza estado local imediatamente
-        if (campanhaAtiva) {
-          setCampanhaAtiva({ ...campanhaAtiva, status: "em_andamento" });
-        }
-      } else {
-        toast.error(data.erro || "Falha ao iniciar disparo");
+      if (error) {
+        console.error("Erro ao iniciar campanha no Supabase:", error);
+        toast.error("Erro ao atualizar status da campanha no Supabase.");
+        return;
       }
-    } catch {
-      // Fallback caso a API local responda com erro de conexão
-      toast.warning(
-        "Não foi possível contactar o Bot local na porta 3333. Verifique se o PM2 está ativo com: pm2 status",
-      );
+
+      // 2. Notifica o bot local via API como trigger imediato (opcional)
+      try {
+        await fetch(`${LOCAL_BOT_API}/api/campanha/${campanhaId}/iniciar`, {
+          method: "POST",
+        });
+      } catch {
+        // Silencioso: o monitor do Supabase já pegará o status
+      }
+
+      toast.success("✅ Disparo iniciado! O assistente está processando os envios com delays anti-bloqueio.");
+      if (campanhaAtiva) {
+        setCampanhaAtiva({ ...campanhaAtiva, status: "em_andamento" });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro ao iniciar: ${msg}`);
     } finally {
       setActionLoading(false);
       await loadCampanhas(true);
@@ -184,21 +195,36 @@ export function CampaignsView() {
     setActionLoading(true);
 
     try {
-      const res = await fetch(`${LOCAL_BOT_API}/api/campanha/${campanhaId}/pausar`, {
-        method: "POST",
-      });
-      const data = await res.json();
+      // 1. Atualiza diretamente no Supabase
+      const { error } = await supabase
+        .from("campanhas_disparo")
+        .update({
+          status: "pausada",
+        })
+        .eq("id", campanhaId);
 
-      if (data.msg) {
-        toast.info(data.msg);
-        if (campanhaAtiva) {
-          setCampanhaAtiva({ ...campanhaAtiva, status: "pausada" });
-        }
-      } else {
-        toast.error(data.erro || "Falha ao pausar disparo");
+      if (error) {
+        console.error("Erro ao pausar campanha no Supabase:", error);
+        toast.error("Erro ao pausar campanha no Supabase.");
+        return;
       }
-    } catch {
-      toast.error("Erro ao contactar o servidor do bot.");
+
+      // 2. Notifica o bot local via API (opcional)
+      try {
+        await fetch(`${LOCAL_BOT_API}/api/campanha/${campanhaId}/pausar`, {
+          method: "POST",
+        });
+      } catch {
+        // Silencioso
+      }
+
+      toast.info("⏸ Disparo pausado com sucesso.");
+      if (campanhaAtiva) {
+        setCampanhaAtiva({ ...campanhaAtiva, status: "pausada" });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro ao pausar: ${msg}`);
     } finally {
       setActionLoading(false);
       await loadCampanhas(true);
