@@ -16,12 +16,14 @@ import {
   LogOut,
   GraduationCap,
   LayoutGrid,
+  Send,
 } from "lucide-react";
 
 export type ActiveTab =
   | "ops"
   | "dashboard"
   | "leads"
+  | "campanhas"
   | "conversations"
   | "knowledge_base"
   | "system_prompt"
@@ -92,6 +94,13 @@ export function OperationsSidebar({
       badgeColor: "blue",
     },
     { id: "leads", label: "Leads", icon: Users },
+    {
+      id: "campanhas",
+      label: "Disparos em Massa",
+      icon: Send,
+      badge: "Fila",
+      badgeColor: "blue",
+    },
     {
       id: "conversations",
       label: "Conversas IA",

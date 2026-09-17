@@ -12,6 +12,7 @@ import { ConversationsView } from "./ConversationsView";
 import { ClientsView } from "./ClientsView";
 import { SchedulesView } from "./SchedulesView";
 import { AutomationsView } from "./AutomationsView";
+import { CampaignsView } from "./CampaignsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
@@ -575,6 +576,8 @@ export function OperationsCenter() {
               </div>
             </div>
           )}
+
+          {currentTab === "campanhas" && <CampaignsView />}
 
           {currentTab === "conversations" && (
             <ConversationsView
