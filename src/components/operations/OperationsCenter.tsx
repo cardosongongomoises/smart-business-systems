@@ -12,6 +12,7 @@ import { ConversationsView } from "./ConversationsView";
 import { ClientsView } from "./ClientsView";
 import { SchedulesView } from "./SchedulesView";
 import { AutomationsView } from "./AutomationsView";
+import { CampaignsView } from "./CampaignsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
@@ -211,20 +212,9 @@ export function OperationsCenter() {
   }, []);
 
   useEffect(() => {
-    // Purga leads mockados que possam ter ficado no localStorage
+    // Purga qualquer lead residual do cache local para refletir o estado real zerado do Supabase
     try {
-      const cached = localStorage.getItem("sbs_leads_cache");
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed)) {
-          const hasMockLeads = parsed.some(
-            (l: { id?: unknown }) => typeof l?.id === "string" && l.id.startsWith("lead-0"),
-          );
-          if (hasMockLeads) {
-            localStorage.removeItem("sbs_leads_cache");
-          }
-        }
-      }
+      localStorage.removeItem("sbs_leads_cache");
     } catch {
       // ignore
     }
@@ -588,7 +578,7 @@ export function OperationsCenter() {
             </div>
           )}
 
-          {currentTab === "campaigns" && <CampaignsView />}
+          {(currentTab === "campanhas" || currentTab === "campaigns") && <CampaignsView />}
 
           {currentTab === "conversations" && (
             <ConversationsView

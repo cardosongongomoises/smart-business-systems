@@ -23,6 +23,7 @@ export type ActiveTab =
   | "ops"
   | "dashboard"
   | "leads"
+  | "campanhas"
   | "campaigns"
   | "conversations"
   | "knowledge_base"
@@ -95,7 +96,7 @@ export function OperationsSidebar({
     },
     { id: "leads", label: "Leads", icon: Users },
     {
-      id: "campaigns",
+      id: "campanhas",
       label: "Campanhas & Disparos",
       icon: Send,
       badge: "Disparos",
