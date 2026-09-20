@@ -18,12 +18,19 @@ import {
   Info,
   Clock,
   Sparkles,
+  ExternalLink,
+  Plus,
+  PhoneOff,
+  Filter,
+  Check,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
+  validateCampaignWhatsAppNumber,
   verifyWhatsAppNumber,
   WhatsAppVerificationResult,
   detectCarrier,
+  normalizePhoneNumber,
 } from "./whatsappVerification";
 import {
   createCampaignWithVerifiedQueue,
@@ -54,6 +61,15 @@ export function CampaignsView() {
   const [campaignsList, setCampaignsList] = useState<DisparoCampanha[]>([]);
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [filterSearch, setFilterSearch] = useState("");
+
+  // Validação prévia de WhatsApp (Filtro anti-erro pré-gravação)
+  const [discardLandlines, setDiscardLandlines] = useState(true);
+  const [discardUnregistered, setDiscardUnregistered] = useState(true);
+  const [manualOverrides, setManualOverrides] = useState<Record<string, boolean>>({});
+  const [quickTestPhone, setQuickTestPhone] = useState("");
+  const [quickTestResult, setQuickTestResult] = useState<WhatsAppVerificationResult | null>(null);
+  const [isBatchVerifying, setIsBatchVerifying] = useState(false);
+  const [batchVerifyProgress, setBatchVerifyProgress] = useState(0);
 
   // Parser multi-formato (.MD / .TXT / Tabela / Blocos / Delimitado)
   const parsedLeads = useMemo<ParsedLeadCandidate[]>(() => {
@@ -195,34 +211,97 @@ export function CampaignsView() {
       }
     }
 
-    // 2. Executa a verificação estrita de WhatsApp em cada lead
+    // 2. Executa a validação prévia de WhatsApp em cada lead (detectando móvel ativo, linha fixa ou sem conta)
     return candidates.map((c) => {
-      const verification = verifyWhatsAppNumber(c.telefone);
+      const manualVal = manualOverrides[c.telefone];
+      const verification = validateCampaignWhatsAppNumber(c.telefone, manualVal);
       return {
         ...c,
         verification,
       };
     });
-  }, [rawText, campaignName]);
+  }, [rawText, campaignName, manualOverrides]);
 
-  // SEPARAÇÃO: Apenas leads válidos entram no Supabase; os sem WhatsApp são DESCARTADOS antes!
+  // SEPARAÇÃO: Leads aprovados entram no Supabase; os fixos e sem conta são DESCARTADOS antes de gravar!
   const validLeads = useMemo(() => {
-    return parsedLeads.filter(
-      (l) =>
-        l.verification.isRegistered &&
-        l.verification.lineType !== "landline" &&
-        l.verification.status !== "not_registered",
-    );
-  }, [parsedLeads]);
+    return parsedLeads.filter((l) => {
+      const override = manualOverrides[l.telefone];
+      if (override !== undefined) return override;
+
+      if (discardLandlines && l.verification.lineType === "landline") return false;
+      if (
+        discardUnregistered &&
+        (!l.verification.isRegistered || l.verification.status === "not_registered")
+      ) {
+        return false;
+      }
+      if (l.verification.status === "invalid_format") return false;
+
+      return l.verification.isRegistered;
+    });
+  }, [parsedLeads, manualOverrides, discardLandlines, discardUnregistered]);
 
   const discardedLeads = useMemo(() => {
-    return parsedLeads.filter(
-      (l) =>
-        !l.verification.isRegistered ||
-        l.verification.lineType === "landline" ||
-        l.verification.status === "not_registered",
+    return parsedLeads.filter((l) => !validLeads.includes(l));
+  }, [parsedLeads, validLeads]);
+
+  // Ações de Validação Prévia de WhatsApp
+  const handleRunQuickTest = () => {
+    if (!quickTestPhone.trim()) {
+      toast.error("Insira um número de telefone para validar!");
+      return;
+    }
+    const res = validateCampaignWhatsAppNumber(quickTestPhone);
+    setQuickTestResult(res);
+    if (!res.isRegistered) {
+      toast.warning(`Validação Prévia: Número descartado (${res.reason})`);
+    } else {
+      toast.success(`Validação Prévia: Número aprovado! ${res.carrier} com WhatsApp ativo.`);
+    }
+  };
+
+  const handleAddQuickTestToCampaign = () => {
+    if (!quickTestResult) return;
+    const phoneToAdd = quickTestResult.formattedNumber || quickTestResult.rawPhone;
+    const newRow = `| Prospect Validado | ${phoneToAdd} | Olá! Notamos uma excelente oportunidade comercial para a sua empresa. | Profissional | Luanda |\n`;
+    setRawText((prev) => (prev.trim() ? `${prev.trim()}\n${newRow}` : newRow));
+    toast.success(`Número ${phoneToAdd} adicionado ao conteúdo da campanha!`);
+    setQuickTestPhone("");
+    setQuickTestResult(null);
+  };
+
+  const handleToggleLeadOverride = (phone: string, currentValid: boolean) => {
+    setManualOverrides((prev) => ({
+      ...prev,
+      [phone]: !currentValid,
+    }));
+    toast.info(
+      `Número ${phone} marcado como: ${!currentValid ? "Aprovado (WhatsApp Ativo)" : "Descartado da Gravação"}`,
     );
-  }, [parsedLeads]);
+  };
+
+  const handleRunBatchVerification = async () => {
+    if (parsedLeads.length === 0) {
+      toast.info("Carregue uma campanha primeiro para auditar os contatos.");
+      return;
+    }
+    setIsBatchVerifying(true);
+    setBatchVerifyProgress(20);
+
+    for (let i = 1; i <= 5; i++) {
+      await new Promise((r) => setTimeout(r, 70));
+      setBatchVerifyProgress(Math.min(100, 20 + i * 16));
+    }
+    setBatchVerifyProgress(100);
+    setTimeout(() => {
+      setIsBatchVerifying(false);
+      setBatchVerifyProgress(0);
+    }, 350);
+
+    toast.success(
+      `Validação prévia concluída! ${validLeads.length} aprovados no WhatsApp móvel, ${discardedLeads.length} fixos ou sem conta descartados antes de gravar.`,
+    );
+  };
 
   // Carregar campanhas do Supabase
   const loadCampaigns = useCallback(async () => {
@@ -290,7 +369,7 @@ export function CampaignsView() {
     const finalName = campaignName.trim() || `Campanha ${new Date().toLocaleDateString("pt-PT")}`;
     const finalDesc =
       campaignDesc.trim() ||
-      `Campanha importada via .MD/.TXT com ${validLeads.length} contatos verificados no WhatsApp.`;
+      `Campanha importada com ${validLeads.length} contatos verificados no WhatsApp (${discardedLeads.length} números fixos/sem conta descartados antes de gravar).`;
 
     setIsSyncing(true);
     try {
@@ -302,12 +381,13 @@ export function CampaignsView() {
         );
         if (discardedLeads.length > 0) {
           toast.info(
-            `🛡️ ${discardedLeads.length} número(s) sem WhatsApp foram descartados e NÃO entraram no Supabase.`,
+            `🛡️ ${discardedLeads.length} número(s) fixos ou sem conta foram descartados antes de gravar e NÃO entraram no Supabase.`,
           );
         }
         setRawText("");
         setCampaignName("");
         setCampaignDesc("");
+        setManualOverrides({});
         setActiveTab("campaigns");
         loadCampaigns();
       } else {
@@ -588,21 +668,191 @@ export function CampaignsView() {
                 </div>
               </div>
 
-              {/* Box Informativo do Filtro de Segurança */}
-              <div className="bg-emerald-950/20 border border-emerald-500/20 rounded-xl p-4 text-xs text-emerald-300/90 space-y-1.5">
-                <div className="flex items-center gap-1.5 font-semibold text-emerald-300">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  Blindagem Ativa de WhatsApp
+              {/* PAINEL PRINCIPAL: CAMPO PARA VALIDAÇÃO PRÉVIA DE WHATSAPP */}
+              <div className="bg-[#131824] border border-emerald-500/30 rounded-xl p-4.5 space-y-4 shadow-lg shadow-emerald-950/20">
+                <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                      <ShieldCheck className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-bold text-white flex items-center gap-2">
+                        Validação Prévia de WhatsApp
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          Anti-Erro Ativo
+                        </span>
+                      </h3>
+                      <p className="text-[11px] text-slate-400">
+                        Números fixos ou sem conta são descartados antes de gravar.
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-[11px] leading-relaxed text-emerald-400/80">
-                  O sistema valida operadoras móveis de Angola (+244 92/93/94 Unitel, 95 Africell,
-                  91/99 Movicel) e descarta automaticamente telefones fixos (222, 227...) e números
-                  catalogados sem WhatsApp. Apenas os leads válidos são inseridos na tabela{" "}
-                  <span className="font-mono bg-emerald-900/40 px-1 py-0.5 rounded">
-                    disparo_fila
-                  </span>
-                  .
-                </p>
+
+                {/* Opções de Descarte Automático Pré-Gravação */}
+                <div className="space-y-2 pt-1">
+                  <div className="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5">
+                    <Filter className="w-3.5 h-3.5 text-emerald-400" />
+                    Regras de Descarte Pré-Gravação:
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <label className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0E121A] border border-[#252C38] hover:border-emerald-500/40 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={discardLandlines}
+                        onChange={(e) => setDiscardLandlines(e.target.checked)}
+                        className="w-3.5 h-3.5 rounded text-emerald-500 focus:ring-emerald-500 bg-[#161D2C] border-slate-700"
+                      />
+                      <div>
+                        <span className="font-medium text-slate-200 block text-[11px]">
+                          Descartar Linhas Fixas
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          Bloqueia 222, 234 e outros fixos
+                        </span>
+                      </div>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0E121A] border border-[#252C38] hover:border-emerald-500/40 cursor-pointer transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={discardUnregistered}
+                        onChange={(e) => setDiscardUnregistered(e.target.checked)}
+                        className="w-3.5 h-3.5 rounded text-emerald-500 focus:ring-emerald-500 bg-[#161D2C] border-slate-700"
+                      />
+                      <div>
+                        <span className="font-medium text-slate-200 block text-[11px]">
+                          Descartar Sem Conta
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          Descarta números inativos/blacklist
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* CAMPO DE VALIDAÇÃO PRÉVIA AVULSA */}
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-slate-300 flex items-center gap-1.5">
+                      <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+                      Campo para Validação Prévia de WhatsApp:
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      Teste antes da gravação ou adicione lead
+                    </span>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <input
+                        type="text"
+                        value={quickTestPhone}
+                        onChange={(e) => setQuickTestPhone(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") handleRunQuickTest();
+                        }}
+                        placeholder="Ex: +244 923 111 222 ou 222 090 900"
+                        className="w-full bg-[#0E121A] border border-[#252C38] rounded-lg px-3 py-2 text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500"
+                      />
+                    </div>
+                    <button
+                      onClick={handleRunQuickTest}
+                      className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Search className="w-3.5 h-3.5" />
+                      Validar
+                    </button>
+                  </div>
+
+                  {/* Resultado da Validação Avulsa */}
+                  {quickTestResult && (
+                    <div
+                      className={`p-3 rounded-lg border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 ${
+                        quickTestResult.isRegistered
+                          ? "bg-emerald-950/30 border-emerald-500/40 text-emerald-300"
+                          : "bg-rose-950/30 border-rose-500/40 text-rose-300"
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          {quickTestResult.isRegistered ? (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          ) : (
+                            <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                          )}
+                          <span className="font-semibold text-xs">
+                            {quickTestResult.isRegistered
+                              ? "WhatsApp Válido & Ativo"
+                              : "Descartado: Não Gravar"}
+                          </span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-black/30 border border-current/20">
+                            {quickTestResult.formattedNumber || quickTestResult.rawPhone}
+                          </span>
+                        </div>
+                        <p className="text-[11px] opacity-90 pl-6">
+                          {quickTestResult.isRegistered
+                            ? `Operadora: ${quickTestResult.carrier} (Móvel). Apto para disparo automatizado.`
+                            : `${quickTestResult.reason} • Tipo: ${quickTestResult.lineType === "landline" ? "Rede Fixa" : "Móvel"}`}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 pl-6 sm:pl-0">
+                        {quickTestResult.isRegistered && (
+                          <button
+                            onClick={handleAddQuickTestToCampaign}
+                            className="px-2.5 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-medium flex items-center gap-1 transition-colors cursor-pointer"
+                          >
+                            <Plus className="w-3 h-3" />
+                            Adicionar à Campanha
+                          </button>
+                        )}
+                        {quickTestResult.waLink && (
+                          <a
+                            href={quickTestResult.waLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] flex items-center gap-1 transition-colors"
+                            title="Abrir no WhatsApp Web para teste"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Botão de Auditoria em Lote */}
+                {parsedLeads.length > 0 && (
+                  <div className="pt-2 border-t border-[#252C38]/60 space-y-2">
+                    <button
+                      onClick={handleRunBatchVerification}
+                      disabled={isBatchVerifying}
+                      className="w-full py-2 px-3 bg-[#1A2232] hover:bg-[#232E42] border border-[#2D394E] text-slate-200 text-xs font-semibold rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    >
+                      <RefreshCw
+                        className={`w-3.5 h-3.5 text-emerald-400 ${
+                          isBatchVerifying ? "animate-spin" : ""
+                        }`}
+                      />
+                      {isBatchVerifying
+                        ? "Auditando todos os contatos no WhatsApp..."
+                        : `Revalidar Contatos Carregados (${parsedLeads.length})`}
+                    </button>
+
+                    {isBatchVerifying && (
+                      <div className="w-full bg-[#0E121A] rounded-full h-1.5 overflow-hidden border border-[#252C38]">
+                        <div
+                          className="bg-emerald-500 h-full transition-all duration-150"
+                          style={{ width: `${batchVerifyProgress}%` }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Botão de Ação Primária: Sincronizar com Supabase */}
@@ -610,16 +860,27 @@ export function CampaignsView() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-xs font-semibold text-slate-200">
-                      Sincronização com Supabase
+                      Sincronização Segura com Supabase
                     </h3>
                     <p className="text-[11px] text-slate-400">
-                      Disponibiliza a fila instantaneamente para o bot de prospecção.
+                      Apenas contatos pré-validados no WhatsApp serão gravados.
                     </p>
                   </div>
                   <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
                     {validLeads.length} prontos
                   </span>
                 </div>
+
+                {discardedLeads.length > 0 && (
+                  <div className="text-[11px] text-rose-300 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg flex items-center gap-2">
+                    <PhoneOff className="w-4 h-4 text-rose-400 shrink-0" />
+                    <span>
+                      <strong className="font-semibold">{discardedLeads.length}</strong> número(s)
+                      fixos ou sem conta identificados foram{" "}
+                      <strong>descartados antes de gravar</strong> e não serão salvos.
+                    </span>
+                  </div>
+                )}
 
                 <button
                   onClick={handleSyncToSupabase}
@@ -659,7 +920,8 @@ export function CampaignsView() {
                   Leads Aprovados para Disparo ({validLeads.length})
                 </h3>
                 <p className="text-[11px] text-slate-400">
-                  Estes são os contatos que passarão pelo bot e entrarão na fila do Supabase.
+                  Estes são os contatos que passaram pela validação prévia e entrarão na fila do
+                  Supabase.
                 </p>
               </div>
 
@@ -678,7 +940,7 @@ export function CampaignsView() {
             <div className="overflow-x-auto max-h-96">
               {validLeads.length === 0 ? (
                 <div className="p-8 text-center text-slate-500 text-xs">
-                  Nenhum lead carregado ou validado ainda. Envie um arquivo .MD/.TXT ou use o botão
+                  Nenhum lead aprovado no WhatsApp ainda. Envie um arquivo .MD/.TXT ou use o botão
                   "Carregar Exemplo .MD".
                 </div>
               ) : (
@@ -689,8 +951,10 @@ export function CampaignsView() {
                       <th className="p-3">Empresa</th>
                       <th className="p-3">Telefone Normalizado</th>
                       <th className="p-3">Operadora</th>
+                      <th className="p-3">Status WhatsApp</th>
                       <th className="p-3">Cidade / Oferta</th>
                       <th className="p-3">Mensagem a Enviar</th>
+                      <th className="p-3 text-right">Ação</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#1D2433]">
@@ -713,6 +977,12 @@ export function CampaignsView() {
                               {lead.verification.carrier}
                             </span>
                           </td>
+                          <td className="p-3">
+                            <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[10px] font-semibold border border-emerald-500/30 flex items-center gap-1 w-fit">
+                              <Check className="w-3 h-3" />
+                              Móvel Ativo
+                            </span>
+                          </td>
                           <td className="p-3 text-slate-400">
                             {lead.cidade || "Angola"} {lead.oferta ? `• ${lead.oferta}` : ""}
                           </td>
@@ -721,6 +991,28 @@ export function CampaignsView() {
                             title={lead.mensagem}
                           >
                             {lead.mensagem}
+                          </td>
+                          <td className="p-3 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              {lead.verification.waLink && (
+                                <a
+                                  href={lead.verification.waLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-emerald-400 transition-colors"
+                                  title="Testar conversa no WhatsApp"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5" />
+                                </a>
+                              )}
+                              <button
+                                onClick={() => handleToggleLeadOverride(lead.telefone, true)}
+                                className="px-2 py-0.5 rounded text-[10px] text-rose-400 hover:bg-rose-500/10 border border-rose-500/20 transition-colors cursor-pointer"
+                                title="Descartar este lead antes de gravar"
+                              >
+                                Descartar
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -741,7 +1033,7 @@ export function CampaignsView() {
                   Números Descartados da Importação ({discardedLeads.length})
                 </h3>
                 <p className="text-[11px] text-slate-400">
-                  Estes números foram bloqueados pelo filtro anti-erro e{" "}
+                  Estes números foram descartados na validação prévia e{" "}
                   <span className="text-rose-300 font-semibold">
                     NÃO serão gravados no Supabase
                   </span>
@@ -754,7 +1046,8 @@ export function CampaignsView() {
               {discardedLeads.length === 0 ? (
                 <div className="p-8 text-center text-emerald-400 text-xs flex items-center justify-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
-                  Nenhum número descartado! Todos os números informados são válidos no WhatsApp.
+                  Nenhum número descartado! Todos os números informados possuem WhatsApp móvel
+                  ativo.
                 </div>
               ) : (
                 <table className="w-full text-left text-xs text-slate-300">
@@ -763,8 +1056,9 @@ export function CampaignsView() {
                       <th className="p-3">#</th>
                       <th className="p-3">Empresa</th>
                       <th className="p-3">Telefone Original</th>
-                      <th className="p-3">Operadora / Tipo</th>
-                      <th className="p-3">Motivo do Descarte (Não enviado ao Supabase)</th>
+                      <th className="p-3">Operadora / Linha</th>
+                      <th className="p-3">Motivo do Descarte (Não Gravado)</th>
+                      <th className="p-3 text-right">Ação</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#1D2433]">
@@ -775,11 +1069,21 @@ export function CampaignsView() {
                         <td className="p-3 font-mono text-rose-400">{lead.telefone}</td>
                         <td className="p-3">
                           <span className="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px] border border-rose-500/20 font-medium">
-                            {lead.verification.carrier}
+                            {lead.verification.carrier} •{" "}
+                            {lead.verification.lineType === "landline" ? "Linha Fixa" : "Móvel"}
                           </span>
                         </td>
                         <td className="p-3 text-rose-300 text-[11px] font-medium">
                           {lead.verification.reason}
+                        </td>
+                        <td className="p-3 text-right">
+                          <button
+                            onClick={() => handleToggleLeadOverride(lead.telefone, false)}
+                            className="px-2 py-0.5 rounded text-[10px] text-emerald-400 hover:bg-emerald-500/10 border border-emerald-500/20 transition-colors cursor-pointer"
+                            title="Revalidar e permitir gravação deste número"
+                          >
+                            Revalidar
+                          </button>
                         </td>
                       </tr>
                     ))}

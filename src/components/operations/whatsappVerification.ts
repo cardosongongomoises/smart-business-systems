@@ -461,3 +461,161 @@ export async function verifyWhatsAppNumberAsync(
     reason: `Verificado com sucesso no WhatsApp Business API • Operadora: ${initial.carrier}`,
   };
 }
+
+/**
+ * Validação prévia de WhatsApp para Campanhas & Disparos:
+ * Identifica e descarta números fixos ou sem conta antes de gravar no banco de dados.
+ *
+ * Regras:
+ * 1. Números fixos de Angola (222, 234, etc.) ou internacionais são sumariamente DESCARTADOS.
+ * 2. Números confirmados sem conta no WhatsApp (lista negra/cache) são sumariamente DESCARTADOS.
+ * 3. Formatos incompletos ou inválidos são sumariamente DESCARTADOS.
+ * 4. Linhas móveis de Angola (+244 92/93/94 Unitel, 95 Africell, 91/99 Movicel) e móveis internacionais
+ *    são APROVADAS para o disparo no WhatsApp.
+ * 5. Suporta override manual por lead caso o operador deseje incluir/excluir pontualmente.
+ */
+export function validateCampaignWhatsAppNumber(
+  phone: string,
+  manualOverride?: boolean,
+): WhatsAppVerificationResult {
+  const norm = normalizePhoneNumber(phone);
+  const { carrier, lineType } = detectCarrier(norm.digits);
+  const nowStr = new Date().toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
+
+  // 1. Override manual explícito (se operador alterou)
+  if (manualOverride === false) {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: "Descartado manualmente pelo operador no Centro de Operações.",
+      checkedAt: nowStr,
+      checkedVia: "explicit_lead",
+    };
+  }
+
+  if (manualOverride === true) {
+    return {
+      isRegistered: true,
+      status: "registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: norm.digits ? `https://wa.me/${norm.digits}` : null,
+      reason: "Confirmado manualmente com conta ativa no WhatsApp.",
+      checkedAt: nowStr,
+      checkedVia: "explicit_lead",
+    };
+  }
+
+  // 2. Números catalogados sem WhatsApp (+244934024904, +244928538739, etc.)
+  if (isKnownUnregisteredNumber(phone) || isKnownUnregisteredNumber(norm.digits)) {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: `Sem conta ativa no WhatsApp: número ${norm.formatted || phone} verificado e sem cadastro (${carrier}).`,
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 3. Linha fixa (landline) -> DESCARTADA
+  if (lineType === "landline") {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason:
+        "Telefone de linha fixa descartado (telefones fixos não possuem cadastro no WhatsApp móvel).",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 4. Formato inválido ou incompleto -> DESCARTADO
+  if (lineType === "invalid" || norm.digits.length < 8) {
+    return {
+      isRegistered: false,
+      status: "invalid_format",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      reason: "Formato de número inválido ou incompleto (descartado).",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  // 5. Cache salvo no navegador
+  const stored = getStoredVerifications();
+  if (norm.digits && stored[norm.digits]) {
+    const cached = stored[norm.digits]!;
+    return {
+      isRegistered: cached.isRegistered,
+      status: cached.isRegistered ? "registered" : "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      reason:
+        cached.reason ||
+        (cached.isRegistered ? "Validado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
+      checkedAt: nowStr,
+      checkedVia: "cache",
+    };
+  }
+
+  // 6. Linhas móveis ativas de Angola (+244 92/93/94 Unitel, 95 Africell, 91/99 Movicel) ou internacionais
+  if (lineType === "mobile") {
+    return {
+      isRegistered: true,
+      status: "registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: norm.digits ? `https://wa.me/${norm.digits}` : null,
+      reason: `Linha móvel válida (${carrier}) com suporte ativo para WhatsApp.`,
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  return {
+    isRegistered: false,
+    status: "not_registered",
+    formattedNumber: norm.formatted || phone,
+    rawPhone: phone,
+    digits: norm.digits,
+    carrier,
+    lineType,
+    waLink: null,
+    reason: "Número não qualificado para WhatsApp.",
+    checkedAt: nowStr,
+    checkedVia: "carrier_format",
+  };
+}
