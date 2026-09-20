@@ -16,7 +16,6 @@ import { CampaignsView } from "./CampaignsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
-import { CampaignsView } from "./CampaignsView";
 import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
 import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
 import { calculateFunnelStages } from "./mockData";

@@ -35,7 +35,12 @@ export function getLocalLeads(): Lead[] {
       if (Array.isArray(parsed)) {
         // Purga qualquer lead mockado, demo ou legado
         const cleaned = parsed.filter(
-          (l) => l && l.id && !l.id.startsWith("lead-") && !l.name?.includes("Gonçalo") && !l.name?.includes("Demonstração")
+          (l) =>
+            l &&
+            l.id &&
+            !l.id.startsWith("lead-") &&
+            !l.name?.includes("Gonçalo") &&
+            !l.name?.includes("Demonstração"),
         );
         if (cleaned.length !== parsed.length) {
           localStorage.setItem(LOCAL_STORAGE_LEADS_KEY, JSON.stringify(cleaned));
@@ -501,41 +506,21 @@ export function subscribeToLeadsChanges(onUpdate: () => void): () => void {
 
   const channel = supabase
     .channel("sbs-leads-realtime-sync")
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "leads" },
-      () => {
-        onUpdate();
-      },
-    )
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "lead_conversas" },
-      () => {
-        onUpdate();
-      },
-    )
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "lead_atividades" },
-      () => {
-        onUpdate();
-      },
-    )
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "lead_agendamentos" },
-      () => {
-        onUpdate();
-      },
-    )
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "lead_notas" },
-      () => {
-        onUpdate();
-      },
-    )
+    .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
+      onUpdate();
+    })
+    .on("postgres_changes", { event: "*", schema: "public", table: "lead_conversas" }, () => {
+      onUpdate();
+    })
+    .on("postgres_changes", { event: "*", schema: "public", table: "lead_atividades" }, () => {
+      onUpdate();
+    })
+    .on("postgres_changes", { event: "*", schema: "public", table: "lead_agendamentos" }, () => {
+      onUpdate();
+    })
+    .on("postgres_changes", { event: "*", schema: "public", table: "lead_notas" }, () => {
+      onUpdate();
+    })
     .subscribe();
 
   return () => {
@@ -735,7 +720,7 @@ export async function createCampaignWithVerifiedQueue(
     oferta?: string;
     angulo?: string;
     cidade?: string;
-  }>
+  }>,
 ): Promise<{ success: boolean; campaignId?: number; insertedCount: number; error?: string }> {
   if (!isSupabaseConfigured()) {
     return { success: false, insertedCount: 0, error: "Supabase não configurado" };
@@ -756,7 +741,11 @@ export async function createCampaignWithVerifiedQueue(
 
     if (errCamp || !camp) {
       console.error("[CAMPANHA] Erro ao criar campanha:", errCamp?.message);
-      return { success: false, insertedCount: 0, error: errCamp?.message || "Falha ao criar cabeçalho" };
+      return {
+        success: false,
+        insertedCount: 0,
+        error: errCamp?.message || "Falha ao criar cabeçalho",
+      };
     }
 
     const campaignId = camp.id;
@@ -787,9 +776,10 @@ export async function createCampaignWithVerifiedQueue(
     }
 
     return { success: true, campaignId, insertedCount: inserted };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("[CAMPANHA] Exceção ao gravar no Supabase:", err);
-    return { success: false, insertedCount: 0, error: err?.message || String(err) };
+    const errMsg = err instanceof Error ? err.message : String(err);
+    return { success: false, insertedCount: 0, error: errMsg };
   }
 }
 
@@ -847,13 +837,13 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
 /**
  * Atualiza o status da campanha (ex: 'em_andamento', 'pausada', 'concluida')
  */
-export async function updateCampanhaStatus(id: number, status: "pendente" | "em_andamento" | "pausada" | "concluida"): Promise<boolean> {
+export async function updateCampanhaStatus(
+  id: number,
+  status: "pendente" | "em_andamento" | "pausada" | "concluida",
+): Promise<boolean> {
   if (!isSupabaseConfigured()) return false;
   try {
-    const { error } = await supabase
-      .from("campanhas_disparo")
-      .update({ status })
-      .eq("id", id);
+    const { error } = await supabase.from("campanhas_disparo").update({ status }).eq("id", id);
     return !error;
   } catch {
     return false;
@@ -868,15 +858,11 @@ export function subscribeToDisparosRealtime(onUpdate: () => void): () => void {
 
   const channel = supabase
     .channel("disparos_crm_realtime")
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "disparo_fila" },
-      () => onUpdate()
+    .on("postgres_changes", { event: "*", schema: "public", table: "disparo_fila" }, () =>
+      onUpdate(),
     )
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "campanhas_disparo" },
-      () => onUpdate()
+    .on("postgres_changes", { event: "*", schema: "public", table: "campanhas_disparo" }, () =>
+      onUpdate(),
     )
     .subscribe();
 
@@ -884,4 +870,3 @@ export function subscribeToDisparosRealtime(onUpdate: () => void): () => void {
     supabase.removeChannel(channel);
   };
 }
-

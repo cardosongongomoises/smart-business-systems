@@ -85,22 +85,39 @@ export function CampaignsView() {
         .map((c) => c.trim().toLowerCase())
         .filter(Boolean);
 
-      const empIdx = headerCols.findIndex((c) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"));
-      const telIdx = headerCols.findIndex((c) => c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"));
-      const msgIdx = headerCols.findIndex((c) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"));
-      const oftIdx = headerCols.findIndex((c) => c.includes("oferta") || c.includes("plano") || c.includes("pacote"));
-      const angIdx = headerCols.findIndex((c) => c.includes("angulo") || c.includes("ângulo") || c.includes("gancho"));
+      const empIdx = headerCols.findIndex(
+        (c) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
+      );
+      const telIdx = headerCols.findIndex(
+        (c) =>
+          c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
+      );
+      const msgIdx = headerCols.findIndex(
+        (c) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"),
+      );
+      const oftIdx = headerCols.findIndex(
+        (c) => c.includes("oferta") || c.includes("plano") || c.includes("pacote"),
+      );
+      const angIdx = headerCols.findIndex(
+        (c) => c.includes("angulo") || c.includes("ângulo") || c.includes("gancho"),
+      );
       const cidIdx = headerCols.findIndex((c) => c.includes("cidade") || c.includes("local"));
 
       for (let i = 1; i < tableLines.length; i++) {
         const rowLine = tableLines[i];
         if (rowLine.includes("---")) continue;
-        const cols = rowLine.split("|").map((c) => c.trim()).filter((_, idx, arr) => idx > 0 && idx < arr.length);
+        const cols = rowLine
+          .split("|")
+          .map((c) => c.trim())
+          .filter((_, idx, arr) => idx > 0 && idx < arr.length);
 
         if (cols.length >= 2) {
           const emp = empIdx !== -1 && cols[empIdx] ? cols[empIdx] : cols[0] || "Empresa";
           const tel = telIdx !== -1 && cols[telIdx] ? cols[telIdx] : cols[1] || "";
-          const msg = msgIdx !== -1 && cols[msgIdx] ? cols[msgIdx] : cols[2] || `Olá ${emp}, temos uma proposta para vocês.`;
+          const msg =
+            msgIdx !== -1 && cols[msgIdx]
+              ? cols[msgIdx]
+              : cols[2] || `Olá ${emp}, temos uma proposta para vocês.`;
 
           if (tel && tel.replace(/\D/g, "").length >= 7) {
             candidates.push({
@@ -117,20 +134,27 @@ export function CampaignsView() {
     }
 
     // FORMATO B: Blocos Markdown (### Empresa ... - Telefone: ... - Mensagem: ...)
-    if (candidates.length === 0 && (rawText.includes("###") || rawText.includes("Telefone:") || rawText.includes("telefone:"))) {
+    if (
+      candidates.length === 0 &&
+      (rawText.includes("###") || rawText.includes("Telefone:") || rawText.includes("telefone:"))
+    ) {
       const blocks = rawText.split(/(?=###|\n##\s+)/);
       for (const block of blocks) {
         if (!block.trim()) continue;
         const nameMatch = block.match(/#{2,3}\s+(.+?)(?:\r?\n|$)/);
-        const telMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s\(\)-]+)/i);
-        const msgMatch = block.match(/(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i);
+        const telMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s()-]+)/i);
+        const msgMatch = block.match(
+          /(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i,
+        );
         const cidMatch = block.match(/(?:Cidade|cidade):\s*(.+?)(?:\r?\n|$)/i);
         const angMatch = block.match(/(?:Angulo|angulo|Ângulo):\s*(.+?)(?:\r?\n|$)/i);
 
         if (telMatch && telMatch[1]) {
           const emp = nameMatch ? nameMatch[1].trim() : "Empresa Prospect";
           const tel = telMatch[1].trim();
-          const msg = msgMatch ? msgMatch[1].trim() : `Olá ${emp}, temos uma proposta personalizada.`;
+          const msg = msgMatch
+            ? msgMatch[1].trim()
+            : `Olá ${emp}, temos uma proposta personalizada.`;
           candidates.push({
             empresa: emp,
             telefone: tel,
@@ -156,7 +180,8 @@ export function CampaignsView() {
         if (parts.length >= 2) {
           const emp = parts[0]?.trim() || "Empresa";
           const tel = parts[1]?.trim() || "";
-          const msg = parts[2]?.trim() || `Olá ${emp}, temos uma solução para acelerar o seu negócio.`;
+          const msg =
+            parts[2]?.trim() || `Olá ${emp}, temos uma solução para acelerar o seu negócio.`;
 
           if (tel && tel.replace(/\D/g, "").length >= 7) {
             candidates.push({
@@ -183,13 +208,19 @@ export function CampaignsView() {
   // SEPARAÇÃO: Apenas leads válidos entram no Supabase; os sem WhatsApp são DESCARTADOS antes!
   const validLeads = useMemo(() => {
     return parsedLeads.filter(
-      (l) => l.verification.isRegistered && l.verification.lineType !== "landline" && l.verification.status !== "not_registered"
+      (l) =>
+        l.verification.isRegistered &&
+        l.verification.lineType !== "landline" &&
+        l.verification.status !== "not_registered",
     );
   }, [parsedLeads]);
 
   const discardedLeads = useMemo(() => {
     return parsedLeads.filter(
-      (l) => !l.verification.isRegistered || l.verification.lineType === "landline" || l.verification.status === "not_registered"
+      (l) =>
+        !l.verification.isRegistered ||
+        l.verification.lineType === "landline" ||
+        l.verification.status === "not_registered",
     );
   }, [parsedLeads]);
 
@@ -257,7 +288,9 @@ export function CampaignsView() {
     }
 
     const finalName = campaignName.trim() || `Campanha ${new Date().toLocaleDateString("pt-PT")}`;
-    const finalDesc = campaignDesc.trim() || `Campanha importada via .MD/.TXT com ${validLeads.length} contatos verificados no WhatsApp.`;
+    const finalDesc =
+      campaignDesc.trim() ||
+      `Campanha importada via .MD/.TXT com ${validLeads.length} contatos verificados no WhatsApp.`;
 
     setIsSyncing(true);
     try {
@@ -265,11 +298,11 @@ export function CampaignsView() {
 
       if (res.success) {
         toast.success(
-          `🚀 Campanha #${res.campaignId} sincronizada com sucesso! ${res.insertedCount} leads adicionados à fila de disparo.`
+          `🚀 Campanha #${res.campaignId} sincronizada com sucesso! ${res.insertedCount} leads adicionados à fila de disparo.`,
         );
         if (discardedLeads.length > 0) {
           toast.info(
-            `🛡️ ${discardedLeads.length} número(s) sem WhatsApp foram descartados e NÃO entraram no Supabase.`
+            `🛡️ ${discardedLeads.length} número(s) sem WhatsApp foram descartados e NÃO entraram no Supabase.`,
           );
         }
         setRawText("");
@@ -280,8 +313,9 @@ export function CampaignsView() {
       } else {
         toast.error(`Falha ao sincronizar com o Supabase: ${res.error || "Erro desconhecido"}`);
       }
-    } catch (err: any) {
-      toast.error(`Erro na sincronização: ${err?.message || String(err)}`);
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro na sincronização: ${errMsg}`);
     } finally {
       setIsSyncing(false);
     }
@@ -311,7 +345,9 @@ export function CampaignsView() {
 `;
     setRawText(sampleMd);
     setCampaignName("Exemplo Clínicas Luanda - Set/2026");
-    setCampaignDesc("Demonstração de filtragem automática: números fixos e sem WhatsApp serão descartados.");
+    setCampaignDesc(
+      "Demonstração de filtragem automática: números fixos e sem WhatsApp serão descartados.",
+    );
     toast.info("Exemplo Markdown carregado! Veja a auditoria de números abaixo.");
   };
 
@@ -334,7 +370,8 @@ export function CampaignsView() {
             </div>
             <p className="text-xs text-slate-400">
               Envio de campanhas no formato <span className="text-slate-200 font-mono">.MD</span> ou{" "}
-              <span className="text-slate-200 font-mono">.TXT</span> com validação prévia de WhatsApp (números fixos ou sem conta são descartados antes de gravar).
+              <span className="text-slate-200 font-mono">.TXT</span> com validação prévia de
+              WhatsApp (números fixos ou sem conta são descartados antes de gravar).
             </p>
           </div>
 
@@ -351,7 +388,9 @@ export function CampaignsView() {
               disabled={isLoadingCampaigns}
               className="px-3 py-1.5 text-xs rounded-lg border border-[#303846] bg-[#1A2230] hover:bg-[#222C3E] text-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingCampaigns ? "animate-spin text-emerald-400" : ""}`} />
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${isLoadingCampaigns ? "animate-spin text-emerald-400" : ""}`}
+              />
               Atualizar Supabase
             </button>
           </div>
@@ -424,9 +463,7 @@ export function CampaignsView() {
                     <FileText className="w-4 h-4 text-emerald-400" />
                     Arquivo de Mensagens (.MD ou .TXT)
                   </h2>
-                  <span className="text-[11px] text-slate-400">
-                    Arrastar ou colar texto abaixo
-                  </span>
+                  <span className="text-[11px] text-slate-400">Arrastar ou colar texto abaixo</span>
                 </div>
 
                 {/* Dropzone */}
@@ -457,7 +494,9 @@ export function CampaignsView() {
                   />
                   <Upload className="w-7 h-7 mx-auto mb-2 text-slate-400" />
                   <p className="text-xs font-medium text-slate-200">
-                    Clique para selecionar ou arraste o arquivo <span className="text-emerald-400 font-mono">.MD</span> / <span className="text-emerald-400 font-mono">.TXT</span>
+                    Clique para selecionar ou arraste o arquivo{" "}
+                    <span className="text-emerald-400 font-mono">.MD</span> /{" "}
+                    <span className="text-emerald-400 font-mono">.TXT</span>
                   </p>
                   <p className="text-[11px] text-slate-500 mt-1">
                     Suporta tabelas Markdown, blocos "Telefone: ..." ou CSV/ponto-e-vírgula.
@@ -523,7 +562,9 @@ export function CampaignsView() {
               {/* Cards de Métricas do Arquivo */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-[#131824] border border-[#252C38] rounded-xl p-3.5">
-                  <span className="text-[10px] font-medium text-slate-400 block">Total Identificado</span>
+                  <span className="text-[10px] font-medium text-slate-400 block">
+                    Total Identificado
+                  </span>
                   <div className="text-xl font-bold text-white mt-1">{parsedLeads.length}</div>
                   <span className="text-[10px] text-slate-500">linhas de prospect</span>
                 </div>
@@ -540,7 +581,9 @@ export function CampaignsView() {
                   <span className="text-[10px] font-medium text-rose-400 block flex items-center gap-1">
                     <XCircle className="w-3 h-3" /> Descartados
                   </span>
-                  <div className="text-xl font-bold text-rose-400 mt-1">{discardedLeads.length}</div>
+                  <div className="text-xl font-bold text-rose-400 mt-1">
+                    {discardedLeads.length}
+                  </div>
                   <span className="text-[10px] text-rose-500/80">bloqueados antes do DB</span>
                 </div>
               </div>
@@ -552,7 +595,13 @@ export function CampaignsView() {
                   Blindagem Ativa de WhatsApp
                 </div>
                 <p className="text-[11px] leading-relaxed text-emerald-400/80">
-                  O sistema valida operadoras móveis de Angola (+244 92/93/94 Unitel, 95 Africell, 91/99 Movicel) e descarta automaticamente telefones fixos (222, 227...) e números catalogados sem WhatsApp. Apenas os leads válidos são inseridos na tabela <span className="font-mono bg-emerald-900/40 px-1 py-0.5 rounded">disparo_fila</span>.
+                  O sistema valida operadoras móveis de Angola (+244 92/93/94 Unitel, 95 Africell,
+                  91/99 Movicel) e descarta automaticamente telefones fixos (222, 227...) e números
+                  catalogados sem WhatsApp. Apenas os leads válidos são inseridos na tabela{" "}
+                  <span className="font-mono bg-emerald-900/40 px-1 py-0.5 rounded">
+                    disparo_fila
+                  </span>
+                  .
                 </p>
               </div>
 
@@ -560,7 +609,9 @@ export function CampaignsView() {
               <div className="bg-[#131824] border border-[#252C38] rounded-xl p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xs font-semibold text-slate-200">Sincronização com Supabase</h3>
+                    <h3 className="text-xs font-semibold text-slate-200">
+                      Sincronização com Supabase
+                    </h3>
                     <p className="text-[11px] text-slate-400">
                       Disponibiliza a fila instantaneamente para o bot de prospecção.
                     </p>
@@ -577,8 +628,8 @@ export function CampaignsView() {
                     validLeads.length === 0
                       ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
                       : isSyncing
-                      ? "bg-emerald-700 text-white cursor-wait"
-                      : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20"
+                        ? "bg-emerald-700 text-white cursor-wait"
+                        : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20"
                   }`}
                 >
                   {isSyncing ? (
@@ -627,7 +678,8 @@ export function CampaignsView() {
             <div className="overflow-x-auto max-h-96">
               {validLeads.length === 0 ? (
                 <div className="p-8 text-center text-slate-500 text-xs">
-                  Nenhum lead carregado ou validado ainda. Envie um arquivo .MD/.TXT ou use o botão "Carregar Exemplo .MD".
+                  Nenhum lead carregado ou validado ainda. Envie um arquivo .MD/.TXT ou use o botão
+                  "Carregar Exemplo .MD".
                 </div>
               ) : (
                 <table className="w-full text-left text-xs text-slate-300">
@@ -646,7 +698,7 @@ export function CampaignsView() {
                       .filter(
                         (l) =>
                           l.empresa.toLowerCase().includes(filterSearch.toLowerCase()) ||
-                          l.telefone.includes(filterSearch)
+                          l.telefone.includes(filterSearch),
                       )
                       .map((lead, idx) => (
                         <tr key={idx} className="hover:bg-[#161D2C]/60 transition-colors">
@@ -664,7 +716,10 @@ export function CampaignsView() {
                           <td className="p-3 text-slate-400">
                             {lead.cidade || "Angola"} {lead.oferta ? `• ${lead.oferta}` : ""}
                           </td>
-                          <td className="p-3 max-w-xs truncate text-slate-400" title={lead.mensagem}>
+                          <td
+                            className="p-3 max-w-xs truncate text-slate-400"
+                            title={lead.mensagem}
+                          >
                             {lead.mensagem}
                           </td>
                         </tr>
@@ -686,7 +741,11 @@ export function CampaignsView() {
                   Números Descartados da Importação ({discardedLeads.length})
                 </h3>
                 <p className="text-[11px] text-slate-400">
-                  Estes números foram bloqueados pelo filtro anti-erro e <span className="text-rose-300 font-semibold">NÃO serão gravados no Supabase</span>.
+                  Estes números foram bloqueados pelo filtro anti-erro e{" "}
+                  <span className="text-rose-300 font-semibold">
+                    NÃO serão gravados no Supabase
+                  </span>
+                  .
                 </p>
               </div>
             </div>
@@ -761,8 +820,14 @@ export function CampaignsView() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {campaignsList.map((camp) => {
-                  const stats = camp.stats || { total: camp.total || 0, pendente: 0, enviado: 0, falhou: 0 };
-                  const percent = stats.total > 0 ? Math.round((stats.enviado / stats.total) * 100) : 0;
+                  const stats = camp.stats || {
+                    total: camp.total || 0,
+                    pendente: 0,
+                    enviado: 0,
+                    falhou: 0,
+                  };
+                  const percent =
+                    stats.total > 0 ? Math.round((stats.enviado / stats.total) * 100) : 0;
 
                   return (
                     <div
@@ -779,8 +844,8 @@ export function CampaignsView() {
                               camp.status === "em_andamento"
                                 ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                                 : camp.status === "pausada"
-                                ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
-                                : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                                  ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                                  : "bg-blue-500/10 text-blue-400 border-blue-500/20"
                             }`}
                           >
                             {camp.status.toUpperCase()}
@@ -810,15 +875,21 @@ export function CampaignsView() {
                         <div className="grid grid-cols-3 gap-1 pt-2 text-center text-[10px]">
                           <div className="bg-[#0E121A] p-1.5 rounded border border-[#252C38]">
                             <span className="text-slate-500 block">Pendentes</span>
-                            <span className="font-mono text-slate-200 font-bold">{stats.pendente}</span>
+                            <span className="font-mono text-slate-200 font-bold">
+                              {stats.pendente}
+                            </span>
                           </div>
                           <div className="bg-[#0E121A] p-1.5 rounded border border-[#252C38]">
                             <span className="text-emerald-500 block">Enviados</span>
-                            <span className="font-mono text-emerald-400 font-bold">{stats.enviado}</span>
+                            <span className="font-mono text-emerald-400 font-bold">
+                              {stats.enviado}
+                            </span>
                           </div>
                           <div className="bg-[#0E121A] p-1.5 rounded border border-[#252C38]">
                             <span className="text-rose-500 block">Falhados</span>
-                            <span className="font-mono text-rose-400 font-bold">{stats.falhou}</span>
+                            <span className="font-mono text-rose-400 font-bold">
+                              {stats.falhou}
+                            </span>
                           </div>
                         </div>
                       </div>

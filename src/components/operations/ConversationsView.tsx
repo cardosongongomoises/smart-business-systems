@@ -62,7 +62,9 @@ export function ConversationsView({
 
   const activeLead = useMemo(() => {
     if (!conversationLeads || conversationLeads.length === 0) return null;
-    return conversationLeads.find((l) => l && l.id === selectedLeadId) || conversationLeads[0] || null;
+    return (
+      conversationLeads.find((l) => l && l.id === selectedLeadId) || conversationLeads[0] || null
+    );
   }, [conversationLeads, selectedLeadId]);
 
   const toggleJsonExpand = (msgId: string) => {
@@ -236,7 +238,9 @@ export function ConversationsView({
                   </span>
                 </div>
 
-                <div className="text-[11px] text-[#A7B0BF] truncate mb-1.5">{lead.company || "Empresa a confirmar"}</div>
+                <div className="text-[11px] text-[#A7B0BF] truncate mb-1.5">
+                  {lead.company || "Empresa a confirmar"}
+                </div>
 
                 <div className="text-[11px] text-[#667085] line-clamp-1 italic mb-2">
                   "{lastMsg?.text ? lastMsg.text : "Sem mensagens ainda"}"
@@ -284,13 +288,21 @@ export function ConversationsView({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-[#F5F7FA]">{activeLead.name || "Contacto sem nome"}</h3>
-                  <span className="text-xs text-[#A7B0BF]">• {activeLead.company || "Empresa a confirmar"}</span>
+                  <h3 className="text-sm font-bold text-[#F5F7FA]">
+                    {activeLead.name || "Contacto sem nome"}
+                  </h3>
+                  <span className="text-xs text-[#A7B0BF]">
+                    • {activeLead.company || "Empresa a confirmar"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3 text-[11px] text-[#667085] mt-0.5">
-                  <span className="font-mono text-[#3B82F6]">{activeLead.phone || "Sem telefone"}</span>
+                  <span className="font-mono text-[#3B82F6]">
+                    {activeLead.phone || "Sem telefone"}
+                  </span>
                   <span>Canal: WhatsApp Business</span>
-                  <span className="text-[#22C55E] font-semibold">{activeLead.estimatedValue || "Kz 250.000"}</span>
+                  <span className="text-[#22C55E] font-semibold">
+                    {activeLead.estimatedValue || "Kz 250.000"}
+                  </span>
                 </div>
               </div>
             </div>
