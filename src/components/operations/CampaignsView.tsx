@@ -23,6 +23,9 @@ import {
   PhoneOff,
   Filter,
   Check,
+  Zap,
+  Trash2,
+  RotateCcw,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -31,6 +34,8 @@ import {
   WhatsAppVerificationResult,
   detectCarrier,
   normalizePhoneNumber,
+  filterMessagesContentAuto,
+  AutoFilterMessagesResult,
 } from "./whatsappVerification";
 import {
   createCampaignWithVerifiedQueue,
@@ -70,6 +75,14 @@ export function CampaignsView() {
   const [quickTestResult, setQuickTestResult] = useState<WhatsAppVerificationResult | null>(null);
   const [isBatchVerifying, setIsBatchVerifying] = useState(false);
   const [batchVerifyProgress, setBatchVerifyProgress] = useState(0);
+
+  // Filtragem no Modo Automático ao Enviar Arquivo de Mensagens
+  const [autoFilterOnUpload, setAutoFilterOnUpload] = useState(true);
+  const [originalUnfilteredText, setOriginalUnfilteredText] = useState("");
+  const [lastAutoFilterReport, setLastAutoFilterReport] = useState<
+    (AutoFilterMessagesResult & { timestamp: string; fileName?: string }) | null
+  >(null);
+  const [showRemovedDetails, setShowRemovedDetails] = useState(false);
 
   // Parser multi-formato (.MD / .TXT / Tabela / Blocos / Delimitado)
   const parsedLeads = useMemo<ParsedLeadCandidate[]>(() => {
@@ -211,6 +224,34 @@ export function CampaignsView() {
       }
     }
 
+    // FORMATO D: Linhas com Telefone e Mensagem (ex: "+244923111222 - Olá...", "923111222: Olá...", ou texto livre)
+    if (candidates.length === 0) {
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("//")) continue;
+
+        const phoneRegex =
+          /(?:\+?244\s*)?(?:9[1-689]\d[\s.-]?\d{3}[\s.-]?\d{3}|22\d[\s.-]?\d{3}[\s.-]?\d{3}|\+?\d{1,4}[\s.-]?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4})/;
+        const match = phoneRegex.exec(trimmed);
+        if (match) {
+          const rawPhone = match[0];
+          const cleanDigits = rawPhone.replace(/[^\d+]/g, "");
+          if (cleanDigits.length >= 7) {
+            let msg = trimmed.replace(rawPhone, "").trim();
+            msg = msg
+              .replace(/^[:\-\s|–—]+/, "")
+              .replace(/[:\-\s|–—]+$/, "")
+              .trim();
+            candidates.push({
+              empresa: "Contato",
+              telefone: rawPhone.trim(),
+              mensagem: msg || "Olá! Temos uma oportunidade especial para apresentar.",
+            });
+          }
+        }
+      }
+    }
+
     // 2. Executa a validação prévia de WhatsApp em cada lead (detectando móvel ativo, linha fixa ou sem conta)
     return candidates.map((c) => {
       const manualVal = manualOverrides[c.telefone];
@@ -324,7 +365,7 @@ export function CampaignsView() {
     return () => unsubscribe();
   }, [loadCampaigns]);
 
-  // Manipulação de Upload de Arquivo (.MD / .TXT)
+  // Manipulação de Upload de Arquivo (.MD / .TXT) com Filtragem no Modo Automático
   const handleFileUpload = (file: File) => {
     if (!file) return;
     const isMd = file.name.endsWith(".md") || file.name.endsWith(".markdown");
@@ -338,12 +379,51 @@ export function CampaignsView() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = (e.target?.result as string) || "";
-      setRawText(content);
+      if (!content.trim()) {
+        toast.warning("O arquivo selecionado está vazio.");
+        return;
+      }
+
+      setOriginalUnfilteredText(content);
+
       if (!campaignName) {
         const cleanName = file.name.replace(/\.(md|txt|markdown)$/i, "").replace(/[-_]/g, " ");
         setCampaignName(cleanName);
       }
-      toast.success(`Arquivo "${file.name}" carregado com sucesso!`);
+
+      if (autoFilterOnUpload) {
+        // FILTRAGEM NO MODO AUTOMÁTICO:
+        // Pega todos os números nas mensagens, faz a filtragem no modo automático,
+        // mantém apenas os números cadastrados e as suas respetivas mensagens,
+        // e remove completamente os números sem cadastro junto com a sua mensagem.
+        const result = filterMessagesContentAuto(content, {
+          discardLandlines,
+          discardUnregistered,
+        });
+
+        setRawText(result.cleanedText);
+        setLastAutoFilterReport({
+          ...result,
+          timestamp: new Date().toLocaleTimeString("pt-PT"),
+          fileName: file.name,
+        });
+
+        if (result.removedCount > 0) {
+          toast.success(
+            `Arquivo filtrado no modo automático! ${result.validCount} números cadastrados mantidos com suas mensagens.`,
+          );
+          toast.info(
+            `🛡️ ${result.removedCount} números sem WhatsApp/fixos foram removidos junto com suas mensagens.`,
+          );
+        } else {
+          toast.success(
+            `Arquivo carregado! Todos os ${result.validCount} contatos possuem WhatsApp ativo.`,
+          );
+        }
+      } else {
+        setRawText(content);
+        toast.success(`Arquivo "${file.name}" carregado com sucesso!`);
+      }
     };
     reader.onerror = () => {
       toast.error("Erro ao ler arquivo selecionado.");
@@ -357,6 +437,47 @@ export function CampaignsView() {
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileUpload(e.dataTransfer.files[0]);
     }
+  };
+
+  const handleApplyAutoFilterNow = () => {
+    if (!rawText.trim()) {
+      toast.warning("Insira ou cole um conteúdo com mensagens para filtrar!");
+      return;
+    }
+
+    setOriginalUnfilteredText(rawText);
+    const result = filterMessagesContentAuto(rawText, {
+      discardLandlines,
+      discardUnregistered,
+    });
+
+    setRawText(result.cleanedText);
+    setLastAutoFilterReport({
+      ...result,
+      timestamp: new Date().toLocaleTimeString("pt-PT"),
+      fileName: "Editor de Mensagens",
+    });
+
+    if (result.removedCount > 0) {
+      toast.success(
+        `Filtro Automático Concluído! ${result.validCount} números cadastrados mantidos com suas mensagens.`,
+      );
+      toast.info(
+        `🛡️ ${result.removedCount} números sem WhatsApp/fixos foram removidos junto com suas mensagens.`,
+      );
+    } else {
+      toast.success("Todos os números identificados no texto possuem WhatsApp ativo!");
+    }
+  };
+
+  const handleRestoreOriginalText = () => {
+    if (!originalUnfilteredText) {
+      toast.info("Nenhum conteúdo original guardado para restaurar.");
+      return;
+    }
+    setRawText(originalUnfilteredText);
+    setLastAutoFilterReport(null);
+    toast.info("Conteúdo original antes da filtragem restaurado!");
   };
 
   // Sincronização em Tempo Real com o Supabase
@@ -423,12 +544,30 @@ export function CampaignsView() {
 | Dra. Mariana Odonto | +244941845366 | Bom dia, Dra. Mariana! Vi que tem ótima reputação em Luanda e preparei uma proposta consultiva. | Automate Pro | Luanda |
 | VIP Saúde & Estética | +244955552555 | Olá VIP Saúde! Fizemos uma auditoria de presença digital e encontramos pontos valiosos. | Profissional | Talatona |
 `;
-    setRawText(sampleMd);
+    setOriginalUnfilteredText(sampleMd);
     setCampaignName("Exemplo Clínicas Luanda - Set/2026");
     setCampaignDesc(
-      "Demonstração de filtragem automática: números fixos e sem WhatsApp serão descartados.",
+      "Demonstração de filtragem automática: números fixos e sem WhatsApp serão descartados junto com suas mensagens.",
     );
-    toast.info("Exemplo Markdown carregado! Veja a auditoria de números abaixo.");
+
+    if (autoFilterOnUpload) {
+      const result = filterMessagesContentAuto(sampleMd, {
+        discardLandlines,
+        discardUnregistered,
+      });
+      setRawText(result.cleanedText);
+      setLastAutoFilterReport({
+        ...result,
+        timestamp: new Date().toLocaleTimeString("pt-PT"),
+        fileName: "Exemplo Clínicas Luanda",
+      });
+      toast.success(
+        `Exemplo carregado no modo automático! ${result.validCount} contatos válidos mantidos; ${result.removedCount} números sem WhatsApp removidos junto com suas mensagens.`,
+      );
+    } else {
+      setRawText(sampleMd);
+      toast.info("Exemplo Markdown carregado! Veja a auditoria de números abaixo.");
+    }
   };
 
   return (
@@ -583,6 +722,139 @@ export function CampaignsView() {
                   </p>
                 </div>
 
+                {/* Banner de Filtragem no Modo Automático */}
+                <div className="p-3 rounded-lg bg-[#0E121A] border border-emerald-500/30 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-white flex items-center gap-1.5">
+                        Validação Prévia de WhatsApp no Modo Automático
+                        <span
+                          className={`text-[10px] px-1.5 py-0.2 rounded font-medium ${
+                            autoFilterOnUpload
+                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                              : "bg-slate-700/50 text-slate-400"
+                          }`}
+                        >
+                          {autoFilterOnUpload ? "Ativo" : "Desativado"}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Ao enviar o arquivo, extrai todos os números das mensagens e descarta quem
+                        não tem WhatsApp junto com sua respectiva mensagem.
+                      </p>
+                    </div>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={autoFilterOnUpload}
+                      onChange={(e) => setAutoFilterOnUpload(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </label>
+                </div>
+
+                {/* Painel com Relatório da Última Filtragem Automática */}
+                {lastAutoFilterReport && (
+                  <div className="p-3.5 rounded-xl bg-gradient-to-br from-emerald-950/40 via-[#101726] to-[#121927] border border-emerald-500/30 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          <ShieldCheck className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                            Filtragem Automática de WhatsApp Aplicada
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">
+                              {lastAutoFilterReport.timestamp}
+                            </span>
+                          </h4>
+                          <p className="text-[11px] text-slate-300 mt-0.5">
+                            {lastAutoFilterReport.fileName && (
+                              <span className="font-mono text-emerald-400 font-semibold">
+                                {lastAutoFilterReport.fileName}:{" "}
+                              </span>
+                            )}
+                            {lastAutoFilterReport.removedCount > 0 ? (
+                              <>
+                                Foram mantidos apenas os{" "}
+                                <strong className="text-emerald-300">
+                                  {lastAutoFilterReport.validCount} números cadastrados no WhatsApp
+                                </strong>{" "}
+                                com suas respectivas mensagens. Os{" "}
+                                <strong className="text-rose-300">
+                                  {lastAutoFilterReport.removedCount} números sem conta/fixos foram
+                                  removidos
+                                </strong>{" "}
+                                junto com as suas mensagens.
+                              </>
+                            ) : (
+                              <>
+                                Todos os{" "}
+                                <strong className="text-emerald-300">
+                                  {lastAutoFilterReport.validCount} contatos identificados possuem
+                                  conta ativa no WhatsApp
+                                </strong>
+                                ! Nenhuma mensagem precisou ser descartada.
+                              </>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      {lastAutoFilterReport.removedCount > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowRemovedDetails((v) => !v)}
+                          className="text-[11px] text-slate-300 hover:text-white px-2 py-1 rounded bg-[#161F2E] border border-[#2A3547] flex items-center gap-1 cursor-pointer shrink-0"
+                        >
+                          {showRemovedDetails ? "Ocultar" : "Ver"} Descartados (
+                          {lastAutoFilterReport.removedCount})
+                        </button>
+                      )}
+                    </div>
+
+                    {showRemovedDetails && lastAutoFilterReport.removedCount > 0 && (
+                      <div className="pt-2 border-t border-[#252C38] space-y-2">
+                        <div className="text-[11px] font-semibold text-rose-300 flex items-center gap-1">
+                          <XCircle className="w-3.5 h-3.5" />
+                          Números e Mensagens Descartados do Arquivo:
+                        </div>
+                        <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                          {lastAutoFilterReport.removedItems.map((item, idx) => (
+                            <div
+                              key={idx}
+                              className="p-2 rounded-lg bg-[#0A0D14] border border-rose-500/20 text-[11px] space-y-1"
+                            >
+                              <div className="flex items-center justify-between text-slate-300 flex-wrap gap-1">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-mono text-rose-400 font-semibold">
+                                    {item.telefone}
+                                  </span>
+                                  <span className="text-slate-400">({item.empresa})</span>
+                                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-rose-500/10 text-rose-400 font-medium">
+                                    {item.carrier || item.lineType}
+                                  </span>
+                                </div>
+                                <span className="text-[10px] text-slate-400">{item.reason}</span>
+                              </div>
+                              {item.mensagem && (
+                                <p className="text-[10px] text-slate-400 italic line-clamp-2 bg-[#10141D] p-1.5 rounded">
+                                  "{item.mensagem}"
+                                </p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Inputs de Identificação */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
@@ -613,24 +885,50 @@ export function CampaignsView() {
 
                 {/* Editor / Textarea do Conteúdo */}
                 <div>
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
                     <label className="text-[11px] font-medium text-slate-400">
-                      Conteúdo Markdown / Texto:
+                      Conteúdo Filtrado (Números Cadastrados e Mensagens):
                     </label>
-                    {rawText && (
+                    <div className="flex items-center gap-2">
                       <button
-                        onClick={() => setRawText("")}
-                        className="text-[10px] text-rose-400 hover:underline cursor-pointer"
+                        type="button"
+                        onClick={handleApplyAutoFilterNow}
+                        disabled={!rawText.trim()}
+                        className="text-[11px] font-semibold px-2.5 py-1 rounded bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="Executa a filtragem no modo automático: mantém apenas números com WhatsApp e remove não cadastrados junto com as mensagens"
                       >
-                        Limpar texto
+                        <Zap className="w-3 h-3 text-emerald-400" />
+                        Filtrar Modo Automático Agora
                       </button>
-                    )}
+
+                      {originalUnfilteredText && (
+                        <button
+                          type="button"
+                          onClick={handleRestoreOriginalText}
+                          className="text-[10px] text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer bg-[#161F2E] px-2 py-1 rounded border border-[#252C38]"
+                          title="Restaurar o conteúdo original antes da filtragem"
+                        >
+                          <RotateCcw className="w-2.5 h-2.5" />
+                          Restaurar Original
+                        </button>
+                      )}
+
+                      {rawText && (
+                        <button
+                          type="button"
+                          onClick={() => setRawText("")}
+                          className="text-[10px] text-rose-400 hover:underline cursor-pointer"
+                        >
+                          Limpar
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <textarea
                     rows={8}
                     value={rawText}
                     onChange={(e) => setRawText(e.target.value)}
-                    placeholder="Cole aqui o conteúdo em Markdown ou texto..."
+                    placeholder="Cole aqui o conteúdo em Markdown ou envie o arquivo acima..."
                     className="w-full bg-[#0E121A] border border-[#252C38] rounded-lg p-3 text-xs font-mono text-slate-300 placeholder-slate-600 focus:outline-none focus:border-emerald-500"
                   />
                 </div>

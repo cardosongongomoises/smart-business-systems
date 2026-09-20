@@ -619,3 +619,342 @@ export function validateCampaignWhatsAppNumber(
     checkedVia: "carrier_format",
   };
 }
+
+export interface AutoFilterMessagesResult {
+  cleanedText: string;
+  originalCount: number;
+  validCount: number;
+  removedCount: number;
+  keptItems: Array<{
+    empresa: string;
+    telefone: string;
+    mensagem: string;
+    cidade?: string;
+    oferta?: string;
+    carrier: string;
+  }>;
+  removedItems: Array<{
+    empresa: string;
+    telefone: string;
+    mensagem: string;
+    reason: string;
+    carrier: string;
+    lineType: string;
+  }>;
+}
+
+/**
+ * Filtra no modo automático qualquer arquivo ou texto de mensagens (.MD, .TXT, tabela, blocos ou CSV):
+ * 1. Extrai todos os números e as respectivas mensagens do arquivo.
+ * 2. Verifica a existência de conta ativa no WhatsApp para cada número.
+ * 3. Mantém APENAS os números cadastrados e as suas respetivas mensagens.
+ * 4. Remove completamente os números sem cadastro no WhatsApp e as suas mensagens.
+ * 5. Devolve o texto limpo pronto para gravação e o relatório dos contatos removidos.
+ */
+export function filterMessagesContentAuto(
+  content: string,
+  options: {
+    discardLandlines?: boolean;
+    discardUnregistered?: boolean;
+  } = {},
+): AutoFilterMessagesResult {
+  const discardLandlines = options.discardLandlines ?? true;
+  const discardUnregistered = options.discardUnregistered ?? true;
+
+  if (!content || !content.trim()) {
+    return {
+      cleanedText: "",
+      originalCount: 0,
+      validCount: 0,
+      removedCount: 0,
+      keptItems: [],
+      removedItems: [],
+    };
+  }
+
+  const keptItems: AutoFilterMessagesResult["keptItems"] = [];
+  const removedItems: AutoFilterMessagesResult["removedItems"] = [];
+
+  const lines = content.split(/\r?\n/);
+
+  // 1. VERIFICAR SE O FORMATO É TABELA MARKDOWN (| Empresa | Telefone | Mensagem | ...)
+  const tableIndices: number[] = [];
+  lines.forEach((line, idx) => {
+    const t = line.trim();
+    if (t.startsWith("|") && t.endsWith("|")) {
+      tableIndices.push(idx);
+    }
+  });
+
+  if (tableIndices.length >= 2) {
+    const firstTableIdx = tableIndices[0];
+    const headerLine = lines[firstTableIdx];
+    const headerCols = headerLine
+      .split("|")
+      .map((c) => c.trim().toLowerCase())
+      .filter(Boolean);
+
+    const empIdx = headerCols.findIndex(
+      (c) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
+    );
+    const telIdx = headerCols.findIndex(
+      (c) => c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
+    );
+    const msgIdx = headerCols.findIndex(
+      (c) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"),
+    );
+    const oftIdx = headerCols.findIndex(
+      (c) => c.includes("oferta") || c.includes("plano") || c.includes("pacote"),
+    );
+    const cidIdx = headerCols.findIndex((c) => c.includes("cidade") || c.includes("local"));
+
+    const preTableLines = lines.slice(0, firstTableIdx);
+    const cleanedTableLines: string[] = [headerLine];
+
+    for (let i = 1; i < tableIndices.length; i++) {
+      const lineIdx = tableIndices[i];
+      const rowLine = lines[lineIdx];
+
+      if (rowLine.includes("---")) {
+        cleanedTableLines.push(rowLine);
+        continue;
+      }
+
+      const cols = rowLine
+        .split("|")
+        .map((c) => c.trim())
+        .filter((_, idx, arr) => idx > 0 && idx < arr.length);
+
+      if (cols.length >= 2) {
+        const emp = empIdx !== -1 && cols[empIdx] ? cols[empIdx] : cols[0] || "Empresa";
+        const tel = telIdx !== -1 && cols[telIdx] ? cols[telIdx] : cols[1] || "";
+        const msg =
+          msgIdx !== -1 && cols[msgIdx]
+            ? cols[msgIdx]
+            : cols[2] || `Olá ${emp}, temos uma proposta para vocês.`;
+        const oft = oftIdx !== -1 ? cols[oftIdx] : undefined;
+        const cid = cidIdx !== -1 ? cols[cidIdx] : undefined;
+
+        if (tel && tel.replace(/\D/g, "").length >= 7) {
+          const verification = validateCampaignWhatsAppNumber(tel);
+
+          let shouldKeep = verification.isRegistered;
+          if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
+          if (
+            discardUnregistered &&
+            (!verification.isRegistered || verification.status === "not_registered")
+          ) {
+            shouldKeep = false;
+          }
+          if (verification.status === "invalid_format") shouldKeep = false;
+
+          if (shouldKeep) {
+            cleanedTableLines.push(rowLine);
+            keptItems.push({
+              empresa: emp,
+              telefone: tel,
+              mensagem: msg,
+              oferta: oft,
+              cidade: cid,
+              carrier: verification.carrier,
+            });
+          } else {
+            // REMOVE O NÚMERO E A MENSAGEM DO ARQUIVO
+            removedItems.push({
+              empresa: emp,
+              telefone: tel,
+              mensagem: msg,
+              reason: verification.reason,
+              carrier: verification.carrier,
+              lineType: verification.lineType,
+            });
+          }
+        } else {
+          cleanedTableLines.push(rowLine);
+        }
+      }
+    }
+
+    const lastTableIdx = tableIndices[tableIndices.length - 1];
+    const postTableLines = lines.slice(lastTableIdx + 1);
+
+    const fullCleaned = [...preTableLines, ...cleanedTableLines, ...postTableLines]
+      .join("\n")
+      .trim();
+
+    return {
+      cleanedText: fullCleaned,
+      originalCount: keptItems.length + removedItems.length,
+      validCount: keptItems.length,
+      removedCount: removedItems.length,
+      keptItems,
+      removedItems,
+    };
+  }
+
+  // 2. VERIFICAR SE O FORMATO É EM BLOCOS (### Empresa ... Telefone: ... Mensagem: ...)
+  if (
+    content.includes("###") ||
+    content.toLowerCase().includes("telefone:") ||
+    content.toLowerCase().includes("whatsapp:")
+  ) {
+    const blocks = content.split(/(?=###|\n##\s+)/);
+    const validBlocks: string[] = [];
+
+    for (const block of blocks) {
+      if (!block.trim()) continue;
+      const telMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s()-]+)/i);
+      const nameMatch = block.match(/#{2,3}\s+(.+?)(?:\r?\n|$)/);
+      const msgMatch = block.match(
+        /(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i,
+      );
+
+      if (telMatch && telMatch[1]) {
+        const emp = nameMatch ? nameMatch[1].trim() : "Empresa";
+        const tel = telMatch[1].trim();
+        const msg = msgMatch ? msgMatch[1].trim() : "";
+
+        const verification = validateCampaignWhatsAppNumber(tel);
+        let shouldKeep = verification.isRegistered;
+        if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
+        if (
+          discardUnregistered &&
+          (!verification.isRegistered || verification.status === "not_registered")
+        ) {
+          shouldKeep = false;
+        }
+        if (verification.status === "invalid_format") shouldKeep = false;
+
+        if (shouldKeep) {
+          validBlocks.push(block.trim());
+          keptItems.push({
+            empresa: emp,
+            telefone: tel,
+            mensagem: msg,
+            carrier: verification.carrier,
+          });
+        } else {
+          // REMOVE O BLOCO INTEIRO (NÚMERO + MENSAGEM)
+          removedItems.push({
+            empresa: emp,
+            telefone: tel,
+            mensagem: msg,
+            reason: verification.reason,
+            carrier: verification.carrier,
+            lineType: verification.lineType,
+          });
+        }
+      } else {
+        validBlocks.push(block.trim());
+      }
+    }
+
+    return {
+      cleanedText: validBlocks.join("\n\n"),
+      originalCount: keptItems.length + removedItems.length,
+      validCount: keptItems.length,
+      removedCount: removedItems.length,
+      keptItems,
+      removedItems,
+    };
+  }
+
+  // 3. FORMATO DELIMITADO OU LINHAS COM TELEFONES E MENSAGENS
+  const cleanedLines: string[] = [];
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("//")) {
+      cleanedLines.push(line);
+      continue;
+    }
+
+    let parts = trimmed.split(";");
+    if (parts.length < 2) parts = trimmed.split(",");
+
+    if (parts.length >= 2) {
+      const emp = parts[0]?.trim() || "Empresa";
+      const tel = parts[1]?.trim() || "";
+      const msg = parts[2]?.trim() || "";
+
+      if (tel && tel.replace(/\D/g, "").length >= 7) {
+        const verification = validateCampaignWhatsAppNumber(tel);
+        let shouldKeep = verification.isRegistered;
+        if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
+        if (
+          discardUnregistered &&
+          (!verification.isRegistered || verification.status === "not_registered")
+        ) {
+          shouldKeep = false;
+        }
+
+        if (shouldKeep) {
+          cleanedLines.push(line);
+          keptItems.push({
+            empresa: emp,
+            telefone: tel,
+            mensagem: msg,
+            carrier: verification.carrier,
+          });
+        } else {
+          removedItems.push({
+            empresa: emp,
+            telefone: tel,
+            mensagem: msg,
+            reason: verification.reason,
+            carrier: verification.carrier,
+            lineType: verification.lineType,
+          });
+        }
+        continue;
+      }
+    }
+
+    // Tenta detectar número de telefone dentro da linha de mensagem livre
+    const phoneRegex =
+      /(?:\+?244\s*)?(?:9[1-689]\d[\s.-]?\d{3}[\s.-]?\d{3}|22\d[\s.-]?\d{3}[\s.-]?\d{3}|\+?\d{1,4}[\s.-]?\(?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4})/;
+    const match = phoneRegex.exec(trimmed);
+
+    if (match) {
+      const foundPhone = match[0];
+      const verification = validateCampaignWhatsAppNumber(foundPhone);
+      let shouldKeep = verification.isRegistered;
+      if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
+      if (
+        discardUnregistered &&
+        (!verification.isRegistered || verification.status === "not_registered")
+      ) {
+        shouldKeep = false;
+      }
+
+      if (shouldKeep) {
+        cleanedLines.push(line);
+        keptItems.push({
+          empresa: "Contato",
+          telefone: foundPhone,
+          mensagem: trimmed.replace(foundPhone, "").trim(),
+          carrier: verification.carrier,
+        });
+      } else {
+        removedItems.push({
+          empresa: "Contato",
+          telefone: foundPhone,
+          mensagem: trimmed.replace(foundPhone, "").trim(),
+          reason: verification.reason,
+          carrier: verification.carrier,
+          lineType: verification.lineType,
+        });
+      }
+    } else {
+      cleanedLines.push(line);
+    }
+  }
+
+  return {
+    cleanedText: cleanedLines.join("\n"),
+    originalCount: keptItems.length + removedItems.length,
+    validCount: keptItems.length,
+    removedCount: removedItems.length,
+    keptItems,
+    removedItems,
+  };
+}
