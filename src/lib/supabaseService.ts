@@ -654,3 +654,205 @@ export async function toggleVendedorSkillActive(id: string, isActive: boolean): 
   }
   return true;
 }
+
+// ============================================================
+// 12. CAMPANHAS DE DISPARO & FILA (CENTRO DE OPERAÇÕES)
+// ============================================================
+
+export interface DisparoCampanha {
+  id: number;
+  nome: string;
+  descricao?: string;
+  status: "pendente" | "em_andamento" | "concluida" | "pausada";
+  total: number;
+  created_at?: string;
+  stats?: {
+    total: number;
+    pendente: number;
+    enviado: number;
+    falhou: number;
+  };
+}
+
+export interface DisparoFilaItem {
+  id?: number;
+  campanha_id: number;
+  empresa: string;
+  telefone: string;
+  mensagem: string;
+  oferta?: string;
+  angulo?: string;
+  cidade?: string;
+  bloco?: string;
+  site?: string;
+  rating?: string;
+  avaliacoes?: string;
+  status: "pendente" | "enviado" | "falhou";
+  erro?: string;
+  enviado_em?: string;
+  created_at?: string;
+}
+
+/**
+ * Cria uma nova campanha e insere os leads verificados na fila do Supabase em tempo real
+ */
+export async function createCampaignWithVerifiedQueue(
+  nome: string,
+  descricao: string,
+  leadsValidos: Array<{
+    empresa: string;
+    telefone: string;
+    mensagem: string;
+    oferta?: string;
+    angulo?: string;
+    cidade?: string;
+  }>
+): Promise<{ success: boolean; campaignId?: number; insertedCount: number; error?: string }> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, insertedCount: 0, error: "Supabase não configurado" };
+  }
+
+  try {
+    // 1. Cria a campanha
+    const { data: camp, error: errCamp } = await supabase
+      .from("campanhas_disparo")
+      .insert({
+        nome,
+        descricao,
+        status: "pendente",
+        total: leadsValidos.length,
+      })
+      .select("id")
+      .single();
+
+    if (errCamp || !camp) {
+      console.error("[CAMPANHA] Erro ao criar campanha:", errCamp?.message);
+      return { success: false, insertedCount: 0, error: errCamp?.message || "Falha ao criar cabeçalho" };
+    }
+
+    const campaignId = camp.id;
+
+    // 2. Insere os leads em lotes de até 100
+    const filaRows = leadsValidos.map((l) => ({
+      campanha_id: campaignId,
+      empresa: l.empresa || "Empresa Sem Nome",
+      telefone: l.telefone,
+      mensagem: l.mensagem,
+      oferta: l.oferta || null,
+      angulo: l.angulo || null,
+      cidade: l.cidade || null,
+      status: "pendente",
+    }));
+
+    const BATCH_SIZE = 100;
+    let inserted = 0;
+
+    for (let i = 0; i < filaRows.length; i += BATCH_SIZE) {
+      const batch = filaRows.slice(i, i + BATCH_SIZE);
+      const { error: errFila } = await supabase.from("disparo_fila").insert(batch);
+      if (errFila) {
+        console.error(`[CAMPANHA] Erro no lote ${i}-${i + batch.length}:`, errFila.message);
+      } else {
+        inserted += batch.length;
+      }
+    }
+
+    return { success: true, campaignId, insertedCount: inserted };
+  } catch (err: any) {
+    console.error("[CAMPANHA] Exceção ao gravar no Supabase:", err);
+    return { success: false, insertedCount: 0, error: err?.message || String(err) };
+  }
+}
+
+/**
+ * Busca campanhas ativas com estatísticas de progresso da fila em tempo real
+ */
+export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  try {
+    const { data: campanhas, error: errCamp } = await supabase
+      .from("campanhas_disparo")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (errCamp || !campanhas) return [];
+
+    // Para cada campanha, busca contagem de status na fila
+    const resultado: DisparoCampanha[] = [];
+
+    for (const c of campanhas) {
+      const { data: fila, error: errFila } = await supabase
+        .from("disparo_fila")
+        .select("status")
+        .eq("campanha_id", c.id);
+
+      const stats = {
+        total: fila?.length || 0,
+        pendente: 0,
+        enviado: 0,
+        falhou: 0,
+      };
+
+      if (!errFila && fila) {
+        for (const item of fila) {
+          if (item.status === "pendente") stats.pendente++;
+          else if (item.status === "enviado") stats.enviado++;
+          else if (item.status === "falhou") stats.falhou++;
+        }
+      }
+
+      resultado.push({
+        ...c,
+        stats,
+      });
+    }
+
+    return resultado;
+  } catch (err) {
+    console.error("[CAMPANHA] Erro ao buscar campanhas:", err);
+    return [];
+  }
+}
+
+/**
+ * Atualiza o status da campanha (ex: 'em_andamento', 'pausada', 'concluida')
+ */
+export async function updateCampanhaStatus(id: number, status: "pendente" | "em_andamento" | "pausada" | "concluida"): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false;
+  try {
+    const { error } = await supabase
+      .from("campanhas_disparo")
+      .update({ status })
+      .eq("id", id);
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Subscrição Realtime no Supabase para campanhas e fila de disparos
+ */
+export function subscribeToDisparosRealtime(onUpdate: () => void): () => void {
+  if (!isSupabaseConfigured()) return () => {};
+
+  const channel = supabase
+    .channel("disparos_crm_realtime")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "disparo_fila" },
+      () => onUpdate()
+    )
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "campanhas_disparo" },
+      () => onUpdate()
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}
+
