@@ -16,6 +16,14 @@ export interface CampaignValidationRecord {
     outros: number;
   };
   status: "concluida" | "em_andamento" | "pendente" | "rascunho";
+  sampleLeads?: Array<{
+    empresa: string;
+    telefone: string;
+    mensagem?: string;
+    operadora: string;
+    status: "aprovado" | "descarte_fixo" | "descarte_sem_conta";
+    motivo: string;
+  }>;
 }
 
 export interface ValidationStatusLogItem {
@@ -171,4 +179,28 @@ export function saveCampaignValidationRecord(
     }
   }
   return updated;
+}
+
+export function deleteCampaignValidationRecord(id: string): CampaignValidationRecord[] {
+  const current = getCampaignValidationHistory();
+  const updated = current.filter((c) => c.id !== id);
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (err) {
+      console.warn("Erro ao deletar histórico de validações:", err);
+    }
+  }
+  return updated;
+}
+
+export function clearCampaignValidationHistory(): CampaignValidationRecord[] {
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+    } catch (err) {
+      console.warn("Erro ao limpar histórico de validações:", err);
+    }
+  }
+  return [];
 }

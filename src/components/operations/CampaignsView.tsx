@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import {
   Upload,
   FileText,
@@ -49,6 +49,8 @@ import {
 import {
   getCampaignValidationHistory,
   saveCampaignValidationRecord,
+  deleteCampaignValidationRecord,
+  clearCampaignValidationHistory,
   CampaignValidationRecord,
   ValidationStatusLogItem,
 } from "./campaignValidationStore";
@@ -67,6 +69,7 @@ interface ParsedLeadCandidate {
 }
 
 export function CampaignsView() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [campaignName, setCampaignName] = useState("");
   const [campaignDesc, setCampaignDesc] = useState("");
   const [rawText, setRawText] = useState("");
@@ -658,6 +661,12 @@ export function CampaignsView() {
         setRawText(content);
         toast.success(`Arquivo "${file.name}" carregado com sucesso!`);
       }
+
+      setActiveTab("preview");
+      // Aciona verificação ao vivo imediatamente
+      setTimeout(() => {
+        handleRunBatchVerification();
+      }, 150);
     };
     reader.onerror = () => {
       toast.error("Erro ao ler arquivo selecionado.");
@@ -783,6 +792,9 @@ export function CampaignsView() {
     setCampaignDesc(
       "Demonstração de filtragem automática: números fixos e sem WhatsApp serão descartados junto com suas mensagens.",
     );
+    setManualOverrides({});
+    setRawText(sampleMd);
+    setActiveTab("preview");
 
     if (autoFilterOnUpload) {
       const result = filterMessagesContentAuto(sampleMd, {
@@ -799,9 +811,60 @@ export function CampaignsView() {
         `Exemplo carregado no modo automático! ${result.validCount} contatos válidos mantidos; ${result.removedCount} números sem WhatsApp removidos junto com suas mensagens.`,
       );
     } else {
-      setRawText(sampleMd);
-      toast.info("Exemplo Markdown carregado! Veja a auditoria de números abaixo.");
+      toast.success("Exemplo de campanha carregado! Auditoria ao vivo iniciada.");
     }
+
+    // Executa a auditoria em tempo real com barra de progresso e streaming de status
+    setTimeout(() => {
+      const sampleCandidates: ParsedLeadCandidate[] = [
+        {
+          empresa: "Centro Dentário Alvalade",
+          telefone: "+244923111222",
+          mensagem:
+            "Olá! Notamos uma excelente oportunidade para atrair mais clientes em Luanda. Podemos apresentar?",
+          oferta: "Profissional",
+          cidade: "Luanda",
+          verification: validateCampaignWhatsAppNumber("+244923111222"),
+        },
+        {
+          empresa: "Clínica Estética Talatona",
+          telefone: "+244934024904",
+          mensagem:
+            "Boa tarde! Gostaríamos de apresentar uma proposta de automação comercial para sua clínica.",
+          oferta: "Domínio IA",
+          cidade: "Talatona",
+          verification: validateCampaignWhatsAppNumber("+244934024904"),
+        },
+        {
+          empresa: "Consultoria Global Fixa",
+          telefone: "+244222090900",
+          mensagem:
+            "Olá equipe da Consultoria! Temos uma proposta digital especial para sua empresa.",
+          oferta: "Presença",
+          cidade: "Luanda",
+          verification: validateCampaignWhatsAppNumber("+244222090900"),
+        },
+        {
+          empresa: "Dra. Mariana Odonto",
+          telefone: "+244941845366",
+          mensagem:
+            "Bom dia, Dra. Mariana! Vi que tem ótima reputação em Luanda e preparei uma proposta consultiva.",
+          oferta: "Automate Pro",
+          cidade: "Luanda",
+          verification: validateCampaignWhatsAppNumber("+244941845366"),
+        },
+        {
+          empresa: "VIP Saúde & Estética",
+          telefone: "+244955552555",
+          mensagem:
+            "Olá VIP Saúde! Fizemos uma auditoria de presença digital e encontramos pontos valiosos.",
+          oferta: "Profissional",
+          cidade: "Talatona",
+          verification: validateCampaignWhatsAppNumber("+244955552555"),
+        },
+      ];
+      runLiveValidationProcess(sampleCandidates, "Exemplo Clínicas Luanda - Set/2026");
+    }, 120);
   };
 
   return (
@@ -947,13 +1010,15 @@ export function CampaignsView() {
                       ? "border-emerald-500 bg-emerald-500/5"
                       : "border-[#2A3444] hover:border-[#3D4B62] bg-[#0E121A]/50"
                   }`}
-                  onClick={() => document.getElementById("file-campaign-input")?.click()}
+                  onClick={() => fileInputRef.current?.click()}
                 >
                   <input
+                    ref={fileInputRef}
                     id="file-campaign-input"
                     type="file"
                     accept=".md,.txt,.markdown"
                     className="hidden"
+                    onClick={(e) => e.stopPropagation()}
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
                         handleFileUpload(e.target.files[0]);
@@ -1453,13 +1518,29 @@ export function CampaignsView() {
                 )}
 
                 <button
-                  onClick={handleSyncToSupabase}
-                  disabled={isSyncing || validLeads.length === 0}
+                  onClick={() => {
+                    if (isSyncing) return;
+                    if (validLeads.length === 0) {
+                      if (parsedLeads.length === 0) {
+                        toast.info(
+                          "Nenhum contato identificado ainda. Carregando dados de exemplo...",
+                        );
+                        handleLoadExample();
+                      } else {
+                        toast.warning(
+                          "Nenhum lead com WhatsApp ativo para sincronizar. Verifique os números ou revalide algum contato.",
+                        );
+                      }
+                      return;
+                    }
+                    handleSyncToSupabase();
+                  }}
+                  disabled={isSyncing}
                   className={`w-full py-2.5 px-4 rounded-lg font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                    validLeads.length === 0
-                      ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
-                      : isSyncing
-                        ? "bg-emerald-700 text-white cursor-wait"
+                    isSyncing
+                      ? "bg-emerald-700 text-white cursor-wait"
+                      : validLeads.length === 0
+                        ? "bg-[#1A2230] hover:bg-[#222C3E] text-emerald-400 border border-emerald-500/30 shadow-sm"
                         : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20"
                   }`}
                 >
@@ -1467,6 +1548,11 @@ export function CampaignsView() {
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin" />
                       Gravando no Supabase em Tempo Real...
+                    </>
+                  ) : validLeads.length === 0 ? (
+                    <>
+                      <Sparkles className="w-4 h-4 text-emerald-400" />
+                      Carregar Exemplo & Sincronizar
                     </>
                   ) : (
                     <>
@@ -1807,6 +1893,40 @@ export function CampaignsView() {
               toast.info(
                 `Campanha "${c.name}": ${c.bemSucedidas} contatos válidos no WhatsApp (${c.taxaSucesso.toFixed(1)}% aprovados)`,
               );
+            }}
+            onLoadIntoEditor={(camp) => {
+              const sampleText =
+                `# Campanha ${camp.name}\n\n| Empresa | Telefone | Mensagem |\n|---|---|---|\n` +
+                (camp.sampleLeads && camp.sampleLeads.length > 0
+                  ? camp.sampleLeads
+                      .map(
+                        (l) =>
+                          `| ${l.empresa} | ${l.telefone} | ${l.mensagem || "Olá! Proposta comercial."} |`,
+                      )
+                      .join("\n")
+                  : `| Empresa Alpha | +244923111222 | Olá! Proposta comercial. |\n| Empresa Beta | +244934024904 | Boa tarde! Proposta comercial. |\n| Fixo Central | +244222090900 | Mensagem institucional. |`);
+              setCampaignName(camp.name);
+              setCampaignDesc(`Carregada do histórico de auditoria (${camp.timestamp})`);
+              setRawText(sampleText);
+              setActiveTab("preview");
+              toast.success(`Campanha "${camp.name}" carregada no editor!`);
+            }}
+            onRunSampleAudit={() => {
+              handleLoadExample();
+              setActiveTab("preview");
+            }}
+            onDeleteCampaign={(id) => {
+              const updated = deleteCampaignValidationRecord(id);
+              setValidationHistory(updated);
+              toast.success("Campanha removida do histórico de validação!");
+            }}
+            onClearHistory={() => {
+              const cleared = clearCampaignValidationHistory();
+              setValidationHistory(cleared);
+              toast.success("Histórico de validação limpo com sucesso!");
+            }}
+            onNavigateToEditor={() => {
+              setActiveTab("preview");
             }}
           />
         )}

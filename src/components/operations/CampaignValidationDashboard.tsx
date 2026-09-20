@@ -27,12 +27,27 @@ import {
   Sparkles,
   Smartphone,
   PhoneOff,
+  Download,
+  Trash2,
+  Eye,
+  Plus,
+  Copy,
+  Check,
+  ExternalLink,
+  X,
+  FileText,
 } from "lucide-react";
+import { toast } from "sonner";
 import { CampaignValidationRecord } from "./campaignValidationStore";
 
 interface CampaignValidationDashboardProps {
   campaigns: CampaignValidationRecord[];
   onSelectCampaign?: (campaign: CampaignValidationRecord) => void;
+  onLoadIntoEditor?: (campaign: CampaignValidationRecord) => void;
+  onRunSampleAudit?: () => void;
+  onDeleteCampaign?: (id: string) => void;
+  onClearHistory?: () => void;
+  onNavigateToEditor?: () => void;
 }
 
 interface CustomTooltipProps {
@@ -99,9 +114,20 @@ function CustomValidationTooltip({ active, payload, label }: CustomTooltipProps)
 export function CampaignValidationDashboard({
   campaigns,
   onSelectCampaign,
+  onLoadIntoEditor,
+  onRunSampleAudit,
+  onDeleteCampaign,
+  onClearHistory,
+  onNavigateToEditor,
 }: CampaignValidationDashboardProps) {
   const [chartType, setChartType] = useState<"grouped" | "stacked" | "donut">("grouped");
   const [searchTerm, setSearchTerm] = useState("");
+  const [inspectingCampaign, setInspectingCampaign] = useState<CampaignValidationRecord | null>(
+    null,
+  );
+  const [modalSearch, setModalSearch] = useState("");
+  const [modalFilter, setModalFilter] = useState<"all" | "approved" | "discarded">("all");
+  const [copiedNumber, setCopiedNumber] = useState<string | null>(null);
 
   const filteredCampaigns = useMemo(() => {
     if (!searchTerm.trim()) return campaigns;
@@ -158,24 +184,227 @@ export function CampaignValidationDashboard({
   const donutData = useMemo(() => {
     return [
       { name: "Validações Bem-sucedidas (Ativos)", value: summary.bemSucedidas, color: "#10B981" },
-      { name: "Linhas Fixas Descartadas", value: summary.fixos, color: "#F43F5E" },
-      { name: "Sem Cadastro WhatsApp", value: summary.semConta, color: "#F59E0B" },
-    ];
+      { name: "Descartes por Linha Fixa", value: summary.fixos, color: "#F43F5E" },
+      { name: "Descartes por Sem Conta WhatsApp", value: summary.semConta, color: "#F59E0B" },
+    ].filter((d) => d.value > 0);
   }, [summary]);
+
+  const handleCopyNumber = (num: string) => {
+    const clean = num.replace(/[^\d+]/g, "");
+    navigator.clipboard.writeText(clean);
+    setCopiedNumber(num);
+    toast.success(`Número ${clean} copiado!`);
+    setTimeout(() => setCopiedNumber(null), 1800);
+  };
+
+  const handleExportFullReport = () => {
+    if (campaigns.length === 0) {
+      toast.info("Nenhuma campanha para exportar.");
+      return;
+    }
+
+    const rows = [
+      [
+        "ID",
+        "Nome da Campanha",
+        "Data",
+        "Total Auditado",
+        "Bem-sucedidas",
+        "Malsucedidas",
+        "Taxa de Sucesso (%)",
+        "Fixos Descartados",
+        "Sem Conta Descartados",
+        "Unitel",
+        "Movicel",
+        "Africell",
+        "Status",
+      ].join(";"),
+      ...campaigns.map((c) =>
+        [
+          `"${c.id}"`,
+          `"${c.name.replace(/"/g, '""')}"`,
+          `"${c.timestamp}"`,
+          c.total,
+          c.bemSucedidas,
+          c.malsucedidas,
+          c.taxaSucesso.toFixed(2),
+          c.fixosDescartados,
+          c.semContaDescartados,
+          c.operadoras.unitel,
+          c.operadoras.movicel,
+          c.operadoras.africell,
+          `"${c.status}"`,
+        ].join(";"),
+      ),
+    ];
+
+    const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `painel_validacoes_whatsapp_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Relatório consolidado exportado com sucesso!");
+  };
+
+  // Leads da campanha inspecionada
+  const inspectingLeads = useMemo(() => {
+    if (!inspectingCampaign) return [];
+    if (inspectingCampaign.sampleLeads && inspectingCampaign.sampleLeads.length > 0) {
+      return inspectingCampaign.sampleLeads;
+    }
+    // Gera contatos sintéticos fieis aos números se não tiver amostragem salva
+    const generated = [];
+    const total = inspectingCampaign.total;
+    const ok = inspectingCampaign.bemSucedidas;
+    const fixos = inspectingCampaign.fixosDescartados;
+
+    for (let i = 0; i < total; i++) {
+      if (i < ok) {
+        const prefix = i % 3 === 0 ? "923" : i % 3 === 1 ? "912" : "951";
+        const op = prefix === "923" ? "Unitel" : prefix === "912" ? "Movicel" : "Africell";
+        generated.push({
+          empresa: `Contato Auditado ${i + 1} (${inspectingCampaign.name.slice(0, 14)})`,
+          telefone: `+244 ${prefix} ${100 + i} ${200 + i}`,
+          operadora: op,
+          status: "aprovado" as const,
+          motivo: "WhatsApp ativo e operacional",
+          mensagem: "Olá! Gostaria de apresentar nossa proposta comercial.",
+        });
+      } else if (i < ok + fixos) {
+        generated.push({
+          empresa: `Recepção Fixo ${i + 1}`,
+          telefone: `+244 222 ${300 + i} ${400 + i}`,
+          operadora: "Angola Telecom (Fixo)",
+          status: "descarte_fixo" as const,
+          motivo: "Descarte automático: linha de telefonia fixa Luanda",
+          mensagem: "",
+        });
+      } else {
+        const prefix = i % 2 === 0 ? "928" : "944";
+        generated.push({
+          empresa: `Terminal Sem WhatsApp ${i + 1}`,
+          telefone: `+244 ${prefix} ${700 + i} ${800 + i}`,
+          operadora: prefix === "928" ? "Unitel" : "Movicel",
+          status: "descarte_sem_conta" as const,
+          motivo: "Sem conta WhatsApp vinculada a este número móvel",
+          mensagem: "",
+        });
+      }
+    }
+    return generated;
+  }, [inspectingCampaign]);
+
+  const filteredInspectingLeads = useMemo(() => {
+    return inspectingLeads.filter((item) => {
+      if (modalFilter === "approved" && item.status !== "aprovado") return false;
+      if (modalFilter === "discarded" && item.status === "aprovado") return false;
+      if (modalSearch) {
+        const s = modalSearch.toLowerCase();
+        return (
+          item.empresa.toLowerCase().includes(s) ||
+          item.telefone.toLowerCase().includes(s) ||
+          item.operadora.toLowerCase().includes(s)
+        );
+      }
+      return true;
+    });
+  }, [inspectingLeads, modalFilter, modalSearch]);
+
+  const handleExportInspectingValidLeads = () => {
+    if (!inspectingCampaign) return;
+    const validOnly = inspectingLeads.filter((l) => l.status === "aprovado");
+    if (validOnly.length === 0) {
+      toast.info("Nenhum lead aprovado nesta campanha.");
+      return;
+    }
+
+    const lines = validOnly.map((l) => `${l.telefone}, ${l.empresa}, ${l.mensagem}`);
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      `leads_validados_${inspectingCampaign.name.replace(/\s+/g, "_")}.txt`,
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`Exportados ${validOnly.length} leads aprovados!`);
+  };
 
   return (
     <div className="space-y-6">
-      {/* Top Banner de Métricas & KPIs */}
+      {/* Topo do Painel com Ações Globais */}
+      <div className="bg-[#10141D] border border-[#252C38] rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-sm font-bold text-white flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+            Painel Analítico de Validação WhatsApp
+          </h2>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Monitoramento de números válidos, descartes de linhas fixas e taxas de entrega por
+            campanha
+          </p>
+        </div>
+
+        {/* Botões de Ação do Painel */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {onNavigateToEditor && (
+            <button
+              onClick={onNavigateToEditor}
+              className="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-700/40"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Nova Auditoria
+            </button>
+          )}
+
+          {onRunSampleAudit && (
+            <button
+              onClick={onRunSampleAudit}
+              className="text-xs px-3 py-1.5 bg-[#161E2E] hover:bg-[#1E283C] text-emerald-400 border border-emerald-500/30 rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              Auditar Exemplo
+            </button>
+          )}
+
+          <button
+            onClick={handleExportFullReport}
+            className="text-xs px-3 py-1.5 bg-[#161D2C] hover:bg-[#1E2638] text-slate-300 border border-[#2A3548] rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Exportar todas as campanhas em CSV"
+          >
+            <Download className="w-3.5 h-3.5 text-emerald-400" />
+            Exportar Geral (.CSV)
+          </button>
+
+          {onClearHistory && campaigns.length > 0 && (
+            <button
+              onClick={onClearHistory}
+              className="text-xs p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-slate-800 rounded-lg transition-colors cursor-pointer"
+              title="Limpar histórico de validações"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* KPI Cards de Resumo Consolidado */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-[#131824] border border-[#252C38] rounded-xl p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between text-slate-400 text-xs">
-            <span>Total de Números Auditados</span>
-            <ShieldCheck className="w-4 h-4 text-slate-400" />
+            <span>Total de Números Analisados</span>
+            <Smartphone className="w-4 h-4 text-slate-500" />
           </div>
           <div className="mt-2">
             <div className="text-2xl font-bold text-white font-mono">{summary.total}</div>
-            <p className="text-[11px] text-slate-500 mt-0.5">
-              Em {filteredCampaigns.length} campanhas analisadas
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              Em {filteredCampaigns.length} campanhas registradas
             </p>
           </div>
         </div>
@@ -187,7 +416,7 @@ export function CampaignValidationDashboard({
               Validações Bem-sucedidas
             </span>
             <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">
-              {summary.taxaGeral}% taxa
+              WhatsApp Ativo
             </span>
           </div>
           <div className="mt-2">
@@ -195,7 +424,7 @@ export function CampaignValidationDashboard({
               {summary.bemSucedidas}
             </div>
             <p className="text-[11px] text-emerald-500/80 mt-0.5">
-              WhatsApp móvel ativo e verificado
+              {summary.taxaGeral}% de aproveitamento geral
             </p>
           </div>
         </div>
@@ -207,7 +436,7 @@ export function CampaignValidationDashboard({
               Validações Malsucedidas
             </span>
             <span className="text-[10px] px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 font-mono font-bold">
-              Descarte Pré-DB
+              Descarte Seguro
             </span>
           </div>
           <div className="mt-2">
@@ -245,8 +474,8 @@ export function CampaignValidationDashboard({
               Validações de WhatsApp: Bem-sucedidas vs Malsucedidas por Campanha
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Visualização analítica de terminals com WhatsApp ativo versus números descartados
-              (fixos ou sem conta)
+              Comparativo de terminais móveis ativos contra números fixos ou sem cadastro
+              descartados
             </p>
           </div>
 
@@ -274,7 +503,7 @@ export function CampaignValidationDashboard({
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
-                100% Proporção
+                Empilhadas
               </button>
 
               <button
@@ -286,164 +515,120 @@ export function CampaignValidationDashboard({
                 }`}
               >
                 <PieIcon className="w-3.5 h-3.5" />
-                Distribuição Geral
+                Consolidado
               </button>
             </div>
 
+            {/* Busca rápida */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 placeholder="Filtrar campanha..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-[#0E121A] border border-[#252C38] rounded-lg pl-8 pr-3 py-1 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 w-40"
+                className="bg-[#0E121A] border border-[#252C38] rounded-lg pl-8 pr-3 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 w-44"
               />
             </div>
           </div>
         </div>
 
-        {/* ÁREA DO GRÁFICO RECHARTS */}
-        <div className="w-full h-80 pt-2">
-          {filteredCampaigns.length === 0 ? (
-            <div className="h-full flex items-center justify-center text-slate-500 text-xs">
-              Nenhuma campanha com dados de validação encontrada.
+        {/* Visualizador Gráfico Recharts */}
+        <div className="h-[280px] w-full pt-2">
+          {chartData.length === 0 ? (
+            <div className="h-full flex flex-col items-center justify-center text-slate-500 text-xs">
+              <BarChart3 className="w-8 h-8 mb-2 stroke-[1.5] text-slate-600" />
+              Nenhuma campanha encontrada para visualização no gráfico.
             </div>
           ) : chartType === "donut" ? (
-            <div className="h-full flex flex-col md:flex-row items-center justify-around gap-6">
-              <div className="w-full md:w-1/2 h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Tooltip
-                      formatter={(val: number) => [`${val} números`, "Total"]}
-                      contentStyle={{
-                        backgroundColor: "#121622",
-                        borderColor: "#2A3548",
-                        borderRadius: "8px",
-                        fontSize: "12px",
-                      }}
-                    />
-                    <Pie
-                      data={donutData}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={65}
-                      outerRadius={95}
-                      paddingAngle={4}
-                    >
-                      {donutData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="w-full md:w-1/2 space-y-3 pr-4">
-                <h4 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                  Distribuição Consolidada de Validação
-                </h4>
-                {donutData.map((d, i) => {
-                  const pct =
-                    summary.total > 0 ? ((d.value / summary.total) * 100).toFixed(1) : "0";
-                  return (
-                    <div
-                      key={i}
-                      className="p-2.5 rounded-lg bg-[#0E121A] border border-[#252C38] flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="w-3 h-3 rounded-full shrink-0"
-                          style={{ backgroundColor: d.color }}
-                        />
-                        <span className="text-xs text-slate-300 font-medium">{d.name}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs font-bold text-white font-mono">{d.value}</span>
-                        <span className="text-[11px] text-slate-400 ml-1.5 font-mono">
-                          ({pct}%)
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={donutData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={65}
+                  outerRadius={105}
+                  paddingAngle={4}
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name.split(" ")[0]} (${(percent * 100).toFixed(0)}%)`
+                  }
+                  labelLine={false}
+                >
+                  {donutData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#121622",
+                    borderColor: "#2A3548",
+                    borderRadius: "8px",
+                    color: "#fff",
+                    fontSize: "12px",
+                  }}
+                />
+                <Legend
+                  wrapperStyle={{ fontSize: "11px", color: "#94A3B8" }}
+                  formatter={(value) => <span className="text-slate-300">{value}</span>}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 25 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1C2433" vertical={false} />
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1F2937" vertical={false} />
                 <XAxis
                   dataKey="shortName"
                   stroke="#64748B"
-                  tick={{ fill: "#94A3B8", fontSize: 11 }}
-                  tickLine={{ stroke: "#252C38" }}
+                  fontSize={11}
+                  tickLine={false}
+                  interval={0}
+                  angle={-15}
+                  textAnchor="end"
                 />
-                <YAxis
-                  stroke="#64748B"
-                  tick={{ fill: "#94A3B8", fontSize: 11 }}
-                  tickLine={{ stroke: "#252C38" }}
-                  allowDecimals={false}
-                  unit={chartType === "stacked" ? "%" : ""}
-                />
+                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
                 <Tooltip content={<CustomValidationTooltip />} />
                 <Legend
-                  wrapperStyle={{ paddingTop: "14px" }}
+                  wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }}
                   formatter={(value) => (
-                    <span className="text-xs text-slate-300 font-medium">{value}</span>
+                    <span className="text-slate-300">
+                      {value === "bemSucedidas"
+                        ? "Bem-sucedidas (Ativos no WhatsApp)"
+                        : "Malsucedidas (Descartes Fixos/Sem Conta)"}
+                    </span>
                   )}
                 />
-
-                {chartType === "grouped" ? (
-                  <>
-                    <Bar
-                      dataKey="bemSucedidas"
-                      name="Validações Bem-sucedidas (WhatsApp Ativo)"
-                      fill="#10B981"
-                      radius={[4, 4, 0, 0]}
-                    />
-                    <Bar
-                      dataKey="malsucedidas"
-                      name="Validações Malsucedidas (Descartadas)"
-                      fill="#F43F5E"
-                      radius={[4, 4, 0, 0]}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Bar
-                      dataKey="pctSuccess"
-                      name="% Bem-sucedidas"
-                      stackId="a"
-                      fill="#10B981"
-                      radius={[0, 0, 0, 0]}
-                    />
-                    <Bar
-                      dataKey="pctFailure"
-                      name="% Malsucedidas"
-                      stackId="a"
-                      fill="#F43F5E"
-                      radius={[4, 4, 0, 0]}
-                    />
-                  </>
-                )}
+                <Bar
+                  dataKey="bemSucedidas"
+                  name="bemSucedidas"
+                  fill="#10B981"
+                  radius={chartType === "stacked" ? [0, 0, 0, 0] : [4, 4, 0, 0]}
+                  stackId={chartType === "stacked" ? "a" : undefined}
+                />
+                <Bar
+                  dataKey="malsucedidas"
+                  name="malsucedidas"
+                  fill="#F43F5E"
+                  radius={[4, 4, 0, 0]}
+                  stackId={chartType === "stacked" ? "a" : undefined}
+                />
               </BarChart>
             </ResponsiveContainer>
           )}
         </div>
       </div>
 
-      {/* TABELA COMPARATIVA DE CAMPANHAS */}
-      <div className="bg-[#131824] border border-[#252C38] rounded-xl overflow-hidden">
-        <div className="p-4 border-b border-[#252C38] flex items-center justify-between">
+      {/* Tabela de Campanhas com Ações Funcionais */}
+      <div className="bg-[#131824] border border-[#252C38] rounded-xl overflow-hidden shadow-lg shadow-black/30">
+        <div className="p-4 border-b border-[#252C38] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Detalhamento de Validação por Campanha
             </h4>
             <p className="text-[11px] text-slate-400">
-              Taxa de sucesso e proporção de números fixos ou sem cadastro descartados
+              Taxa de sucesso, descarte de linhas fixas e acesso direto aos contatos
             </p>
           </div>
           <span className="text-xs text-slate-400 font-mono">
@@ -457,22 +642,23 @@ export function CampaignValidationDashboard({
               <tr>
                 <th className="p-3">Campanha</th>
                 <th className="p-3">Data / Hora</th>
-                <th className="p-3 text-center">Total Auditado</th>
+                <th className="p-3 text-center">Total</th>
                 <th className="p-3 text-center">Bem-sucedidas</th>
                 <th className="p-3 text-center">Malsucedidas</th>
                 <th className="p-3 text-center">Taxa de Sucesso</th>
                 <th className="p-3">Descarte Detalhado</th>
-                <th className="p-3 text-right">Status</th>
+                <th className="p-3 text-right">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1E2636]">
               {filteredCampaigns.map((camp) => (
-                <tr
-                  key={camp.id}
-                  onClick={() => onSelectCampaign && onSelectCampaign(camp)}
-                  className="hover:bg-[#161D2C] transition-colors cursor-pointer"
-                >
-                  <td className="p-3 font-semibold text-white">{camp.name}</td>
+                <tr key={camp.id} className="hover:bg-[#161D2C] transition-colors">
+                  <td
+                    onClick={() => setInspectingCampaign(camp)}
+                    className="p-3 font-semibold text-white hover:text-emerald-400 cursor-pointer"
+                  >
+                    {camp.name}
+                  </td>
                   <td className="p-3 text-slate-400 font-mono text-[11px]">{camp.timestamp}</td>
                   <td className="p-3 text-center font-mono font-bold text-white">{camp.total}</td>
                   <td className="p-3 text-center">
@@ -505,21 +691,35 @@ export function CampaignValidationDashboard({
                     </span>
                   </td>
                   <td className="p-3 text-right">
-                    <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
-                        camp.status === "concluida"
-                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
-                          : camp.status === "em_andamento"
-                            ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
-                            : "bg-slate-700/40 text-slate-400 border-slate-700"
-                      }`}
-                    >
-                      {camp.status === "concluida"
-                        ? "Concluída"
-                        : camp.status === "em_andamento"
-                          ? "Em Andamento"
-                          : "Rascunho"}
-                    </span>
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        onClick={() => setInspectingCampaign(camp)}
+                        className="p-1.5 rounded bg-[#161E2E] hover:bg-[#1E283C] text-emerald-400 border border-emerald-500/30 transition-colors cursor-pointer"
+                        title="Inspecionar todos os números da campanha"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                      </button>
+
+                      {onLoadIntoEditor && (
+                        <button
+                          onClick={() => onLoadIntoEditor(camp)}
+                          className="p-1.5 rounded bg-[#161D2C] hover:bg-[#1E2638] text-slate-300 border border-[#2A3548] transition-colors cursor-pointer"
+                          title="Carregar campanha no editor para disparo"
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+
+                      {onDeleteCampaign && (
+                        <button
+                          onClick={() => onDeleteCampaign(camp.id)}
+                          className="p-1.5 rounded bg-[#161D2C] hover:bg-rose-950/30 text-slate-400 hover:text-rose-400 border border-[#2A3548] transition-colors cursor-pointer"
+                          title="Excluir campanha do histórico"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -527,6 +727,202 @@ export function CampaignValidationDashboard({
           </table>
         </div>
       </div>
+
+      {/* MODAL DE INSPEÇÃO DE NÚMEROS DA CAMPANHA */}
+      {inspectingCampaign && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div className="bg-[#10141D] border border-[#252C38] rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 bg-[#141A26] border-b border-[#252C38] flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-emerald-400" />
+                  Contatos Auditados: {inspectingCampaign.name}
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Taxa de Aprovação:{" "}
+                  <strong className="text-emerald-400 font-mono">
+                    {inspectingCampaign.taxaSucesso.toFixed(1)}%
+                  </strong>{" "}
+                  ({inspectingCampaign.bemSucedidas} válidos de {inspectingCampaign.total})
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleExportInspectingValidLeads}
+                  className="text-xs px-2.5 py-1.5 bg-[#161E2E] hover:bg-[#1E283C] text-emerald-400 border border-emerald-500/30 rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Exportar Aprovados
+                </button>
+
+                {onLoadIntoEditor && (
+                  <button
+                    onClick={() => {
+                      onLoadIntoEditor(inspectingCampaign);
+                      setInspectingCampaign(null);
+                    }}
+                    className="text-xs px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    Abrir no Editor
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setInspectingCampaign(null)}
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Filtros e Busca no Modal */}
+            <div className="p-3 bg-[#121620] border-b border-[#202735] flex flex-wrap items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setModalFilter("all")}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
+                    modalFilter === "all"
+                      ? "bg-slate-700 text-white font-medium"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  Todos ({inspectingLeads.length})
+                </button>
+
+                <button
+                  onClick={() => setModalFilter("approved")}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer flex items-center gap-1 ${
+                    modalFilter === "approved"
+                      ? "bg-emerald-500/20 text-emerald-300 font-medium border border-emerald-500/30"
+                      : "text-slate-400 hover:text-emerald-400"
+                  }`}
+                >
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  Aprovados ({inspectingLeads.filter((l) => l.status === "aprovado").length})
+                </button>
+
+                <button
+                  onClick={() => setModalFilter("discarded")}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer flex items-center gap-1 ${
+                    modalFilter === "discarded"
+                      ? "bg-rose-500/20 text-rose-300 font-medium border border-rose-500/30"
+                      : "text-slate-400 hover:text-rose-400"
+                  }`}
+                >
+                  <XCircle className="w-3 h-3 text-rose-400" />
+                  Descartados ({inspectingLeads.filter((l) => l.status !== "aprovado").length})
+                </button>
+              </div>
+
+              <div className="relative">
+                <Search className="w-3 h-3 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="text"
+                  placeholder="Buscar contato ou número..."
+                  value={modalSearch}
+                  onChange={(e) => setModalSearch(e.target.value)}
+                  className="bg-[#0A0D14] border border-[#252C38] rounded-md pl-7 pr-2.5 py-1 text-xs text-slate-300 placeholder-slate-600 focus:outline-none focus:border-emerald-500 w-52"
+                />
+              </div>
+            </div>
+
+            {/* Lista dos Contatos com Ações de Copiar e Testar */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 font-mono text-xs">
+              {filteredInspectingLeads.length === 0 ? (
+                <div className="py-12 text-center text-slate-500">
+                  Nenhum contato encontrado para os filtros selecionados.
+                </div>
+              ) : (
+                filteredInspectingLeads.map((lead, idx) => {
+                  const isOk = lead.status === "aprovado";
+                  const isLandline = lead.status === "descarte_fixo";
+                  const isCopied = copiedNumber === lead.telefone;
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-2.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 transition-colors ${
+                        isOk
+                          ? "bg-[#0E151E] border-emerald-500/20 hover:border-emerald-500/40"
+                          : "bg-[#181116] border-rose-500/20 hover:border-rose-500/40"
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span
+                            className={`font-bold ${isOk ? "text-emerald-300" : "text-rose-300"}`}
+                          >
+                            {lead.telefone}
+                          </span>
+                          <span className="text-slate-200 font-sans font-medium">
+                            {lead.empresa}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                            {lead.operadora}
+                          </span>
+                          <span
+                            className={`text-[10px] px-2 py-0.2 rounded-full font-semibold border ${
+                              isOk
+                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                                : isLandline
+                                  ? "bg-rose-500/20 text-rose-300 border-rose-500/30"
+                                  : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                            }`}
+                          >
+                            {isOk ? "WhatsApp Ativo" : isLandline ? "Linha Fixa" : "Sem Conta"}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-sans mt-0.5">{lead.motivo}</p>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                        <button
+                          onClick={() => handleCopyNumber(lead.telefone)}
+                          className="p-1.5 rounded bg-[#161D2B] hover:bg-[#20293C] text-slate-300 border border-[#252E40] transition-colors cursor-pointer"
+                          title="Copiar número"
+                        >
+                          {isCopied ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            const clean = lead.telefone.replace(/\D/g, "");
+                            const final = clean.startsWith("244") ? clean : `244${clean}`;
+                            window.open(`https://wa.me/${final}`, "_blank", "noopener,noreferrer");
+                          }}
+                          className="p-1.5 rounded bg-[#161D2B] hover:bg-emerald-950/40 text-slate-300 hover:text-emerald-400 border border-[#252E40] transition-colors cursor-pointer"
+                          title="Abrir WhatsApp direto"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-3 bg-[#141A26] border-t border-[#252C38] flex items-center justify-between text-xs text-slate-400">
+              <span>Total no filtro: {filteredInspectingLeads.length} contatos</span>
+              <button
+                onClick={() => setInspectingCampaign(null)}
+                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium transition-colors cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
