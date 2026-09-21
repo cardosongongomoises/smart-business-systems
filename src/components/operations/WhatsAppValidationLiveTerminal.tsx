@@ -77,7 +77,17 @@ export function WhatsAppValidationLiveTerminal({
     const cleanNum = num.replace(/\D/g, "");
     if (!cleanNum) return;
     const finalPhone = cleanNum.startsWith("244") ? cleanNum : `244${cleanNum}`;
-    window.open(`https://wa.me/${finalPhone}`, "_blank", "noopener,noreferrer");
+    try {
+      const a = document.createElement("a");
+      a.href = `https://wa.me/${finalPhone}`;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch {
+      window.open(`https://wa.me/${finalPhone}`, "_blank", "noopener,noreferrer");
+    }
     toast.info(`Abrindo teste no WhatsApp (+${finalPhone})...`);
   };
 
@@ -197,6 +207,8 @@ export function WhatsAppValidationLiveTerminal({
         <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
           {onRerunValidation && !isProcessing && (
             <button
+              id="btn-rerun-live-validation"
+              type="button"
               onClick={onRerunValidation}
               className="text-[11px] px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-medium flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-700/40"
               title="Executar auditoria em tempo real"
@@ -208,6 +220,8 @@ export function WhatsAppValidationLiveTerminal({
 
           {logs.length > 0 && (
             <button
+              id="btn-export-logs-csv"
+              type="button"
               onClick={handleExportLogs}
               className="text-[11px] px-2.5 py-1.5 rounded-lg border border-[#2A3548] bg-[#161D2C] hover:bg-[#1E2638] text-slate-300 font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
               title="Baixar relatório completo de auditoria em CSV"
@@ -218,6 +232,8 @@ export function WhatsAppValidationLiveTerminal({
           )}
 
           <button
+            id="btn-toggle-autoscroll"
+            type="button"
             onClick={() => setAutoScroll((prev) => !prev)}
             className={`text-[11px] px-2.5 py-1.5 rounded-lg border font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
               autoScroll
@@ -232,6 +248,8 @@ export function WhatsAppValidationLiveTerminal({
 
           {logs.length > 0 && onClearLogs && !isProcessing && (
             <button
+              id="btn-clear-terminal-logs"
+              type="button"
               onClick={onClearLogs}
               className="text-[11px] p-1.5 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-slate-800 transition-colors cursor-pointer"
               title="Limpar logs de status"
@@ -361,6 +379,7 @@ export function WhatsAppValidationLiveTerminal({
         <div className="relative">
           <Search className="w-3 h-3 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
+            id="terminal-search-input"
             type="text"
             placeholder="Buscar número, empresa..."
             value={searchTerm}
@@ -376,10 +395,28 @@ export function WhatsAppValidationLiveTerminal({
         className="max-h-72 overflow-y-auto font-mono text-[11px] p-3 space-y-2 divide-y divide-[#1A2230]/40 bg-[#0A0D13]"
       >
         {filteredLogs.length === 0 ? (
-          <div className="py-10 text-center text-slate-500 text-xs">
-            {logs.length === 0
-              ? "Nenhum evento registrado ainda. Clique em 'Executar Validação' ou carregue um arquivo .MD / .TXT."
-              : "Nenhum log encontrado para o filtro selecionado."}
+          <div className="py-10 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-3">
+            {logs.length === 0 ? (
+              <>
+                <Terminal className="w-8 h-8 text-emerald-500/40" />
+                <p className="max-w-md text-slate-400">
+                  Nenhum evento registrado ainda. Clique no botão abaixo para carregar exemplos e
+                  auditar ou digite um número no campo de validação prévia.
+                </p>
+                {onRerunValidation && (
+                  <button
+                    type="button"
+                    onClick={onRerunValidation}
+                    className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-700/40"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Iniciar Auditoria com Exemplo
+                  </button>
+                )}
+              </>
+            ) : (
+              <p>Nenhum log encontrado para o filtro selecionado.</p>
+            )}
           </div>
         ) : (
           filteredLogs.map((log) => {

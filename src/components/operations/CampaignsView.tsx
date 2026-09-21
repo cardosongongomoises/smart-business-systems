@@ -296,6 +296,7 @@ export function CampaignsView() {
       const override = manualOverrides[l.telefone];
       if (override !== undefined) return override;
 
+      if (l.verification.status === "invalid_format") return false;
       if (discardLandlines && l.verification.lineType === "landline") return false;
       if (
         discardUnregistered &&
@@ -303,7 +304,9 @@ export function CampaignsView() {
       ) {
         return false;
       }
-      if (l.verification.status === "invalid_format") return false;
+
+      if (!discardLandlines && l.verification.lineType === "landline") return true;
+      if (!discardUnregistered && !l.verification.isRegistered) return true;
 
       return l.verification.isRegistered;
     });
@@ -313,26 +316,70 @@ export function CampaignsView() {
     return parsedLeads.filter((l) => !validLeads.includes(l));
   }, [parsedLeads, validLeads]);
 
-  // Ações de Validação Prévia de WhatsApp
-  const handleRunQuickTest = () => {
-    if (!quickTestPhone.trim()) {
+  // Ações de Validação Prévia de WhatsApp (Suporta teste avulso e chips rápidos)
+  const handleRunQuickTest = (overridePhone?: string) => {
+    const targetPhone = (overridePhone !== undefined ? overridePhone : quickTestPhone).trim();
+    if (!targetPhone) {
       toast.error("Insira um número de telefone para validar!");
       return;
     }
-    const res = validateCampaignWhatsAppNumber(quickTestPhone);
+    if (overridePhone !== undefined) {
+      setQuickTestPhone(overridePhone);
+    }
+    const res = validateCampaignWhatsAppNumber(targetPhone);
     setQuickTestResult(res);
-    if (!res.isRegistered) {
-      toast.warning(`Validação Prévia: Número descartado (${res.reason})`);
-    } else {
+
+    // Registra imediatamente no Terminal de Auditoria em Tempo Real
+    const nowStr =
+      new Date().toLocaleTimeString("pt-PT") +
+      "." +
+      String(new Date().getMilliseconds()).padStart(3, "0");
+    const logItem: ValidationStatusLogItem = {
+      id: `quick-test-${Date.now()}-${targetPhone.replace(/\D/g, "")}`,
+      timestamp: nowStr,
+      numero: res.formattedNumber || targetPhone,
+      empresa: "Validação Prévia Avulsa",
+      operadora: res.carrier,
+      tipoLinha: res.lineType,
+      status: res.isRegistered
+        ? "sucesso"
+        : res.lineType === "landline"
+          ? "descarte_fixo"
+          : "descarte_sem_conta",
+      motivo: res.reason,
+      mensagem: "Validação prévia de número",
+    };
+
+    setValidationLogs((prev) => [logItem, ...prev]);
+    setProcessedLeadsCount((prev) => prev + 1);
+    if (res.isRegistered) {
+      setLiveSuccessCount((prev) => prev + 1);
       toast.success(`Validação Prévia: Número aprovado! ${res.carrier} com WhatsApp ativo.`);
+    } else {
+      setLiveFailureCount((prev) => prev + 1);
+      toast.warning(`Validação Prévia: Número descartado (${res.reason})`);
     }
   };
 
   const handleAddQuickTestToCampaign = () => {
     if (!quickTestResult) return;
     const phoneToAdd = quickTestResult.formattedNumber || quickTestResult.rawPhone;
-    const newRow = `| Prospect Validado | ${phoneToAdd} | Olá! Notamos uma excelente oportunidade comercial para a sua empresa. | Profissional | Luanda |\n`;
-    setRawText((prev) => (prev.trim() ? `${prev.trim()}\n${newRow}` : newRow));
+
+    if (!campaignName.trim()) {
+      setCampaignName(`Campanha ${new Date().toLocaleDateString("pt-PT")}`);
+    }
+
+    setRawText((prev) => {
+      const trimmed = prev.trim();
+      if (!trimmed) {
+        return `| Empresa | Telefone | Mensagem | Oferta | Cidade |\n|---|---|---|---|---|\n| Prospect Validado | ${phoneToAdd} | Olá! Notamos uma excelente oportunidade comercial para a sua empresa. | Profissional | Luanda |\n`;
+      }
+      if (trimmed.includes("|") && trimmed.includes("---")) {
+        return `${trimmed}\n| Prospect Validado | ${phoneToAdd} | Olá! Notamos uma excelente oportunidade comercial para a sua empresa. | Profissional | Luanda |`;
+      }
+      return `${trimmed}\n\n### Prospect Validado\nTelefone: ${phoneToAdd}\nMensagem: Olá! Notamos uma excelente oportunidade comercial para a sua empresa.\n`;
+    });
+
     toast.success(`Número ${phoneToAdd} adicionado ao conteúdo da campanha!`);
     setQuickTestPhone("");
     setQuickTestResult(null);
@@ -493,7 +540,12 @@ export function CampaignsView() {
 
   const handleRunBatchVerification = async () => {
     if (parsedLeads.length === 0) {
-      toast.info("Carregue uma campanha primeiro para auditar os contatos.");
+      if (quickTestPhone.trim()) {
+        handleRunQuickTest();
+        return;
+      }
+      toast.info("Nenhum lead no editor. Carregando exemplo com contatos reais para auditar...");
+      handleLoadExample();
       return;
     }
     await runLiveValidationProcess(parsedLeads, campaignName);
@@ -684,7 +736,8 @@ export function CampaignsView() {
 
   const handleApplyAutoFilterNow = () => {
     if (!rawText.trim()) {
-      toast.warning("Insira ou cole um conteúdo com mensagens para filtrar!");
+      toast.info("Editor vazio. Carregando exemplo com contatos reais para executar o filtro...");
+      handleLoadExample();
       return;
     }
 
@@ -711,6 +764,11 @@ export function CampaignsView() {
     } else {
       toast.success("Todos os números identificados no texto possuem WhatsApp ativo!");
     }
+
+    // Aciona imediatamente a auditoria ao vivo dos contatos aprovados
+    setTimeout(() => {
+      handleRunBatchVerification();
+    }, 120);
   };
 
   const handleRestoreOriginalText = () => {
@@ -1172,10 +1230,14 @@ export function CampaignsView() {
                 {/* Inputs de Identificação */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[11px] font-medium text-slate-400 block mb-1">
+                    <label
+                      htmlFor="campaign-name-input"
+                      className="text-[11px] font-medium text-slate-400 block mb-1"
+                    >
                       Nome da Campanha:
                     </label>
                     <input
+                      id="campaign-name-input"
                       type="text"
                       placeholder="Ex: Clínicas Dentárias Luanda"
                       value={campaignName}
@@ -1184,10 +1246,14 @@ export function CampaignsView() {
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-medium text-slate-400 block mb-1">
+                    <label
+                      htmlFor="campaign-desc-input"
+                      className="text-[11px] font-medium text-slate-400 block mb-1"
+                    >
                       Descrição / Observações:
                     </label>
                     <input
+                      id="campaign-desc-input"
                       type="text"
                       placeholder="Ex: Framework v9 - Set/2026"
                       value={campaignDesc}
@@ -1200,15 +1266,18 @@ export function CampaignsView() {
                 {/* Editor / Textarea do Conteúdo */}
                 <div>
                   <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
-                    <label className="text-[11px] font-medium text-slate-400">
+                    <label
+                      htmlFor="campaign-raw-text"
+                      className="text-[11px] font-medium text-slate-400"
+                    >
                       Conteúdo Filtrado (Números Cadastrados e Mensagens):
                     </label>
                     <div className="flex items-center gap-2">
                       <button
+                        id="btn-auto-filter-now"
                         type="button"
                         onClick={handleApplyAutoFilterNow}
-                        disabled={!rawText.trim()}
-                        className="text-[11px] font-semibold px-2.5 py-1 rounded bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="text-[11px] font-semibold px-2.5 py-1 rounded bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm shadow-emerald-950/40"
                         title="Executa a filtragem no modo automático: mantém apenas números com WhatsApp e remove não cadastrados junto com as mensagens"
                       >
                         <Zap className="w-3 h-3 text-emerald-400" />
@@ -1311,6 +1380,7 @@ export function CampaignsView() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     <label className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0E121A] border border-[#252C38] hover:border-emerald-500/40 cursor-pointer transition-colors">
                       <input
+                        id="discard-landlines-checkbox"
                         type="checkbox"
                         checked={discardLandlines}
                         onChange={(e) => setDiscardLandlines(e.target.checked)}
@@ -1328,6 +1398,7 @@ export function CampaignsView() {
 
                     <label className="flex items-center gap-2 p-2.5 rounded-lg bg-[#0E121A] border border-[#252C38] hover:border-emerald-500/40 cursor-pointer transition-colors">
                       <input
+                        id="discard-unregistered-checkbox"
                         type="checkbox"
                         checked={discardUnregistered}
                         onChange={(e) => setDiscardUnregistered(e.target.checked)}
@@ -1360,6 +1431,7 @@ export function CampaignsView() {
                   <div className="flex gap-2">
                     <div className="relative flex-1">
                       <input
+                        id="quick-test-phone-input"
                         type="text"
                         value={quickTestPhone}
                         onChange={(e) => setQuickTestPhone(e.target.value)}
@@ -1371,11 +1443,52 @@ export function CampaignsView() {
                       />
                     </div>
                     <button
-                      onClick={handleRunQuickTest}
+                      id="btn-quick-test-validate"
+                      type="button"
+                      onClick={() => handleRunQuickTest()}
                       className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
                       <Search className="w-3.5 h-3.5" />
                       Validar
+                    </button>
+                  </div>
+
+                  {/* Chips de Teste Rápido com 1 clique */}
+                  <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      Exemplos rápidos:
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRunQuickTest("+244923111222")}
+                      className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition-colors cursor-pointer font-mono"
+                      title="Testar número móvel Unitel ativo"
+                    >
+                      +244 923 111 222 (Móvel Ativo)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRunQuickTest("+244222090900")}
+                      className="text-[10px] px-2 py-0.5 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition-colors cursor-pointer font-mono"
+                      title="Testar linha fixa Luanda (Descarte)"
+                    >
+                      +244 222 090 900 (Linha Fixa)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRunQuickTest("+244934024904")}
+                      className="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors cursor-pointer font-mono"
+                      title="Testar número sem WhatsApp (Descarte)"
+                    >
+                      +244 934 024 904 (Sem WhatsApp)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleRunQuickTest("+244955552555")}
+                      className="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition-colors cursor-pointer font-mono"
+                      title="Testar número Africell móvel"
+                    >
+                      +244 955 552 555 (Africell)
                     </button>
                   </div>
 

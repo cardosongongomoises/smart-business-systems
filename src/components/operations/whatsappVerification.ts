@@ -738,15 +738,23 @@ export function filterMessagesContentAuto(
         if (tel && tel.replace(/\D/g, "").length >= 7) {
           const verification = validateCampaignWhatsAppNumber(tel);
 
-          let shouldKeep = verification.isRegistered;
-          if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
-          if (
+          let shouldKeep = true;
+          if (verification.status === "invalid_format") {
+            shouldKeep = false;
+          } else if (discardLandlines && verification.lineType === "landline") {
+            shouldKeep = false;
+          } else if (
             discardUnregistered &&
             (!verification.isRegistered || verification.status === "not_registered")
           ) {
             shouldKeep = false;
+          } else if (!discardLandlines && verification.lineType === "landline") {
+            shouldKeep = true;
+          } else if (!discardUnregistered && !verification.isRegistered) {
+            shouldKeep = true;
+          } else {
+            shouldKeep = verification.isRegistered;
           }
-          if (verification.status === "invalid_format") shouldKeep = false;
 
           if (shouldKeep) {
             cleanedTableLines.push(rowLine);
@@ -815,15 +823,23 @@ export function filterMessagesContentAuto(
         const msg = msgMatch ? msgMatch[1].trim() : "";
 
         const verification = validateCampaignWhatsAppNumber(tel);
-        let shouldKeep = verification.isRegistered;
-        if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
-        if (
+        let shouldKeep = true;
+        if (verification.status === "invalid_format") {
+          shouldKeep = false;
+        } else if (discardLandlines && verification.lineType === "landline") {
+          shouldKeep = false;
+        } else if (
           discardUnregistered &&
           (!verification.isRegistered || verification.status === "not_registered")
         ) {
           shouldKeep = false;
+        } else if (!discardLandlines && verification.lineType === "landline") {
+          shouldKeep = true;
+        } else if (!discardUnregistered && !verification.isRegistered) {
+          shouldKeep = true;
+        } else {
+          shouldKeep = verification.isRegistered;
         }
-        if (verification.status === "invalid_format") shouldKeep = false;
 
         if (shouldKeep) {
           validBlocks.push(block.trim());
@@ -878,13 +894,22 @@ export function filterMessagesContentAuto(
 
       if (tel && tel.replace(/\D/g, "").length >= 7) {
         const verification = validateCampaignWhatsAppNumber(tel);
-        let shouldKeep = verification.isRegistered;
-        if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
-        if (
+        let shouldKeep = true;
+        if (verification.status === "invalid_format") {
+          shouldKeep = false;
+        } else if (discardLandlines && verification.lineType === "landline") {
+          shouldKeep = false;
+        } else if (
           discardUnregistered &&
           (!verification.isRegistered || verification.status === "not_registered")
         ) {
           shouldKeep = false;
+        } else if (!discardLandlines && verification.lineType === "landline") {
+          shouldKeep = true;
+        } else if (!discardUnregistered && !verification.isRegistered) {
+          shouldKeep = true;
+        } else {
+          shouldKeep = verification.isRegistered;
         }
 
         if (shouldKeep) {
@@ -917,13 +942,22 @@ export function filterMessagesContentAuto(
     if (match) {
       const foundPhone = match[0];
       const verification = validateCampaignWhatsAppNumber(foundPhone);
-      let shouldKeep = verification.isRegistered;
-      if (discardLandlines && verification.lineType === "landline") shouldKeep = false;
-      if (
+      let shouldKeep = true;
+      if (verification.status === "invalid_format") {
+        shouldKeep = false;
+      } else if (discardLandlines && verification.lineType === "landline") {
+        shouldKeep = false;
+      } else if (
         discardUnregistered &&
         (!verification.isRegistered || verification.status === "not_registered")
       ) {
         shouldKeep = false;
+      } else if (!discardLandlines && verification.lineType === "landline") {
+        shouldKeep = true;
+      } else if (!discardUnregistered && !verification.isRegistered) {
+        shouldKeep = true;
+      } else {
+        shouldKeep = verification.isRegistered;
       }
 
       if (shouldKeep) {
