@@ -338,7 +338,6 @@ export function OperationsSidebar({
             )}
           </div>
         </div>
-
       </aside>
     </>
   );

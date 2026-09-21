@@ -27,7 +27,6 @@ const LOCAL_STORAGE_FILA_KEY = "sbs_disparo_fila_cache_v1";
 
 const INITIAL_FALLBACK_CAMPANHAS: DisparoCampanha[] = [];
 
-
 /**
  * Salva leads no cache local para resiliência e fallback offline
  */
