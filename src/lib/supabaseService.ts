@@ -931,6 +931,99 @@ export async function updateCampanhaStatus(
 }
 
 /**
+ * Deleta uma campanha e todos os seus itens da fila no Supabase e no cache local
+ */
+export async function deleteCampanha(id: number): Promise<{ success: boolean; error?: string }> {
+  // 1. Atualiza cache local primeiro
+  if (typeof window !== "undefined") {
+    try {
+      const rawCamp = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
+      if (rawCamp) {
+        const camps: DisparoCampanha[] = JSON.parse(rawCamp);
+        if (Array.isArray(camps)) {
+          const filtered = camps.filter((c) => c.id !== id);
+          localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(filtered));
+        }
+      }
+
+      const rawFila = localStorage.getItem(LOCAL_STORAGE_FILA_KEY);
+      if (rawFila) {
+        const fila: DisparoFilaItem[] = JSON.parse(rawFila);
+        if (Array.isArray(fila)) {
+          const filtered = fila.filter((it) => it.campanha_id !== id);
+          localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify(filtered));
+        }
+      }
+    } catch (e) {
+      console.warn("Erro ao atualizar cache local ao deletar campanha:", e);
+    }
+  }
+
+  // Se o Supabase não estiver configurado, operação local foi concluída com sucesso
+  if (!isSupabaseConfigured()) {
+    return { success: true };
+  }
+
+  try {
+    // 2. Deleta itens associados na fila no Supabase para garantir integridade referencial
+    const { error: errFila } = await supabase.from("disparo_fila").delete().eq("campanha_id", id);
+
+    if (errFila) {
+      console.warn("[CAMPANHA] Aviso ao remover itens da fila no Supabase:", errFila.message);
+    }
+
+    // 3. Deleta a campanha no Supabase
+    const { error: errCamp } = await supabase.from("campanhas_disparo").delete().eq("id", id);
+
+    if (errCamp) {
+      console.error("[CAMPANHA] Erro ao deletar campanha no Supabase:", errCamp.message);
+      return { success: false, error: errCamp.message };
+    }
+
+    return { success: true };
+  } catch (err: unknown) {
+    console.error("[CAMPANHA] Exceção ao deletar campanha no Supabase:", err);
+    const errMsg = err instanceof Error ? err.message : String(err);
+    return { success: false, error: errMsg };
+  }
+}
+
+/**
+ * Deleta todas as campanhas e fila de disparos no Supabase e no cache local
+ */
+export async function deleteAllCampanhas(): Promise<{ success: boolean; error?: string }> {
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify([]));
+      localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify([]));
+    } catch (e) {
+      console.warn("Erro ao limpar cache local de campanhas:", e);
+    }
+  }
+
+  if (!isSupabaseConfigured()) {
+    return { success: true };
+  }
+
+  try {
+    const { error: errFila } = await supabase.from("disparo_fila").delete().neq("id", 0);
+    if (errFila) {
+      console.warn("[CAMPANHA] Aviso ao limpar fila no Supabase:", errFila.message);
+    }
+    const { error: errCamp } = await supabase.from("campanhas_disparo").delete().neq("id", 0);
+    if (errCamp) {
+      console.error("[CAMPANHA] Erro ao deletar todas as campanhas no Supabase:", errCamp.message);
+      return { success: false, error: errCamp.message };
+    }
+    return { success: true };
+  } catch (err: unknown) {
+    console.error("[CAMPANHA] Exceção ao limpar campanhas no Supabase:", err);
+    const errMsg = err instanceof Error ? err.message : String(err);
+    return { success: false, error: errMsg };
+  }
+}
+
+/**
  * Subscrição Realtime no Supabase para campanhas e fila de disparos
  */
 export function subscribeToDisparosRealtime(onUpdate: () => void): () => void {

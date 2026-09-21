@@ -17,6 +17,7 @@ import {
   Layers,
   ChevronRight,
   Sparkles,
+  Trash2,
 } from "lucide-react";
 import { DisparoCampanha, DisparoFilaItem } from "@/lib/supabaseService";
 
@@ -24,6 +25,7 @@ interface BotDisparosViewProps {
   campaigns: DisparoCampanha[];
   selectedCampaignId: number | null;
   onSelectCampaign: (id: number) => void;
+  onDeleteCampaign?: (campaign: DisparoCampanha) => void;
   filaItems: DisparoFilaItem[];
   isBotRunning: boolean;
   botIntervalSeconds: number;
@@ -47,6 +49,7 @@ export function BotDisparosView({
   campaigns,
   selectedCampaignId,
   onSelectCampaign,
+  onDeleteCampaign,
   filaItems,
   isBotRunning,
   botIntervalSeconds,
@@ -184,9 +187,23 @@ export function BotDisparosView({
           {/* Seletor de Campanha e Intervalo Anti-Bloqueio */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
             <div>
-              <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block">
-                Campanha Ativa no Supabase:
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                  Campanha Ativa no Supabase:
+                </label>
+                {selectedCampaign && onDeleteCampaign && (
+                  <button
+                    type="button"
+                    onClick={() => onDeleteCampaign(selectedCampaign)}
+                    disabled={isBotRunning}
+                    className="text-[11px] text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    title="Excluir esta campanha e sua fila no Supabase"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    Deletar Campanha
+                  </button>
+                )}
+              </div>
               <select
                 id="select-campaign-bot"
                 value={selectedCampaignId || ""}

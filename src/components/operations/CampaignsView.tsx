@@ -94,6 +94,12 @@ export function CampaignsView() {
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [filterSearch, setFilterSearch] = useState("");
 
+  // Estados para exclusão de campanhas no Supabase
+  const [campaignToDelete, setCampaignToDelete] = useState<DisparoCampanha | null>(null);
+  const [isDeletingCampaign, setIsDeletingCampaign] = useState(false);
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
+
   // Estado do Bot de Disparos WhatsApp
   const [selectedBotCampaignId, setSelectedBotCampaignId] = useState<number | null>(null);
   const [filaItems, setFilaItems] = useState<DisparoFilaItem[]>([]);
@@ -1112,6 +1118,76 @@ export function CampaignsView() {
       loadFilaForCampaign(campaignsList[0].id);
     }
   }, [selectedBotCampaignId, campaignsList, loadFilaForCampaign]);
+
+  // Exclusão de campanha individual no Supabase e na fila local
+  const handleConfirmDeleteCampaign = async () => {
+    if (!campaignToDelete) return;
+    setIsDeletingCampaign(true);
+    try {
+      const campId = campaignToDelete.id;
+      const campNome = campaignToDelete.nome;
+
+      const res = await deleteCampanha(campId);
+      if (res.success) {
+        toast.success(
+          `Campanha "${campNome}" (#${campId}) e sua fila de disparos foram deletadas com sucesso do Supabase.`,
+        );
+
+        // Atualiza a lista local de campanhas
+        setCampaignsList((prev) => prev.filter((c) => c.id !== campId));
+
+        // Se a campanha excluída estava selecionada no Bot, limpa ou redireciona
+        if (selectedBotCampaignId === campId) {
+          const remaining = campaignsList.filter((c) => c.id !== campId);
+          if (remaining.length > 0) {
+            setSelectedBotCampaignId(remaining[0].id);
+            loadFilaForCampaign(remaining[0].id);
+          } else {
+            setSelectedBotCampaignId(null);
+            setFilaItems([]);
+          }
+        }
+
+        // Também remove do histórico de auditoria local caso exista
+        setValidationHistory((prev) =>
+          prev.filter((v) => v.id !== `supabase-${campId}` && v.name !== campNome),
+        );
+
+        setCampaignToDelete(null);
+        loadCampaigns();
+      } else {
+        toast.error(`Falha ao excluir campanha no Supabase: ${res.error || "Erro desconhecido"}`);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro ao deletar campanha: ${msg}`);
+    } finally {
+      setIsDeletingCampaign(false);
+    }
+  };
+
+  // Exclusão de todas as campanhas no Supabase e na fila local
+  const handleConfirmDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      const res = await deleteAllCampanhas();
+      if (res.success) {
+        toast.success("Todas as campanhas e filas de disparos foram excluídas do Supabase!");
+        setCampaignsList([]);
+        setSelectedBotCampaignId(null);
+        setFilaItems([]);
+        setShowDeleteAllModal(false);
+        loadCampaigns();
+      } else {
+        toast.error(`Falha ao limpar campanhas no Supabase: ${res.error || "Erro desconhecido"}`);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro ao limpar campanhas: ${msg}`);
+    } finally {
+      setIsDeletingAll(false);
+    }
+  };
 
   // Disparo manual avulso de um lead
   const handleSendSingleLead = async (item: DisparoFilaItem) => {
@@ -2200,7 +2276,7 @@ export function CampaignsView() {
         {/* Aba de Campanhas no Supabase (Live Queue Status) */}
         {activeTab === "campaigns" && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
                 <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
                   <Database className="w-4 h-4 text-blue-400" />
@@ -2211,13 +2287,27 @@ export function CampaignsView() {
                 </p>
               </div>
 
-              <button
-                onClick={() => setActiveTab("preview")}
-                className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <Upload className="w-3.5 h-3.5" />
-                Nova Campanha (.MD / .TXT)
-              </button>
+              <div className="flex items-center gap-2">
+                {campaignsList.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteAllModal(true)}
+                    className="px-3 py-1.5 text-xs rounded-lg border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Excluir todas as campanhas e filas no Supabase"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Limpar Todas
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setActiveTab("preview")}
+                  className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  Nova Campanha (.MD / .TXT)
+                </button>
+              </div>
             </div>
 
             {campaignsList.length === 0 ? (
@@ -2302,27 +2392,39 @@ export function CampaignsView() {
                       </div>
 
                       {/* Botões de Ação */}
-                      <div className="pt-2 border-t border-[#252C38] flex items-center justify-between">
-                        <span className="text-[10px] text-slate-500">
+                      <div className="pt-2 border-t border-[#252C38] flex items-center justify-between gap-2">
+                        <span className="text-[10px] text-slate-500 truncate">
                           Total: <strong className="text-slate-300">{stats.total}</strong> contatos
                         </span>
 
-                        <button
-                          onClick={() => handleToggleStatus(camp)}
-                          className="px-2.5 py-1 text-[11px] font-medium rounded border border-[#303846] bg-[#1A2230] hover:bg-[#222C3E] text-slate-300 transition-colors flex items-center gap-1 cursor-pointer"
-                        >
-                          {camp.status === "em_andamento" ? (
-                            <>
-                              <Pause className="w-3 h-3 text-amber-400" />
-                              Pausar
-                            </>
-                          ) : (
-                            <>
-                              <Play className="w-3 h-3 text-emerald-400" />
-                              Ativar Disparo
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => handleToggleStatus(camp)}
+                            className="px-2.5 py-1 text-[11px] font-medium rounded border border-[#303846] bg-[#1A2230] hover:bg-[#222C3E] text-slate-300 transition-colors flex items-center gap-1 cursor-pointer"
+                          >
+                            {camp.status === "em_andamento" ? (
+                              <>
+                                <Pause className="w-3 h-3 text-amber-400" />
+                                Pausar
+                              </>
+                            ) : (
+                              <>
+                                <Play className="w-3 h-3 text-emerald-400" />
+                                Ativar Disparo
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setCampaignToDelete(camp)}
+                            className="px-2 py-1 text-[11px] font-medium rounded border border-rose-500/25 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1 cursor-pointer"
+                            title="Deletar campanha e fila no Supabase"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                            Deletar
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -2387,6 +2489,7 @@ export function CampaignsView() {
               setSelectedBotCampaignId(id);
               loadFilaForCampaign(id);
             }}
+            onDeleteCampaign={(camp) => setCampaignToDelete(camp)}
             filaItems={filaItems}
             isBotRunning={isBotRunning}
             botIntervalSeconds={botIntervalSeconds}
@@ -2400,6 +2503,151 @@ export function CampaignsView() {
             onInjectConstrucaoCivilDirect={handleInjectConstrucaoCivilDirectToQueue}
             isSyncing={isSyncing}
           />
+        )}
+
+        {/* Modal de Confirmação para Deletar Campanha no Supabase */}
+        {campaignToDelete && (
+          <div
+            id="modal-confirm-delete-campaign"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in-0 duration-200"
+          >
+            <div className="bg-[#131824] border border-rose-500/30 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl shadow-rose-950/40 relative">
+              <div className="flex items-start gap-3">
+                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 shrink-0">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Excluir Campanha no Supabase?</h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Esta ação removerá permanentemente a campanha e todas as mensagens vinculadas
+                    das tabelas <code className="text-rose-300 font-mono">campanhas_disparo</code> e{" "}
+                    <code className="text-rose-300 font-mono">disparo_fila</code> no Supabase.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-[#0E121A] border border-[#252C38] space-y-1.5 text-xs">
+                <div className="flex justify-between text-slate-300">
+                  <span className="text-slate-500">ID da Campanha:</span>
+                  <span className="font-mono font-semibold text-white">#{campaignToDelete.id}</span>
+                </div>
+                <div className="flex justify-between text-slate-300">
+                  <span className="text-slate-500">Nome:</span>
+                  <span
+                    className="font-medium text-white truncate max-w-[200px]"
+                    title={campaignToDelete.nome}
+                  >
+                    {campaignToDelete.nome}
+                  </span>
+                </div>
+                <div className="flex justify-between text-slate-300">
+                  <span className="text-slate-500">Total de Leads na Fila:</span>
+                  <span className="font-mono text-emerald-400 font-semibold">
+                    {campaignToDelete.total || campaignToDelete.stats?.total || 0} contatos
+                  </span>
+                </div>
+                <div className="flex justify-between text-slate-300">
+                  <span className="text-slate-500">Status Atual:</span>
+                  <span className="capitalize text-slate-300">{campaignToDelete.status}</span>
+                </div>
+              </div>
+
+              <div className="text-[11px] text-amber-300/90 bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-lg flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  O bot interromperá qualquer disparo pendente desta campanha imediatamente.
+                </span>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  disabled={isDeletingCampaign}
+                  onClick={() => setCampaignToDelete(null)}
+                  className="px-3.5 py-2 text-xs font-medium rounded-lg bg-[#1A2230] hover:bg-[#252F42] text-slate-300 transition-colors cursor-pointer border border-[#303846]"
+                >
+                  Cancelar
+                </button>
+                <button
+                  id="btn-confirm-delete-campaign"
+                  type="button"
+                  disabled={isDeletingCampaign}
+                  onClick={handleConfirmDeleteCampaign}
+                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-colors flex items-center gap-2 shadow-lg shadow-rose-900/30 cursor-pointer disabled:opacity-50"
+                >
+                  {isDeletingCampaign ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      Deletando no Supabase...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Confirmar Exclusão
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de Limpeza Total de Campanhas */}
+        {showDeleteAllModal && (
+          <div
+            id="modal-confirm-delete-all-campaigns"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in-0 duration-200"
+          >
+            <div className="bg-[#131824] border border-rose-500/30 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl shadow-rose-950/40 relative">
+              <div className="flex items-start gap-3">
+                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 shrink-0">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    Excluir TODAS as Campanhas no Supabase?
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Esta ação removerá todas as{" "}
+                    <strong className="text-white">{campaignsList.length} campanhas</strong> e suas
+                    respectivas filas de disparo em{" "}
+                    <code className="text-rose-300 font-mono">campanhas_disparo</code> e{" "}
+                    <code className="text-rose-300 font-mono">disparo_fila</code> no Supabase.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  disabled={isDeletingAll}
+                  onClick={() => setShowDeleteAllModal(false)}
+                  className="px-3.5 py-2 text-xs font-medium rounded-lg bg-[#1A2230] hover:bg-[#252F42] text-slate-300 transition-colors cursor-pointer border border-[#303846]"
+                >
+                  Cancelar
+                </button>
+                <button
+                  id="btn-confirm-delete-all-campaigns"
+                  type="button"
+                  disabled={isDeletingAll}
+                  onClick={handleConfirmDeleteAll}
+                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-colors flex items-center gap-2 shadow-lg shadow-rose-900/30 cursor-pointer disabled:opacity-50"
+                >
+                  {isDeletingAll ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      Limpando Supabase...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Sim, Excluir Todas
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
