@@ -148,7 +148,7 @@ export function getCampaignValidationHistory(): CampaignValidationRecord[] {
       return initialCampaignValidationHistory;
     }
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed;
     }
   } catch (err) {

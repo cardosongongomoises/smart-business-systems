@@ -1123,44 +1123,72 @@ export function CampaignsView() {
   const handleConfirmDeleteCampaign = async () => {
     if (!campaignToDelete) return;
     setIsDeletingCampaign(true);
-    try {
-      const campId = campaignToDelete.id;
-      const campNome = campaignToDelete.nome;
+    const target = campaignToDelete;
+    const campId = target.id;
+    const campNome = target.nome;
+    const strCampId = String(campId);
 
+    try {
+      // 1. Atualiza otimisticamente a lista local imediatamente
+      setCampaignsList((prev) =>
+        prev.filter((c) => String(c.id) !== strCampId && `supabase-${c.id}` !== strCampId),
+      );
+
+      // 2. Remove do histórico de validação local
+      setValidationHistory((prev) => {
+        const updated = prev.filter(
+          (v) =>
+            v.id !== `supabase-${campId}` &&
+            v.id !== strCampId &&
+            v.name.toLowerCase() !== campNome.toLowerCase(),
+        );
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem("sbs_campaign_validation_stats_v1", JSON.stringify(updated));
+          } catch (storageErr) {
+            console.warn("Erro ao atualizar sbs_campaign_validation_stats_v1:", storageErr);
+          }
+        }
+        return updated;
+      });
+
+      // 3. Se a campanha excluída estava selecionada no Bot, limpa ou redireciona
+      if (String(selectedBotCampaignId) === strCampId) {
+        const remaining = campaignsList.filter(
+          (c) => String(c.id) !== strCampId && `supabase-${c.id}` !== strCampId,
+        );
+        if (remaining.length > 0) {
+          setSelectedBotCampaignId(remaining[0].id);
+          loadFilaForCampaign(remaining[0].id);
+        } else {
+          setSelectedBotCampaignId(null);
+          setFilaItems([]);
+        }
+      }
+
+      // Fecha o modal de confirmação imediatamente
+      setCampaignToDelete(null);
+
+      // 4. Executa a exclusão no Supabase e cache local
       const res = await deleteCampanha(campId);
       if (res.success) {
         toast.success(
-          `Campanha "${campNome}" (#${campId}) e sua fila de disparos foram deletadas com sucesso do Supabase.`,
+          `Campanha "${campNome}" (#${campId}) e sua fila de disparos foram deletadas com sucesso!`,
         );
 
-        // Atualiza a lista local de campanhas
-        setCampaignsList((prev) => prev.filter((c) => c.id !== campId));
-
-        // Se a campanha excluída estava selecionada no Bot, limpa ou redireciona
-        if (selectedBotCampaignId === campId) {
-          const remaining = campaignsList.filter((c) => c.id !== campId);
-          if (remaining.length > 0) {
-            setSelectedBotCampaignId(remaining[0].id);
-            loadFilaForCampaign(remaining[0].id);
-          } else {
-            setSelectedBotCampaignId(null);
-            setFilaItems([]);
-          }
-        }
-
-        // Também remove do histórico de auditoria local caso exista
-        setValidationHistory((prev) =>
-          prev.filter((v) => v.id !== `supabase-${campId}` && v.name !== campNome),
+        // Recarrega do banco garantindo que a campanha excluída não retorne
+        const freshList = await fetchCampanhasComStats();
+        setCampaignsList(
+          freshList.filter((c) => String(c.id) !== strCampId && `supabase-${c.id}` !== strCampId),
         );
-
-        setCampaignToDelete(null);
-        loadCampaigns();
       } else {
         toast.error(`Falha ao excluir campanha no Supabase: ${res.error || "Erro desconhecido"}`);
+        await loadCampaigns();
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       toast.error(`Erro ao deletar campanha: ${msg}`);
+      await loadCampaigns();
     } finally {
       setIsDeletingCampaign(false);
     }
@@ -1170,20 +1198,27 @@ export function CampaignsView() {
   const handleConfirmDeleteAll = async () => {
     setIsDeletingAll(true);
     try {
+      // 1. Limpeza otimista imediata na interface
+      setCampaignsList([]);
+      setSelectedBotCampaignId(null);
+      setFilaItems([]);
+      setShowDeleteAllModal(false);
+
+      clearCampaignValidationHistory();
+      setValidationHistory([]);
+
+      // 2. Executa a exclusão de todas as campanhas no Supabase e storage local
       const res = await deleteAllCampanhas();
       if (res.success) {
-        toast.success("Todas as campanhas e filas de disparos foram excluídas do Supabase!");
-        setCampaignsList([]);
-        setSelectedBotCampaignId(null);
-        setFilaItems([]);
-        setShowDeleteAllModal(false);
-        loadCampaigns();
+        toast.success("Todas as campanhas e filas de disparos foram excluídas com sucesso!");
       } else {
         toast.error(`Falha ao limpar campanhas no Supabase: ${res.error || "Erro desconhecido"}`);
+        await loadCampaigns();
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       toast.error(`Erro ao limpar campanhas: ${msg}`);
+      await loadCampaigns();
     } finally {
       setIsDeletingAll(false);
     }
@@ -2465,6 +2500,31 @@ export function CampaignsView() {
               setActiveTab("preview");
             }}
             onDeleteCampaign={(id) => {
+              // 1. Procura se corresponde a uma campanha cadastrada no Supabase
+              const match = campaignsList.find(
+                (c) =>
+                  `supabase-${c.id}` === id ||
+                  String(c.id) === String(id) ||
+                  c.nome.toLowerCase() === id.toLowerCase(),
+              );
+              if (match) {
+                // Abre o modal de confirmação para exclusão completa da campanha
+                setCampaignToDelete(match);
+                return;
+              }
+
+              // 2. Se for rascunho em edição
+              if (id === "current-draft") {
+                setRawText("");
+                setOriginalUnfilteredText("");
+                setManualOverrides({});
+                setCampaignName("Campanha Sem Título");
+                setCampaignDesc("");
+                toast.success("Rascunho atual removido do editor!");
+                return;
+              }
+
+              // 3. Caso contrário, exclui do histórico local
               const updated = deleteCampaignValidationRecord(id);
               setValidationHistory(updated);
               toast.success("Campanha removida do histórico de validação!");

@@ -846,16 +846,15 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
     if (typeof window === "undefined") return INITIAL_FALLBACK_CAMPANHAS;
     try {
       const cached = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
-      if (cached) {
+      if (cached !== null) {
         const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed;
         }
       }
-      localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(INITIAL_FALLBACK_CAMPANHAS));
-      return INITIAL_FALLBACK_CAMPANHAS;
+      return [];
     } catch {
-      return INITIAL_FALLBACK_CAMPANHAS;
+      return [];
     }
   }
 
@@ -865,7 +864,20 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (errCamp || !campanhas) return [];
+    if (errCamp || !campanhas) {
+      if (typeof window !== "undefined") {
+        try {
+          const cached = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
+          if (cached !== null) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed)) return parsed;
+          }
+        } catch (storageErr) {
+          console.warn("Erro ao ler cache local de campanhas:", storageErr);
+        }
+      }
+      return [];
+    }
 
     // Para cada campanha, busca contagem de status na fila
     const resultado: DisparoCampanha[] = [];
@@ -897,6 +909,14 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
       });
     }
 
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(resultado));
+      } catch (storageErr) {
+        console.warn("Erro ao salvar cache local de campanhas:", storageErr);
+      }
+    }
+
     return resultado;
   } catch (err) {
     console.error("[CAMPANHA] Erro ao buscar campanhas:", err);
@@ -908,22 +928,38 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
  * Atualiza o status da campanha (ex: 'em_andamento', 'pausada', 'concluida')
  */
 export async function updateCampanhaStatus(
-  id: number,
+  id: number | string,
   status: "pendente" | "em_andamento" | "pausada" | "concluida",
 ): Promise<boolean> {
-  if (!isSupabaseConfigured()) {
-    if (typeof window === "undefined") return true;
+  const strId = String(id);
+  const numericId = typeof id === "number" ? id : Number(strId.replace(/[^\d.-]/g, ""));
+
+  if (typeof window !== "undefined") {
     try {
-      const list = await fetchCampanhasComStats();
-      const updated = list.map((c) => (c.id === id ? { ...c, status } : c));
-      localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(updated));
-      return true;
-    } catch {
-      return false;
+      const raw = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
+      if (raw) {
+        const camps: DisparoCampanha[] = JSON.parse(raw);
+        if (Array.isArray(camps)) {
+          const updated = camps.map((c) =>
+            String(c.id) === strId || (numericId && Number(c.id) === numericId)
+              ? { ...c, status }
+              : c,
+          );
+          localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(updated));
+        }
+      }
+    } catch (e) {
+      console.warn("Erro ao atualizar status local da campanha:", e);
     }
   }
+
+  if (!isSupabaseConfigured() || !numericId || isNaN(numericId)) return true;
+
   try {
-    const { error } = await supabase.from("campanhas_disparo").update({ status }).eq("id", id);
+    const { error } = await supabase
+      .from("campanhas_disparo")
+      .update({ status })
+      .eq("id", numericId);
     return !error;
   } catch {
     return false;
@@ -933,15 +969,25 @@ export async function updateCampanhaStatus(
 /**
  * Deleta uma campanha e todos os seus itens da fila no Supabase e no cache local
  */
-export async function deleteCampanha(id: number): Promise<{ success: boolean; error?: string }> {
-  // 1. Atualiza cache local primeiro
+export async function deleteCampanha(
+  id: number | string,
+): Promise<{ success: boolean; error?: string }> {
+  const strId = String(id);
+  const numericId = typeof id === "number" ? id : Number(strId.replace(/[^\d.-]/g, ""));
+
+  // 1. Atualiza cache local de forma confiável suportando id numérico e string
   if (typeof window !== "undefined") {
     try {
       const rawCamp = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
       if (rawCamp) {
         const camps: DisparoCampanha[] = JSON.parse(rawCamp);
         if (Array.isArray(camps)) {
-          const filtered = camps.filter((c) => c.id !== id);
+          const filtered = camps.filter(
+            (c) =>
+              String(c.id) !== strId &&
+              (!numericId || Number(c.id) !== numericId) &&
+              `supabase-${c.id}` !== strId,
+          );
           localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(filtered));
         }
       }
@@ -950,7 +996,11 @@ export async function deleteCampanha(id: number): Promise<{ success: boolean; er
       if (rawFila) {
         const fila: DisparoFilaItem[] = JSON.parse(rawFila);
         if (Array.isArray(fila)) {
-          const filtered = fila.filter((it) => it.campanha_id !== id);
+          const filtered = fila.filter(
+            (it) =>
+              String(it.campanha_id) !== strId &&
+              (!numericId || Number(it.campanha_id) !== numericId),
+          );
           localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify(filtered));
         }
       }
@@ -959,21 +1009,27 @@ export async function deleteCampanha(id: number): Promise<{ success: boolean; er
     }
   }
 
-  // Se o Supabase não estiver configurado, operação local foi concluída com sucesso
-  if (!isSupabaseConfigured()) {
+  // Se o Supabase não estiver configurado ou não houver id numérico para o banco relacional
+  if (!isSupabaseConfigured() || !numericId || isNaN(numericId)) {
     return { success: true };
   }
 
   try {
-    // 2. Deleta itens associados na fila no Supabase para garantir integridade referencial
-    const { error: errFila } = await supabase.from("disparo_fila").delete().eq("campanha_id", id);
+    // 2. Deleta itens associados na fila no Supabase
+    const { error: errFila } = await supabase
+      .from("disparo_fila")
+      .delete()
+      .eq("campanha_id", numericId);
 
     if (errFila) {
       console.warn("[CAMPANHA] Aviso ao remover itens da fila no Supabase:", errFila.message);
     }
 
     // 3. Deleta a campanha no Supabase
-    const { error: errCamp } = await supabase.from("campanhas_disparo").delete().eq("id", id);
+    const { error: errCamp } = await supabase
+      .from("campanhas_disparo")
+      .delete()
+      .eq("id", numericId);
 
     if (errCamp) {
       console.error("[CAMPANHA] Erro ao deletar campanha no Supabase:", errCamp.message);
@@ -1006,15 +1062,19 @@ export async function deleteAllCampanhas(): Promise<{ success: boolean; error?: 
   }
 
   try {
-    const { error: errFila } = await supabase.from("disparo_fila").delete().neq("id", 0);
+    const { error: errFila } = await supabase.from("disparo_fila").delete().neq("id", -999999);
+
     if (errFila) {
       console.warn("[CAMPANHA] Aviso ao limpar fila no Supabase:", errFila.message);
     }
-    const { error: errCamp } = await supabase.from("campanhas_disparo").delete().neq("id", 0);
+
+    const { error: errCamp } = await supabase.from("campanhas_disparo").delete().neq("id", -999999);
+
     if (errCamp) {
       console.error("[CAMPANHA] Erro ao deletar todas as campanhas no Supabase:", errCamp.message);
       return { success: false, error: errCamp.message };
     }
+
     return { success: true };
   } catch (err: unknown) {
     console.error("[CAMPANHA] Exceção ao limpar campanhas no Supabase:", err);
