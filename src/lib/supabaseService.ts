@@ -25,36 +25,8 @@ const LOCAL_STORAGE_LEADS_KEY = "sbs_leads_cache";
 const LOCAL_STORAGE_CAMPANHAS_KEY = "sbs_campanhas_disparo_cache_v1";
 const LOCAL_STORAGE_FILA_KEY = "sbs_disparo_fila_cache_v1";
 
-const INITIAL_FALLBACK_CAMPANHAS: DisparoCampanha[] = [
-  {
-    id: 101,
-    nome: "Campanha Clínicas Luanda - Q3",
-    descricao: "Contatos médicos e estéticos verificados no WhatsApp em Luanda",
-    status: "em_andamento",
-    total: 38,
-    created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
-    stats: {
-      total: 38,
-      pendente: 12,
-      enviado: 24,
-      falhou: 2,
-    },
-  },
-  {
-    id: 102,
-    nome: "Campanha Escritórios Jurídicos Talatona",
-    descricao: "Propostas de IA para escritórios de advocacia",
-    status: "pausada",
-    total: 46,
-    created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
-    stats: {
-      total: 46,
-      pendente: 40,
-      enviado: 5,
-      falhou: 1,
-    },
-  },
-];
+const INITIAL_FALLBACK_CAMPANHAS: DisparoCampanha[] = [];
+
 
 /**
  * Salva leads no cache local para resiliência e fallback offline

@@ -10,7 +10,6 @@ import {
   Settings,
   ExternalLink,
   ShieldCheck,
-  Radio,
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
@@ -48,7 +47,7 @@ interface SidebarProps {
 export function OperationsSidebar({
   currentTab,
   onSelectTab,
-  activeChatsCount = 4,
+  activeChatsCount = 0,
   isCollapsed: controlledCollapsed,
   onToggleCollapse,
   onLogout,
@@ -106,7 +105,7 @@ export function OperationsSidebar({
       id: "conversations",
       label: "Conversas IA",
       icon: MessageSquareCode,
-      badge: activeChatsCount || 4,
+      badge: activeChatsCount || 0,
       badgeColor: "violet",
     },
     {
@@ -340,76 +339,6 @@ export function OperationsSidebar({
           </div>
         </div>
 
-        {/* System Status Card (Fixed Footer) */}
-        <div className={`${isCollapsed ? "p-2" : "p-4"} border-t border-[#252C38] bg-[#080A0F]/60`}>
-          {!isCollapsed ? (
-            <div className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-3 shadow-sm transition-opacity duration-200">
-              <div className="flex items-center justify-between pb-2 border-b border-[#252C38] mb-2.5">
-                <span className="text-[11px] font-bold text-[#F5F7FA] tracking-wide flex items-center gap-1.5">
-                  <Radio className="size-3 text-[#22C55E] animate-pulse" />
-                  Status do Sistema
-                </span>
-                <span className="text-[10px] font-mono text-[#22C55E] font-bold">100% OK</span>
-              </div>
-
-              <div className="space-y-1.5 text-[11px]">
-                <div className="flex items-center justify-between text-[#A7B0BF]">
-                  <div className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                    <span>Website</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-                </div>
-
-                <div className="flex items-center justify-between text-[#A7B0BF]">
-                  <div className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                    <span>WhatsApp API</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-                </div>
-
-                <div className="flex items-center justify-between text-[#A7B0BF]">
-                  <div className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                    <span>Agente IA Core</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[#8B5CF6] font-semibold">ONLINE</span>
-                </div>
-
-                <div className="flex items-center justify-between text-[#A7B0BF]">
-                  <div className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-[#22C55E]" />
-                    <span>Agendamentos</span>
-                  </div>
-                  <span className="font-mono text-[10px] text-[#22C55E]">ONLINE</span>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div
-              onClick={handleToggle}
-              title="Status do Sistema: 100% OK (Clique para expandir)"
-              className="flex flex-col items-center justify-center p-2 rounded-[10px] border border-[#252C38] bg-[#151A23] hover:border-[#3B82F6]/50 cursor-pointer transition-all relative group"
-            >
-              <div className="relative flex size-6 items-center justify-center">
-                <Radio className="size-3.5 text-[#22C55E] animate-pulse" />
-                <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[#22C55E]" />
-              </div>
-              <span className="text-[9px] font-mono text-[#22C55E] font-bold mt-1">100%</span>
-
-              {/* Hover tooltip for status in collapsed mode */}
-              <div className="pointer-events-none absolute left-full bottom-2 ml-2 hidden group-hover:flex flex-col gap-1 z-50 whitespace-nowrap rounded-[8px] border border-[#252C38] bg-[#151A23] p-2.5 text-xs text-[#F5F7FA] shadow-xl">
-                <div className="flex items-center gap-1.5 font-bold text-[#22C55E]">
-                  <Radio className="size-3" /> Status do Sistema: 100% OK
-                </div>
-                <div className="text-[11px] text-[#A7B0BF]">
-                  Website, WhatsApp API, IA e Agendamentos ONLINE
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
       </aside>
     </>
   );
