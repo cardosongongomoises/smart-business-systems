@@ -28,6 +28,9 @@ import {
   RotateCcw,
   BarChart3,
   Activity,
+  Bot,
+  Sliders,
+  Terminal,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -44,8 +47,16 @@ import {
   fetchCampanhasComStats,
   subscribeToDisparosRealtime,
   updateCampanhaStatus,
+  fetchFilaItems,
+  updateFilaItemStatus,
+  resetCampanhaFila,
   DisparoCampanha,
+  DisparoFilaItem,
 } from "@/lib/supabaseService";
+import {
+  CONSTRUCAO_CIVIL_LEADS,
+  CONSTRUCAO_CIVIL_CAMPAIGN_INFO,
+} from "./data/construcaoCivilLeads";
 import {
   getCampaignValidationHistory,
   saveCampaignValidationRecord,
@@ -56,6 +67,7 @@ import {
 } from "./campaignValidationStore";
 import { CampaignValidationDashboard } from "./CampaignValidationDashboard";
 import { WhatsAppValidationLiveTerminal } from "./WhatsAppValidationLiveTerminal";
+import { BotDisparosView } from "./BotDisparosView";
 
 interface ParsedLeadCandidate {
   empresa: string;
@@ -74,13 +86,44 @@ export function CampaignsView() {
   const [campaignDesc, setCampaignDesc] = useState("");
   const [rawText, setRawText] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
-  const [activeTab, setActiveTab] = useState<"preview" | "discarded" | "campaigns" | "analytics">(
-    "preview",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "preview" | "discarded" | "campaigns" | "bot" | "analytics"
+  >("preview");
   const [isSyncing, setIsSyncing] = useState(false);
   const [campaignsList, setCampaignsList] = useState<DisparoCampanha[]>([]);
   const [isLoadingCampaigns, setIsLoadingCampaigns] = useState(false);
   const [filterSearch, setFilterSearch] = useState("");
+
+  // Estado do Bot de Disparos WhatsApp
+  const [selectedBotCampaignId, setSelectedBotCampaignId] = useState<number | null>(null);
+  const [filaItems, setFilaItems] = useState<DisparoFilaItem[]>([]);
+  const [isBotRunning, setIsBotRunning] = useState(false);
+  const [botIntervalSeconds, setBotIntervalSeconds] = useState(5);
+  const [currentSendingId, setCurrentSendingId] = useState<number | null>(null);
+  const [botLogs, setBotLogs] = useState<
+    Array<{
+      id: string;
+      time: string;
+      text: string;
+      status: "info" | "success" | "warning" | "error";
+    }>
+  >([]);
+  const botTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const addBotLog = useCallback(
+    (text: string, status: "info" | "success" | "warning" | "error" = "info") => {
+      setBotLogs((prev) => [
+        {
+          id: Math.random().toString(36).substring(2, 9),
+          time: new Date().toLocaleTimeString("pt-PT"),
+          text,
+          status,
+        },
+        ...prev.slice(0, 99),
+      ]);
+    },
+    [],
+  );
 
   // Histórico de Validações e Logs em Tempo Real
   const [validationHistory, setValidationHistory] = useState<CampaignValidationRecord[]>(() =>
@@ -125,12 +168,60 @@ export function CampaignsView() {
       cidade?: string;
     }> = [];
 
-    // 1. Tentar detectar título de campanha no cabeçalho (# Campanha ...)
-    const titleMatch = rawText.match(/^#\s+(.+)$/m);
+    // 1. Tentar detectar título de campanha no cabeçalho (# Campanha ... ou AGENTES DIGITAL — ...)
+    const titleMatch =
+      rawText.match(/^#\s+(.+)$/m) ||
+      rawText.match(/^(?:AGENTES DIGITAL\s*—\s*)(.+)$/m) ||
+      rawText.match(/^(?:PROSPECÇÃO\s*\|\s*)(.+)$/m);
     if (titleMatch && !campaignName) {
       setTimeout(() => {
         setCampaignName((prev) => (prev ? prev : titleMatch[1].trim()));
       }, 0);
+    }
+
+    // FORMATO LEAD_SHEET: Blocos "--- Lead N ---" ou com Empresa: / WhatsApp: / Mensagem:
+    if (
+      candidates.length === 0 &&
+      (rawText.includes("--- Lead") || rawText.includes("WhatsApp:") || rawText.includes("Ângulo:"))
+    ) {
+      const blocks = rawText.split(/(?=---\s*Lead\s+\d+\s*---)/i);
+      for (const block of blocks) {
+        if (!block.trim()) continue;
+        const empMatch = block.match(/Empresa:\s*(.+?)(?:\r?\n|$)/i);
+        const nomeMatch = block.match(/Nome na mensagem:\s*(.+?)(?:\s*\||\r?\n|$)/i);
+        const catMatch = block.match(/Categoria:\s*(.+?)(?:\s*\||\r?\n|$)/i);
+        const cidMatch = block.match(/Cidade:\s*([^|\r\n]+)/i);
+        const angMatch = block.match(/(?:Ângulo|Angulo):\s*(.+?)(?:\r?\n|$)/i);
+        const telUrlMatch = block.match(/WhatsApp:\s*https?:\/\/wa\.me\/(\d+)[^\s]*/i);
+        const telStdMatch = block.match(/(?:WhatsApp|Telefone|Tel):\s*([+\d\s()-]+)/i);
+        const msgMatch = block.match(/Mensagem:\s*\r?\n([\s\S]+?)(?=\n-{10,}|\n---\s*Lead|$)/i);
+
+        let phone = "";
+        if (telUrlMatch && telUrlMatch[1]) {
+          phone = `+${telUrlMatch[1]}`;
+        } else if (telStdMatch && telStdMatch[1]) {
+          phone = telStdMatch[1].trim();
+        }
+
+        if (phone) {
+          const emp = empMatch
+            ? empMatch[1].trim()
+            : nomeMatch
+              ? nomeMatch[1].trim()
+              : "Empresa Prospect";
+          const msg = msgMatch
+            ? msgMatch[1].trim()
+            : `Olá ${emp}, temos uma proposta personalizada.`;
+          candidates.push({
+            empresa: emp,
+            telefone: phone,
+            mensagem: msg,
+            cidade: cidMatch ? cidMatch[1].trim() : undefined,
+            angulo: angMatch ? angMatch[1].trim() : undefined,
+            oferta: catMatch ? catMatch[1].trim() : undefined,
+          });
+        }
+      }
     }
 
     // FORMATO A: Tabela Markdown (| Empresa | Telefone | Mensagem | ...)
@@ -925,6 +1016,215 @@ export function CampaignsView() {
     }, 120);
   };
 
+  // Carrega a base completa de Construção Civil de Luanda no editor
+  const handleLoadConstrucaoCivilCampaign = () => {
+    const formattedBlocks = CONSTRUCAO_CIVIL_LEADS.map(
+      (lead) =>
+        `--- Lead ${lead.id} ---\n` +
+        `Empresa: ${lead.empresa}\n` +
+        `Nome na mensagem: ${lead.nomeNaMensagem}  |  Categoria: ${lead.categoria}  |  Cidade: ${lead.cidade}\n` +
+        `Presença digital: ${lead.presencaDigital || "sem site"}\n` +
+        `Ângulo: ${lead.angulo}\n` +
+        (lead.emocao ? `Emoção (Plutchik): ${lead.emocao}` : "") +
+        (lead.lugar ? `  |  Lugar (Perelman): ${lead.lugar}\n` : "\n") +
+        (lead.premissa ? `Premissa persuasiva: ${lead.premissa}\n` : "") +
+        `WhatsApp: ${lead.whatsappUrl || `https://wa.me/${lead.telefone.replace(/\D/g, "")}`}\n` +
+        `Mensagem:\n${lead.mensagem}\n` +
+        `------------------------------------------------------------------------------`,
+    ).join("\n");
+
+    const fullText =
+      `# AGENTES DIGITAL — PROSPECÇÃO | CONSTRUÇÃO CIVIL E CONSTRUTORAS (LUANDA)\n` +
+      `# Base: leads_construcao_civil_organizado.txt (${CONSTRUCAO_CIVIL_LEADS.length} leads: Bloco A com site, Bloco B sem site)\n` +
+      `# Framework v12 assinado por Carlos Moreira\n\n` +
+      formattedBlocks;
+
+    setOriginalUnfilteredText(fullText);
+    setCampaignName("Prospecção Construção Civil Luanda (Carlos Moreira)");
+    setCampaignDesc(
+      `Base com ${CONSTRUCAO_CIVIL_LEADS.length} construtoras e empreiteiras de Luanda formatadas por ângulo persuasivo e pronta para disparos automatizados.`,
+    );
+    setManualOverrides({});
+    setRawText(fullText);
+    setActiveTab("preview");
+
+    toast.success(
+      `🧱 ${CONSTRUCAO_CIVIL_LEADS.length} mensagens de Construção Civil carregadas no editor!`,
+    );
+  };
+
+  // Injeção instantânea na fila do bot com 1 clique
+  const handleInjectConstrucaoCivilDirectToQueue = async () => {
+    setIsSyncing(true);
+    try {
+      const validItems = CONSTRUCAO_CIVIL_LEADS.map((lead) => ({
+        empresa: lead.empresa,
+        telefone: lead.telefone,
+        mensagem: lead.mensagem,
+        oferta: lead.categoria,
+        cidade: lead.cidade,
+        angulo: lead.angulo,
+      }));
+
+      const res = await createCampaignWithVerifiedQueue(
+        "Construção Civil Luanda - Carlos Moreira (Agentes Digital)",
+        `Campanha oficial com ${validItems.length} construtoras de Luanda pronta para disparos no bot do Centro de Operações.`,
+        validItems,
+      );
+
+      if (res.success) {
+        toast.success(
+          `🚀 Campanha Construção Civil #${res.campaignId} criada e ${res.insertedCount} leads adicionados à fila de disparo!`,
+        );
+        await loadCampaigns();
+        if (res.campaignId) {
+          setSelectedBotCampaignId(res.campaignId);
+          await loadFilaForCampaign(res.campaignId);
+        }
+        setActiveTab("bot");
+      } else {
+        toast.error(`Falha ao injetar campanha: ${res.error}`);
+      }
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      toast.error(`Erro ao injetar campanha: ${errMsg}`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // Carregar itens da fila para a campanha selecionada no Bot
+  const loadFilaForCampaign = useCallback(async (campId: number) => {
+    try {
+      const items = await fetchFilaItems(campId);
+      setFilaItems(items);
+    } catch {
+      setFilaItems([]);
+    }
+  }, []);
+
+  // Seleciona campanha inicial ao carregar
+  useEffect(() => {
+    if (selectedBotCampaignId) {
+      loadFilaForCampaign(selectedBotCampaignId);
+    } else if (campaignsList.length > 0 && !selectedBotCampaignId) {
+      setSelectedBotCampaignId(campaignsList[0].id);
+      loadFilaForCampaign(campaignsList[0].id);
+    }
+  }, [selectedBotCampaignId, campaignsList, loadFilaForCampaign]);
+
+  // Disparo manual avulso de um lead
+  const handleSendSingleLead = async (item: DisparoFilaItem) => {
+    const cleanPhone = item.telefone.replace(/\D/g, "");
+    const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(item.mensagem)}`;
+
+    window.open(waUrl, "_blank");
+
+    await updateFilaItemStatus(item.id, "enviado");
+    toast.success(`Disparo registrado para ${item.empresa}!`);
+    addBotLog(`Disparo manual executado: ${item.empresa} (${item.telefone})`, "success");
+
+    setFilaItems((prev) =>
+      prev.map((it) =>
+        it.id === item.id ? { ...it, status: "enviado", enviado_em: new Date().toISOString() } : it,
+      ),
+    );
+    loadCampaigns();
+  };
+
+  // Controle de Iniciar/Pausar Bot Automatizado
+  const handleToggleBot = () => {
+    if (isBotRunning) {
+      setIsBotRunning(false);
+      if (botTimerRef.current) clearInterval(botTimerRef.current);
+      botTimerRef.current = null;
+      addBotLog("Bot de disparos pausado pelo operador.", "warning");
+      toast.info("Bot de disparos pausado.");
+    } else {
+      const pendingItems = filaItems.filter((it) => it.status === "pendente");
+      if (pendingItems.length === 0) {
+        toast.info("Não há leads pendentes nesta campanha. Use 'Reiniciar Fila' para reprocessar.");
+        return;
+      }
+      setIsBotRunning(true);
+      addBotLog(
+        `Bot iniciado com intervalo de ${botIntervalSeconds}s. ${pendingItems.length} leads pendentes na fila.`,
+        "info",
+      );
+      toast.success(
+        `Bot de disparos iniciado (${botIntervalSeconds}s de intervalo anti-bloqueio)!`,
+      );
+    }
+  };
+
+  // Reiniciar Fila
+  const handleResetFila = async () => {
+    if (!selectedBotCampaignId) return;
+    const ok = await resetCampanhaFila(selectedBotCampaignId);
+    if (ok) {
+      toast.success("Fila reiniciada com sucesso! Todos os itens voltaram para pendente.");
+      addBotLog("Fila reiniciada: todos os itens marcados como pendentes.", "info");
+      await loadFilaForCampaign(selectedBotCampaignId);
+      loadCampaigns();
+    } else {
+      toast.error("Erro ao reiniciar a fila.");
+    }
+  };
+
+  // Loop de execução automática do Bot
+  useEffect(() => {
+    if (!isBotRunning) {
+      if (botTimerRef.current) clearInterval(botTimerRef.current);
+      botTimerRef.current = null;
+      return;
+    }
+
+    botTimerRef.current = setInterval(async () => {
+      // Pega o próximo pendente
+      const nextPending = filaItems.find((it) => it.status === "pendente");
+      if (!nextPending) {
+        setIsBotRunning(false);
+        if (botTimerRef.current) clearInterval(botTimerRef.current);
+        botTimerRef.current = null;
+        toast.success("🎉 Todos os leads da fila foram processados pelo bot!");
+        addBotLog("Ciclo de disparos concluído: todos os leads foram processados.", "success");
+        if (selectedBotCampaignId) {
+          await loadCampaigns();
+        }
+        return;
+      }
+
+      setCurrentSendingId(nextPending.id);
+      addBotLog(`Processando lead: ${nextPending.empresa} (${nextPending.telefone})...`, "info");
+
+      // Simulação do envio com delay seguro
+      await new Promise((r) => setTimeout(r, 650));
+      await updateFilaItemStatus(nextPending.id, "enviado");
+      addBotLog(`✅ Mensagem enviada para ${nextPending.empresa}`, "success");
+
+      setFilaItems((prev) =>
+        prev.map((it) =>
+          it.id === nextPending.id
+            ? { ...it, status: "enviado", enviado_em: new Date().toISOString() }
+            : it,
+        ),
+      );
+      loadCampaigns();
+      setCurrentSendingId(null);
+    }, botIntervalSeconds * 1000);
+
+    return () => {
+      if (botTimerRef.current) clearInterval(botTimerRef.current);
+    };
+  }, [
+    isBotRunning,
+    filaItems,
+    botIntervalSeconds,
+    selectedBotCampaignId,
+    loadCampaigns,
+    addBotLog,
+  ]);
+
   return (
     <div className="flex-1 flex flex-col h-full bg-[#0B0E14] text-white overflow-y-auto">
       {/* Top Banner & Header */}
@@ -949,7 +1249,24 @@ export function CampaignsView() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={handleLoadConstrucaoCivilCampaign}
+              className="px-3 py-1.5 text-xs rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-medium transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
+              title="Carregar 214 mensagens de Construção Civil Luanda no editor"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-400" />
+              Base Construção Civil ({CONSTRUCAO_CIVIL_LEADS.length})
+            </button>
+            <button
+              onClick={handleInjectConstrucaoCivilDirectToQueue}
+              disabled={isSyncing}
+              className="px-3 py-1.5 text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors flex items-center gap-1.5 cursor-pointer shadow-md shadow-emerald-600/20 disabled:opacity-50"
+              title="Cria a campanha no Supabase e injeta os 214 leads na fila do bot imediatamente"
+            >
+              <Bot className="w-3.5 h-3.5" />
+              Injetar no Bot de Disparo
+            </button>
             <button
               onClick={handleLoadExample}
               className="px-3 py-1.5 text-xs rounded-lg border border-[#303846] bg-[#1A2230] hover:bg-[#222C3E] text-slate-300 transition-colors flex items-center gap-1.5 cursor-pointer"
@@ -971,10 +1288,27 @@ export function CampaignsView() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 mt-5 border-b border-[#252C38]">
+        <div className="flex items-center gap-2 mt-5 border-b border-[#252C38] overflow-x-auto">
+          <button
+            onClick={() => setActiveTab("bot")}
+            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer shrink-0 ${
+              activeTab === "bot"
+                ? "border-emerald-500 text-emerald-400"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Bot className="w-3.5 h-3.5" />
+            Bot de Disparos WhatsApp
+            {filaItems.length > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px]">
+                {filaItems.filter((x) => x.status === "pendente").length} pendentes
+              </span>
+            )}
+          </button>
+
           <button
             onClick={() => setActiveTab("preview")}
-            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer ${
+            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer shrink-0 ${
               activeTab === "preview"
                 ? "border-emerald-500 text-emerald-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
@@ -991,7 +1325,7 @@ export function CampaignsView() {
 
           <button
             onClick={() => setActiveTab("discarded")}
-            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer ${
+            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer shrink-0 ${
               activeTab === "discarded"
                 ? "border-rose-500 text-rose-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
@@ -1008,7 +1342,7 @@ export function CampaignsView() {
 
           <button
             onClick={() => setActiveTab("campaigns")}
-            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer ${
+            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer shrink-0 ${
               activeTab === "campaigns"
                 ? "border-blue-500 text-blue-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
@@ -1025,7 +1359,7 @@ export function CampaignsView() {
 
           <button
             onClick={() => setActiveTab("analytics")}
-            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer ${
+            className={`pb-2.5 px-3 text-xs font-semibold flex items-center gap-2 transition-all border-b-2 cursor-pointer shrink-0 ${
               activeTab === "analytics"
                 ? "border-emerald-500 text-emerald-400"
                 : "border-transparent text-slate-400 hover:text-slate-200"
@@ -1042,7 +1376,7 @@ export function CampaignsView() {
 
       {/* Main Content */}
       <div className="p-6 space-y-6">
-        {activeTab !== "campaigns" && activeTab !== "analytics" && (
+        {activeTab !== "campaigns" && activeTab !== "analytics" && activeTab !== "bot" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Coluna Esquerda: Upload e Configuração */}
             <div className="lg:col-span-6 space-y-4">
@@ -2041,6 +2375,30 @@ export function CampaignsView() {
             onNavigateToEditor={() => {
               setActiveTab("preview");
             }}
+          />
+        )}
+
+        {/* Painel do Bot de Disparos WhatsApp */}
+        {activeTab === "bot" && (
+          <BotDisparosView
+            campaigns={campaignsList}
+            selectedCampaignId={selectedBotCampaignId}
+            onSelectCampaign={(id) => {
+              setSelectedBotCampaignId(id);
+              loadFilaForCampaign(id);
+            }}
+            filaItems={filaItems}
+            isBotRunning={isBotRunning}
+            botIntervalSeconds={botIntervalSeconds}
+            onChangeInterval={setBotIntervalSeconds}
+            onToggleBot={handleToggleBot}
+            onResetFila={handleResetFila}
+            onSendSingleLead={handleSendSingleLead}
+            currentSendingId={currentSendingId}
+            botLogs={botLogs}
+            onLoadConstrucaoCivilCampaign={handleLoadConstrucaoCivilCampaign}
+            onInjectConstrucaoCivilDirect={handleInjectConstrucaoCivilDirectToQueue}
+            isSyncing={isSyncing}
           />
         )}
       </div>

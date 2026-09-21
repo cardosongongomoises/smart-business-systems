@@ -800,26 +800,38 @@ export function filterMessagesContentAuto(
     };
   }
 
-  // 2. VERIFICAR SE O FORMATO É EM BLOCOS (### Empresa ... Telefone: ... Mensagem: ...)
+  // 2. VERIFICAR SE O FORMATO É EM BLOCOS (--- Lead N --- ou ### Empresa ... Telefone: ... Mensagem: ...)
   if (
+    content.includes("--- Lead") ||
     content.includes("###") ||
     content.toLowerCase().includes("telefone:") ||
     content.toLowerCase().includes("whatsapp:")
   ) {
-    const blocks = content.split(/(?=###|\n##\s+)/);
+    const blocks = content.split(/(?=---\s*Lead\s+\d+\s*---|###|\n##\s+)/i);
     const validBlocks: string[] = [];
 
     for (const block of blocks) {
       if (!block.trim()) continue;
-      const telMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s()-]+)/i);
-      const nameMatch = block.match(/#{2,3}\s+(.+?)(?:\r?\n|$)/);
-      const msgMatch = block.match(
-        /(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i,
-      );
+      const telUrlMatch = block.match(/WhatsApp:\s*https?:\/\/wa\.me\/(\d+)[^\s]*/i);
+      const telStdMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s()-]+)/i);
+      const nameMatch =
+        block.match(/Empresa:\s*(.+?)(?:\r?\n|$)/i) ||
+        block.match(/Nome na mensagem:\s*(.+?)(?:\s*\||\r?\n|$)/i) ||
+        block.match(/#{2,3}\s+(.+?)(?:\r?\n|$)/);
+      const msgMatch =
+        block.match(/Mensagem:\s*\r?\n([\s\S]+?)(?=\n-{10,}|\n---\s*Lead|$)/i) ||
+        block.match(/(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i);
 
-      if (telMatch && telMatch[1]) {
+      let extractedTel = "";
+      if (telUrlMatch && telUrlMatch[1]) {
+        extractedTel = `+${telUrlMatch[1]}`;
+      } else if (telStdMatch && telStdMatch[1]) {
+        extractedTel = telStdMatch[1].trim();
+      }
+
+      if (extractedTel) {
         const emp = nameMatch ? nameMatch[1].trim() : "Empresa";
-        const tel = telMatch[1].trim();
+        const tel = extractedTel;
         const msg = msgMatch ? msgMatch[1].trim() : "";
 
         const verification = validateCampaignWhatsAppNumber(tel);

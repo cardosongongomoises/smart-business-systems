@@ -979,3 +979,136 @@ export function subscribeToDisparosRealtime(onUpdate: () => void): () => void {
     supabase.removeChannel(channel);
   };
 }
+
+/**
+ * Busca itens da fila de disparo para processamento pelo bot
+ */
+export async function fetchFilaItems(campanhaId?: number): Promise<DisparoFilaItem[]> {
+  if (!isSupabaseConfigured()) {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_FILA_KEY);
+      if (!raw) return [];
+      const items: DisparoFilaItem[] = JSON.parse(raw);
+      if (!Array.isArray(items)) return [];
+      if (campanhaId) {
+        return items.filter((it) => it.campanha_id === campanhaId);
+      }
+      return items;
+    } catch {
+      return [];
+    }
+  }
+
+  try {
+    let query = supabase.from("disparo_fila").select("*").order("id", { ascending: true });
+    if (campanhaId) {
+      query = query.eq("campanha_id", campanhaId);
+    }
+    const { data, error } = await query;
+    if (error || !data) return [];
+    return data as DisparoFilaItem[];
+  } catch (err) {
+    console.error("[FILA] Erro ao buscar itens da fila:", err);
+    return [];
+  }
+}
+
+/**
+ * Atualiza o status de um item na fila (ex: 'enviado', 'falhou')
+ */
+export async function updateFilaItemStatus(
+  itemId: number,
+  status: "pendente" | "enviado" | "falhou",
+  errorMsg?: string,
+): Promise<boolean> {
+  if (!isSupabaseConfigured()) {
+    if (typeof window === "undefined") return true;
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_FILA_KEY);
+      if (!raw) return true;
+      const items: DisparoFilaItem[] = JSON.parse(raw);
+      let targetCampId: number | undefined;
+      const updated = items.map((it) => {
+        if (it.id === itemId) {
+          targetCampId = it.campanha_id;
+          return {
+            ...it,
+            status,
+            enviado_em: status === "enviado" ? new Date().toISOString() : it.enviado_em,
+            erro: errorMsg || null,
+          };
+        }
+        return it;
+      });
+      localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify(updated));
+
+      // Atualiza também os stats da campanha no cache local
+      if (targetCampId) {
+        const rawCamp = localStorage.getItem(LOCAL_STORAGE_CAMPANHAS_KEY);
+        if (rawCamp) {
+          const camps: DisparoCampanha[] = JSON.parse(rawCamp);
+          const campItems = updated.filter((x) => x.campanha_id === targetCampId);
+          const newStats = {
+            total: campItems.length,
+            pendente: campItems.filter((x) => x.status === "pendente").length,
+            enviado: campItems.filter((x) => x.status === "enviado").length,
+            falhou: campItems.filter((x) => x.status === "falhou").length,
+          };
+          const updatedCamps = camps.map((c) =>
+            c.id === targetCampId ? { ...c, stats: newStats } : c,
+          );
+          localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(updatedCamps));
+        }
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  try {
+    const updatePayload: Record<string, unknown> = { status };
+    if (status === "enviado") {
+      updatePayload.enviado_em = new Date().toISOString();
+    }
+    if (errorMsg) {
+      updatePayload.erro = errorMsg;
+    }
+    const { error } = await supabase.from("disparo_fila").update(updatePayload).eq("id", itemId);
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Reinicia a fila de uma campanha para o estado 'pendente'
+ */
+export async function resetCampanhaFila(campanhaId: number): Promise<boolean> {
+  if (!isSupabaseConfigured()) {
+    if (typeof window === "undefined") return true;
+    try {
+      const raw = localStorage.getItem(LOCAL_STORAGE_FILA_KEY);
+      if (!raw) return true;
+      const items: DisparoFilaItem[] = JSON.parse(raw);
+      const updated = items.map((it) =>
+        it.campanha_id === campanhaId ? { ...it, status: "pendente" as const, erro: null } : it,
+      );
+      localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify(updated));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  try {
+    const { error } = await supabase
+      .from("disparo_fila")
+      .update({ status: "pendente", erro: null })
+      .eq("campanha_id", campanhaId);
+    return !error;
+  } catch {
+    return false;
+  }
+}

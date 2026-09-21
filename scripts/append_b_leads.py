@@ -1,0 +1,159 @@
+# Python helper to append leads to scripts/raw_b_full.txt
+import sys
+
+leads_101_to_150 = """
+--- Lead 101 ---
+Empresa: KIYAMATA - ARQUITECTURA E CONSTRUÇÃO
+Nome na mensagem: KIYAMATA  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: confianca_antes_da_conversa — Confiança antes da conversa (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Antes de qualquer conversa, quem precisa de um projecto de arquitectura decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+WhatsApp: https://wa.me/244944310962?text=Ol%C3%A1%2C%20falo%20com%20KIYAMATA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de qualquer conversa, quem precisa de um projecto de arquitectura decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+Uma boa impressão antes da primeira chamada poupa tempo a todos.
+Tenho uma ideia para que a KIYAMATA passe nesse primeiro teste de confiança.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 102 ---
+Empresa: ARQUITETURA.AO | GAMA CONSTRUÇÃO
+Nome na mensagem: GAMA CONSTRUÇÃO  |  Categoria: Construtor Imobiliário  |  Cidade: Talatona
+Presença digital: sem site próprio (página em rede social: https://www.instagram.com/p/CNxCtICMYAk/?utm_medium=copy_link)
+Ângulo: sede_digital — Sede digital (camada 5)
+Emoção (Plutchik): Confiança (reconhecimento)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: A GAMA CONSTRUÇÃO pode ser encontrada nas redes sociais, e as redes ajudam a descobrir. Falta o lugar central onde alguém pode conhecer de facto a empresa.
+WhatsApp: https://wa.me/244933888000?text=Ol%C3%A1%2C%20falo%20com%20GAMA%20CONSTRU%C3%87%C3%83O%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A GAMA CONSTRUÇÃO pode ser encontrada nas redes sociais, e as redes ajudam a descobrir. Falta o lugar central onde alguém pode conhecer de facto a empresa.
+Manter as redes actualizadas dá trabalho, e esse trabalho merece um lugar próprio.
+Tenho uma ideia para esse lugar.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 103 ---
+Empresa: triaga engenharia e construção civil
+Nome na mensagem: Triaga  |  Categoria: Construtor Imobiliário  |  Cidade: Talatona
+Presença digital: sem site
+Ângulo: prova_de_existencia — Prova de existência (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quando alguém encontra uma empresa que ainda não conhece, tenta confirmar primeiro se há uma presença séria por trás do nome.
+WhatsApp: https://wa.me/244945361168?text=Ol%C3%A1%2C%20falo%20com%20Triaga%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém encontra uma empresa que ainda não conhece, tenta confirmar primeiro se há uma presença séria por trás do nome.
+Uma empresa séria quer que essa confirmação seja fácil.
+Sem site, essa confirmação da Triaga fica limitada ao que o Google mostra. Tenho uma ideia para a dar por inteiro.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 104 ---
+Empresa: Telhabel Construções Angola - Estaleiro 1
+Nome na mensagem: Telhabel Construções Angola  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: intencao_de_pesquisa — Intenção de pesquisa (camada 1)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Nem toda a pesquisa de um potencial cliente significa o mesmo: uma pessoa pode estar só a ver opções, outra já procura exactamente o serviço que prestam.
+WhatsApp: https://wa.me/244928446851?text=Ol%C3%A1%2C%20falo%20com%20Telhabel%20Constru%C3%A7%C3%B5es%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Nem toda a pesquisa de um potencial cliente significa o mesmo: uma pessoa pode estar só a ver opções, outra já procura exactamente o serviço que prestam.
+Reconhecer a diferença é metade do trabalho de bem servir.
+Cada uma precisa de uma resposta diferente quando chega à Telhabel Construções Angola. Tenho uma ideia para as duas.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 105 ---
+Empresa: Guerrito Ferreira Construção Civil
+Nome na mensagem: Guerrito Ferreira  |  Categoria: Prestador de serviços de construção civil  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: confirmacao_antes_do_contacto — Confirmação antes do contacto (camada 3)
+Emoção (Plutchik): Apreensão leve (do cliente)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Às vezes o cliente já encontrou a empresa e sabe o que procura. Mas, antes de escrever, resta uma pergunta: "será que é mesmo esta empresa?"
+WhatsApp: https://wa.me/244940377929?text=Ol%C3%A1%2C%20falo%20com%20Guerrito%20Ferreira%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Às vezes o cliente já encontrou a empresa e sabe o que procura. Mas, antes de escrever, resta uma pergunta: "será que é mesmo esta empresa?"
+É uma dúvida pequena que pede uma resposta rápida.
+Tenho uma ideia para responder a essa dúvida sobre a Guerrito Ferreira antes da mensagem.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 106 ---
+Empresa: Grupo Tecnosas Angola Engenharia e Construção
+Nome na mensagem: Grupo Tecnosas Angola  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: transparencia — Transparência (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Escolher serviços de construção civil é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+WhatsApp: https://wa.me/244923090602?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Tecnosas%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Escolher serviços de construção civil é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+Respostas claras são uma forma de respeito pelo cliente.
+Tenho uma ideia para tornar fáceis de confirmar as informações que mais pesam na escolha do Grupo Tecnosas Angola.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 107 ---
+Empresa: AFIR - Construção e Engenharia, LDA
+Nome na mensagem: AFIR  |  Categoria: Construtora  |  Cidade: Belas
+Presença digital: sem site
+Ângulo: pergunta_que_ninguem_fez — Pergunta que ninguém fez (camada 1)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Uma pergunta diferente: se amanhã alguém que nunca ouviu falar da AFIR precisar exactamente do que vocês fazem, como chega até vocês?
+WhatsApp: https://wa.me/244222787126?text=Ol%C3%A1%2C%20falo%20com%20AFIR%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Uma pergunta diferente: se amanhã alguém que nunca ouviu falar da AFIR precisar exactamente do que vocês fazem, como chega até vocês?
+É daquelas perguntas que ficam para depois quando o trabalho aperta.
+Ainda não sei a resposta para a AFIR, e tenho um método simples para a encontrar.
+Posso mostrar-lhe como?
+------------------------------------------------------------------------------
+--- Lead 108 ---
+Empresa: Dellma Engenharia Civil
+Nome na mensagem: Dellma Engenharia Civil  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: clareza_de_posicionamento — Clareza de posicionamento (camada 2)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quando alguém encontra a Dellma Engenharia Civil pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de engenharia?
+WhatsApp: https://wa.me/244993915171?text=Ol%C3%A1%2C%20falo%20com%20Dellma%20Engenharia%20Civil%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém encontra a Dellma Engenharia Civil pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de engenharia?
+Quem faz projectos e engenharia sabe que o trabalho fala, mas nem sempre chega a quem decide.
+Tenho uma ideia para tornar essa razão evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 109 ---
+Empresa: Kronos Construções
+Nome na mensagem: Kronos Construções  |  Categoria: Empresa de engenharia civil  |  Cidade: Cacuaco
+Presença digital: sem site
+Ângulo: confianca_antes_da_conversa — Confiança antes da conversa (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Antes de qualquer conversa, quem precisa de um projecto ou de engenharia decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+WhatsApp: https://wa.me/244925194590?text=Ol%C3%A1%2C%20falo%20com%20Kronos%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de qualquer conversa, quem precisa de um projecto ou de engenharia decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+Uma boa impressão antes da primeira chamada poupa tempo a todos.
+Tenho uma ideia para que a Kronos Construções passe nesse primeiro teste de confiança.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 110 ---
+Empresa: ODYAMA - ARQUITECTURA & ENGENHARIA CIVIL
+Nome na mensagem: ODYAMA  |  Categoria: Arquiteto  |  Cidade: Luanda
+Presença digital: sem site
+Ângulo: transparencia — Transparência (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Escolher serviços de arquitectura e construção é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+WhatsApp: https://wa.me/244933188478?text=Ol%C3%A1%2C%20falo%20com%20ODYAMA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Escolher serviços de arquitectura e construção é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+Respostas claras são uma forma de respeito pelo cliente.
+Tenho uma ideia para tornar fáceis de confirmar as informações que mais pesam na escolha da ODYAMA.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+"""
+
+with open("scripts/raw_b_full.txt", "a", encoding="utf-8") as f:
+    f.write(leads_101_to_150.strip() + "\n")
+print("Appended 101 to 110")

@@ -1,0 +1,1352 @@
+# Import script for Bloco A (Leads 1 to 86)
+import json
+import re
+
+raw_bloco_a = """
+--- Lead 1 ---
+Empresa: TEFNA - Engenharia e Construção Civil
+Nome na mensagem: TEFNA  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.tefna.com/)
+Ângulo: telemovel — Telemóvel (camada 1)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Hoje, quem precisa de uma obra pesquisa no telemóvel, entre outras tarefas: encontra a TEFNA, percebe o que fazem e toca no WhatsApp.
+WhatsApp: https://wa.me/244922198084?text=Ol%C3%A1%2C%20falo%20com%20TEFNA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Hoje, quem precisa de uma obra pesquisa no telemóvel, entre outras tarefas: encontra a TEFNA, percebe o que fazem e toca no WhatsApp.
+Quem gere obras conhece o valor do tempo, e o cliente também não quer perder o dele.
+Cada passo a mais nesse caminho é uma pessoa que pode desistir e ligar a outra empresa. Tenho uma ideia para tornar esse caminho curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 2 ---
+Empresa: Zeloforte-Materiais de Construção em Luanda, Angola
+Nome na mensagem: Zeloforte  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://zeloforte.ao/)
+Ângulo: telemovel — Telemóvel (camada 1)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: Hoje, quem precisa de materiais de construção pesquisa no telemóvel, entre outras tarefas: encontra a Zeloforte, percebe o que fazem e toca no WhatsApp.
+WhatsApp: https://wa.me/244943039006?text=Ol%C3%A1%2C%20falo%20com%20Zeloforte%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Hoje, quem precisa de materiais de construção pesquisa no telemóvel, entre outras tarefas: encontra a Zeloforte, percebe o que fazem e toca no WhatsApp.
+Quem fornece materiais de construção conhece o valor do tempo, e o cliente também não quer perder o dele.
+Cada passo a mais nesse caminho é uma pessoa que pode desistir e ligar a outra empresa. Tenho uma ideia para tornar esse caminho curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 3 ---
+Empresa: Muhongo Ebo Construção Civil
+Nome na mensagem: Muhongo Ebo Construção Civil  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.muhongo-ebo.ejm.ao/)
+Ângulo: ultimo_clique — Último clique (camada 3)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vou olhar para o caminho da Muhongo Ebo Construção Civil a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+WhatsApp: https://wa.me/244947790898?text=Ol%C3%A1%2C%20falo%20com%20Muhongo%20Ebo%20Constru%C3%A7%C3%A3o%20Civil%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vou olhar para o caminho da Muhongo Ebo Construção Civil a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+Quem gere obras conhece o valor de um último passo bem dado.
+Esse pequeno percurso decide muitos contactos. Tenho uma ideia para o tornar mais curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 4 ---
+Empresa: 7 Cunhas - Construtora e Obras Publicas, Lda
+Nome na mensagem: 7 Cunhas  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.7cunhas.com/)
+Ângulo: concorrencia — Concorrência (camada 1)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em Luanda há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+WhatsApp: https://wa.me/244926492658?text=Ol%C3%A1%2C%20falo%20com%207%20Cunhas%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em Luanda há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+Ser escolhido não depende só de trabalhar bem; depende também de ser encontrado à primeira.
+Para uma empresa com o vosso trabalho, o que decide é estar entre as primeiras opções consideradas. Tenho uma ideia para colocar a 7 Cunhas nesse grupo.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 5 ---
+Empresa: LINTEL – ENGENHARIA E CONSTRUÇÃO (ENGINEERING AND CONSTRUCTION)
+Nome na mensagem: LINTEL  |  Categoria: Construtora  |  Cidade: Talatona
+Presença digital: site próprio (http://lintel.ao/)
+Ângulo: contacto_qualificado — Contacto qualificado (camada 4)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Mais importante do que gerar contactos é fazer com que a pessoa chegue à conversa a perceber o básico.
+WhatsApp: https://wa.me/244940451377?text=Ol%C3%A1%2C%20falo%20com%20LINTEL%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Mais importante do que gerar contactos é fazer com que a pessoa chegue à conversa a perceber o básico.
+O tempo da equipa vale mais aplicado onde é preciso.
+Tenho uma ideia para preparar assim os contactos da LINTEL.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 6 ---
+Empresa: Construção e reforma e projetos de arquitetura e engenharia em Talatona, belas, Luanda, Aresta viva
+Nome na mensagem: Aresta viva  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://643268952ae31.site123.me/)
+Ângulo: especializacao — Especialização (camada 2)
+Emoção (Plutchik): Confiança (admiração leve)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quem precisa de um projecto de arquitectura pela primeira vez precisa de perceber depressa no que a Aresta viva é especialista.
+WhatsApp: https://wa.me/244936134835?text=Ol%C3%A1%2C%20falo%20com%20Aresta%20viva%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quem precisa de um projecto de arquitectura pela primeira vez precisa de perceber depressa no que a Aresta viva é especialista.
+Especialização é o que dá segurança a quem decide, e merece ser dita com clareza.
+Tenho uma ideia para tornar essa especialização evidente logo no primeiro contacto digital.
+Posso mostrar-lhe como?
+------------------------------------------------------------------------------
+--- Lead 7 ---
+Empresa: Kamutra Solurions, Lda.
+Nome na mensagem: Kamutra Solurions  |  Categoria: Construtora  |  Cidade: Belas
+Presença digital: site próprio (https://www.kamutrasolutions.co.ao/)
+Ângulo: concorrencia — Concorrência (camada 1)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em Belas há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+WhatsApp: https://wa.me/244921193563?text=Ol%C3%A1%2C%20falo%20com%20Kamutra%20Solurions%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em Belas há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+Ser escolhido não depende só de trabalhar bem; depende também de ser encontrado à primeira.
+Para uma empresa com o vosso trabalho, o que decide é estar entre as primeiras opções consideradas. Tenho uma ideia para colocar a Kamutra Solurions nesse grupo.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 8 ---
+Empresa: Agrobal Lda
+Nome na mensagem: Agrobal  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.agrobal.com/)
+Ângulo: caminho_do_cliente — Caminho do cliente (camada 1)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Antes de contactar uma empresa como a Agrobal, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+WhatsApp: https://wa.me/244222013014?text=Ol%C3%A1%2C%20falo%20com%20Agrobal%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de contactar uma empresa como a Agrobal, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+Sei que quem gere obras prefere o caminho directo.
+Cada uma dessas etapas pode ser mais curta. Tenho uma forma de encurtar o caminho até à vossa primeira mensagem.
+Posso mostrar-lhe por onde começaria?
+------------------------------------------------------------------------------
+--- Lead 9 ---
+Empresa: MARTIFER ANGOLA
+Nome na mensagem: MARTIFER ANGOLA  |  Categoria: Construtora  |  Cidade: Viana
+Presença digital: site próprio (http://www.martifer.com/)
+Ângulo: cliente_em_movimento — Cliente em movimento (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Alguém pode procurar a MARTIFER ANGOLA na rua, no trabalho ou a caminho de algum lugar em Viana, e quer encontrar, perceber e contactar sem complicações.
+WhatsApp: https://wa.me/244923551797?text=Ol%C3%A1%2C%20falo%20com%20MARTIFER%20ANGOLA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Alguém pode procurar a MARTIFER ANGOLA na rua, no trabalho ou a caminho de algum lugar em Viana, e quer encontrar, perceber e contactar sem complicações.
+Em Viana, ninguém tem tempo para caminhos complicados.
+Tenho uma ideia para simplificar esse caminho.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 10 ---
+Empresa: Construtora Graça Da Silva
+Nome na mensagem: Construtora Graça Da Silva  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.construtoragracadasilva.com/)
+Ângulo: cliente_que_volta — Cliente que volta (camada 3)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+WhatsApp: https://wa.me/244946324813?text=Ol%C3%A1%2C%20falo%20com%20Construtora%20Gra%C3%A7a%20Da%20Silva%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+Quem gere obras sabe que as melhores decisões pedem tempo.
+Por isso a presença da Construtora Graça Da Silva tem de servir também quem volta para confirmar a escolha. Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 11 ---
+Empresa: Omatapalo - Engenharia & Construção, S.A.
+Nome na mensagem: Omatapalo  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.omatapalo.com/)
+Ângulo: proximo_passo_claro — Próximo passo claro (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Depois de conhecer a Omatapalo, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+WhatsApp: https://wa.me/244934337822?text=Ol%C3%A1%2C%20falo%20com%20Omatapalo%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Depois de conhecer a Omatapalo, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+Um caminho claro é uma forma de cortesia com quem procura.
+Tenho uma ideia para que esse passo seja evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 12 ---
+Empresa: Lobenna
+Nome na mensagem: Lobenna  |  Categoria: Construtora de casas personalizadas  |  Cidade: Luanda
+Presença digital: site próprio (https://www.lobenna.com/)
+Ângulo: cliente_que_volta — Cliente que volta (camada 3)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+WhatsApp: https://wa.me/244925424203?text=Ol%C3%A1%2C%20falo%20com%20Lobenna%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+Quem gere obras sabe que as melhores decisões pedem tempo.
+Por isso a presença da Lobenna tem de servir também quem volta para confirmar a escolha. Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 13 ---
+Empresa: Edifício Sede Grupo Elevo Angola
+Nome na mensagem: Grupo Elevo Angola  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.elevogroup.com/)
+Ângulo: clareza_de_posicionamento — Clareza de posicionamento (camada 2)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quando alguém encontra o Grupo Elevo Angola pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de construção civil?
+WhatsApp: https://wa.me/244222430138?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Elevo%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém encontra o Grupo Elevo Angola pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de construção civil?
+Quem lidera um grupo empresarial sabe que o trabalho fala, mas nem sempre chega a quem decide.
+Tenho uma ideia para tornar essa razão evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 14 ---
+Empresa: NOV Engenharia e Construções
+Nome na mensagem: NOV Engenharia e Construções  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.gruponov.com/)
+Ângulo: cliente_em_movimento — Cliente em movimento (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Alguém pode procurar a NOV Engenharia e Construções na rua, no trabalho ou a caminho de algum lugar em Luanda, e quer encontrar, perceber e contactar sem complicações.
+WhatsApp: https://wa.me/244931678700?text=Ol%C3%A1%2C%20falo%20com%20NOV%20Engenharia%20e%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Alguém pode procurar a NOV Engenharia e Construções na rua, no trabalho ou a caminho de algum lugar em Luanda, e quer encontrar, perceber e contactar sem complicações.
+Em Luanda, ninguém tem tempo para caminhos complicados.
+Tenho uma ideia para simplificar esse caminho.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 15 ---
+Empresa: TELHABEL CONSTRUÇÕES ANGOLA SA
+Nome na mensagem: TELHABEL CONSTRUÇÕES ANGOLA  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.telhabel-angola.com/)
+Ângulo: vinte_quatro_horas — 24 horas (camada 1)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: A equipa da TELHABEL CONSTRUÇÕES ANGOLA não pode atender a qualquer hora, e ninguém devia ter de o fazer. Mas quem precisa de uma obra decide a qualquer hora.
+WhatsApp: https://wa.me/244222444273?text=Ol%C3%A1%2C%20falo%20com%20TELHABEL%20CONSTRU%C3%87%C3%95ES%20ANGOLA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A equipa da TELHABEL CONSTRUÇÕES ANGOLA não pode atender a qualquer hora, e ninguém devia ter de o fazer. Mas quem precisa de uma obra decide a qualquer hora.
+Sei como o dia de quem gere obras acaba depressa.
+Tenho uma ideia para que a TELHABEL CONSTRUÇÕES ANGOLA continue bem apresentada nesses momentos.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 16 ---
+Empresa: CE Reformas - Engenharia & Fiscalização
+Nome na mensagem: CE Reformas  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (https://www.cereformas.net/)
+Ângulo: teste_dos_30_segundos — Teste dos 30 segundos (camada 2)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Tenho um teste simples: alguém com 30 segundos para conhecer a CE Reformas online percebe quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244923753292?text=Ol%C3%A1%2C%20falo%20com%20CE%20Reformas%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Tenho um teste simples: alguém com 30 segundos para conhecer a CE Reformas online percebe quem são, o que fazem e como contactar?
+Quem decide costuma dar pouco tempo a cada opção.
+Posso aplicá-lo à CE Reformas e enviar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 17 ---
+Empresa: Harmonia Construções & SA
+Nome na mensagem: Harmonia Construções  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://harmoniacsa.com/)
+Ângulo: caminho_do_cliente — Caminho do cliente (camada 1)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Antes de contactar uma empresa como a Harmonia Construções, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+WhatsApp: https://wa.me/244972703904?text=Ol%C3%A1%2C%20falo%20com%20Harmonia%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de contactar uma empresa como a Harmonia Construções, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+Sei que quem gere obras prefere o caminho directo.
+Cada uma dessas etapas pode ser mais curta. Tenho uma forma de encurtar o caminho até à vossa primeira mensagem.
+Posso mostrar-lhe por onde começaria?
+------------------------------------------------------------------------------
+--- Lead 18 ---
+Empresa: BS PROJECTOS
+Nome na mensagem: BS PROJECTOS  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (https://bsprojectos.com/)
+Ângulo: transparencia — Transparência (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Escolher serviços de engenharia é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+WhatsApp: https://wa.me/244913729561?text=Ol%C3%A1%2C%20falo%20com%20BS%20PROJECTOS%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Escolher serviços de engenharia é uma decisão importante, e quanto mais importante a decisão, mais perguntas o cliente tem.
+Respostas claras são uma forma de respeito pelo cliente.
+Tenho uma ideia para tornar fáceis de confirmar as informações que mais pesam na escolha da BS PROJECTOS.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 19 ---
+Empresa: PORTECOS Consultores de Engenharia
+Nome na mensagem: PORTECOS  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (http://www.portecos.com/)
+Ângulo: legitimidade — Legitimidade (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quando alguém ainda não conhece uma empresa, procura pequenos sinais de que é uma opção séria.
+WhatsApp: https://wa.me/244943245005?text=Ol%C3%A1%2C%20falo%20com%20PORTECOS%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém ainda não conhece uma empresa, procura pequenos sinais de que é uma opção séria.
+Quem trabalha com seriedade quer que esses sinais estejam à vista.
+Tenho uma ideia para reunir esses sinais sobre a PORTECOS num só lugar.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 20 ---
+Empresa: Construtora Gabaraz
+Nome na mensagem: Construtora Gabaraz  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: sem site próprio (página gratuita: https://beacons.ai/gabaraz)
+Ângulo: sede_digital — Sede digital (camada 5)
+Emoção (Plutchik): Confiança (reconhecimento)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: A Construtora Gabaraz pode ser encontrada nas redes sociais, e as redes ajudam a descobrir. Falta o lugar central onde alguém pode conhecer de facto a empresa.
+WhatsApp: https://wa.me/244954364954?text=Ol%C3%A1%2C%20falo%20com%20Construtora%20Gabaraz%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A Construtora Gabaraz pode ser encontrada nas redes sociais, e as redes ajudam a descobrir. Falta o lugar central onde alguém pode conhecer de facto a empresa.
+Manter as redes actualizadas dá trabalho, e esse trabalho merece um lugar próprio.
+Tenho uma ideia para esse lugar.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 21 ---
+Empresa: Pinto & Cruz Angola
+Nome na mensagem: Pinto & Cruz Angola  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (https://www.pintocruz.pt/angola/pt/)
+Ângulo: pessoa_por_tras_da_empresa — Pessoa por trás da empresa (camada 2)
+Emoção (Plutchik): Confiança (orgulho do trabalho)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Em serviços de engenharia, as pessoas não escolhem só uma empresa. Escolhem quem está por trás dela.
+WhatsApp: https://wa.me/244923275406?text=Ol%C3%A1%2C%20falo%20com%20Pinto%20%26%20Cruz%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em serviços de engenharia, as pessoas não escolhem só uma empresa. Escolhem quem está por trás dela.
+Quem faz projectos e engenharia sabe que o nome de cada responsável também é reputação.
+Tenho uma ideia para mostrar melhor quem está por trás da Pinto & Cruz Angola e porque se pode confiar em vocês.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 22 ---
+Empresa: DSF, Engenharia & Construção
+Nome na mensagem: DSF  |  Categoria: Construtora  |  Cidade: Viana
+Presença digital: site próprio (http://www.grupodsf.ao/)
+Ângulo: estrada_sem_obstaculos — Estrada sem obstáculos (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+WhatsApp: https://wa.me/244938730044?text=Ol%C3%A1%2C%20falo%20com%20DSF%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+Quem gere obras sabe como um obstáculo pequeno pode parar um trabalho inteiro.
+Posso percorrer essa estrada para a DSF e mostrar-lhe onde a tornaria mais simples?
+------------------------------------------------------------------------------
+--- Lead 23 ---
+Empresa: Kora Angola
+Nome na mensagem: Kora Angola  |  Categoria: Desenvolvedora de imóveis  |  Cidade: Luanda
+Presença digital: site próprio (http://www.kora.co.ao/)
+Ângulo: menos_passos — Menos passos (camada 4)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): ordem
+Premissa persuasiva: Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+WhatsApp: https://wa.me/244923166740?text=Ol%C3%A1%2C%20falo%20com%20Kora%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+Quem constrói e vende imóveis conhece bem o valor de cada oportunidade de contacto.
+Tenho uma ideia para os reduzir na Kora Angola.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 24 ---
+Empresa: CAPA - Engenharia Angola, Lda
+Nome na mensagem: CAPA  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.capa.pt/)
+Ângulo: ultimo_clique — Último clique (camada 3)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vou olhar para o caminho da CAPA a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+WhatsApp: https://wa.me/244923896609?text=Ol%C3%A1%2C%20falo%20com%20CAPA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vou olhar para o caminho da CAPA a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+Quem gere obras conhece o valor de um último passo bem dado.
+Esse pequeno percurso decide muitos contactos. Tenho uma ideia para o tornar mais curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 25 ---
+Empresa: Linha certa
+Nome na mensagem: Linha certa  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.linhacerta.ao/)
+Ângulo: menos_passos — Menos passos (camada 4)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+WhatsApp: https://wa.me/244933453147?text=Ol%C3%A1%2C%20falo%20com%20Linha%20certa%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+Quem gere obras conhece bem o valor de cada oportunidade de contacto.
+Tenho uma ideia para os reduzir na Linha certa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 26 ---
+Empresa: Brick by Brick Construções Lda
+Nome na mensagem: Brick by Brick Construções  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.brickbybrick.co.ao/)
+Ângulo: whatsapp_como_destino — Whatsapp como destino (camada 4)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: O WhatsApp pode continuar a ser o ponto principal de contacto da Brick by Brick Construções: é onde o cliente já está habituado a falar.
+WhatsApp: https://wa.me/244937032312?text=Ol%C3%A1%2C%20falo%20com%20Brick%20by%20Brick%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp pode continuar a ser o ponto principal de contacto da Brick by Brick Construções: é onde o cliente já está habituado a falar.
+Quem gere obras prefere resolver as coisas numa conversa directa.
+Tenho uma ideia para levar até lá pessoas que já perceberam quem são e o que oferecem, prontas para a conversa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 27 ---
+Empresa: IMOVIAS - Urbanismo e Construção, S.A:
+Nome na mensagem: IMOVIAS  |  Categoria: Escritório da empresa  |  Cidade: Luanda
+Presença digital: site próprio (http://www.imovias.com/)
+Ângulo: momento_de_comparacao — Momento de comparação (camada 3)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quando há várias opções de serviços de construção civil, o cliente compara. Nesse momento, informação clara e um contacto fácil pesam na escolha.
+WhatsApp: https://wa.me/244222330019?text=Ol%C3%A1%2C%20falo%20com%20IMOVIAS%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando há várias opções de serviços de construção civil, o cliente compara. Nesse momento, informação clara e um contacto fácil pesam na escolha.
+Ser comparado é normal; o que conta é estar bem preparado para isso.
+Tenho uma ideia para posicionar melhor a IMOVIAS nessa comparação.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 28 ---
+Empresa: SFD prestação de serviços Lda
+Nome na mensagem: SFD  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: sem site próprio (página gratuita: http://finapuz.blogspot.com/)
+Ângulo: busca_pelo_nome — Busca pelo nome (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quando alguém já conhece o nome da SFD, a pesquisa seguinte serve para confirmar: quem são, onde estão, como contactar.
+WhatsApp: https://wa.me/244928719167?text=Ol%C3%A1%2C%20falo%20com%20SFD%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém já conhece o nome da SFD, a pesquisa seguinte serve para confirmar: quem são, onde estão, como contactar.
+Quem já ouviu falar de vocês merece uma confirmação à altura.
+Vale a pena garantir que essa confirmação acontece como vocês gostariam. Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 29 ---
+Empresa: Soapro
+Nome na mensagem: Soapro  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (http://www.soapro.ao/)
+Ângulo: reducao_de_incerteza — Redução de incerteza (camada 2)
+Emoção (Plutchik): Apreensão leve (do cliente)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Antes de contratar, o cliente quer saber quem são, como trabalham, onde estão e como contactar.
+WhatsApp: https://wa.me/244222393136?text=Ol%C3%A1%2C%20falo%20com%20Soapro%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de contratar, o cliente quer saber quem são, como trabalham, onde estão e como contactar.
+É natural querer certezas antes de confiar um trabalho importante a alguém.
+Tenho uma ideia para responder a essas dúvidas sobre a Soapro antes da primeira conversa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 30 ---
+Empresa: COENG - Civil Construction and Public Works Ltd.
+Nome na mensagem: COENG  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://coeng-ao.com/)
+Ângulo: micro_momento — Micro-momento (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Imagine alguém a precisar do serviço da COENG com o telemóvel na mão: quer saber depressa quem são, onde estão, o que fazem e como falar convosco.
+WhatsApp: https://wa.me/244928863741?text=Ol%C3%A1%2C%20falo%20com%20COENG%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Imagine alguém a precisar do serviço da COENG com o telemóvel na mão: quer saber depressa quem são, onde estão, o que fazem e como falar convosco.
+Quem gere obras sabe que, hoje, esses segundos contam.
+Tenho uma ideia para que esse momento seja o mais simples possível.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 31 ---
+Empresa: Alme-Service
+Nome na mensagem: Alme  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (https://www.africanlme.com/)
+Ângulo: busca_pelo_nome — Busca pelo nome (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quando alguém já conhece o nome da Alme, a pesquisa seguinte serve para confirmar: quem são, onde estão, como contactar.
+WhatsApp: https://wa.me/244937533445?text=Ol%C3%A1%2C%20falo%20com%20Alme%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém já conhece o nome da Alme, a pesquisa seguinte serve para confirmar: quem são, onde estão, como contactar.
+Quem já ouviu falar de vocês merece uma confirmação à altura.
+Vale a pena garantir que essa confirmação acontece como vocês gostariam. Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 32 ---
+Empresa: civiprime engenharia Lda
+Nome na mensagem: Civiprime  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.civiprime.com/)
+Ângulo: segunda_pesquisa — Segunda pesquisa (camada 3)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+WhatsApp: https://wa.me/244927974427?text=Ol%C3%A1%2C%20falo%20com%20Civiprime%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+É o momento em que uma boa impressão se confirma.
+Tenho uma ideia para a Civiprime aproveitar melhor esse segundo momento.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 33 ---
+Empresa: Construsoyo Lda - Base Luanda
+Nome na mensagem: Construsoyo  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.construsoyo.com/)
+Ângulo: momento_de_comparacao — Momento de comparação (camada 3)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quando há várias opções de serviços de construção civil, o cliente compara. Nesse momento, informação clara e um contacto fácil pesam na escolha.
+WhatsApp: https://wa.me/244946450447?text=Ol%C3%A1%2C%20falo%20com%20Construsoyo%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando há várias opções de serviços de construção civil, o cliente compara. Nesse momento, informação clara e um contacto fácil pesam na escolha.
+Ser comparado é normal; o que conta é estar bem preparado para isso.
+Tenho uma ideia para posicionar melhor a Construsoyo nessa comparação.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 34 ---
+Empresa: CMG-GOGA-Construção Civil e Arquitectura
+Nome na mensagem: CMG-GOGA  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.cmg.co.ao/)
+Ângulo: teste_dos_30_segundos — Teste dos 30 segundos (camada 2)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Tenho um teste simples: alguém com 30 segundos para conhecer a CMG-GOGA online percebe quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244932249846?text=Ol%C3%A1%2C%20falo%20com%20CMG-GOGA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Tenho um teste simples: alguém com 30 segundos para conhecer a CMG-GOGA online percebe quem são, o que fazem e como contactar?
+Quem decide costuma dar pouco tempo a cada opção.
+Posso aplicá-lo à CMG-GOGA e enviar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 35 ---
+Empresa: Fabicon - Indústria e Construção, SA
+Nome na mensagem: Fabicon  |  Categoria: Construtor Imobiliário  |  Cidade: Viana
+Presença digital: site próprio (http://www.fabicon.co.ao/)
+Ângulo: vinte_quatro_horas — 24 horas (camada 1)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: A equipa da Fabicon não pode atender a qualquer hora, e ninguém devia ter de o fazer. Mas quem precisa de uma obra decide a qualquer hora.
+WhatsApp: https://wa.me/244939444037?text=Ol%C3%A1%2C%20falo%20com%20Fabicon%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A equipa da Fabicon não pode atender a qualquer hora, e ninguém devia ter de o fazer. Mas quem precisa de uma obra decide a qualquer hora.
+Sei como o dia de quem gere obras acaba depressa.
+Tenho uma ideia para que a Fabicon continue bem apresentada nesses momentos.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 36 ---
+Empresa: Pilar Campos Angola
+Nome na mensagem: Pilar Campos Angola  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://pilarcampos.pt/)
+Ângulo: cliente_em_movimento — Cliente em movimento (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Alguém pode procurar a Pilar Campos Angola na rua, no trabalho ou a caminho de algum lugar em Luanda, e quer encontrar, perceber e contactar sem complicações.
+WhatsApp: https://wa.me/244938833027?text=Ol%C3%A1%2C%20falo%20com%20Pilar%20Campos%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Alguém pode procurar a Pilar Campos Angola na rua, no trabalho ou a caminho de algum lugar em Luanda, e quer encontrar, perceber e contactar sem complicações.
+Em Luanda, ninguém tem tempo para caminhos complicados.
+Tenho uma ideia para simplificar esse caminho.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 37 ---
+Empresa: Mircir Lda-(Sede-Estaleiro)
+Nome na mensagem: Mircir  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.mircir.com/)
+Ângulo: caminho_do_cliente — Caminho do cliente (camada 1)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Antes de contactar uma empresa como a Mircir, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+WhatsApp: https://wa.me/244923693675?text=Ol%C3%A1%2C%20falo%20com%20Mircir%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de contactar uma empresa como a Mircir, quem precisa de uma obra percebe que precisa do serviço, pesquisa, procura em quem confiar e só então escreve.
+Sei que quem gere obras prefere o caminho directo.
+Cada uma dessas etapas pode ser mais curta. Tenho uma forma de encurtar o caminho até à vossa primeira mensagem.
+Posso mostrar-lhe por onde começaria?
+------------------------------------------------------------------------------
+--- Lead 38 ---
+Empresa: Grupo Torres Center, Engenharia e construção Civil
+Nome na mensagem: Grupo Torres Center  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (https://geralgrupoedgarfran.ao/)
+Ângulo: mapa_de_oportunidades — Mapa de oportunidades (camada 6)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+WhatsApp: https://wa.me/244923629350?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Torres%20Center%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+Quem lidera um grupo empresarial sabe que um bom plano começa por um bom mapa.
+Posso fazer esse mapa para o Grupo Torres Center?
+------------------------------------------------------------------------------
+--- Lead 39 ---
+Empresa: Parque Industrial Petrotec
+Nome na mensagem: Petrotec  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.petrotec.co.ao/)
+Ângulo: momento_de_decisao — Momento de decisão (camada 3)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Entre "preciso deste serviço" e "vou contactar esta empresa" há um intervalo curto em que a pessoa compara e decide.
+WhatsApp: https://wa.me/244226430659?text=Ol%C3%A1%2C%20falo%20com%20Petrotec%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Entre "preciso deste serviço" e "vou contactar esta empresa" há um intervalo curto em que a pessoa compara e decide.
+É um intervalo pequeno, e é nele que se decide a quem ligar.
+Tenho uma ideia para que a Petrotec esteja bem nesse intervalo.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 40 ---
+Empresa: Grupo Siccal Andrades
+Nome na mensagem: Grupo Siccal Andrades  |  Categoria: Escritório da empresa  |  Cidade: Luanda
+Presença digital: site próprio (https://siccal.com/)
+Ângulo: ativo_digital — Ativo digital (camada 1)
+Emoção (Plutchik): Serenidade (alegria leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Muitas empresas tratam a presença digital como uma campanha: acaba o orçamento e acaba o efeito.
+WhatsApp: https://wa.me/244222390634?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Siccal%20Andrades%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Muitas empresas tratam a presença digital como uma campanha: acaba o orçamento e acaba o efeito.
+Quem lidera um grupo empresarial prefere investir no que fica.
+Uma estrutura própria funciona de outra forma: fica da empresa e trabalha todos os dias como ponto de apresentação.
+Tenho uma ideia para o Grupo Siccal Andrades nesse sentido. Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 41 ---
+Empresa: China Hyway Group Limited Leijun-CA Construção, Lda
+Nome na mensagem: China Hyway Group  |  Categoria: Construtora  |  Cidade: Cacuaco
+Presença digital: site próprio (http://www.hyway-china.com/)
+Ângulo: olhar_de_desconhecido — Olhar de desconhecido (camada 2)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vocês conhecem a China Hyway Group por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244937567336?text=Ol%C3%A1%2C%20falo%20com%20China%20Hyway%20Group%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vocês conhecem a China Hyway Group por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+Quem está dentro da empresa raramente a consegue ver assim.
+Posso fazer esse exercício para a China Hyway Group e mostrar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 42 ---
+Empresa: Jandrez
+Nome na mensagem: Jandrez  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.jandrez.com/)
+Ângulo: pre_atendimento — Pré-atendimento (camada 4)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Antes de falar com a equipa, o cliente precisa de conhecer algumas informações básicas.
+WhatsApp: https://wa.me/244923320404?text=Ol%C3%A1%2C%20falo%20com%20Jandrez%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de falar com a equipa, o cliente precisa de conhecer algumas informações básicas.
+Quem gere obras sabe como é repetir as mesmas explicações a cada novo contacto.
+Tenho uma ideia para as apresentar numa primeira resposta automática simples, antes da conversa com a Jandrez.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 43 ---
+Empresa: Engiactive - Engenharia, Construção & Manutenção
+Nome na mensagem: Engiactive  |  Categoria: Engenheiro industrial  |  Cidade: Luanda
+Presença digital: site próprio (https://www.engiactive.com/)
+Ângulo: confirmacao_antes_do_contacto — Confirmação antes do contacto (camada 3)
+Emoção (Plutchik): Apreensão leve (do cliente)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Às vezes o cliente já encontrou a empresa e sabe o que procura. Mas, antes de escrever, resta uma pergunta: "será que é mesmo esta empresa?"
+WhatsApp: https://wa.me/244929012129?text=Ol%C3%A1%2C%20falo%20com%20Engiactive%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Às vezes o cliente já encontrou a empresa e sabe o que procura. Mas, antes de escrever, resta uma pergunta: "será que é mesmo esta empresa?"
+É uma dúvida pequena que pede uma resposta rápida.
+Tenho uma ideia para responder a essa dúvida sobre a Engiactive antes da mensagem.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 44 ---
+Empresa: BDM Engenharia e Tecnologia lda
+Nome na mensagem: BDM Engenharia e Tecnologia  |  Categoria: Consultoria em engenharia  |  Cidade: Luanda
+Presença digital: site próprio (http://www.bdm.co.ao/)
+Ângulo: confianca_antes_da_conversa — Confiança antes da conversa (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Antes de qualquer conversa, quem precisa de um projecto ou de engenharia decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+WhatsApp: https://wa.me/244929544831?text=Ol%C3%A1%2C%20falo%20com%20BDM%20Engenharia%20e%20Tecnologia%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de qualquer conversa, quem precisa de um projecto ou de engenharia decide se vale a pena falar convosco, e decide-o sozinho, com o que encontra online.
+Uma boa impressão antes da primeira chamada poupa tempo a todos.
+Tenho uma ideia para que a BDM Engenharia e Tecnologia passe nesse primeiro teste de confiança.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 45 ---
+Empresa: Rojual
+Nome na mensagem: Rojual  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.rojual.com/index.php?lang=en-GB)
+Ângulo: whatsapp_como_destino — Whatsapp como destino (camada 4)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: O WhatsApp pode continuar a ser o ponto principal de contacto da Rojual: é onde o cliente já está habituado a falar.
+WhatsApp: https://wa.me/244926919067?text=Ol%C3%A1%2C%20falo%20com%20Rojual%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp pode continuar a ser o ponto principal de contacto da Rojual: é onde o cliente já está habituado a falar.
+Quem gere obras prefere resolver as coisas numa conversa directa.
+Tenho uma ideia para levar até lá pessoas que já perceberam quem são e o que oferecem, prontas para a conversa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 46 ---
+Empresa: PROREAL-Arquitectura e Construção
+Nome na mensagem: PROREAL  |  Categoria: Fornecedor  |  Cidade: Luanda
+Presença digital: site próprio (http://www.proreallda.com/)
+Ângulo: olhar_de_desconhecido — Olhar de desconhecido (camada 2)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Vocês conhecem a PROREAL por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244938421010?text=Ol%C3%A1%2C%20falo%20com%20PROREAL%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vocês conhecem a PROREAL por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+Quem está dentro da empresa raramente a consegue ver assim.
+Posso fazer esse exercício para a PROREAL e mostrar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 47 ---
+Empresa: Grupo Romero
+Nome na mensagem: Grupo Romero  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: sem site próprio (página gratuita: https://beacons.ai/gruporomero)
+Ângulo: propriedade_digital — Propriedade digital (camada 5)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Estar presente numa plataforma é seguir as regras dela. Ter uma estrutura própria é ter um espaço pensado para a empresa.
+WhatsApp: https://wa.me/244921403837?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Romero%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Estar presente numa plataforma é seguir as regras dela. Ter uma estrutura própria é ter um espaço pensado para a empresa.
+Quem lidera um grupo empresarial conhece o valor de trabalhar em terreno próprio.
+Tenho uma ideia para essa estrutura no Grupo Romero.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 48 ---
+Empresa: Grupo MJZP
+Nome na mensagem: Grupo MJZP  |  Categoria: Escritório da empresa  |  Cidade: Luanda
+Presença digital: site próprio (http://grupomjzp.com/)
+Ângulo: olhar_de_desconhecido — Olhar de desconhecido (camada 2)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vocês conhecem o Grupo MJZP por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244929421413?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20MJZP%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vocês conhecem o Grupo MJZP por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+Quem está dentro da empresa raramente a consegue ver assim.
+Posso fazer esse exercício para o Grupo MJZP e mostrar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 49 ---
+Empresa: PROBETAO - Unidade I
+Nome na mensagem: PROBETAO  |  Categoria: Fábrica de concreto  |  Cidade: Luanda
+Presença digital: site próprio (http://www.probetao.net/)
+Ângulo: antes_do_whatsapp — Antes do WhatsApp (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+WhatsApp: https://wa.me/244942413697?text=Ol%C3%A1%2C%20falo%20com%20PROBETAO%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+Quem fornece betão sabe que uma boa conversa começa antes da primeira mensagem.
+Tenho uma ideia para essa etapa anterior ao WhatsApp da PROBETAO.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 50 ---
+Empresa: ACP BUSINESS, LDA
+Nome na mensagem: ACP BUSINESS  |  Categoria: Empreiteira  |  Cidade: Luanda
+Presença digital: site próprio (http://acpbusinesslda.com/)
+Ângulo: contacto_qualificado — Contacto qualificado (camada 4)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Mais importante do que gerar contactos é fazer com que a pessoa chegue à conversa a perceber o básico.
+WhatsApp: https://wa.me/244923594277?text=Ol%C3%A1%2C%20falo%20com%20ACP%20BUSINESS%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Mais importante do que gerar contactos é fazer com que a pessoa chegue à conversa a perceber o básico.
+O tempo da equipa vale mais aplicado onde é preciso.
+Tenho uma ideia para preparar assim os contactos da ACP BUSINESS.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 51 ---
+Empresa: Ermelisto Rogeiro construção civil e comercio geral.
+Nome na mensagem: Ermelisto Rogeiro  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (https://www.ermelistorogeiro.com/)
+Ângulo: micro_momento — Micro-momento (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Imagine alguém a precisar do serviço da Ermelisto Rogeiro com o telemóvel na mão: quer saber depressa quem são, onde estão, o que fazem e como falar convosco.
+WhatsApp: https://wa.me/244922427507?text=Ol%C3%A1%2C%20falo%20com%20Ermelisto%20Rogeiro%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Imagine alguém a precisar do serviço da Ermelisto Rogeiro com o telemóvel na mão: quer saber depressa quem são, onde estão, o que fazem e como falar convosco.
+Quem gere obras sabe que, hoje, esses segundos contam.
+Tenho uma ideia para que esse momento seja o mais simples possível.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 52 ---
+Empresa: Dragagem Aangola Serviços LDA
+Nome na mensagem: Dragagem Aangola  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://deme-group.com/)
+Ângulo: estrada_sem_obstaculos — Estrada sem obstáculos (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): essência
+Premissa persuasiva: Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+WhatsApp: https://wa.me/244222442290?text=Ol%C3%A1%2C%20falo%20com%20Dragagem%20Aangola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+Quem gere obras sabe como um obstáculo pequeno pode parar um trabalho inteiro.
+Posso percorrer essa estrada para a Dragagem Aangola e mostrar-lhe onde a tornaria mais simples?
+------------------------------------------------------------------------------
+--- Lead 53 ---
+Empresa: Azimute
+Nome na mensagem: Azimute  |  Categoria: Empresa de engenharia civil  |  Cidade: Talatona
+Presença digital: site próprio (https://azimute.ao/)
+Ângulo: autoridade — Autoridade (camada 1)
+Emoção (Plutchik): Confiança (orgulho do trabalho)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quem precisa de um projecto ou de engenharia pela primeira vez procura sinais de confiança antes de ligar: quem são, que trabalho já fizeram, o que dizem os clientes.
+WhatsApp: https://wa.me/244937028354?text=Ol%C3%A1%2C%20falo%20com%20Azimute%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quem precisa de um projecto ou de engenharia pela primeira vez procura sinais de confiança antes de ligar: quem são, que trabalho já fizeram, o que dizem os clientes.
+Para quem faz projectos e engenharia, cada trabalho entregue é a melhor prova. Falta que chegue a quem ainda não o viu.
+Tenho uma ideia para reunir esses sinais num só lugar, para que a Azimute seja vista como opção segura antes da primeira conversa.
+Posso mostrar-lhe como ficaria?
+------------------------------------------------------------------------------
+--- Lead 54 ---
+Empresa: PRUMO - Empreendimentos e Materiais de Construção, Lda
+Nome na mensagem: PRUMO  |  Categoria: Escritório da empresa  |  Cidade: Luanda
+Presença digital: site próprio (http://www.prumo.co.ao/)
+Ângulo: perto_de_mim — Perto de mim (camada 3)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: Hoje, quem precisa de materiais de construção pega no telemóvel e procura uma empresa perto. Nesse momento, localização, informação e contacto têm de estar claros.
+WhatsApp: https://wa.me/244913517646?text=Ol%C3%A1%2C%20falo%20com%20PRUMO%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Hoje, quem precisa de materiais de construção pega no telemóvel e procura uma empresa perto. Nesse momento, localização, informação e contacto têm de estar claros.
+Estar perto é uma vantagem que só conta se as pessoas o souberem.
+Tenho uma ideia para esse caminho na PRUMO.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 55 ---
+Empresa: Luanda Bay
+Nome na mensagem: Luanda Bay  |  Categoria: Desenvolvedora de imóveis  |  Cidade: Luanda
+Presença digital: site próprio (https://luandabay.com/)
+Ângulo: antes_do_whatsapp — Antes do WhatsApp (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): ordem
+Premissa persuasiva: O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+WhatsApp: https://wa.me/244935545343?text=Ol%C3%A1%2C%20falo%20com%20Luanda%20Bay%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+Quem constrói e vende imóveis sabe que uma boa conversa começa antes da primeira mensagem.
+Tenho uma ideia para essa etapa anterior ao WhatsApp da Luanda Bay.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 56 ---
+Empresa: Consultar - Engenharia e Projectos, Lda
+Nome na mensagem: Consultar  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (http://www.consultar.co.ao/)
+Ângulo: teste_dos_30_segundos — Teste dos 30 segundos (camada 2)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Tenho um teste simples: alguém com 30 segundos para conhecer a Consultar online percebe quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244925602238?text=Ol%C3%A1%2C%20falo%20com%20Consultar%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Tenho um teste simples: alguém com 30 segundos para conhecer a Consultar online percebe quem são, o que fazem e como contactar?
+Quem decide costuma dar pouco tempo a cada opção.
+Posso aplicá-lo à Consultar e enviar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 57 ---
+Empresa: MNMAAS FUROS DE ÁGUA
+Nome na mensagem: MNMAAS FUROS DE ÁGUA  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.maasgeoenergy.com/)
+Ângulo: telemovel — Telemóvel (camada 1)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): essência
+Premissa persuasiva: Hoje, quem precisa de uma obra pesquisa no telemóvel, entre outras tarefas: encontra a MNMAAS FUROS DE ÁGUA, percebe o que fazem e toca no WhatsApp.
+WhatsApp: https://wa.me/244940016234?text=Ol%C3%A1%2C%20falo%20com%20MNMAAS%20FUROS%20DE%20%C3%81GUA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Hoje, quem precisa de uma obra pesquisa no telemóvel, entre outras tarefas: encontra a MNMAAS FUROS DE ÁGUA, percebe o que fazem e toca no WhatsApp.
+Quem gere obras conhece o valor do tempo, e o cliente também não quer perder o dele.
+Cada passo a mais nesse caminho é uma pessoa que pode desistir e ligar a outra empresa. Tenho uma ideia para tornar esse caminho curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 58 ---
+Empresa: AngolACA Construções, S.A.
+Nome na mensagem: AngolACA Construções  |  Categoria: Escritório da empresa  |  Cidade: Cacuaco
+Presença digital: site próprio (https://angolaca.co.ao/)
+Ângulo: proximo_passo_claro — Próximo passo claro (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Depois de conhecer a AngolACA Construções, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+WhatsApp: https://wa.me/244923001974?text=Ol%C3%A1%2C%20falo%20com%20AngolACA%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Depois de conhecer a AngolACA Construções, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+Um caminho claro é uma forma de cortesia com quem procura.
+Tenho uma ideia para que esse passo seja evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 59 ---
+Empresa: FCM & LC Construções Lda
+Nome na mensagem: FCM & LC Construções  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.grupofcm.com/)
+Ângulo: segunda_pesquisa — Segunda pesquisa (camada 3)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+WhatsApp: https://wa.me/244222711078?text=Ol%C3%A1%2C%20falo%20com%20FCM%20%26%20LC%20Constru%C3%A7%C3%B5es%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+É o momento em que uma boa impressão se confirma.
+Tenho uma ideia para a FCM & LC Construções aproveitar melhor esse segundo momento.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 60 ---
+Empresa: CH group
+Nome na mensagem: CH group  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://grupoch.co.ao/)
+Ângulo: olhar_de_desconhecido — Olhar de desconhecido (camada 2)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vocês conhecem a CH group por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244931957676?text=Ol%C3%A1%2C%20falo%20com%20CH%20group%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vocês conhecem a CH group por dentro. Mas imagine alguém que ouviu falar dela hoje pela primeira vez: percebe depressa quem são, o que fazem e como contactar?
+Quem está dentro da empresa raramente a consegue ver assim.
+Posso fazer esse exercício para a CH group e mostrar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 61 ---
+Empresa: Toposol
+Nome na mensagem: Toposol  |  Categoria: Consultoria  |  Cidade: Luanda
+Presença digital: site próprio (http://toposol.ao/)
+Ângulo: teste_dos_30_segundos — Teste dos 30 segundos (camada 2)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Tenho um teste simples: alguém com 30 segundos para conhecer a Toposol online percebe quem são, o que fazem e como contactar?
+WhatsApp: https://wa.me/244939635597?text=Ol%C3%A1%2C%20falo%20com%20Toposol%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Tenho um teste simples: alguém com 30 segundos para conhecer a Toposol online percebe quem são, o que fazem e como contactar?
+Quem decide costuma dar pouco tempo a cada opção.
+Posso aplicá-lo à Toposol e enviar-lhe o resultado?
+------------------------------------------------------------------------------
+--- Lead 62 ---
+Empresa: CO.V.EDIL Comercio e Industria Lda
+Nome na mensagem: CO.V.EDIL  |  Categoria: Fornecedor de equipamentos para construção  |  Cidade: Luanda
+Presença digital: site próprio (http://www.covedil-lda.com/)
+Ângulo: localizacao_como_facilitador — Localização como facilitador (camada 4)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: Para uma empresa como a CO.V.EDIL, saber onde estão faz parte da decisão. A localização deve ser mais do que um endereço: deve fazer parte do caminho de encontrar e contactar.
+WhatsApp: https://wa.me/244933529017?text=Ol%C3%A1%2C%20falo%20com%20CO.V.EDIL%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Para uma empresa como a CO.V.EDIL, saber onde estão faz parte da decisão. A localização deve ser mais do que um endereço: deve fazer parte do caminho de encontrar e contactar.
+Estar ao alcance de Luanda é uma vantagem que convém tornar fácil de usar.
+Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 63 ---
+Empresa: costa alexandre comercio geral e prestacao de servico
+Nome na mensagem: Costa Alexandre  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.cacgprest.serv.com/)
+Ângulo: reducao_de_atrito — Redução de atrito (camada 4)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+WhatsApp: https://wa.me/244935765040?text=Ol%C3%A1%2C%20falo%20com%20Costa%20Alexandre%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+São detalhes pequenos, e é por isso que passam despercebidos a quem está dentro.
+Posso percorrer o caminho da Costa Alexandre como um cliente e mostrar-lhe onde esses obstáculos aparecem?
+------------------------------------------------------------------------------
+--- Lead 64 ---
+Empresa: Sede Grupo WM
+Nome na mensagem: Grupo WM  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (https://www.grupo-wm.com/)
+Ângulo: mapa_de_oportunidades — Mapa de oportunidades (camada 6)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+WhatsApp: https://wa.me/244923649403?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20WM%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+Quem lidera um grupo empresarial sabe que um bom plano começa por um bom mapa.
+Posso fazer esse mapa para o Grupo WM?
+------------------------------------------------------------------------------
+--- Lead 65 ---
+Empresa: HPM & Filhos - Comércio Geral e Serviço
+Nome na mensagem: HPM & Filhos  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.hpmefilhos.ao/)
+Ângulo: cliente_que_volta — Cliente que volta (camada 3)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+WhatsApp: https://wa.me/244923213705?text=Ol%C3%A1%2C%20falo%20com%20HPM%20%26%20Filhos%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Nem todos os visitantes contactam à primeira vez: alguns pesquisam, saem e voltam mais tarde para decidir.
+Quem gere obras sabe que as melhores decisões pedem tempo.
+Por isso a presença da HPM & Filhos tem de servir também quem volta para confirmar a escolha. Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 66 ---
+Empresa: AMM Consulting and Engineering
+Nome na mensagem: AMM  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.ammangola.com/)
+Ângulo: momento_de_decisao — Momento de decisão (camada 3)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Entre "preciso deste serviço" e "vou contactar esta empresa" há um intervalo curto em que a pessoa compara e decide.
+WhatsApp: https://wa.me/244921785674?text=Ol%C3%A1%2C%20falo%20com%20AMM%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Entre "preciso deste serviço" e "vou contactar esta empresa" há um intervalo curto em que a pessoa compara e decide.
+É um intervalo pequeno, e é nele que se decide a quem ligar.
+Tenho uma ideia para que a AMM esteja bem nesse intervalo.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 67 ---
+Empresa: INZAG Germany GmbH Sucursal Angola
+Nome na mensagem: INZAG Germany  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://www.inzag.de/)
+Ângulo: estrada_sem_obstaculos — Estrada sem obstáculos (camada 3)
+Emoção (Plutchik): Aversão leve (impaciência)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+WhatsApp: https://wa.me/244929437448?text=Ol%C3%A1%2C%20falo%20com%20INZAG%20Germany%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Imagine a jornada do cliente como uma estrada: em cada etapa pode haver um ponto que faz a pessoa parar.
+Quem gere obras sabe como um obstáculo pequeno pode parar um trabalho inteiro.
+Posso percorrer essa estrada para a INZAG Germany e mostrar-lhe onde a tornaria mais simples?
+------------------------------------------------------------------------------
+--- Lead 68 ---
+Empresa: Confibra-Material de Construção LDA
+Nome na mensagem: Confibra  |  Categoria: Engenheiro civil  |  Cidade: Quifangondo
+Presença digital: site próprio (https://www.confibra.pt/)
+Ângulo: perto_de_mim — Perto de mim (camada 3)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: Hoje, quem precisa de materiais de construção pega no telemóvel e procura uma empresa perto. Nesse momento, localização, informação e contacto têm de estar claros.
+WhatsApp: https://wa.me/244935910404?text=Ol%C3%A1%2C%20falo%20com%20Confibra%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Hoje, quem precisa de materiais de construção pega no telemóvel e procura uma empresa perto. Nesse momento, localização, informação e contacto têm de estar claros.
+Estar perto é uma vantagem que só conta se as pessoas o souberem.
+Tenho uma ideia para esse caminho na Confibra.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 69 ---
+Empresa: Madaluz
+Nome na mensagem: Madaluz  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (https://www.madaluz.ao/)
+Ângulo: ultimo_clique — Último clique (camada 3)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Vou olhar para o caminho da Madaluz a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+WhatsApp: https://wa.me/244921800937?text=Ol%C3%A1%2C%20falo%20com%20Madaluz%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Vou olhar para o caminho da Madaluz a partir do fim: o que precisa de acontecer nos últimos segundos antes de alguém ligar ou escrever?
+Quem gere obras conhece o valor de um último passo bem dado.
+Esse pequeno percurso decide muitos contactos. Tenho uma ideia para o tornar mais curto.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 70 ---
+Empresa: LEVON AMBIENTE SA
+Nome na mensagem: LEVON AMBIENTE  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://levonambiente.com/)
+Ângulo: proximo_passo_claro — Próximo passo claro (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Depois de conhecer a LEVON AMBIENTE, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+WhatsApp: https://wa.me/244265250094?text=Ol%C3%A1%2C%20falo%20com%20LEVON%20AMBIENTE%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Depois de conhecer a LEVON AMBIENTE, a pessoa deve saber logo qual é o próximo passo: ligar, escrever no WhatsApp, visitar ou pedir informação.
+Um caminho claro é uma forma de cortesia com quem procura.
+Tenho uma ideia para que esse passo seja evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 71 ---
+Empresa: OPERAÇÕES GCR.Prestação de Serviço e Logística
+Nome na mensagem: OPERAÇÕES GCR  |  Categoria: Fornecedor de equipamentos industriais  |  Cidade: Luanda
+Presença digital: site próprio (https://www.operacoes-gcr.com/)
+Ângulo: localizacao_como_facilitador — Localização como facilitador (camada 4)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): quantidade
+Premissa persuasiva: Para uma empresa como a OPERAÇÕES GCR, saber onde estão faz parte da decisão. A localização deve ser mais do que um endereço: deve fazer parte do caminho de encontrar e contactar.
+WhatsApp: https://wa.me/244938769108?text=Ol%C3%A1%2C%20falo%20com%20OPERA%C3%87%C3%95ES%20GCR%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Para uma empresa como a OPERAÇÕES GCR, saber onde estão faz parte da decisão. A localização deve ser mais do que um endereço: deve fazer parte do caminho de encontrar e contactar.
+Estar ao alcance de Luanda é uma vantagem que convém tornar fácil de usar.
+Tenho uma ideia para isso.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 72 ---
+Empresa: Innovo Angola
+Nome na mensagem: Innovo Angola  |  Categoria: Desenvolvedora de imóveis  |  Cidade: Luanda
+Presença digital: site próprio (https://www.innovogroup.com/contact)
+Ângulo: antes_do_whatsapp — Antes do WhatsApp (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): ordem
+Premissa persuasiva: O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+WhatsApp: https://wa.me/244936053400?text=Ol%C3%A1%2C%20falo%20com%20Innovo%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp é onde o cliente entra em contacto, mas antes disso a pessoa precisa de perceber quem são e se vale a pena começar a conversa.
+Quem constrói e vende imóveis sabe que uma boa conversa começa antes da primeira mensagem.
+Tenho uma ideia para essa etapa anterior ao WhatsApp da Innovo Angola.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 73 ---
+Empresa: Pollet Water Group Angola
+Nome na mensagem: Pollet Water Group Angola  |  Categoria: Piscina  |  Cidade: Luanda
+Presença digital: site próprio (https://www.pwgangola.com/)
+Ângulo: ativo_digital — Ativo digital (camada 1)
+Emoção (Plutchik): Serenidade (alegria leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Muitas empresas tratam a presença digital como uma campanha: acaba o orçamento e acaba o efeito.
+WhatsApp: https://wa.me/244926591183?text=Ol%C3%A1%2C%20falo%20com%20Pollet%20Water%20Group%20Angola%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Muitas empresas tratam a presença digital como uma campanha: acaba o orçamento e acaba o efeito.
+Quem lidera um grupo empresarial prefere investir no que fica.
+Uma estrutura própria funciona de outra forma: fica da empresa e trabalha todos os dias como ponto de apresentação.
+Tenho uma ideia para a Pollet Water Group Angola nesse sentido. Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 74 ---
+Empresa: Grupo MELKOR
+Nome na mensagem: Grupo MELKOR  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (https://melkor.ao/)
+Ângulo: mapa_de_oportunidades — Mapa de oportunidades (camada 6)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+WhatsApp: https://wa.me/244975331453?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20MELKOR%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+Quem lidera um grupo empresarial sabe que um bom plano começa por um bom mapa.
+Posso fazer esse mapa para o Grupo MELKOR?
+------------------------------------------------------------------------------
+--- Lead 75 ---
+Empresa: Coreangol - Engenharia e Contrução, Lda
+Nome na mensagem: Coreangol  |  Categoria: Escritório da empresa  |  Cidade: Luanda
+Presença digital: site próprio (https://coreangol.co.ao/)
+Ângulo: reducao_de_atrito — Redução de atrito (camada 4)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+WhatsApp: https://wa.me/244222392601?text=Ol%C3%A1%2C%20falo%20com%20Coreangol%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+São detalhes pequenos, e é por isso que passam despercebidos a quem está dentro.
+Posso percorrer o caminho da Coreangol como um cliente e mostrar-lhe onde esses obstáculos aparecem?
+------------------------------------------------------------------------------
+--- Lead 76 ---
+Empresa: GRUPO WEN
+Nome na mensagem: GRUPO WEN  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (http://www.wengrupogeral.co.ao/)
+Ângulo: reducao_de_duvida — Redução de dúvida (camada 2)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Muitas vezes o problema não é falta de interesse. É excesso de dúvidas: quem são, o que fazem, onde estão, como trabalham, como contactar.
+WhatsApp: https://wa.me/244945540193?text=Ol%C3%A1%2C%20falo%20com%20GRUPO%20WEN%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Muitas vezes o problema não é falta de interesse. É excesso de dúvidas: quem são, o que fazem, onde estão, como trabalham, como contactar.
+Responder a essas dúvidas cedo é uma forma de cuidado com o cliente.
+Tenho uma ideia para que o GRUPO WEN responda a essas dúvidas antes de a pessoa falar com a equipa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 77 ---
+Empresa: Grupo Augustos SA
+Nome na mensagem: Grupo Augustos  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://ogrupoaugustos.co.ao/)
+Ângulo: mapa_de_oportunidades — Mapa de oportunidades (camada 6)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+WhatsApp: https://wa.me/244222398418?text=Ol%C3%A1%2C%20falo%20com%20Grupo%20Augustos%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em vez de olhar só para "ter ou não ter presença digital", gosto de mapear a jornada inteira: onde o cliente descobre a empresa, onde ganha confiança, onde pode desistir e onde finalmente contacta.
+Quem lidera um grupo empresarial sabe que um bom plano começa por um bom mapa.
+Posso fazer esse mapa para o Grupo Augustos?
+------------------------------------------------------------------------------
+--- Lead 78 ---
+Empresa: Exótica
+Nome na mensagem: Exótica  |  Categoria: Marmoraria  |  Cidade: Luanda
+Presença digital: site próprio (http://www.exotica.ao/)
+Ângulo: segunda_pesquisa — Segunda pesquisa (camada 3)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): essência
+Premissa persuasiva: A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+WhatsApp: https://wa.me/244945475908?text=Ol%C3%A1%2C%20falo%20com%20Ex%C3%B3tica%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+A primeira pesquisa faz a pessoa descobrir opções. A segunda ajuda-a a decidir, e muitas empresas esquecem-se dela.
+É o momento em que uma boa impressão se confirma.
+Tenho uma ideia para a Exótica aproveitar melhor esse segundo momento.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 79 ---
+Empresa: INDASA TRABALHOS VERTICAIS, LDA
+Nome na mensagem: INDASA  |  Categoria: Empresa de engenharia civil  |  Cidade: Luanda
+Presença digital: site próprio (https://www.indasa.pro/)
+Ângulo: clareza_de_posicionamento — Clareza de posicionamento (camada 2)
+Emoção (Plutchik): Serenidade (aceitação)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quando alguém encontra a INDASA pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de engenharia?
+WhatsApp: https://wa.me/244933528346?text=Ol%C3%A1%2C%20falo%20com%20INDASA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quando alguém encontra a INDASA pela primeira vez, percebe depressa porque deve escolher-vos entre as várias opções de serviços de engenharia?
+Quem faz projectos e engenharia sabe que o trabalho fala, mas nem sempre chega a quem decide.
+Tenho uma ideia para tornar essa razão evidente.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 80 ---
+Empresa: Cenciocoss prestação de serviços, Lda
+Nome na mensagem: Cenciocoss  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (http://www.cencio.com/)
+Ângulo: menos_passos — Menos passos (camada 4)
+Emoção (Plutchik): Antecipação (interesse)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+WhatsApp: https://wa.me/244929357847?text=Ol%C3%A1%2C%20falo%20com%20Cenciocoss%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quantos passos separam "encontrei a empresa" de "vou falar com a empresa"? Cada passo a menos é uma hipótese a menos de desistir.
+Quem gere obras conhece bem o valor de cada oportunidade de contacto.
+Tenho uma ideia para os reduzir na Cenciocoss.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 81 ---
+Empresa: Svetelanya
+Nome na mensagem: Svetelanya  |  Categoria: Construtora  |  Cidade: Luanda
+Presença digital: site próprio (http://svetelanya.com/)
+Ângulo: concorrencia — Concorrência (camada 1)
+Emoção (Plutchik): Antecipação (vigilância leve)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Em Luanda há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+WhatsApp: https://wa.me/244222445813?text=Ol%C3%A1%2C%20falo%20com%20Svetelanya%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Em Luanda há várias opções de serviços de construção civil, e muita gente decide antes de contactar alguém: fica com as que são mais fáceis de encontrar, perceber e contactar.
+Ser escolhido não depende só de trabalhar bem; depende também de ser encontrado à primeira.
+Para uma empresa com o vosso trabalho, o que decide é estar entre as primeiras opções consideradas. Tenho uma ideia para colocar a Svetelanya nesse grupo.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 82 ---
+Empresa: Angola Investimento Imobiliario, S.A.
+Nome na mensagem: Angola Investimento Imobiliario  |  Categoria: Desenvolvedora de imóveis  |  Cidade: Luanda
+Presença digital: site próprio (http://www.grupolena.pt/)
+Ângulo: whatsapp_como_destino — Whatsapp como destino (camada 4)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): ordem
+Premissa persuasiva: O WhatsApp pode continuar a ser o ponto principal de contacto da Angola Investimento Imobiliario: é onde o cliente já está habituado a falar.
+WhatsApp: https://wa.me/244222041979?text=Ol%C3%A1%2C%20falo%20com%20Angola%20Investimento%20Imobiliario%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+O WhatsApp pode continuar a ser o ponto principal de contacto da Angola Investimento Imobiliario: é onde o cliente já está habituado a falar.
+Quem constrói e vende imóveis prefere resolver as coisas numa conversa directa.
+Tenho uma ideia para levar até lá pessoas que já perceberam quem são e o que oferecem, prontas para a conversa.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 83 ---
+Empresa: Ngana Kitemu
+Nome na mensagem: Ngana Kitemu  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: sem site próprio (página gratuita: https://nganakitemu.blogspot.com/)
+Ângulo: cliente_investigador — Cliente investigador (camada 3)
+Emoção (Plutchik): Confiança (aceitação)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Antes de escolher serviços de construção civil, algumas pessoas investigam: pesquisam, comparam e só depois escrevem.
+WhatsApp: https://wa.me/244938721582?text=Ol%C3%A1%2C%20falo%20com%20Ngana%20Kitemu%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de escolher serviços de construção civil, algumas pessoas investigam: pesquisam, comparam e só depois escrevem.
+Quem investiga leva a decisão a sério, e isso é bom sinal para quem trabalha bem.
+A Ngana Kitemu está pronta para essa investigação? Tenho uma ideia para que passe nela.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 84 ---
+Empresa: Metalotec, Lda
+Nome na mensagem: Metalotec  |  Categoria: Empresa de construções metálicas  |  Cidade: Quifangondo
+Presença digital: site próprio (https://metalotec.com/)
+Ângulo: pre_atendimento — Pré-atendimento (camada 4)
+Emoção (Plutchik): Aversão leve (sobrecarga)  |  Lugar (Perelman): essência
+Premissa persuasiva: Antes de falar com a equipa, o cliente precisa de conhecer algumas informações básicas.
+WhatsApp: https://wa.me/244939565203?text=Ol%C3%A1%2C%20falo%20com%20Metalotec%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Antes de falar com a equipa, o cliente precisa de conhecer algumas informações básicas.
+Quem trabalha com construções metálicas sabe como é repetir as mesmas explicações a cada novo contacto.
+Tenho uma ideia para as apresentar numa primeira resposta automática simples, antes da conversa com a Metalotec.
+Posso mostrar-lhe?
+------------------------------------------------------------------------------
+--- Lead 85 ---
+Empresa: Double J´services, Lda
+Nome na mensagem: Double J´services  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: sem site próprio (página gratuita: https://sites.google.com/view/%20www11doublejservices)
+Ângulo: autoridade — Autoridade (camada 1)
+Emoção (Plutchik): Confiança (orgulho do trabalho)  |  Lugar (Perelman): qualidade
+Premissa persuasiva: Quem precisa de uma obra pela primeira vez procura sinais de confiança antes de ligar: quem são, que trabalho já fizeram, o que dizem os clientes.
+WhatsApp: https://wa.me/244932938615?text=Ol%C3%A1%2C%20falo%20com%20Double%20J%C2%B4services%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Quem precisa de uma obra pela primeira vez procura sinais de confiança antes de ligar: quem são, que trabalho já fizeram, o que dizem os clientes.
+Para quem gere obras, cada trabalho entregue é a melhor prova. Falta que chegue a quem ainda não o viu.
+Tenho uma ideia para reunir esses sinais num só lugar, para que a Double J´services seja vista como opção segura antes da primeira conversa.
+Posso mostrar-lhe como ficaria?
+------------------------------------------------------------------------------
+--- Lead 86 ---
+Empresa: JNA Prestação de Serviços
+Nome na mensagem: JNA  |  Categoria: Construtor Imobiliário  |  Cidade: Luanda
+Presença digital: site próprio (https://jna-prestacao-de-servicos.negocio.site/?utm_source=gmb&utm_medium=referral)
+Ângulo: reducao_de_atrito — Redução de atrito (camada 4)
+Emoção (Plutchik): Surpresa (curiosidade)  |  Lugar (Perelman): pessoa
+Premissa persuasiva: Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+WhatsApp: https://wa.me/244948205800?text=Ol%C3%A1%2C%20falo%20com%20JNA%3F
+Mensagem:
+Olá. Sou Carlos Moreira, da Agentes Digital.
+Às vezes o cliente tem interesse e perde-se em pequenos obstáculos: não sabe onde clicar, não encontra uma informação, não percebe como contactar.
+São detalhes pequenos, e é por isso que passam despercebidos a quem está dentro.
+Posso percorrer o caminho da JNA como um cliente e mostrar-lhe onde esses obstáculos aparecem?
+------------------------------------------------------------------------------
+"""
+
+def parse_leads(text, bloco_name):
+    blocks = re.split(r"(?=---\s*Lead\s+\d+\s*---)", text)
+    leads = []
+    for b in blocks:
+        b = b.strip()
+        if not b:
+            continue
+        id_m = re.search(r"---\s*Lead\s+(\d+)\s*---", b)
+        if not id_m:
+            continue
+        lead_id = int(id_m.group(1))
+        emp_m = re.search(r"Empresa:\s*(.+?)(?:\r?\n|$)", b)
+        nome_m = re.search(r"Nome na mensagem:\s*(.+?)(?:\s*\||\r?\n|$)", b)
+        cat_m = re.search(r"Categoria:\s*(.+?)(?:\s*\||\r?\n|$)", b)
+        cid_m = re.search(r"Cidade:\s*([^|\r\n]+)", b)
+        pres_m = re.search(r"Presença digital:\s*(.+?)(?:\r?\n|$)", b)
+        ang_m = re.search(r"Ângulo:\s*(.+?)(?:\r?\n|$)", b)
+        emoc_m = re.search(r"Emoção\s*(?:\(Plutchik\))?:\s*(.+?)(?:\s*\||\r?\n|$)", b)
+        lugar_m = re.search(r"Lugar\s*(?:\(Perelman\))?:\s*(.+?)(?:\r?\n|$)", b)
+        prem_m = re.search(r"Premissa persuasiva:\s*(.+?)(?:\r?\nWhatsApp:|\r?\n|$)", b)
+        wa_m = re.search(r"WhatsApp:\s*(https?://[^\s\r\n]+)", b)
+        msg_m = re.search(r"Mensagem:\s*\r?\n([\s\S]+?)(?=\n-{10,}|\n---\s*Lead|\r?\n*$)", b)
+        
+        # Phone extraction from wa_m
+        phone = ""
+        wa_url = wa_m.group(1) if wa_m else ""
+        if wa_url:
+            p_match = re.search(r"wa\.me/(\d+)", wa_url)
+            if p_match:
+                phone = f"+{p_match.group(1)}"
+        
+        empresa = emp_m.group(1).strip() if emp_m else f"Lead {lead_id}"
+        nome_msg = nome_m.group(1).strip() if nome_m else empresa
+        cat = cat_m.group(1).strip() if cat_m else "Construção Civil"
+        cid = cid_m.group(1).strip() if cid_m else "Luanda"
+        pres = pres_m.group(1).strip() if pres_m else ""
+        ang = ang_m.group(1).strip() if ang_m else ""
+        emoc = emoc_m.group(1).strip() if emoc_m else ""
+        lugar = lugar_m.group(1).strip() if lugar_m else ""
+        prem = prem_m.group(1).strip() if prem_m else ""
+        msg = msg_m.group(1).strip() if msg_m else ""
+        
+        leads.append({
+            "id": lead_id,
+            "empresa": empresa,
+            "nomeNaMensagem": nome_msg,
+            "categoria": cat,
+            "cidade": cid,
+            "bloco": bloco_name,
+            "presencaDigital": pres,
+            "angulo": ang,
+            "emocao": emoc,
+            "lugar": lugar,
+            "premissa": prem,
+            "telefone": phone,
+            "whatsappUrl": wa_url,
+            "mensagem": msg
+        })
+    return leads
+
+leads_a = parse_leads(raw_bloco_a, "Bloco A (Com site próprio)")
+print(f"Parsed {len(leads_a)} leads for Bloco A.")
+
+out_ts = "import type { ConstrucaoCivilLead } from './construcaoCivilLeads';\n\n"
+out_ts += "export const blocoALeads: ConstrucaoCivilLead[] = " + json.dumps(leads_a, indent=2, ensure_ascii=False) + ";\n"
+
+with open("src/components/operations/data/blocoALeads.ts", "w", encoding="utf-8") as f:
+    f.write(out_ts)
+
+with open("src/components/operations/data/rawBlocoA.txt", "w", encoding="utf-8") as f:
+    f.write(raw_bloco_a.strip())
+
+print("Wrote blocoALeads.ts successfully.")
