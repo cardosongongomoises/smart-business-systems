@@ -32,7 +32,7 @@ export interface ValidationStatusLogItem {
   numero: string;
   empresa: string;
   operadora: string;
-  tipoLinha: "mobile" | "landline" | "invalid";
+  tipoLinha: "mobile" | "landline" | "voip" | "invalid";
   status: "sucesso" | "descarte_fixo" | "descarte_sem_conta";
   motivo: string;
   mensagem: string;

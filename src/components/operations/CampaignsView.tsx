@@ -179,9 +179,10 @@ export function CampaignsView() {
       rawText.match(/^#\s+(.+)$/m) ||
       rawText.match(/^(?:AGENTES DIGITAL\s*—\s*)(.+)$/m) ||
       rawText.match(/^(?:PROSPECÇÃO\s*\|\s*)(.+)$/m);
-    if (titleMatch && !campaignName) {
+    if (titleMatch?.[1] && !campaignName) {
+      const detectedTitle = titleMatch[1].trim();
       setTimeout(() => {
-        setCampaignName((prev) => (prev ? prev : titleMatch[1].trim()));
+        setCampaignName((prev) => (prev ? prev : detectedTitle));
       }, 0);
     }
 
@@ -203,36 +204,38 @@ export function CampaignsView() {
         const msgMatch = block.match(/Mensagem:\s*\r?\n([\s\S]+?)(?=\n-{10,}|\n---\s*Lead|$)/i);
 
         let phone = "";
-        if (telUrlMatch && telUrlMatch[1]) {
+        if (telUrlMatch?.[1]) {
           phone = `+${telUrlMatch[1]}`;
-        } else if (telStdMatch && telStdMatch[1]) {
+        } else if (telStdMatch?.[1]) {
           phone = telStdMatch[1].trim();
         }
 
         if (phone) {
-          const emp = empMatch
-            ? empMatch[1].trim()
-            : nomeMatch
-              ? nomeMatch[1].trim()
-              : "Empresa Prospect";
-          const msg = msgMatch
-            ? msgMatch[1].trim()
-            : `Olá ${emp}, temos uma proposta personalizada.`;
-          candidates.push({
+          const emp = empMatch?.[1]?.trim() || nomeMatch?.[1]?.trim() || "Empresa Prospect";
+          const msg = msgMatch?.[1]?.trim() || `Olá ${emp}, temos uma proposta personalizada.`;
+          const candidateItem: {
+            empresa: string;
+            telefone: string;
+            mensagem: string;
+            oferta?: string;
+            angulo?: string;
+            cidade?: string;
+          } = {
             empresa: emp,
             telefone: phone,
             mensagem: msg,
-            cidade: cidMatch ? cidMatch[1].trim() : undefined,
-            angulo: angMatch ? angMatch[1].trim() : undefined,
-            oferta: catMatch ? catMatch[1].trim() : undefined,
-          });
+          };
+          if (cidMatch?.[1]?.trim()) candidateItem.cidade = cidMatch[1].trim();
+          if (angMatch?.[1]?.trim()) candidateItem.angulo = angMatch[1].trim();
+          if (catMatch?.[1]?.trim()) candidateItem.oferta = catMatch[1].trim();
+          candidates.push(candidateItem);
         }
       }
     }
 
     // FORMATO A: Tabela Markdown (| Empresa | Telefone | Mensagem | ...)
     const tableLines = lines.filter((l) => l.trim().startsWith("|") && l.trim().endsWith("|"));
-    if (tableLines.length >= 2) {
+    if (tableLines.length >= 2 && tableLines[0]) {
       const headerCols = tableLines[0]
         .split("|")
         .map((c) => c.trim().toLowerCase())
@@ -258,7 +261,7 @@ export function CampaignsView() {
 
       for (let i = 1; i < tableLines.length; i++) {
         const rowLine = tableLines[i];
-        if (rowLine.includes("---")) continue;
+        if (!rowLine || rowLine.includes("---")) continue;
         const cols = rowLine
           .split("|")
           .map((c) => c.trim())
@@ -273,14 +276,22 @@ export function CampaignsView() {
               : cols[2] || `Olá ${emp}, temos uma proposta para vocês.`;
 
           if (tel && tel.replace(/\D/g, "").length >= 7) {
-            candidates.push({
+            const tableItem: {
+              empresa: string;
+              telefone: string;
+              mensagem: string;
+              oferta?: string;
+              angulo?: string;
+              cidade?: string;
+            } = {
               empresa: emp,
               telefone: tel,
               mensagem: msg,
-              oferta: oftIdx !== -1 ? cols[oftIdx] : undefined,
-              angulo: angIdx !== -1 ? cols[angIdx] : undefined,
-              cidade: cidIdx !== -1 ? cols[cidIdx] : undefined,
-            });
+            };
+            if (oftIdx !== -1 && cols[oftIdx]) tableItem.oferta = cols[oftIdx];
+            if (angIdx !== -1 && cols[angIdx]) tableItem.angulo = cols[angIdx];
+            if (cidIdx !== -1 && cols[cidIdx]) tableItem.cidade = cols[cidIdx];
+            candidates.push(tableItem);
           }
         }
       }
@@ -303,18 +314,24 @@ export function CampaignsView() {
         const angMatch = block.match(/(?:Angulo|angulo|Ângulo):\s*(.+?)(?:\r?\n|$)/i);
 
         if (telMatch && telMatch[1]) {
-          const emp = nameMatch ? nameMatch[1].trim() : "Empresa Prospect";
+          const emp = nameMatch?.[1]?.trim() || "Empresa Prospect";
           const tel = telMatch[1].trim();
-          const msg = msgMatch
-            ? msgMatch[1].trim()
-            : `Olá ${emp}, temos uma proposta personalizada.`;
-          candidates.push({
+          const msg = msgMatch?.[1]?.trim() || `Olá ${emp}, temos uma proposta personalizada.`;
+          const blockItem: {
+            empresa: string;
+            telefone: string;
+            mensagem: string;
+            oferta?: string;
+            angulo?: string;
+            cidade?: string;
+          } = {
             empresa: emp,
             telefone: tel,
             mensagem: msg,
-            cidade: cidMatch ? cidMatch[1].trim() : undefined,
-            angulo: angMatch ? angMatch[1].trim() : undefined,
-          });
+          };
+          if (cidMatch?.[1]?.trim()) blockItem.cidade = cidMatch[1].trim();
+          if (angMatch?.[1]?.trim()) blockItem.angulo = angMatch[1].trim();
+          candidates.push(blockItem);
         }
       }
     }
@@ -337,12 +354,20 @@ export function CampaignsView() {
             parts[2]?.trim() || `Olá ${emp}, temos uma solução para acelerar o seu negócio.`;
 
           if (tel && tel.replace(/\D/g, "").length >= 7) {
-            candidates.push({
+            const rowItem: {
+              empresa: string;
+              telefone: string;
+              mensagem: string;
+              oferta?: string;
+              angulo?: string;
+              cidade?: string;
+            } = {
               empresa: emp,
               telefone: tel,
               mensagem: msg,
-              cidade: parts[3]?.trim(),
-            });
+            };
+            if (parts[3]?.trim()) rowItem.cidade = parts[3].trim();
+            candidates.push(rowItem);
           }
         }
       }
@@ -552,6 +577,7 @@ export function CampaignsView() {
 
     for (let i = 0; i < total; i++) {
       const lead = candidatesToVerify[i];
+      if (!lead) continue;
       setCurrentProcessingPhone(lead.telefone);
 
       const manualVal = manualOverrides[lead.telefone];
