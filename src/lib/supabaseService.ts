@@ -25,7 +25,6 @@ const LOCAL_STORAGE_LEADS_KEY = "sbs_leads_cache";
 const LOCAL_STORAGE_CAMPANHAS_KEY = "sbs_campanhas_disparo_cache_v1";
 const LOCAL_STORAGE_FILA_KEY = "sbs_disparo_fila_cache_v1";
 
-const INITIAL_FALLBACK_CAMPANHAS: DisparoCampanha[] = [];
 
 /**
  * Salva leads no cache local para resiliência e fallback offline
@@ -691,6 +690,8 @@ export interface DisparoCampanha {
     falhou: number;
   };
 }
+
+const INITIAL_FALLBACK_CAMPANHAS: DisparoCampanha[] = [];
 
 export interface DisparoFilaItem {
   id?: number;
