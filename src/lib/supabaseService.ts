@@ -924,6 +924,16 @@ export async function fetchCampanhasComStats(): Promise<DisparoCampanha[]> {
     return [];
   }
 }
+/**
+ * Extrai o ID numérico puro da campanha de formatos numéricos ou strings (ex: 'supabase-17' -> 17)
+ */
+function extractNumericCampaignId(id: number | string): number | null {
+  if (typeof id === "number") return isNaN(id) ? null : id;
+  const cleaned = String(id).replace(/\D/g, "");
+  if (!cleaned) return null;
+  const num = parseInt(cleaned, 10);
+  return isNaN(num) ? null : num;
+}
 
 /**
  * Atualiza o status da campanha (ex: 'em_andamento', 'pausada', 'concluida')
@@ -933,7 +943,7 @@ export async function updateCampanhaStatus(
   status: "pendente" | "em_andamento" | "pausada" | "concluida",
 ): Promise<boolean> {
   const strId = String(id);
-  const numericId = typeof id === "number" ? id : Number(strId.replace(/[^\d.-]/g, ""));
+  const numericId = extractNumericCampaignId(id);
 
   if (typeof window !== "undefined") {
     try {
@@ -942,7 +952,7 @@ export async function updateCampanhaStatus(
         const camps: DisparoCampanha[] = JSON.parse(raw);
         if (Array.isArray(camps)) {
           const updated = camps.map((c) =>
-            String(c.id) === strId || (numericId && Number(c.id) === numericId)
+            String(c.id) === strId || (numericId !== null && Number(c.id) === numericId)
               ? { ...c, status }
               : c,
           );
@@ -954,7 +964,7 @@ export async function updateCampanhaStatus(
     }
   }
 
-  if (!isSupabaseConfigured() || !numericId || isNaN(numericId)) return true;
+  if (!isSupabaseConfigured() || numericId === null) return true;
 
   try {
     const { error } = await supabase
@@ -974,7 +984,7 @@ export async function deleteCampanha(
   id: number | string,
 ): Promise<{ success: boolean; error?: string }> {
   const strId = String(id);
-  const numericId = typeof id === "number" ? id : Number(strId.replace(/[^\d.-]/g, ""));
+  const numericId = extractNumericCampaignId(id);
 
   // 1. Atualiza cache local de forma confiável suportando id numérico e string
   if (typeof window !== "undefined") {
@@ -986,7 +996,7 @@ export async function deleteCampanha(
           const filtered = camps.filter(
             (c) =>
               String(c.id) !== strId &&
-              (!numericId || Number(c.id) !== numericId) &&
+              (numericId === null || Number(c.id) !== numericId) &&
               `supabase-${c.id}` !== strId,
           );
           localStorage.setItem(LOCAL_STORAGE_CAMPANHAS_KEY, JSON.stringify(filtered));
@@ -1000,7 +1010,7 @@ export async function deleteCampanha(
           const filtered = fila.filter(
             (it) =>
               String(it.campanha_id) !== strId &&
-              (!numericId || Number(it.campanha_id) !== numericId),
+              (numericId === null || Number(it.campanha_id) !== numericId),
           );
           localStorage.setItem(LOCAL_STORAGE_FILA_KEY, JSON.stringify(filtered));
         }
@@ -1011,12 +1021,12 @@ export async function deleteCampanha(
   }
 
   // Se o Supabase não estiver configurado ou não houver id numérico para o banco relacional
-  if (!isSupabaseConfigured() || !numericId || isNaN(numericId)) {
+  if (!isSupabaseConfigured() || numericId === null) {
     return { success: true };
   }
 
   try {
-    // 2. Deleta itens associados na fila no Supabase
+    // 2. Deleta itens associados na fila no Supabase primeiro (garante integridade referencial)
     const { error: errFila } = await supabase
       .from("disparo_fila")
       .delete()
