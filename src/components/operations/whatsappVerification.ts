@@ -23,7 +23,7 @@ export interface WhatsAppVerificationResult {
   profileName?: string | null;
   reason: string;
   checkedAt: string;
-  checkedVia: "cache" | "explicit_lead" | "carrier_format" | "api_simulated";
+  checkedVia: "cache" | "explicit_lead" | "carrier_format" | "api_simulated" | "bot_api" | "database";
 }
 
 const STORAGE_KEY = "sbs_whatsapp_verified_cache_v1";
@@ -216,7 +216,7 @@ export function detectCarrier(digits: string): {
  */
 export function getStoredVerifications(): Record<
   string,
-  { isRegistered: boolean; reason?: string; updatedAt: string }
+  { isRegistered: boolean; reason?: string; profileName?: string | null; updatedAt: string }
 > {
   if (typeof window === "undefined") return {};
   try {
@@ -233,19 +233,27 @@ export function getStoredVerifications(): Record<
 /**
  * Grava ou altera o status de verificação de um número no cache
  */
-export function setStoredVerification(digits: string, isRegistered: boolean, reason?: string) {
+export function setStoredVerification(
+  digits: string,
+  isRegistered: boolean,
+  reason?: string,
+  profileName?: string | null,
+) {
   if (typeof window === "undefined" || !digits) return;
   try {
     const current = getStoredVerifications();
     current[digits] = {
       isRegistered,
       reason: reason || (isRegistered ? "Confirmado no WhatsApp" : "Sem registo no WhatsApp"),
+      profileName: profileName || null,
       updatedAt: new Date().toISOString(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
     // Dispara evento para sincronizar componentes
     window.dispatchEvent(
-      new CustomEvent("sbs_whatsapp_status_changed", { detail: { digits, isRegistered } }),
+      new CustomEvent("sbs_whatsapp_status_changed", {
+        detail: { digits, isRegistered, profileName: profileName || null },
+      }),
     );
   } catch {
     // Ignora erro
@@ -345,6 +353,7 @@ export function verifyWhatsAppNumber(
       carrier,
       lineType,
       waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      profileName: cached.profileName || null,
       reason:
         cached.reason ||
         (cached.isRegistered ? "Verificado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
@@ -460,6 +469,166 @@ export async function verifyWhatsAppNumberAsync(
     ...initial,
     checkedVia: "api_simulated",
     reason: `Verificado com sucesso no WhatsApp Business API • Operadora: ${initial.carrier}`,
+  };
+}
+
+/**
+ * Verificação Online Conectada para Campanhas no Centro de Operações:
+ * 1. Verifica se cada um dos números dos leads está cadastrado no WhatsApp.
+ * 2. Se estiver cadastrado, pega também o nome de usuário (pushname/perfil) registrado no WhatsApp.
+ * 3. Conecta-se diretamente ao Bot de WhatsApp local (http://localhost:3333/api/whatsapp/verificar)
+ *    ou consulta o histórico do banco de dados e cache local.
+ */
+export async function verifyWhatsAppContactOnline(
+  phone: string,
+  manualOverride?: boolean,
+): Promise<WhatsAppVerificationResult> {
+  const norm = normalizePhoneNumber(phone);
+  const { carrier, lineType } = detectCarrier(norm.digits);
+  const nowStr = new Date().toLocaleTimeString("pt-PT", { hour: "2-digit", minute: "2-digit" });
+
+  // 1. Linha fixa ou formato inválido descarta imediatamente
+  if (lineType === "landline") {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      profileName: null,
+      reason: "Linha fixa (telefones fixos não possuem cadastro no WhatsApp móvel).",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  if (lineType === "invalid" || norm.digits.length < 8) {
+    return {
+      isRegistered: false,
+      status: "invalid_format",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      profileName: null,
+      reason: "Formato de número inválido ou incompleto.",
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  if (isKnownUnregisteredNumber(phone) || isKnownUnregisteredNumber(norm.digits)) {
+    return {
+      isRegistered: false,
+      status: "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: null,
+      profileName: null,
+      reason: `Sem conta ativa no WhatsApp: número verificado e sem cadastro (${carrier}).`,
+      checkedAt: nowStr,
+      checkedVia: "carrier_format",
+    };
+  }
+
+  if (manualOverride !== undefined) {
+    return {
+      isRegistered: manualOverride,
+      status: manualOverride ? "registered" : "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: manualOverride && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      profileName: null,
+      reason: manualOverride
+        ? "Aprovado manualmente pelo operador."
+        : "Descartado manualmente pelo operador.",
+      checkedAt: nowStr,
+      checkedVia: "explicit_lead",
+    };
+  }
+
+  // 2. Tenta conectar com o Bot de WhatsApp local (Centro de Operações Bot)
+  if (typeof window !== "undefined") {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1200);
+      const botUrl = `http://localhost:3333/api/whatsapp/verificar?numero=${encodeURIComponent(norm.digits)}`;
+      const res = await fetch(botUrl, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const data = await res.json();
+        const isRegistered = Boolean(data.cadastrado);
+        const profileName = data.nomeUsuario ? String(data.nomeUsuario).trim() : null;
+
+        setStoredVerification(
+          norm.digits,
+          isRegistered,
+          isRegistered
+            ? `Confirmado no WhatsApp via Bot${profileName ? ` (Nome: ${profileName})` : ""}`
+            : "Número sem conta ativa no WhatsApp (verificado pelo Bot)",
+          profileName,
+        );
+
+        return {
+          isRegistered,
+          status: isRegistered ? "registered" : "not_registered",
+          formattedNumber: norm.formatted || phone,
+          rawPhone: phone,
+          digits: norm.digits,
+          carrier,
+          lineType,
+          waLink: isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+          profileName,
+          reason: isRegistered
+            ? `Confirmado no WhatsApp via Bot${profileName ? ` (Nome: ${profileName})` : ""}`
+            : "Número sem conta ativa no WhatsApp (verificado pelo Bot).",
+          checkedAt: nowStr,
+          checkedVia: "bot_api",
+        };
+      }
+    } catch {
+      // Bot local não disponível ou demorou mais de 1.2s — segue para cache e validação
+    }
+  }
+
+  // 3. Cache local existente
+  const stored = getStoredVerifications();
+  if (norm.digits && stored[norm.digits]) {
+    const cached = stored[norm.digits]!;
+    return {
+      isRegistered: cached.isRegistered,
+      status: cached.isRegistered ? "registered" : "not_registered",
+      formattedNumber: norm.formatted || phone,
+      rawPhone: phone,
+      digits: norm.digits,
+      carrier,
+      lineType,
+      waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      profileName: cached.profileName || null,
+      reason:
+        cached.reason ||
+        (cached.isRegistered ? "Validado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
+      checkedAt: nowStr,
+      checkedVia: "cache",
+    };
+  }
+
+  // 4. Se for linha móvel válida de Angola (+244 92/93/94/95/91/99), aprova
+  const baseVal = validateCampaignWhatsAppNumber(phone, manualOverride);
+  return {
+    ...baseVal,
+    profileName: baseVal.profileName || null,
   };
 }
 
@@ -581,6 +750,7 @@ export function validateCampaignWhatsAppNumber(
       carrier,
       lineType,
       waLink: cached.isRegistered && norm.digits ? `https://wa.me/${norm.digits}` : null,
+      profileName: cached.profileName || null,
       reason:
         cached.reason ||
         (cached.isRegistered ? "Validado no WhatsApp (em cache)" : "Sem WhatsApp (em cache)"),
