@@ -92,9 +92,10 @@ export function BotDisparosView({
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchEmp = item.empresa.toLowerCase().includes(query);
+        const matchNome = item.nome?.toLowerCase().includes(query);
         const matchTel = item.telefone.includes(query);
         const matchMsg = item.mensagem.toLowerCase().includes(query);
-        if (!matchEmp && !matchTel && !matchMsg) return false;
+        if (!matchEmp && !matchNome && !matchTel && !matchMsg) return false;
       }
       return true;
     });
@@ -412,10 +413,15 @@ export function BotDisparosView({
                           <button
                             type="button"
                             onClick={() => setSelectedLeadPreview(item)}
-                            className="font-semibold text-slate-200 hover:text-emerald-400 text-left transition-colors cursor-pointer"
+                            className="font-semibold text-slate-200 hover:text-emerald-400 text-left transition-colors cursor-pointer block"
                           >
                             {item.empresa}
                           </button>
+                          {item.nome && (
+                            <span className="text-[11px] text-cyan-400 block font-normal mt-0.5">
+                              {item.nome}
+                            </span>
+                          )}
                         </td>
                         <td className="py-2.5 px-3 font-mono text-slate-400">{item.telefone}</td>
                         <td className="py-2.5 px-3">
@@ -520,6 +526,11 @@ export function BotDisparosView({
               <div className="flex items-center justify-between border-b border-[#202734] pb-2">
                 <div>
                   <h4 className="text-xs font-bold text-white">{selectedLeadPreview.empresa}</h4>
+                  {selectedLeadPreview.nome && (
+                    <div className="text-[11px] text-cyan-400 font-medium">
+                      Contato: {selectedLeadPreview.nome}
+                    </div>
+                  )}
                   <span className="text-[11px] font-mono text-emerald-400">
                     {selectedLeadPreview.telefone}
                   </span>

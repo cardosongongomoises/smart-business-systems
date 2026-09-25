@@ -697,6 +697,7 @@ export interface DisparoFilaItem {
   id?: number;
   campanha_id: number;
   empresa: string;
+  nome?: string;
   telefone: string;
   mensagem: string;
   oferta?: string;
@@ -720,6 +721,7 @@ export async function createCampaignWithVerifiedQueue(
   descricao: string,
   leadsValidos: Array<{
     empresa: string;
+    nome?: string;
     telefone: string;
     mensagem: string;
     oferta?: string;
@@ -756,6 +758,7 @@ export async function createCampaignWithVerifiedQueue(
           id: newId + idx + 1,
           campanha_id: newId,
           empresa: l.empresa || "Empresa Sem Nome",
+          nome: l.nome || null,
           telefone: l.telefone,
           mensagem: l.mensagem,
           oferta: l.oferta || null,
@@ -810,6 +813,7 @@ export async function createCampaignWithVerifiedQueue(
     const filaRows = leadsValidos.map((l) => ({
       campanha_id: campaignId,
       empresa: l.empresa || "Empresa Sem Nome",
+      nome: l.nome || null,
       telefone: l.telefone,
       mensagem: l.mensagem,
       oferta: l.oferta || null,
@@ -1205,10 +1209,10 @@ export async function updateFilaItemStatus(
   try {
     const updatePayload: Record<string, unknown> = { status };
     if (status === "enviado") {
-      updatePayload.enviado_em = new Date().toISOString();
+      updatePayload["enviado_em"] = new Date().toISOString();
     }
     if (errorMsg) {
-      updatePayload.erro = errorMsg;
+      updatePayload["erro"] = errorMsg;
     }
     const { error } = await supabase.from("disparo_fila").update(updatePayload).eq("id", itemId);
     return !error;

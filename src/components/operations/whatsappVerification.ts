@@ -20,6 +20,7 @@ export interface WhatsAppVerificationResult {
   carrier: string;
   lineType: "mobile" | "landline" | "voip" | "invalid";
   waLink: string | null;
+  profileName?: string | null;
   reason: string;
   checkedAt: string;
   checkedVia: "cache" | "explicit_lead" | "carrier_format" | "api_simulated";
@@ -686,34 +687,35 @@ export function filterMessagesContentAuto(
     }
   });
 
-  if (tableIndices.length >= 2) {
+  if (tableIndices.length >= 2 && tableIndices[0] !== undefined) {
     const firstTableIdx = tableIndices[0];
-    const headerLine = lines[firstTableIdx];
+    const headerLine = lines[firstTableIdx] || "";
     const headerCols = headerLine
       .split("|")
-      .map((c) => c.trim().toLowerCase())
+      .map((c: string) => c.trim().toLowerCase())
       .filter(Boolean);
 
     const empIdx = headerCols.findIndex(
-      (c) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
+      (c: string) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
     );
     const telIdx = headerCols.findIndex(
-      (c) => c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
+      (c: string) => c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
     );
     const msgIdx = headerCols.findIndex(
-      (c) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"),
+      (c: string) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"),
     );
     const oftIdx = headerCols.findIndex(
-      (c) => c.includes("oferta") || c.includes("plano") || c.includes("pacote"),
+      (c: string) => c.includes("oferta") || c.includes("plano") || c.includes("pacote"),
     );
-    const cidIdx = headerCols.findIndex((c) => c.includes("cidade") || c.includes("local"));
+    const cidIdx = headerCols.findIndex((c: string) => c.includes("cidade") || c.includes("local"));
 
     const preTableLines = lines.slice(0, firstTableIdx);
     const cleanedTableLines: string[] = [headerLine];
 
     for (let i = 1; i < tableIndices.length; i++) {
       const lineIdx = tableIndices[i];
-      const rowLine = lines[lineIdx];
+      if (lineIdx === undefined) continue;
+      const rowLine = lines[lineIdx] || "";
 
       if (rowLine.includes("---")) {
         cleanedTableLines.push(rowLine);
@@ -722,8 +724,8 @@ export function filterMessagesContentAuto(
 
       const cols = rowLine
         .split("|")
-        .map((c) => c.trim())
-        .filter((_, idx, arr) => idx > 0 && idx < arr.length);
+        .map((c: string) => c.trim())
+        .filter((_: string, idx: number, arr: string[]) => idx > 0 && idx < arr.length);
 
       if (cols.length >= 2) {
         const emp = empIdx !== -1 && cols[empIdx] ? cols[empIdx] : cols[0] || "Empresa";
@@ -784,7 +786,7 @@ export function filterMessagesContentAuto(
     }
 
     const lastTableIdx = tableIndices[tableIndices.length - 1];
-    const postTableLines = lines.slice(lastTableIdx + 1);
+    const postTableLines = lastTableIdx !== undefined ? lines.slice(lastTableIdx + 1) : [];
 
     const fullCleaned = [...preTableLines, ...cleanedTableLines, ...postTableLines]
       .join("\n")
@@ -830,9 +832,9 @@ export function filterMessagesContentAuto(
       }
 
       if (extractedTel) {
-        const emp = nameMatch ? nameMatch[1].trim() : "Empresa";
+        const emp = nameMatch && nameMatch[1] ? nameMatch[1].trim() : "Empresa";
         const tel = extractedTel;
-        const msg = msgMatch ? msgMatch[1].trim() : "";
+        const msg = msgMatch && msgMatch[1] ? msgMatch[1].trim() : "";
 
         const verification = validateCampaignWhatsAppNumber(tel);
         let shouldKeep = true;

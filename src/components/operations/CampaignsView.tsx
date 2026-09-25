@@ -71,6 +71,7 @@ import { BotDisparosView } from "./BotDisparosView";
 
 interface ParsedLeadCandidate {
   empresa: string;
+  nome?: string;
   telefone: string;
   mensagem: string;
   oferta?: string;
@@ -167,6 +168,7 @@ export function CampaignsView() {
     const lines = rawText.split(/\r?\n/);
     const candidates: Array<{
       empresa: string;
+      nome?: string;
       telefone: string;
       mensagem: string;
       oferta?: string;
@@ -195,7 +197,9 @@ export function CampaignsView() {
       for (const block of blocks) {
         if (!block.trim()) continue;
         const empMatch = block.match(/Empresa:\s*(.+?)(?:\r?\n|$)/i);
-        const nomeMatch = block.match(/Nome na mensagem:\s*(.+?)(?:\s*\||\r?\n|$)/i);
+        const nomeMatch = block.match(
+          /(?:Nome na mensagem|Nome do contato|Contato|Responsável|Responsavel|Nome):\s*(.+?)(?:\s*\||\r?\n|$)/i,
+        );
         const catMatch = block.match(/Categoria:\s*(.+?)(?:\s*\||\r?\n|$)/i);
         const cidMatch = block.match(/Cidade:\s*([^|\r\n]+)/i);
         const angMatch = block.match(/(?:Ângulo|Angulo):\s*(.+?)(?:\r?\n|$)/i);
@@ -211,10 +215,12 @@ export function CampaignsView() {
         }
 
         if (phone) {
-          const emp = empMatch?.[1]?.trim() || nomeMatch?.[1]?.trim() || "Empresa Prospect";
-          const msg = msgMatch?.[1]?.trim() || `Olá ${emp}, temos uma proposta personalizada.`;
+          const emp = empMatch?.[1]?.trim() || "Empresa Prospect";
+          const nome = nomeMatch?.[1]?.trim();
+          const msg = msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
           const candidateItem: {
             empresa: string;
+            nome?: string;
             telefone: string;
             mensagem: string;
             oferta?: string;
@@ -225,6 +231,7 @@ export function CampaignsView() {
             telefone: phone,
             mensagem: msg,
           };
+          if (nome) candidateItem.nome = nome;
           if (cidMatch?.[1]?.trim()) candidateItem.cidade = cidMatch[1].trim();
           if (angMatch?.[1]?.trim()) candidateItem.angulo = angMatch[1].trim();
           if (catMatch?.[1]?.trim()) candidateItem.oferta = catMatch[1].trim();
@@ -242,7 +249,14 @@ export function CampaignsView() {
         .filter(Boolean);
 
       const empIdx = headerCols.findIndex(
-        (c) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
+        (c) => c.includes("empresa") || c.includes("cliente"),
+      );
+      const nomeIdx = headerCols.findIndex(
+        (c) =>
+          c.includes("nome") ||
+          c.includes("contato") ||
+          c.includes("responsavel") ||
+          c.includes("responsável"),
       );
       const telIdx = headerCols.findIndex(
         (c) =>
@@ -268,16 +282,23 @@ export function CampaignsView() {
           .filter((_, idx, arr) => idx > 0 && idx < arr.length);
 
         if (cols.length >= 2) {
-          const emp = empIdx !== -1 && cols[empIdx] ? cols[empIdx] : cols[0] || "Empresa";
+          const emp =
+            empIdx !== -1 && cols[empIdx]
+              ? cols[empIdx]
+              : nomeIdx === -1 && cols[0]
+                ? cols[0]
+                : "Empresa";
+          const nome = nomeIdx !== -1 && cols[nomeIdx] ? cols[nomeIdx] : undefined;
           const tel = telIdx !== -1 && cols[telIdx] ? cols[telIdx] : cols[1] || "";
           const msg =
             msgIdx !== -1 && cols[msgIdx]
               ? cols[msgIdx]
-              : cols[2] || `Olá ${emp}, temos uma proposta para vocês.`;
+              : cols[2] || `Olá ${nome || emp}, temos uma proposta para vocês.`;
 
           if (tel && tel.replace(/\D/g, "").length >= 7) {
             const tableItem: {
               empresa: string;
+              nome?: string;
               telefone: string;
               mensagem: string;
               oferta?: string;
@@ -288,6 +309,7 @@ export function CampaignsView() {
               telefone: tel,
               mensagem: msg,
             };
+            if (nome) tableItem.nome = nome;
             if (oftIdx !== -1 && cols[oftIdx]) tableItem.oferta = cols[oftIdx];
             if (angIdx !== -1 && cols[angIdx]) tableItem.angulo = cols[angIdx];
             if (cidIdx !== -1 && cols[cidIdx]) tableItem.cidade = cols[cidIdx];
@@ -306,6 +328,10 @@ export function CampaignsView() {
       for (const block of blocks) {
         if (!block.trim()) continue;
         const nameMatch = block.match(/#{2,3}\s+(.+?)(?:\r?\n|$)/);
+        const empMatch = block.match(/(?:Empresa):\s*(.+?)(?:\r?\n|$)/i);
+        const contactMatch = block.match(
+          /(?:Contato|Nome|Responsável|Responsavel):\s*(.+?)(?:\r?\n|$)/i,
+        );
         const telMatch = block.match(/(?:Telefone|telefone|WhatsApp|Tel):\s*([+\d\s()-]+)/i);
         const msgMatch = block.match(
           /(?:Mensagem|mensagem|Texto):\s*([\s\S]+?)(?=\n(?:[A-Z][a-z]+:|$))/i,
@@ -314,11 +340,13 @@ export function CampaignsView() {
         const angMatch = block.match(/(?:Angulo|angulo|Ângulo):\s*(.+?)(?:\r?\n|$)/i);
 
         if (telMatch && telMatch[1]) {
-          const emp = nameMatch?.[1]?.trim() || "Empresa Prospect";
+          const emp = empMatch?.[1]?.trim() || nameMatch?.[1]?.trim() || "Empresa Prospect";
+          const nome = contactMatch?.[1]?.trim();
           const tel = telMatch[1].trim();
-          const msg = msgMatch?.[1]?.trim() || `Olá ${emp}, temos uma proposta personalizada.`;
+          const msg = msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
           const blockItem: {
             empresa: string;
+            nome?: string;
             telefone: string;
             mensagem: string;
             oferta?: string;
@@ -329,6 +357,7 @@ export function CampaignsView() {
             telefone: tel,
             mensagem: msg,
           };
+          if (nome) blockItem.nome = nome;
           if (cidMatch?.[1]?.trim()) blockItem.cidade = cidMatch[1].trim();
           if (angMatch?.[1]?.trim()) blockItem.angulo = angMatch[1].trim();
           candidates.push(blockItem);
@@ -1091,6 +1120,7 @@ export function CampaignsView() {
     try {
       const validItems = CONSTRUCAO_CIVIL_LEADS.map((lead) => ({
         empresa: lead.empresa,
+        nome: lead.nomeNaMensagem,
         telefone: lead.telefone,
         mensagem: lead.mensagem,
         oferta: lead.categoria,
@@ -2202,12 +2232,20 @@ export function CampaignsView() {
                       .filter(
                         (l) =>
                           l.empresa.toLowerCase().includes(filterSearch.toLowerCase()) ||
+                          (l.nome && l.nome.toLowerCase().includes(filterSearch.toLowerCase())) ||
                           l.telefone.includes(filterSearch),
                       )
                       .map((lead, idx) => (
                         <tr key={idx} className="hover:bg-[#161D2C]/60 transition-colors">
                           <td className="p-3 text-slate-500 font-mono text-[11px]">{idx + 1}</td>
-                          <td className="p-3 font-semibold text-white">{lead.empresa}</td>
+                          <td className="p-3">
+                            <div className="font-semibold text-white">{lead.empresa}</div>
+                            {lead.nome && (
+                              <div className="text-[11px] text-cyan-400 font-normal flex items-center gap-1 mt-0.5">
+                                <span className="text-slate-500">Contato:</span> {lead.nome}
+                              </div>
+                            )}
+                          </td>
                           <td className="p-3 font-mono text-emerald-400 flex items-center gap-1.5">
                             <Smartphone className="w-3.5 h-3.5 text-emerald-500" />
                             {lead.verification.formattedNumber || lead.telefone}
@@ -2305,7 +2343,14 @@ export function CampaignsView() {
                     {discardedLeads.map((lead, idx) => (
                       <tr key={idx} className="hover:bg-rose-500/5 transition-colors">
                         <td className="p-3 text-slate-500 font-mono text-[11px]">{idx + 1}</td>
-                        <td className="p-3 font-semibold text-slate-300">{lead.empresa}</td>
+                        <td className="p-3">
+                          <div className="font-semibold text-slate-300">{lead.empresa}</div>
+                          {lead.nome && (
+                            <div className="text-[11px] text-slate-500 font-normal">
+                              Contato: {lead.nome}
+                            </div>
+                          )}
+                        </td>
                         <td className="p-3 font-mono text-rose-400">{lead.telefone}</td>
                         <td className="p-3">
                           <span className="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 text-[10px] border border-rose-500/20 font-medium">
