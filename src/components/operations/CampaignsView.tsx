@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import {
   validateCampaignWhatsAppNumber,
   verifyWhatsAppNumber,
+  verifyWhatsAppContactOnline,
   WhatsAppVerificationResult,
   detectCarrier,
   normalizePhoneNumber,
@@ -610,7 +611,16 @@ export function CampaignsView() {
       setCurrentProcessingPhone(lead.telefone);
 
       const manualVal = manualOverrides[lead.telefone];
-      const verification = validateCampaignWhatsAppNumber(lead.telefone, manualVal);
+      const verification = await verifyWhatsAppContactOnline(
+        lead.telefone,
+        manualVal !== undefined ? manualVal : undefined,
+      );
+
+      // Se o bot retornou nome de perfil e o lead ainda não tem nome, injetar
+      if (verification.profileName && !lead.nome) {
+        lead.nome = verification.profileName;
+      }
+
       const isSuccess = verification.isRegistered;
 
       if (isSuccess) {
