@@ -101,6 +101,8 @@ export function CampaignsView() {
   const [isDeletingCampaign, setIsDeletingCampaign] = useState(false);
   const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
+  // Lista negra de IDs deletados — impede que campanhas deletadas voltem ao fazer refresh
+  const deletedCampaignIdsRef = useRef<Set<string>>(new Set());
 
   // Estado do Bot de Disparos WhatsApp
   const [selectedBotCampaignId, setSelectedBotCampaignId] = useState<number | null>(null);
@@ -800,7 +802,12 @@ export function CampaignsView() {
     setIsLoadingCampaigns(true);
     try {
       const data = await fetchCampanhasComStats();
-      setCampaignsList(data);
+      // Filtra campanhas que foram deletadas nesta sessão (lista negra)
+      const blacklist = deletedCampaignIdsRef.current;
+      const filtered = blacklist.size > 0
+        ? data.filter((c) => !blacklist.has(String(c.id)) && !blacklist.has(`supabase-${c.id}`))
+        : data;
+      setCampaignsList(filtered);
     } catch (err) {
       console.error("Erro ao carregar campanhas:", err);
     } finally {
@@ -1195,6 +1202,11 @@ export function CampaignsView() {
     const strCampId = String(campId);
 
     try {
+      // 0. Registra na lista negra ANTES de qualquer operação — impede que refreshes ou
+      //    eventos realtime tragam a campanha de volta enquanto o delete está em curso
+      deletedCampaignIdsRef.current.add(strCampId);
+      deletedCampaignIdsRef.current.add(`supabase-${campId}`);
+
       // 1. Atualiza otimisticamente a lista local imediatamente
       setCampaignsList((prev) =>
         prev.filter((c) => String(c.id) !== strCampId && `supabase-${c.id}` !== strCampId),
@@ -1264,6 +1276,12 @@ export function CampaignsView() {
   const handleConfirmDeleteAll = async () => {
     setIsDeletingAll(true);
     try {
+      // 0. Registra todos os IDs atuais na lista negra antes de limpar
+      campaignsList.forEach((c) => {
+        deletedCampaignIdsRef.current.add(String(c.id));
+        deletedCampaignIdsRef.current.add(`supabase-${c.id}`);
+      });
+
       // 1. Limpeza otimista imediata na interface
       setCampaignsList([]);
       setSelectedBotCampaignId(null);
