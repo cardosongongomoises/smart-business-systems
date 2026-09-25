@@ -51,6 +51,8 @@ import {
   fetchFilaItems,
   updateFilaItemStatus,
   resetCampanhaFila,
+  deleteCampanha,
+  deleteAllCampanhas,
   DisparoCampanha,
   DisparoFilaItem,
 } from "@/lib/supabaseService";
