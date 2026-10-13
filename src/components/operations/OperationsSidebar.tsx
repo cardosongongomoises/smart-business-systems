@@ -16,6 +16,7 @@ import {
   GraduationCap,
   LayoutGrid,
   Send,
+  Bot,
 } from "lucide-react";
 
 export type ActiveTab =
@@ -25,6 +26,7 @@ export type ActiveTab =
   | "campanhas"
   | "campaigns"
   | "conversations"
+  | "ai_assistant"
   | "knowledge_base"
   | "system_prompt"
   | "clients"
@@ -106,6 +108,13 @@ export function OperationsSidebar({
       label: "Conversas IA",
       icon: MessageSquareCode,
       badge: activeChatsCount || 0,
+      badgeColor: "violet",
+    },
+    {
+      id: "ai_assistant",
+      label: "Assistente IA",
+      icon: Bot,
+      badge: "Copilot",
       badgeColor: "violet",
     },
     {

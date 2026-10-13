@@ -16,6 +16,7 @@ import { CampaignsView } from "./CampaignsView";
 import { ReportsView } from "./ReportsView";
 import { SettingsView } from "./SettingsView";
 import { KnowledgeBaseView } from "./KnowledgeBaseView";
+import { AIAssistantView } from "./AIAssistantView";
 import { OperationsCenterView } from "@/components/opscenter/OperationsCenterView";
 import { TaskStoreProvider } from "@/components/opscenter/useTaskStore";
 import { calculateFunnelStages } from "./mockData";
@@ -586,6 +587,14 @@ export function OperationsCenter() {
               onSelectLead={setSelectedLeadId}
               onAddMessage={handleAddMessage}
               onToggleAiStatus={handleToggleAiStatus}
+            />
+          )}
+
+          {currentTab === "ai_assistant" && (
+            <AIAssistantView
+              leads={leads}
+              selectedLeadId={selectedLead?.id || null}
+              onSelectLead={handleSelectLeadResponsive}
             />
           )}
 

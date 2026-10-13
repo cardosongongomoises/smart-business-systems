@@ -253,6 +253,14 @@ export function DashboardView({
             <Bot className="size-4 text-[#8B5CF6]" />
             <span>Ver Conversas IA ({activeChats})</span>
           </button>
+          <button
+            type="button"
+            onClick={() => onNavigateTab("ai_assistant")}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-[8px] bg-[#151A23] hover:bg-[#252C38] border border-violet-500/40 text-violet-200 hover:text-white text-xs font-semibold transition-all cursor-pointer shadow-sm shadow-violet-500/10"
+          >
+            <Sparkles className="size-4 text-[#8B5CF6]" />
+            <span>Assistente IA Copilot</span>
+          </button>
         </div>
       </div>
 

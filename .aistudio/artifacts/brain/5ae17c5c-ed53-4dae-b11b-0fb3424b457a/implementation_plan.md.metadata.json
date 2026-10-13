@@ -1,0 +1,6 @@
+{
+  "summary": "Plano de implementação para a criação da nova seção ASSISTENTE IA no Centro de Operações da Agentes Digital. Inclui arquitetura de copilot operacional conectado em tempo real aos leads, métricas e campanhas, chat interativo com atalhos de ação rápida, integração server-side com Gemini (@google/genai) e design escuro elegante conforme as diretrizes do sistema.",
+  "updatedAt": "2026-10-13T17:47:39.261989930Z",
+  "requestFeedback": true,
+  "userFacing": true
+}
