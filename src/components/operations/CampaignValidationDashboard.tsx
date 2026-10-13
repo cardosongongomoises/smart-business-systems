@@ -62,7 +62,7 @@ interface CustomTooltipProps {
 }
 
 function CustomValidationTooltip({ active, payload, label }: CustomTooltipProps) {
-  if (active && payload && payload.length) {
+  if (active && payload && payload.length && payload[0]) {
     const data = payload[0].payload as CampaignValidationRecord & { shortName?: string };
     const successRate = data.taxaSucesso ? data.taxaSucesso.toFixed(1) : "0.0";
 
@@ -605,14 +605,14 @@ export function CampaignValidationDashboard({
                   name="bemSucedidas"
                   fill="#10B981"
                   radius={chartType === "stacked" ? [0, 0, 0, 0] : [4, 4, 0, 0]}
-                  stackId={chartType === "stacked" ? "a" : undefined}
+                  {...(chartType === "stacked" ? { stackId: "a" } : {})}
                 />
                 <Bar
                   dataKey="malsucedidas"
                   name="malsucedidas"
                   fill="#F43F5E"
                   radius={[4, 4, 0, 0]}
-                  stackId={chartType === "stacked" ? "a" : undefined}
+                  {...(chartType === "stacked" ? { stackId: "a" } : {})}
                 />
               </BarChart>
             </ResponsiveContainer>

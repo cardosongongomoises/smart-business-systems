@@ -119,7 +119,8 @@ export function DashboardView({
     }
     return days.map((d) => {
       const dayLeads = safeLeads.filter((l) => {
-        const date = l.createdAt ? new Date(l.createdAt) : null;
+        const leadDate = l.createdAt || l.firstContactAt;
+        const date = leadDate ? new Date(leadDate) : null;
         return date && !isNaN(date.getTime()) ? date.getDay() === d.key : false;
       });
       const count = dayLeads.length;

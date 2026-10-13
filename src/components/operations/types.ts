@@ -62,7 +62,7 @@ export interface Lead {
   role: string;
   phone: string;
   email: string;
-  location?: string;
+  location?: string | undefined;
   channel: LeadChannel;
   status: LeadStatus;
   packageInterest: PlanName;
@@ -70,14 +70,15 @@ export interface Lead {
   qualificationScore: number; // 0-100
   estimatedValue: string;
   firstContactAt: string;
+  createdAt?: string | undefined;
   lastActive: string;
   notes: LeadNote[];
   activities: ActivityItem[];
   appointments: Appointment[];
   conversation: ChatMessage[];
   aiProcessingStatus: "ativo" | "escalado" | "concluido";
-  unreadMessagesCount?: number;
-  hasWhatsApp?: boolean;
+  unreadMessagesCount?: number | undefined;
+  hasWhatsApp?: boolean | undefined;
 }
 
 export interface MetricData {

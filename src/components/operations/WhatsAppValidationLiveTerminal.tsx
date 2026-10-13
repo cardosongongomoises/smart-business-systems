@@ -29,7 +29,7 @@ interface WhatsAppValidationLiveTerminalProps {
   processedCount: number;
   successCount: number;
   failureCount: number;
-  currentProcessingPhone?: string;
+  currentProcessingPhone?: string | undefined;
   logs: ValidationStatusLogItem[];
   onClearLogs?: () => void;
   onRerunValidation?: () => void;

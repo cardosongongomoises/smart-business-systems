@@ -222,7 +222,8 @@ export function CampaignsView() {
         if (phone) {
           const emp = empMatch?.[1]?.trim() || "Empresa Prospect";
           const nome = nomeMatch?.[1]?.trim();
-          const msg = msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
+          const msg =
+            msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
           const candidateItem: {
             empresa: string;
             nome?: string;
@@ -253,9 +254,7 @@ export function CampaignsView() {
         .map((c) => c.trim().toLowerCase())
         .filter(Boolean);
 
-      const empIdx = headerCols.findIndex(
-        (c) => c.includes("empresa") || c.includes("cliente"),
-      );
+      const empIdx = headerCols.findIndex((c) => c.includes("empresa") || c.includes("cliente"));
       const nomeIdx = headerCols.findIndex(
         (c) =>
           c.includes("nome") ||
@@ -348,7 +347,8 @@ export function CampaignsView() {
           const emp = empMatch?.[1]?.trim() || nameMatch?.[1]?.trim() || "Empresa Prospect";
           const nome = contactMatch?.[1]?.trim();
           const tel = telMatch[1].trim();
-          const msg = msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
+          const msg =
+            msgMatch?.[1]?.trim() || `Olá ${nome || emp}, temos uma proposta personalizada.`;
           const blockItem: {
             empresa: string;
             nome?: string;
@@ -806,9 +806,10 @@ export function CampaignsView() {
       const data = await fetchCampanhasComStats();
       // Filtra campanhas que foram deletadas nesta sessão (lista negra)
       const blacklist = deletedCampaignIdsRef.current;
-      const filtered = blacklist.size > 0
-        ? data.filter((c) => !blacklist.has(String(c.id)) && !blacklist.has(`supabase-${c.id}`))
-        : data;
+      const filtered =
+        blacklist.size > 0
+          ? data.filter((c) => !blacklist.has(String(c.id)) && !blacklist.has(`supabase-${c.id}`))
+          : data;
       setCampaignsList(filtered);
     } catch (err) {
       console.error("Erro ao carregar campanhas:", err);
@@ -901,7 +902,8 @@ export function CampaignsView() {
     e.preventDefault();
     setIsDragOver(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFileUpload(e.dataTransfer.files[0]);
+      const file = e.dataTransfer.files[0];
+      if (file) handleFileUpload(file);
     }
   };
 
@@ -1189,8 +1191,11 @@ export function CampaignsView() {
     if (selectedBotCampaignId) {
       loadFilaForCampaign(selectedBotCampaignId);
     } else if (campaignsList.length > 0 && !selectedBotCampaignId) {
-      setSelectedBotCampaignId(campaignsList[0].id);
-      loadFilaForCampaign(campaignsList[0].id);
+      const firstCamp = campaignsList[0];
+      if (firstCamp) {
+        setSelectedBotCampaignId(firstCamp.id);
+        loadFilaForCampaign(firstCamp.id);
+      }
     }
   }, [selectedBotCampaignId, campaignsList, loadFilaForCampaign]);
 
@@ -1237,9 +1242,10 @@ export function CampaignsView() {
         const remaining = campaignsList.filter(
           (c) => String(c.id) !== strCampId && `supabase-${c.id}` !== strCampId,
         );
-        if (remaining.length > 0) {
-          setSelectedBotCampaignId(remaining[0].id);
-          loadFilaForCampaign(remaining[0].id);
+        const firstRemaining = remaining[0];
+        if (firstRemaining) {
+          setSelectedBotCampaignId(firstRemaining.id);
+          loadFilaForCampaign(firstRemaining.id);
         } else {
           setSelectedBotCampaignId(null);
           setFilaItems([]);
@@ -1317,7 +1323,9 @@ export function CampaignsView() {
 
     window.open(waUrl, "_blank");
 
-    await updateFilaItemStatus(item.id, "enviado");
+    if (item.id !== undefined) {
+      await updateFilaItemStatus(item.id, "enviado");
+    }
     toast.success(`Disparo registrado para ${item.empresa}!`);
     addBotLog(`Disparo manual executado: ${item.empresa} (${item.telefone})`, "success");
 
@@ -1391,12 +1399,14 @@ export function CampaignsView() {
         return;
       }
 
-      setCurrentSendingId(nextPending.id);
+      setCurrentSendingId(nextPending.id ?? null);
       addBotLog(`Processando lead: ${nextPending.empresa} (${nextPending.telefone})...`, "info");
 
       // Simulação do envio com delay seguro
       await new Promise((r) => setTimeout(r, 650));
-      await updateFilaItemStatus(nextPending.id, "enviado");
+      if (nextPending.id !== undefined) {
+        await updateFilaItemStatus(nextPending.id, "enviado");
+      }
       addBotLog(`✅ Mensagem enviada para ${nextPending.empresa}`, "success");
 
       setFilaItems((prev) =>

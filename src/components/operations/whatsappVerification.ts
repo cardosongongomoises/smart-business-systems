@@ -23,7 +23,8 @@ export interface WhatsAppVerificationResult {
   profileName?: string | null;
   reason: string;
   checkedAt: string;
-  checkedVia: "cache" | "explicit_lead" | "carrier_format" | "api_simulated" | "bot_api" | "database";
+  checkedVia:
+    "cache" | "explicit_lead" | "carrier_format" | "api_simulated" | "bot_api" | "database";
 }
 
 const STORAGE_KEY = "sbs_whatsapp_verified_cache_v1";
@@ -800,8 +801,8 @@ export interface AutoFilterMessagesResult {
     empresa: string;
     telefone: string;
     mensagem: string;
-    cidade?: string;
-    oferta?: string;
+    cidade?: string | undefined;
+    oferta?: string | undefined;
     carrier: string;
   }>;
   removedItems: Array<{
@@ -869,7 +870,8 @@ export function filterMessagesContentAuto(
       (c: string) => c.includes("empresa") || c.includes("nome") || c.includes("cliente"),
     );
     const telIdx = headerCols.findIndex(
-      (c: string) => c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
+      (c: string) =>
+        c.includes("tel") || c.includes("cel") || c.includes("fone") || c.includes("whatsapp"),
     );
     const msgIdx = headerCols.findIndex(
       (c: string) => c.includes("msg") || c.includes("mensagem") || c.includes("texto"),

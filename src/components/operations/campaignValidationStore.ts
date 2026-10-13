@@ -15,7 +15,7 @@ export interface CampaignValidationRecord {
     fixo: number;
     outros: number;
   };
-  status: "concluida" | "em_andamento" | "pendente" | "rascunho";
+  status: "concluida" | "em_andamento" | "pendente" | "rascunho" | "pausada";
   sampleLeads?: Array<{
     empresa: string;
     telefone: string;
