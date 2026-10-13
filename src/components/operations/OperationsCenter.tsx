@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { Bot, Sparkles } from "lucide-react";
 import { OperationsSidebar, ActiveTab } from "./OperationsSidebar";
 import { OperationsTopbar } from "./OperationsTopbar";
 import { MetricsRow } from "./MetricsRow";
@@ -508,6 +509,7 @@ export function OperationsCenter() {
             adminEmail={adminEmail}
             supabaseSource={supabaseSource}
             onRefresh={loadLeads}
+            onOpenAssistant={() => setCurrentTab("ai_assistant")}
           />
 
           {/* Views Router */}
@@ -533,6 +535,34 @@ export function OperationsCenter() {
             <div className="flex-1 overflow-y-auto flex flex-col">
               {/* Top Metrics & Journey Funnel */}
               <div className="p-4 sm:p-6 pb-2 space-y-4 sm:space-y-5 bg-gradient-to-b from-[#0E121A]/40 to-transparent">
+                {/* Assistente IA Banner no CRM */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-violet-950/40 via-[#121622] to-[#151A23] border border-violet-500/40 rounded-xl p-3.5 shadow-md">
+                  <div className="flex items-center gap-3">
+                    <div className="size-9 rounded-lg bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-300 shrink-0">
+                      <Bot className="size-5 text-violet-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                        <span>Assistente IA Integrado ao CRM</span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                          Copilot Ativo
+                        </span>
+                      </h4>
+                      <p className="text-[11px] text-slate-400">
+                        Análise de leads, diagnósticos automáticos e geração de abordagens
+                        comerciais para WhatsApp em Angola.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setCurrentTab("ai_assistant")}
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold shadow-sm transition-all cursor-pointer shrink-0"
+                  >
+                    <Sparkles className="size-3.5" />
+                    <span>Abrir Chat com Assistente IA →</span>
+                  </button>
+                </div>
+
                 <MetricsRow metrics={dynamicMetrics} />
                 <FunnelOverview stages={dynamicFunnelStages} />
               </div>

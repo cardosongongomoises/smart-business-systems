@@ -25,6 +25,7 @@ interface TopbarProps {
   adminEmail?: string;
   supabaseSource?: "supabase" | "cache" | "mock";
   onRefresh?: () => void;
+  onOpenAssistant?: (() => void) | undefined;
 }
 
 export function OperationsTopbar({
@@ -39,6 +40,7 @@ export function OperationsTopbar({
   adminEmail,
   supabaseSource = "mock",
   onRefresh,
+  onOpenAssistant,
 }: TopbarProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -152,6 +154,19 @@ export function OperationsTopbar({
           <Sparkles className="size-3.5 text-[#8B5CF6]" />
           <span>Simular Lead WhatsApp</span>
         </button>
+
+        {/* Assistente IA Button */}
+        {onOpenAssistant && (
+          <button
+            type="button"
+            onClick={onOpenAssistant}
+            title="Abrir Assistente IA Copilot"
+            className="inline-flex items-center gap-1.5 h-8 sm:h-9 rounded-[8px] border border-violet-500/40 bg-violet-600/15 hover:bg-violet-600/25 px-2.5 sm:px-3 text-xs font-semibold text-violet-200 hover:text-white transition-all shadow-sm cursor-pointer"
+          >
+            <Bot className="size-3.5 text-violet-400" />
+            <span className="hidden sm:inline">Assistente IA</span>
+          </button>
+        )}
 
         {/* New Manual Lead AI Button */}
         <button

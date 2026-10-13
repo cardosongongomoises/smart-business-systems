@@ -97,6 +97,17 @@ export function Footer() {
                   Contacto Institucional
                 </a>
               </li>
+              <li>
+                <a
+                  href="/operacoes"
+                  className="text-violet-300 transition-colors hover:text-white flex items-center gap-1.5 font-medium"
+                >
+                  <span>Centro de Operações (Assistente IA)</span>
+                  <span className="text-[10px] bg-violet-500/20 text-violet-300 px-1.5 py-0.5 rounded border border-violet-500/30">
+                    Copilot
+                  </span>
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -65,23 +65,22 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Status + Primary CTA */}
-        <div className="hidden lg:flex items-center gap-4">
-          <div className="hidden xl:flex items-center gap-2 rounded-full border border-[#252C38] bg-[#0E121A] px-2.5 py-1 text-[11px] font-medium text-[#A7B0BF]">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-[#22C55E] opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-[#22C55E]" />
-            </span>
-            <span className="font-mono text-[10px] text-[#22C55E] font-bold tracking-wider uppercase">
-              ONLINE 24/7
-            </span>
-          </div>
+        {/* Status + Operacoes + Primary CTA */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a
+            href="/operacoes"
+            className="inline-flex h-[40px] items-center justify-center gap-1.5 rounded-[8px] bg-violet-600/15 hover:bg-violet-600/25 border border-violet-500/40 px-3.5 text-xs font-semibold text-violet-200 hover:text-white transition-all shadow-sm"
+            title="Acessar Centro de Operações e Assistente IA"
+          >
+            <ShieldCheck className="size-3.5 text-violet-400" />
+            <span>Centro de Operações</span>
+          </a>
 
           <a
             href={CTA.specialist}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[42px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-5 text-xs font-semibold text-white shadow-sm transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
+            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white shadow-sm transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
           >
             <span>Falar com especialista</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -132,6 +131,14 @@ export function Header() {
             </nav>
 
             <div className="mt-4 pt-4 border-t border-[#252C38] flex flex-col gap-2.5">
+              <a
+                href="/operacoes"
+                onClick={() => setOpen(false)}
+                className="flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-violet-600/20 border border-violet-500/40 px-5 text-xs font-semibold text-violet-200 transition-colors hover:bg-violet-600/30"
+              >
+                <ShieldCheck className="size-4 text-violet-400" />
+                <span>Centro de Operações (Assistente IA)</span>
+              </a>
               <a
                 href={CTA.specialist}
                 target="_blank"

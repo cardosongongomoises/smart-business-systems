@@ -95,7 +95,20 @@ export function OperationsSidebar({
       badge: "Kanban",
       badgeColor: "blue",
     },
-    { id: "leads", label: "Leads", icon: Users },
+    {
+      id: "leads",
+      label: "CRM de Leads",
+      icon: Users,
+      badge: "CRM",
+      badgeColor: "blue",
+    },
+    {
+      id: "ai_assistant",
+      label: "Assistente IA (CRM)",
+      icon: Bot,
+      badge: "Copilot",
+      badgeColor: "violet",
+    },
     {
       id: "campanhas",
       label: "Campanhas & Disparos",
@@ -108,13 +121,6 @@ export function OperationsSidebar({
       label: "Conversas IA",
       icon: MessageSquareCode,
       badge: activeChatsCount || 0,
-      badgeColor: "violet",
-    },
-    {
-      id: "ai_assistant",
-      label: "Assistente IA",
-      icon: Bot,
-      badge: "Copilot",
       badgeColor: "violet",
     },
     {

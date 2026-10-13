@@ -43,6 +43,7 @@ import {
 } from "./whatsappVerification";
 import { evaluateLeadQualification } from "./leadQualificationEngine";
 import { toast } from "sonner";
+import { AIAssistantView } from "./AIAssistantView";
 
 interface LeadDetailPanelProps {
   lead: Lead | null;
@@ -55,7 +56,7 @@ interface LeadDetailPanelProps {
   onBackToList?: () => void;
 }
 
-type DetailTab = "overview" | "chat" | "schedules" | "notes" | "activity";
+type DetailTab = "overview" | "ai_assistant" | "chat" | "schedules" | "notes" | "activity";
 
 export function LeadDetailPanel({
   lead,
@@ -537,6 +538,11 @@ export function LeadDetailPanel({
           {[
             { id: "overview" as DetailTab, label: "Overview" },
             {
+              id: "ai_assistant" as DetailTab,
+              label: "Assistente IA",
+              badge: "Copilot",
+            },
+            {
               id: "chat" as DetailTab,
               label: "Conversa IA",
               badge: (lead.conversation || []).length,
@@ -903,6 +909,37 @@ export function LeadDetailPanel({
                   </div>
                 </div>
 
+                {/* Assistente IA Copilot do Lead */}
+                <div className="rounded-[16px] border border-violet-500/40 bg-gradient-to-r from-violet-950/30 via-[#151A23] to-[#0E121A] p-4.5 shadow-md">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="size-9 rounded-[10px] bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-300 shrink-0">
+                        <Sparkles className="size-4.5 text-violet-400" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                          <span>Assistente IA deste Lead (Copilot)</span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                            gemini-3.8-flash
+                          </span>
+                        </h4>
+                        <p className="text-xs text-slate-400">
+                          Gere diagnósticos, abordagens de WhatsApp e quebre objeções com contexto
+                          direto deste lead.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab("ai_assistant")}
+                      className="inline-flex items-center gap-1.5 h-8.5 px-3.5 rounded-[8px] text-xs font-semibold bg-violet-600 hover:bg-violet-500 text-white shadow-sm transition-all cursor-pointer self-start sm:self-auto shrink-0"
+                    >
+                      <Bot className="size-3.5" />
+                      <span>Abrir Assistente IA →</span>
+                    </button>
+                  </div>
+                </div>
+
                 {/* Conversa com Agente IA (Preview) */}
                 <div className="rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 shadow-[0_0_30px_-8px_rgba(139,92,246,0.25)]">
                   <div className="flex items-center justify-between pb-3 border-b border-[#252C38]">
@@ -1009,6 +1046,13 @@ export function LeadDetailPanel({
               </div>
             );
           })()}
+
+        {/* ASSISTENTE IA TAB */}
+        {activeTab === "ai_assistant" && (
+          <div className="rounded-[16px] border border-violet-500/30 bg-[#080A0F] overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.3)] h-[640px] flex flex-col">
+            <AIAssistantView leads={[lead]} selectedLeadId={lead.id} />
+          </div>
+        )}
 
         {/* CHAT TAB (Full AI Agent Conversation) */}
         {activeTab === "chat" && (
