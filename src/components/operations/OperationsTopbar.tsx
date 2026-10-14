@@ -10,7 +10,6 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   LogOut,
-  Database,
 } from "lucide-react";
 
 interface TopbarProps {
@@ -106,25 +105,6 @@ export function OperationsTopbar({
               38ms
             </span>
           </div>
-
-          {/* Supabase Status Badge */}
-          {supabaseSource === "supabase" ? (
-            <div
-              title="Banco de dados conectado ao Supabase com persistência ativa"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#22C55E]/40 bg-[#22C55E]/10 px-3 py-1 text-[11px] font-semibold text-[#22C55E]"
-            >
-              <Database className="size-3 text-[#22C55E]" />
-              <span className="tracking-wide">SUPABASE CONECTADO</span>
-            </div>
-          ) : (
-            <div
-              title="Aguardando configuração de VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no arquivo .env"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#F59E0B]/40 bg-[#F59E0B]/10 px-3 py-1 text-[11px] font-semibold text-[#F59E0B]"
-            >
-              <Database className="size-3 text-[#F59E0B]" />
-              <span className="tracking-wide">MODO DEMO / LOCAL</span>
-            </div>
-          )}
         </div>
       </div>
 
