@@ -1,4 +1,13 @@
 {
-  "framework": "vite",
-  "outputDirectory": "dist"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "NODE_ENV=production vite build && node scripts/postbuild.js",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ]
 }

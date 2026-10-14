@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowRight, ShieldCheck } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { CTA } from "@/lib/site-config";
 
 const links = [
@@ -65,17 +65,8 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Status + Operacoes + Primary CTA */}
+        {/* Primary CTA */}
         <div className="hidden lg:flex items-center gap-3">
-          <a
-            href="/operacoes"
-            className="inline-flex h-[40px] items-center justify-center gap-1.5 rounded-[8px] bg-violet-600/15 hover:bg-violet-600/25 border border-violet-500/40 px-3.5 text-xs font-semibold text-violet-200 hover:text-white transition-all shadow-sm"
-            title="Acessar Centro de Operações e Assistente IA"
-          >
-            <ShieldCheck className="size-3.5 text-violet-400" />
-            <span>Centro de Operações</span>
-          </a>
-
           <a
             href={CTA.specialist}
             target="_blank"
@@ -131,14 +122,6 @@ export function Header() {
             </nav>
 
             <div className="mt-4 pt-4 border-t border-[#252C38] flex flex-col gap-2.5">
-              <a
-                href="/operacoes"
-                onClick={() => setOpen(false)}
-                className="flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-violet-600/20 border border-violet-500/40 px-5 text-xs font-semibold text-violet-200 transition-colors hover:bg-violet-600/30"
-              >
-                <ShieldCheck className="size-4 text-violet-400" />
-                <span>Centro de Operações (Assistente IA)</span>
-              </a>
               <a
                 href={CTA.specialist}
                 target="_blank"
