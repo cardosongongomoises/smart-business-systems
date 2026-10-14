@@ -7,7 +7,7 @@ try {
     stdio: "inherit",
     env: { ...process.env, NODE_ENV: "production" },
   });
-  await import("./postbuild.js");
+  await import("./postbuild.mjs");
 } catch (error) {
   console.error("Build failed:", error);
   process.exit(1);
