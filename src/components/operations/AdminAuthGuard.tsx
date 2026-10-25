@@ -7,17 +7,17 @@ import {
   Eye,
   EyeOff,
   ArrowLeft,
-  CheckCircle2,
   AlertCircle,
   LogIn,
 } from "lucide-react";
 import { toast } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
   adminEmail: string;
-  logout: () => void;
+  logout: () => void | Promise<void>;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType>({
@@ -28,149 +28,102 @@ const AdminAuthContext = createContext<AdminAuthContextType>({
 
 export const useAdminAuth = () => useContext(AdminAuthContext);
 
-const AUTH_STORAGE_KEY = "sbs_admin_auth_session";
-const CUSTOM_PASSWORD_KEY = "sbs_admin_custom_key";
+// Chaves do login antigo (senhas escritas no código). Só são apagadas do navegador.
+const LEGACY_STORAGE_KEYS = ["sbs_admin_auth_session", "sbs_admin_custom_key"];
 
 export function AdminAuthGuard({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoadingCheck, setIsLoadingCheck] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
+    // Limpar o login antigo, que aceitava senhas fixas.
     try {
-      if (typeof window !== "undefined") {
-        const localSession = window.localStorage?.getItem(AUTH_STORAGE_KEY);
-        const sessionSession = window.sessionStorage?.getItem(AUTH_STORAGE_KEY);
-
-        if (localSession) {
-          try {
-            const parsed = JSON.parse(localSession);
-            if (parsed?.authenticated) {
-              setIsAuthenticated(true);
-              setEmail(parsed.email || "admin@agentes-digital.com");
-            }
-          } catch {
-            window.localStorage?.removeItem(AUTH_STORAGE_KEY);
-          }
-        } else if (sessionSession) {
-          try {
-            const parsed = JSON.parse(sessionSession);
-            if (parsed?.authenticated) {
-              setIsAuthenticated(true);
-              setEmail(parsed.email || "admin@agentes-digital.com");
-            }
-          } catch {
-            window.sessionStorage?.removeItem(AUTH_STORAGE_KEY);
-          }
-        }
-      }
-    } catch (err) {
-      console.warn("Storage check failed in AdminAuthGuard:", err);
-    } finally {
-      setIsLoadingCheck(false);
+      LEGACY_STORAGE_KEYS.forEach((key) => {
+        window.localStorage?.removeItem(key);
+        window.sessionStorage?.removeItem(key);
+      });
+    } catch {
+      /* ignore */
     }
+
+    if (!isSupabaseConfigured()) {
+      setIsLoadingCheck(false);
+      return;
+    }
+
+    let active = true;
+
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (!active) return;
+        setIsAuthenticated(Boolean(data.session));
+        setEmail(data.session?.user?.email ?? "");
+      })
+      .catch((err) => {
+        console.warn("Falha ao verificar a sessão:", err);
+      })
+      .finally(() => {
+        if (active) setIsLoadingCheck(false);
+      });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return;
+      setIsAuthenticated(Boolean(session));
+      setEmail(session?.user?.email ?? "");
+    });
+
+    return () => {
+      active = false;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     const trimmedEmail = email.trim().toLowerCase();
-    const trimmedPass = password.trim();
 
     if (!trimmedEmail) {
       setError("Por favor, insira o seu e-mail de administrador.");
       return;
     }
 
-    if (!trimmedPass) {
-      setError("Por favor, insira a sua senha ou chave de acesso.");
+    if (!password) {
+      setError("Por favor, insira a sua senha.");
+      return;
+    }
+
+    if (!isSupabaseConfigured()) {
+      setError("O servidor de autenticação não está configurado.");
       return;
     }
 
     setIsSubmitting(true);
-
-    setTimeout(() => {
-      let storedCustomPass: string | null = null;
-      try {
-        storedCustomPass = localStorage.getItem(CUSTOM_PASSWORD_KEY);
-      } catch {
-        /* ignore */
-      }
-      // Valid credentials check:
-      // Accepts master passwords: admin2026, admin, admin123, 123456, or custom password set by admin
-      const validPasswords = [
-        "admin2026",
-        "admin",
-        "admin123",
-        "123456",
-        "agentes2026",
-        storedCustomPass,
-      ].filter(Boolean);
-
-      const isValid = validPasswords.includes(trimmedPass);
-
-      if (isValid) {
-        const sessionData = JSON.stringify({
-          authenticated: true,
-          email: trimmedEmail,
-          timestamp: Date.now(),
-        });
-
-        try {
-          if (rememberMe) {
-            localStorage.setItem(AUTH_STORAGE_KEY, sessionData);
-          } else {
-            sessionStorage.setItem(AUTH_STORAGE_KEY, sessionData);
-          }
-        } catch {
-          /* ignore */
-        }
-
-        setIsAuthenticated(true);
-        setIsSubmitting(false);
-        toast.success("Acesso autorizado ao Centro de Operações!");
-      } else {
-        setIsSubmitting(false);
-        setError("Senha ou chave de acesso incorreta. Verifique os dados inseridos.");
-        toast.error("Falha na autenticação administrativa");
-      }
-    }, 400);
-  };
-
-  const handleFillDemo = () => {
-    setEmail("admin@agentes-digital.com");
-    setPassword("admin2026");
-    setError("");
-  };
-
-  const handleInstantDemoAccess = () => {
-    const sessionData = JSON.stringify({
-      authenticated: true,
-      email: "admin@agentes-digital.com",
-      timestamp: Date.now(),
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: trimmedEmail,
+      password,
     });
-    try {
-      localStorage.setItem(AUTH_STORAGE_KEY, sessionData);
-    } catch {
-      /* ignore */
+    setIsSubmitting(false);
+
+    if (signInError) {
+      setError("E-mail ou senha incorretos.");
+      toast.error("Falha na autenticação administrativa");
+      return;
     }
-    setIsAuthenticated(true);
-    toast.success("Bem-vindo ao Centro de Operações & Dashboard!");
+
+    setPassword("");
+    toast.success("Acesso autorizado ao Centro de Operações!");
   };
 
-  const logout = () => {
-    try {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
-    } catch {
-      /* ignore */
-    }
+  const logout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
     setPassword("");
     toast.info("Sessão administrativa encerrada.");
@@ -250,7 +203,7 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@agentes-digital.com"
+                  placeholder="o-seu-email@exemplo.com"
                   autoComplete="username"
                   required
                   className="w-full h-11 rounded-[10px] border border-[#252C38] bg-[#151A23] pl-10 pr-4 text-xs text-[#F5F7FA] placeholder-[#667085] focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#3B82F6] transition-all"
@@ -264,7 +217,7 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
                   htmlFor="admin-password"
                   className="block text-xs font-semibold text-[#F5F7FA]"
                 >
-                  Senha / Chave de Acesso
+                  Senha
                 </label>
               </div>
               <div className="relative">
@@ -290,18 +243,6 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="size-4 rounded border-[#252C38] bg-[#151A23] text-[#3B82F6] focus:ring-0 focus:ring-offset-0"
-                />
-                <span className="text-xs text-[#A7B0BF]">Lembrar neste dispositivo</span>
-              </label>
-            </div>
-
             <button
               type="submit"
               disabled={isSubmitting}
@@ -320,40 +261,8 @@ export function AdminAuthGuard({ children }: { children: ReactNode }) {
               )}
             </button>
 
-            {/* Instant 1-Click Demo Entry Button */}
-            <button
-              type="button"
-              onClick={handleInstantDemoAccess}
-              className="w-full h-10 rounded-[10px] bg-[#22C55E]/15 hover:bg-[#22C55E]/25 border border-[#22C55E]/40 text-[#22C55E] font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <CheckCircle2 className="size-4 text-[#22C55E]" />
-              <span>Acesso Rápido ao Dashboard (1 Clique)</span>
-            </button>
           </form>
 
-          {/* Quick Demo Helper */}
-          <div className="mt-6 pt-5 border-t border-[#252C38] flex flex-col gap-2.5">
-            <div className="flex items-center justify-between text-[11px] text-[#A7B0BF]">
-              <span>Credenciais de Demonstração:</span>
-              <button
-                type="button"
-                onClick={handleInstantDemoAccess}
-                className="text-[#22C55E] hover:underline font-bold cursor-pointer"
-              >
-                Entrar com 1 Clique
-              </button>
-            </div>
-            <div className="p-2.5 rounded-[8px] bg-[#151A23] border border-[#252C38] text-[11px] font-mono text-[#A7B0BF] flex flex-col gap-0.5">
-              <div>
-                <span className="text-[#667085]">E-mail: </span>
-                <span className="text-[#F5F7FA]">admin@agentes-digital.com</span>
-              </div>
-              <div>
-                <span className="text-[#667085]">Senha: </span>
-                <span className="text-[#F5F7FA]">admin2026</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer info */}
