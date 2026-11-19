@@ -7,9 +7,6 @@ import {
   Calendar,
   Clock,
   UserCheck,
-  CheckCircle2,
-  Sparkles,
-  ArrowRight,
   Activity,
   Play,
   Pause,
@@ -23,33 +20,29 @@ interface FlowNode {
   category: string;
   icon: typeof Globe;
   status: string;
-  color: string;
 }
 
 const NODES: FlowNode[] = [
   {
     id: "website",
-    name: "WEBSITE",
+    name: "Website",
     category: "Ponto de Entrada",
     icon: Globe,
-    status: "Ativo • 24/7",
-    color: "#3B82F6",
+    status: "Ativo 24/7",
   },
   {
     id: "ia",
     name: "IA",
-    category: "Inteligência Digital",
+    category: "Atendimento Digital",
     icon: Bot,
-    status: "Processamento 0.8s",
-    color: "#8B5CF6",
+    status: "Resposta 0.8s",
   },
   {
     id: "whatsapp",
-    name: "WHATSAPP",
-    category: "Comunicação Instantânea",
+    name: "WhatsApp",
+    category: "Canal Oficial",
     icon: MessageSquare,
-    status: "Canal Oficial",
-    color: "#22C55E",
+    status: "Integrado",
   },
   {
     id: "crm",
@@ -57,31 +50,27 @@ const NODES: FlowNode[] = [
     category: "Gestão & Dados",
     icon: Database,
     status: "Sincronizado",
-    color: "#3B82F6",
   },
   {
     id: "agendamento",
-    name: "AGENDAMENTO",
-    category: "Calendário Automático",
+    name: "Agendamento",
+    category: "Calendário",
     icon: Calendar,
-    status: "Slots Disponíveis",
-    color: "#8B5CF6",
+    status: "Slots livres",
   },
   {
     id: "followup",
-    name: "FOLLOW-UP",
+    name: "Follow-up",
     category: "Acompanhamento",
     icon: Clock,
-    status: "Cadência Ativa",
-    color: "#F59E0B",
+    status: "Cadência ativa",
   },
   {
     id: "humano",
-    name: "HUMANO",
+    name: "Humano",
     category: "Equipa Comercial",
     icon: UserCheck,
-    status: "Handoff Pronto",
-    color: "#3B82F6",
+    status: "Passagem pronta",
   },
 ];
 
@@ -90,8 +79,7 @@ interface FlowStep {
   nodeIndex: number;
   entity: string;
   message: string;
-  badge: string;
-  badgeColor: string;
+  label: string;
   detail: string;
 }
 
@@ -100,9 +88,8 @@ const FLOW_STEPS: FlowStep[] = [
     step: 1,
     nodeIndex: 0,
     entity: "Visitante",
-    message: "Novo visitante acessou a landing page",
-    badge: "NOVO VISITANTE",
-    badgeColor: "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]",
+    message: "Novo visitante acessou a página",
+    label: "Entrada no site",
     detail: "Origem: Website corporativo existente",
   },
   {
@@ -110,8 +97,7 @@ const FLOW_STEPS: FlowStep[] = [
     nodeIndex: 0,
     entity: "Website",
     message: "Visitante iniciou uma conversa no chat",
-    badge: "CHAT INICIADO",
-    badgeColor: "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]",
+    label: "Chat iniciado",
     detail: "Widget interativo ativado sem recarregar a página",
   },
   {
@@ -119,8 +105,7 @@ const FLOW_STEPS: FlowStep[] = [
     nodeIndex: 1,
     entity: "IA",
     message: "Agente IA respondeu e orientou o utilizador",
-    badge: "AI ONLINE",
-    badgeColor: "border-[#8B5CF6]/40 bg-[#8B5CF6]/10 text-[#C084FC]",
+    label: "Atendimento imediato",
     detail: "Resposta contextual gerada com base na empresa",
   },
   {
@@ -128,17 +113,15 @@ const FLOW_STEPS: FlowStep[] = [
     nodeIndex: 1,
     entity: "Qualificação",
     message: "Lead qualificado com orçamento e interesse",
-    badge: "LEAD QUALIFIED",
-    badgeColor: "border-[#22C55E]/40 bg-[#22C55E]/10 text-[#4ADE80]",
+    label: "Lead qualificado",
     detail: "Segmento, dimensão e prazo identificados",
   },
   {
     step: 5,
     nodeIndex: 3,
     entity: "CRM",
-    message: "Lead registrado e estruturado no funil comercial",
-    badge: "CRM UPDATED",
-    badgeColor: "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]",
+    message: "Lead registado e estruturado no funil comercial",
+    label: "CRM atualizado",
     detail: "Histórico completo e contacto organizados",
   },
   {
@@ -146,26 +129,23 @@ const FLOW_STEPS: FlowStep[] = [
     nodeIndex: 4,
     entity: "Agendamento",
     message: "Reunião de apresentação agendada automaticamente",
-    badge: "MEETING BOOKED",
-    badgeColor: "border-[#8B5CF6]/40 bg-[#8B5CF6]/10 text-[#C084FC]",
+    label: "Reunião marcada",
     detail: "Convites e confirmações integrados ao Google Agenda",
   },
   {
     step: 7,
     nodeIndex: 5,
     entity: "Follow-up",
-    message: "Automação ativada: lembretes e reforço de valor",
-    badge: "FOLLOW-UP ACTIVE",
-    badgeColor: "border-[#F59E0B]/40 bg-[#F59E0B]/10 text-[#FBBF24]",
-    detail: "Disparo automático programado por WhatsApp e E-mail",
+    message: "Automação ativada com lembretes e reforço de valor",
+    label: "Follow-up ativo",
+    detail: "Disparo automático programado por WhatsApp e e-mail",
   },
   {
     step: 8,
     nodeIndex: 6,
     entity: "Humano",
     message: "Vendedor notificado com resumo executivo do lead",
-    badge: "HUMAN HANDOFF",
-    badgeColor: "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA]",
+    label: "Entrega à equipa",
     detail: "Equipa assume a reunião com todo o contexto prévio",
   },
 ];
@@ -183,44 +163,37 @@ export function AutomationSystemFlow() {
   }, [isPlaying]);
 
   const activeStep = FLOW_STEPS[currentStepIndex] || FLOW_STEPS[0]!;
-  const activeNode = NODES[activeStep.nodeIndex] || NODES[0]!;
 
   return (
-    <div className="relative w-full rounded-3xl border border-[#252C38] bg-[#0E121A]/90 p-5 sm:p-8 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
-      {/* Top Header of the System Canvas */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#252C38]/80 pb-5">
+    <div className="relative w-full rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-5 sm:p-8">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#2A3D63] pb-5">
         <div className="flex items-center gap-3">
-          <div className="relative flex size-10 items-center justify-center rounded-xl border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#3B82F6]">
-            <Activity className="size-5 animate-pulse" />
-            <span className="absolute -top-1 -right-1 size-2.5 rounded-full bg-[#22C55E] ring-2 ring-[#0E121A]" />
+          <div className="flex size-10 items-center justify-center rounded-[10px] border border-[#2A3D63] bg-[#101D35] text-[#F36B32]">
+            <Activity className="size-5" aria-hidden="true" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h4 className="text-sm font-bold uppercase tracking-wider text-[#F5F7FA]">
-                Sistema Operacional de Atendimento
-              </h4>
-              <span className="rounded bg-[#8B5CF6]/20 px-2 py-0.5 font-mono text-[9px] font-bold text-[#C084FC] uppercase tracking-wider">
-                AUTOMATE ENGINE
-              </span>
-            </div>
-            <p className="text-xs text-[#A7B0BF]">
-              Fluxo contínuo entre o website existente, IA, automações e a sua equipa
+            <h4 className="font-heading text-sm font-bold uppercase tracking-wider text-[#F5F3EE]">
+              Fluxo operacional de atendimento
+            </h4>
+            <p className="text-xs text-[#B8C0D0]">
+              Ligação contínua entre website existente, IA, automações e equipa
             </p>
           </div>
         </div>
 
-        {/* Play / Pause / Step Controls */}
+        {/* Play / Pause / Reset Controls */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[#252C38] bg-[#151A23] px-3 text-xs font-semibold text-[#F5F7FA] transition-colors hover:border-[#3B82F6]"
+            className="inline-flex h-9 items-center gap-1.5 rounded-[8px] border border-[#2A3D63] bg-[#101D35] px-3.5 text-xs font-semibold text-[#F5F3EE] transition-colors hover:border-[#F36B32] cursor-pointer"
             aria-label={isPlaying ? "Pausar simulação" : "Reproduzir simulação"}
           >
             {isPlaying ? (
-              <Pause className="size-3.5 text-[#F59E0B]" />
+              <Pause className="size-3.5 text-[#F4C542]" aria-hidden="true" />
             ) : (
-              <Play className="size-3.5 text-[#22C55E]" />
+              <Play className="size-3.5 text-[#2E9E6B]" aria-hidden="true" />
             )}
             <span>{isPlaying ? "Pausar" : "Executar"}</span>
           </button>
@@ -230,153 +203,125 @@ export function AutomationSystemFlow() {
               setCurrentStepIndex(0);
               trackAutomateProEvent("automate_demo_click", { action: "reset_flow" });
             }}
-            className="inline-flex size-8 items-center justify-center rounded-lg border border-[#252C38] bg-[#151A23] text-[#A7B0BF] transition-colors hover:text-[#F5F7FA]"
+            className="inline-flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#B8C0D0] transition-colors hover:text-[#F5F3EE] hover:border-[#F36B32] cursor-pointer"
             title="Reiniciar fluxo"
             aria-label="Reiniciar fluxo"
           >
-            <RotateCcw className="size-3.5" />
+            <RotateCcw className="size-3.5" aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      {/* Connected Nodes Horizontal Grid (Desktop) / Vertical (Mobile) */}
-      <div className="mt-8">
-        <div className="text-[11px] font-bold uppercase tracking-widest text-[#667085] mb-4 flex items-center justify-between">
-          <span>Topologia do Sistema Integrado</span>
-          <span className="font-mono text-[#3B82F6]">Etapa {activeStep.step} de 8</span>
+      {/* Connected Nodes */}
+      <div className="mt-7">
+        <div className="mb-4 flex items-center justify-between text-xs font-semibold text-[#B8C0D0]">
+          <span>Topologia do sistema integrado</span>
+          <span className="font-heading font-bold text-[#F4C542] tabular-nums">
+            Etapa {activeStep.step} de 8
+          </span>
         </div>
 
-        {/* Nodes Representation */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7 relative">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
           {NODES.map((node, idx) => {
             const isCurrentActive = activeStep.nodeIndex === idx;
             const Icon = node.icon;
 
             return (
-              <div
+              <button
                 key={node.id}
+                type="button"
                 onClick={() => {
-                  // Find step matching this node
                   const stepMatch = FLOW_STEPS.findIndex((s) => s.nodeIndex === idx);
                   if (stepMatch !== -1) {
                     setCurrentStepIndex(stepMatch);
                   }
                 }}
-                className={`group relative flex cursor-pointer flex-col justify-between rounded-2xl border p-4 transition-all duration-300 ${
+                className={`group text-left flex cursor-pointer flex-col justify-between rounded-[12px] border p-4 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32] ${
                   isCurrentActive
-                    ? "border-[#3B82F6] bg-[#151A23] shadow-[0_0_24px_-6px_rgba(59,130,246,0.35)] translate-y-[-2px]"
-                    : "border-[#252C38] bg-[#151A23]/60 hover:border-[#252C38] hover:bg-[#151A23]"
+                    ? "border-[#F36B32] bg-[#101D35]"
+                    : "border-[#2A3D63] bg-[#101D35]/60 hover:border-[#5B6B8C]"
                 }`}
               >
-                {/* Active Light Glow Indicator */}
-                {isCurrentActive && (
-                  <div className="absolute inset-x-0 -top-px h-[2px] bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#3B82F6]" />
-                )}
-
                 <div className="flex items-center justify-between">
                   <span
-                    className="flex size-9 items-center justify-center rounded-xl border transition-transform group-hover:scale-105"
-                    style={{
-                      backgroundColor: isCurrentActive ? `${node.color}20` : "#0E121A",
-                      borderColor: isCurrentActive ? `${node.color}60` : "#252C38",
-                      color: isCurrentActive ? node.color : "#A7B0BF",
-                    }}
+                    className={`flex size-8 items-center justify-center rounded-[8px] border transition-colors ${
+                      isCurrentActive
+                        ? "border-[#F36B32] bg-[#F36B32] text-[#101D35]"
+                        : "border-[#2A3D63] bg-[#1A2A4A] text-[#B8C0D0]"
+                    }`}
                   >
-                    <Icon className="size-4" />
+                    <Icon className="size-4" aria-hidden="true" />
                   </span>
-                  <span className="font-mono text-[10px] text-[#667085]">0{idx + 1}</span>
+                  <span className="font-heading text-[11px] font-bold text-[#B8C0D0] tabular-nums">
+                    0{idx + 1}
+                  </span>
                 </div>
 
                 <div className="mt-4">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#A7B0BF]">
-                    {node.category}
-                  </p>
+                  <p className="text-[11px] text-[#B8C0D0]">{node.category}</p>
                   <h5
-                    className={`mt-0.5 text-xs font-bold tracking-wide transition-colors ${
-                      isCurrentActive ? "text-[#F5F7FA]" : "text-[#A7B0BF]"
+                    className={`mt-0.5 font-heading text-xs font-bold uppercase tracking-wide ${
+                      isCurrentActive ? "text-[#F5F3EE]" : "text-[#B8C0D0]"
                     }`}
                   >
                     {node.name}
                   </h5>
                 </div>
 
-                <div className="mt-3 flex items-center gap-1.5 pt-2 border-t border-[#252C38]/60">
-                  <span
-                    className={`size-1.5 rounded-full ${
-                      isCurrentActive ? "bg-[#22C55E] animate-ping" : "bg-[#667085]"
-                    }`}
-                  />
-                  <span className="text-[10px] font-medium text-[#667085] truncate">
-                    {node.status}
-                  </span>
+                <div className="mt-3 pt-2 border-t border-[#2A3D63] text-[11px] font-medium text-[#B8C0D0] truncate">
+                  {node.status}
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
 
-        {/* Luminous Connector Line / Signal Flow Bar */}
-        <div className="relative mt-6 h-1 w-full rounded-full bg-[#151A23] overflow-hidden border border-[#252C38]">
+        {/* Clean Progress Bar */}
+        <div className="mt-6 h-1.5 w-full rounded-full bg-[#101D35] overflow-hidden border border-[#2A3D63]">
           <div
-            className="h-full bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#22C55E] transition-all duration-700 ease-out"
+            className="h-full bg-[#F36B32] transition-all duration-300 ease-out"
             style={{
               width: `${(activeStep.step / 8) * 100}%`,
-            }}
-          />
-          {/* Moving photon / pulse */}
-          <div
-            className="absolute top-0 bottom-0 w-16 bg-white/40 blur-[4px] animate-pulse"
-            style={{
-              left: `${Math.max(0, (activeStep.step / 8) * 100 - 10)}%`,
             }}
           />
         </div>
       </div>
 
-      {/* Active Event Card / Real-Time Telemetry Monitor */}
-      <div className="mt-6 rounded-2xl border border-[#252C38] bg-[#151A23] p-5 sm:p-6">
+      {/* Active Event Panel */}
+      <div className="mt-6 rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <span className="flex size-8 items-center justify-center rounded-lg bg-[#3B82F6]/10 text-[#3B82F6]">
-              <Sparkles className="size-4" />
-            </span>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[#F5F7FA]">
-                  Etapa {activeStep.step}: {activeStep.entity}
-                </span>
-                <span
-                  className={`rounded-full border px-2.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider ${activeStep.badgeColor}`}
-                >
-                  {activeStep.badge}
-                </span>
-              </div>
-              <p className="mt-1 text-sm font-semibold text-[#F5F7FA]">{activeStep.message}</p>
+          <div>
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="font-heading font-bold text-[#F36B32] tabular-nums">
+                Etapa {activeStep.step}: {activeStep.entity}
+              </span>
+              <span aria-hidden="true" className="text-[#5B6B8C]">
+                ·
+              </span>
+              <span className="font-medium text-[#F4C542]">{activeStep.label}</span>
             </div>
+            <p className="mt-1 font-heading text-sm font-semibold text-[#F5F3EE]">
+              {activeStep.message}
+            </p>
           </div>
 
           <div className="text-left sm:text-right">
-            <span className="text-[11px] text-[#A7B0BF]">{activeStep.detail}</span>
-            <div className="mt-1 flex items-center sm:justify-end gap-1.5 font-mono text-[10px] text-[#22C55E]">
-              <span className="size-1.5 rounded-full bg-[#22C55E]" />
-              AUTOMATION RUNNING
-            </div>
+            <span className="text-xs text-[#B8C0D0]">{activeStep.detail}</span>
           </div>
         </div>
 
-        {/* Step Indicator Bullets */}
-        <div className="mt-5 flex items-center justify-between gap-1 pt-4 border-t border-[#252C38]/70">
+        <div className="mt-5 flex items-center gap-1.5 pt-4 border-t border-[#2A3D63]">
           {FLOW_STEPS.map((s, index) => (
             <button
               key={s.step}
               type="button"
               onClick={() => setCurrentStepIndex(index)}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+              className={`h-1.5 flex-1 rounded-full transition-colors duration-200 cursor-pointer ${
                 index === currentStepIndex
-                  ? "bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]"
+                  ? "bg-[#F36B32]"
                   : index < currentStepIndex
-                    ? "bg-[#3B82F6]/60"
-                    : "bg-[#252C38]"
+                    ? "bg-[#F4C542]/70"
+                    : "bg-[#2A3D63]"
               }`}
               title={`Ver etapa ${s.step}: ${s.entity}`}
               aria-label={`Ver etapa ${s.step}: ${s.entity}`}

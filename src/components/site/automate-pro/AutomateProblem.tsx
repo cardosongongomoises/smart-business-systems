@@ -4,33 +4,33 @@ import { Reveal } from "../Reveal";
 const problems = [
   {
     icon: Clock,
-    title: "RESPOSTA DEMORADA",
-    tag: "Atraso no Atendimento",
+    title: "Resposta demorada",
+    tag: "Atraso no atendimento",
     description:
-      "Clientes podem entrar em contacto quando a equipa não está disponível ou ocupada.",
+      "Clientes entram em contacto quando a equipa não está disponível ou está em atendimento.",
     effect:
       "O visitante perde o interesse e procura o concorrente imediato no Google ou redes sociais.",
   },
   {
     icon: MessageSquareX,
-    title: "ATENDIMENTO REPETITIVO",
-    tag: "Sobrecarga Operacional",
+    title: "Atendimento repetitivo",
+    tag: "Sobrecarga operacional",
     description:
-      "A equipa responde as mesmas perguntas diariamente sobre preços, horários e localização.",
+      "A equipa responde às mesmas perguntas diariamente sobre preços, horários e localização.",
     effect: "Tempo valioso de profissionais séniores consumido por dúvidas triviais de triagem.",
   },
   {
     icon: Shuffle,
-    title: "LEADS PERDIDOS",
-    tag: "Desorganização de Dados",
-    description: "Contactos podem ficar espalhados entre WhatsApp, e-mail e formulários soltos.",
+    title: "Leads perdidos",
+    tag: "Desorganização de dados",
+    description: "Contactos ficam espalhados entre WhatsApp, e-mail e formulários soltos.",
     effect:
-      "Sem centralização, ninguém sabe o status exato de cada potencial cliente ou oportunidade.",
+      "Sem centralização, ninguém sabe o estado exato de cada potencial cliente ou oportunidade.",
   },
   {
     icon: AlertCircle,
-    title: "FOLLOW-UP MANUAL",
-    tag: "Esquecimento de Oportunidades",
+    title: "Follow-up manual",
+    tag: "Esquecimento de oportunidades",
     description: "Oportunidades dependem da memória da equipa para serem acompanhadas com rigor.",
     effect:
       "Propostas enviadas caem no esquecimento e negócios com alto potencial são abandonados.",
@@ -39,55 +39,54 @@ const problems = [
 
 export function AutomateProblem() {
   return (
-    <div className="py-20 sm:py-28 relative">
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
+    <div className="py-20 sm:py-28 relative border-t border-[#2A3D63]">
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#EF4444]/40 bg-[#EF4444]/10 px-3.5 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#EF4444] uppercase">
-              O Gargalo da Operação Atual
-            </span>
+            <p className="lume-eyebrow text-[#F36B32]">O gargalo da operação atual</p>
           </Reveal>
 
-          <Reveal delay={80}>
-            <h3 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F7FA] sm:text-4xl leading-tight">
+          <Reveal delay={60}>
+            <h3 className="mt-4 font-heading text-2xl font-bold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
               Seu site recebe visitantes. Mas o que acontece depois?
             </h3>
           </Reveal>
 
-          <Reveal delay={140}>
-            <p className="mt-4 text-base text-[#A7B0BF] leading-relaxed">
+          <Reveal delay={120}>
+            <p className="mt-4 max-w-[65ch] text-base text-[#B8C0D0] leading-relaxed">
               O website atrai visitantes, mas sem atendimento imediato e automação, cada lead
               torna-se uma oportunidade perdida — independentemente da qualidade do design.
             </p>
           </Reveal>
         </div>
 
-        {/* 4 Problem Cards */}
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {problems.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <Reveal key={item.title} delay={idx * 80}>
-                <div className="glass-card group h-full rounded-2xl border border-[#252C38] bg-[#0E121A] p-6 transition-all duration-300 hover:border-[#EF4444]/40 hover:bg-[#151A23]">
-                  <div className="flex items-center justify-between">
-                    <span className="flex size-11 items-center justify-center rounded-xl border border-[#252C38] bg-[#151A23] text-[#EF4444] transition-transform group-hover:scale-105">
-                      <Icon className="size-5" />
-                    </span>
-                    <span className="font-mono text-[10px] text-[#667085]">FALHA 0{idx + 1}</span>
+              <Reveal key={item.title} delay={idx * 60}>
+                <div className="flex h-full flex-col justify-between rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 transition-colors duration-200 hover:border-[#F36B32]">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="flex size-10 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#D64545]">
+                        <Icon className="size-5" aria-hidden="true" />
+                      </span>
+                      <span className="font-heading text-xs font-bold text-[#B8C0D0] tabular-nums">
+                        0{idx + 1}
+                      </span>
+                    </div>
+
+                    <p className="mt-5 text-xs font-medium text-[#B8C0D0]">{item.tag}</p>
+                    <h4 className="mt-1 font-heading text-base font-bold text-[#F5F3EE]">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2.5 text-xs text-[#B8C0D0] leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
 
-                  <span className="mt-5 block font-mono text-[10px] font-bold tracking-wider text-[#A7B0BF] uppercase">
-                    {item.tag}
-                  </span>
-
-                  <h4 className="mt-1 text-base font-bold text-[#F5F7FA]">{item.title}</h4>
-
-                  <p className="mt-2.5 text-xs text-[#A7B0BF] leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="mt-4 pt-3.5 border-t border-[#252C38]/70 text-[11px] text-[#667085]">
-                    <span className="font-semibold text-[#EF4444]">Impacto: </span>
+                  <div className="mt-5 pt-3.5 border-t border-[#2A3D63] text-xs text-[#B8C0D0]">
+                    <span className="font-semibold text-[#F4C542]">Impacto: </span>
                     {item.effect}
                   </div>
                 </div>

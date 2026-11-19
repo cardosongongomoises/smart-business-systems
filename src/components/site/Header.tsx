@@ -6,8 +6,6 @@ const links = [
   { href: "/#servicos", label: "Serviços" },
   { href: "/#automate-pro", label: "Automate Pro" },
   { href: "/#agente-ia", label: "Soluções IA" },
-  { href: "/#canais", label: "Automação" },
-  { href: "/#jornada", label: "Pipeline" },
   { href: "/#planos", label: "Planos" },
   { href: "/#resultados", label: "Resultados" },
 ];
@@ -25,53 +23,49 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-200 ${
+      className={`fixed inset-x-0 top-0 z-50 h-[72px] transition-[background-color,border-color] duration-200 ${
         scrolled
-          ? "h-[72px] bg-[#080A0F]/90 backdrop-blur-[12px] border-b border-[#252C38] shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
-          : "h-[72px] bg-[#080A0F]/70 backdrop-blur-sm border-b border-[#252C38]/40"
+          ? "bg-[#F5F3EE]/95 backdrop-blur-md border-b border-[#E7E3D9]"
+          : "bg-[#F5F3EE]/85 backdrop-blur-sm border-b border-[#E7E3D9]/60"
       }`}
     >
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-6 px-5 sm:px-8">
-        {/* LOGO CORPORATIVO */}
+      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:px-8">
+        {/* Zone 1: Single-line Brand Wordmark */}
         <a
           href="/#topo"
-          className="flex items-center gap-3 group rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
+          className="inline-flex items-center gap-2.5 whitespace-nowrap shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
         >
-          <div className="relative flex size-9 items-center justify-center rounded-[8px] border border-[#3B82F6]/40 bg-[#0E121A] text-sm font-extrabold text-[#F5F7FA] shadow-sm transition-all duration-200 group-hover:border-[#3B82F6] group-hover:shadow-[0_0_16px_rgba(59,130,246,0.3)]">
-            <span className="bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent font-black tracking-tight">
-              AD
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold tracking-[0.14em] uppercase text-[#F5F7FA] transition-colors group-hover:text-white">
-              Agentes Digital
-            </span>
-            <span className="text-[10px] font-medium tracking-wider text-[#A7B0BF]">
-              Sistemas Digitais • IA
-            </span>
-          </div>
+          <span
+            aria-hidden="true"
+            className="inline-flex size-8 items-center justify-center rounded-[8px] bg-[#101D35] font-heading text-xs font-extrabold tracking-tight text-[#F5F3EE]"
+          >
+            AD
+          </span>
+          <span className="font-heading text-sm font-extrabold tracking-tight text-[#101D35] whitespace-nowrap">
+            Agentes Digital
+          </span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden items-center gap-6 lg:flex">
+        {/* Zone 2: 5 Concise Single-line Navigation Links */}
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-xs font-semibold tracking-wide text-[#A7B0BF] transition-colors hover:text-[#F5F7FA] rounded py-1 px-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
+              className="whitespace-nowrap shrink-0 text-[13px] font-medium text-[#5B6B8C] transition-colors duration-200 hover:text-[#101D35] hover:underline hover:underline-offset-4 decoration-[#F36B32] decoration-2 rounded py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
             >
               {l.label}
             </a>
           ))}
         </nav>
 
-        {/* Primary CTA */}
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Zone 3: Single Primary Action (Navy text on Orange) */}
+        <div className="hidden lg:flex items-center shrink-0">
           <a
             href={CTA.specialist}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-[40px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-4 text-xs font-semibold text-white shadow-sm transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080A0F]"
+            className="lume-btn-primary inline-flex h-[40px] min-h-[40px] items-center justify-center gap-2 px-5 py-2 text-[13px] whitespace-nowrap shrink-0"
           >
             <span>Falar com especialista</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -84,7 +78,7 @@ export function Header() {
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex size-10 items-center justify-center rounded-[8px] border border-[#252C38] bg-[#151A23] text-[#F5F7FA] transition-colors hover:border-[#3B82F6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] lg:hidden"
+          className="inline-flex size-11 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] transition-colors hover:border-[#101D35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32] lg:hidden"
         >
           {open ? (
             <X className="size-5" aria-hidden="true" />
@@ -96,45 +90,36 @@ export function Header() {
 
       {/* Mobile Drawer */}
       {open && (
-        <div className="fixed inset-x-0 top-[72px] bottom-0 bg-black/75 backdrop-blur-md z-50 lg:hidden flex flex-col justify-start p-4 animate-in fade-in-20">
-          <div className="w-full rounded-[16px] border border-[#252C38] bg-[#0E121A] p-5 shadow-[0_12px_36px_rgba(0,0,0,0.6)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto overscroll-contain">
-            <div className="flex items-center justify-between pb-3 border-b border-[#252C38]/60">
-              <span className="text-xs font-semibold tracking-wider text-[#A7B0BF] uppercase">
-                Menu Corporativo
-              </span>
-              <span className="flex items-center gap-1.5 font-mono text-[10px] text-[#22C55E]">
-                <span className="size-1.5 rounded-full bg-[#22C55E]" /> 24/7 ONLINE
-              </span>
-            </div>
-
-            <nav className="flex flex-col divide-y divide-[#252C38]/60">
+        <div className="fixed inset-x-0 top-[72px] bottom-0 bg-[#101D35]/50 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-start p-4">
+          <div className="w-full rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 shadow-[0_12px_32px_rgba(16,29,53,0.16)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto overscroll-contain">
+            <nav className="flex flex-col divide-y divide-[#E7E3D9]" aria-label="Menu móvel">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="py-3.5 text-sm font-medium text-[#A7B0BF] hover:text-[#F5F7FA] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
+                  className="py-3.5 text-sm font-medium text-[#101D35] hover:text-[#D9531C] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
                 >
                   <span>{l.label}</span>
-                  <ArrowRight className="size-3.5 text-[#667085]" aria-hidden="true" />
+                  <ArrowRight className="size-4 text-[#5B6B8C]" aria-hidden="true" />
                 </a>
               ))}
             </nav>
 
-            <div className="mt-4 pt-4 border-t border-[#252C38] flex flex-col gap-2.5">
+            <div className="mt-4 pt-4 border-t border-[#E7E3D9] flex flex-col gap-2.5">
               <a
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-5 text-xs font-semibold uppercase tracking-wider text-white transition-[background-color,transform] hover:bg-[#2563EB] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
+                className="lume-btn-primary flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
               >
                 Falar com especialista <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="/#contacto"
                 onClick={() => setOpen(false)}
-                className="flex h-[44px] items-center justify-center rounded-[8px] border border-[#252C38] bg-[#151A23] text-xs font-semibold text-[#F5F7FA] hover:border-[#3B82F6] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]"
+                className="lume-btn-secondary-light flex items-center justify-center text-xs"
               >
                 Solicitar Proposta Comercial
               </a>

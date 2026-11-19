@@ -1,4 +1,4 @@
-import { Check, Sparkles, Shield, Clock, ArrowRight } from "lucide-react";
+import { Check, Clock, ArrowRight } from "lucide-react";
 import { Reveal } from "../Reveal";
 import { CTA } from "@/lib/site-config";
 import { trackAutomateProEvent } from "./automateAnalytics";
@@ -28,88 +28,76 @@ export function AutomatePricing() {
   };
 
   return (
-    <div
-      id="automate-pricing"
-      className="py-20 sm:py-28 relative border-t border-[#252C38]/60 bg-[#080A0F]"
-    >
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[36rem] rounded-full bg-gradient-to-tr from-[#3B82F6]/10 to-[#8B5CF6]/10 blur-[150px]" />
-
-      <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-8">
+    <div id="automate-pricing" className="py-20 sm:py-28 relative border-t border-[#2A3D63]">
+      <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/40 bg-[#8B5CF6]/10 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#C084FC] uppercase">
-              Investimento Claro
-            </span>
+            <p className="lume-eyebrow text-[#F36B32]">Investimento claro</p>
           </Reveal>
 
-          <Reveal delay={80}>
-            <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-[#F5F7FA] sm:text-5xl leading-tight">
-              Plano Dedicado <span className="text-gradient">Automate Pro</span>
+          <Reveal delay={60}>
+            <h3 className="mt-4 font-heading text-3xl font-extrabold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
+              Plano Dedicado Automate Pro
             </h3>
           </Reveal>
 
-          <Reveal delay={140}>
-            <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
-              Um investimento que se paga na primeira semana — com cada lead atendido
+          <Reveal delay={120}>
+            <p className="mt-3 text-sm sm:text-base text-[#B8C0D0]">
+              Um investimento que se paga logo nas primeiras reuniões — com cada lead atendido
               automaticamente.
             </p>
           </Reveal>
         </div>
 
-        {/* Premium Pricing Card */}
-        <Reveal delay={180}>
-          <div className="mt-14 max-w-3xl mx-auto">
-            <div className="relative rounded-3xl border border-[#3B82F6]/60 bg-[#0E121A] p-7 sm:p-10 shadow-[0_20px_60px_rgba(59,130,246,0.2)] ring-1 ring-[#3B82F6]/40 overflow-hidden">
-              {/* Top gradient bar */}
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#3B82F6]" />
-
+        <Reveal delay={160}>
+          <div className="mt-12 max-w-3xl mx-auto">
+            <div className="rounded-[16px] border border-[#F36B32] bg-[#1A2A4A] p-7 sm:p-10">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#8B5CF6]/20 px-3 py-1 font-mono text-[10px] font-bold text-[#C084FC] uppercase tracking-wider">
-                    <Sparkles className="size-3" /> INFRAESTRUTURA COMPLETA
+                  <span className="inline-block rounded-full bg-[#F4C542] px-3 py-1 font-heading text-[11px] font-bold text-[#101D35] uppercase tracking-wider">
+                    Infraestrutura completa
                   </span>
-                  <h4 className="mt-2 text-2xl sm:text-3xl font-extrabold uppercase text-[#F5F7FA]">
-                    AUTOMATE PRO
+                  <h4 className="mt-3 font-heading text-2xl sm:text-3xl font-extrabold uppercase text-[#F5F3EE]">
+                    Automate Pro
                   </h4>
                 </div>
 
-                {/* Hours Included Badge */}
-                <div className="rounded-xl border border-[#22C55E]/40 bg-[#22C55E]/10 px-3.5 py-2 text-left sm:text-right">
-                  <div className="flex items-center sm:justify-end gap-1.5 text-xs font-bold text-[#4ADE80]">
-                    <Clock className="size-3.5" />
+                <div className="rounded-[12px] border border-[#2A3D63] bg-[#101D35] px-4 py-2.5 text-left sm:text-right">
+                  <div className="flex items-center sm:justify-end gap-1.5 text-xs font-bold text-[#2E9E6B]">
+                    <Clock className="size-3.5" aria-hidden="true" />
                     <span>4 horas/mês incluídas</span>
                   </div>
-                  <p className="text-[10px] text-[#A7B0BF]">Ajustes, melhorias e alterações</p>
+                  <p className="text-xs text-[#B8C0D0] mt-0.5">Ajustes, melhorias e alterações</p>
                 </div>
               </div>
 
-              <p className="mt-4 text-xs sm:text-sm text-[#A7B0BF] leading-relaxed">
+              <p className="mt-4 text-sm text-[#B8C0D0] leading-relaxed">
                 Implementação personalizada da infraestrutura de atendimento e automação sobre o
                 website existente.
               </p>
 
               {/* Price Breakdown */}
-              <div className="mt-8 grid gap-4 sm:grid-cols-2 rounded-2xl border border-[#252C38] bg-[#151A23] p-5 sm:p-6">
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-6">
                 <div>
-                  <p className="text-[11px] font-mono text-[#A7B0BF] uppercase tracking-wider">
-                    Implementação Única
+                  <p className="text-xs font-semibold text-[#B8C0D0] uppercase tracking-wider">
+                    Implementação única
                   </p>
-                  <p className="mt-1 text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+                  <p className="mt-1.5 font-heading text-3xl font-extrabold text-[#F5F3EE] tabular-nums">
                     Kz 300.000
                   </p>
-                  <p className="mt-1 text-xs text-[#667085]">
+                  <p className="mt-1 text-xs text-[#B8C0D0]">
                     Setup, engenharia de prompt e integrações
                   </p>
                 </div>
 
-                <div className="sm:border-l sm:border-[#252C38] sm:pl-6">
-                  <p className="text-[11px] font-mono text-[#60A5FA] uppercase tracking-wider">
-                    Operação e Gestão
+                <div className="sm:border-l sm:border-[#2A3D63] sm:pl-6">
+                  <p className="text-xs font-semibold text-[#F4C542] uppercase tracking-wider">
+                    Operação e gestão
                   </p>
-                  <p className="mt-1 text-3xl font-extrabold text-[#3B82F6] tracking-tight">
-                    Kz 65.000 <span className="text-sm font-normal text-[#A7B0BF]">/ mês</span>
+                  <p className="mt-1.5 font-heading text-3xl font-extrabold text-[#F36B32] tabular-nums">
+                    Kz 65.000 <span className="text-sm font-normal text-[#B8C0D0]">/ mês</span>
                   </p>
-                  <p className="mt-1 text-xs text-[#667085]">
+                  <p className="mt-1 text-xs text-[#B8C0D0]">
                     Manutenção, monitoramento e suporte contínuo
                   </p>
                 </div>
@@ -117,14 +105,14 @@ export function AutomatePricing() {
 
               {/* Inclusions List */}
               <div className="mt-8">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#F5F7FA] mb-4">
+                <p className="font-heading text-xs font-bold uppercase tracking-wider text-[#F5F3EE] mb-4">
                   O que está incluído no Automate Pro:
                 </p>
 
                 <div className="grid gap-2.5 sm:grid-cols-2">
                   {pricingItems.map((item) => (
-                    <div key={item} className="flex items-start gap-2.5 text-xs text-[#A7B0BF]">
-                      <Check className="size-4 shrink-0 text-[#3B82F6] mt-0.5" />
+                    <div key={item} className="flex items-start gap-2.5 text-xs text-[#F5F3EE]">
+                      <Check className="size-4 shrink-0 text-[#F36B32] mt-0.5" aria-hidden="true" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -132,27 +120,24 @@ export function AutomatePricing() {
               </div>
 
               {/* CTA Button */}
-              <div className="mt-10 pt-6 border-t border-[#252C38]">
+              <div className="mt-10 pt-6 border-t border-[#2A3D63]">
                 <a
                   href={CTA.automatePro}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handlePricingClick}
-                  className="w-full inline-flex h-[52px] items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] px-8 text-sm font-bold text-white shadow-[0_12px_32px_rgba(59,130,246,0.3)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="lume-btn-primary w-full inline-flex items-center justify-center gap-2 text-sm"
                 >
-                  <span>Quero o AUTOMATE PRO</span>
-                  <ArrowRight className="size-4" />
+                  <span>Quero o Automate Pro</span>
+                  <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>
             </div>
 
-            {/* Third party costs disclaimer (Item 16) */}
-            <div className="mt-4 text-center px-4">
-              <p className="text-[11px] text-[#667085] leading-relaxed">
-                Custos de plataformas de terceiros, como APIs de IA, WhatsApp, CRM, e-mail ou outros
-                serviços externos, podem variar conforme utilização e arquitetura escolhida.
-              </p>
-            </div>
+            <p className="mt-4 text-center px-4 text-xs text-[#B8C0D0] leading-relaxed">
+              Custos de plataformas de terceiros, como APIs de IA, WhatsApp, CRM, e-mail ou outros
+              serviços externos, podem variar conforme utilização e arquitetura escolhida.
+            </p>
           </div>
         </Reveal>
       </div>

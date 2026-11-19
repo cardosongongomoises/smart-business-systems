@@ -2,14 +2,11 @@ import { useState, useEffect } from "react";
 import {
   Bot,
   User,
-  CheckCircle2,
   RotateCcw,
-  Sparkles,
   ArrowRight,
   ShieldCheck,
   Calendar,
   Database,
-  Bell,
   Check,
 } from "lucide-react";
 import { Reveal } from "../Reveal";
@@ -21,7 +18,7 @@ interface DemoMessage {
   from: "visitante" | "ia";
   text: string;
   time: string;
-  badge?: string;
+  note?: string;
 }
 
 const CONVERSATION: DemoMessage[] = [
@@ -36,20 +33,20 @@ const CONVERSATION: DemoMessage[] = [
     from: "ia",
     text: "Olá! Posso ajudá-lo. Qual serviço procura?",
     time: "10:30",
-    badge: "Resposta em 0.6s",
+    note: "Resposta em 0.6s",
   },
   {
     id: 3,
     from: "visitante",
-    text: "Preciso de um sistema para minha empresa.",
+    text: "Preciso de um sistema para a minha empresa.",
     time: "10:31",
   },
   {
     id: 4,
     from: "ia",
-    text: "Perfeito. Para entender melhor sua necessidade, posso fazer algumas perguntas rápidas?",
+    text: "Perfeito. Para entender melhor a sua necessidade, posso fazer algumas perguntas rápidas?",
     time: "10:31",
-    badge: "Triagem consultiva",
+    note: "Triagem consultiva",
   },
   {
     id: 5,
@@ -62,7 +59,7 @@ const CONVERSATION: DemoMessage[] = [
     from: "ia",
     text: "Qual é o principal processo que deseja automatizar?",
     time: "10:32",
-    badge: "Qualificação avançada",
+    note: "Qualificação avançada",
   },
   {
     id: 7,
@@ -75,7 +72,7 @@ const CONVERSATION: DemoMessage[] = [
     from: "ia",
     text: "Excelente. Temos módulos específicos para gestão de leads e atendimento automatizado. Tenho horários disponíveis amanhã às 11h ou às 16h para uma demonstração com a nossa equipa técnica. Qual prefere?",
     time: "10:32",
-    badge: "Agendamento ativado",
+    note: "Agendamento ativado",
   },
 ];
 
@@ -102,79 +99,63 @@ export function AutomateInteractiveDemo() {
     trackAutomateProEvent("automate_demo_click", { action: "reset_chat" });
   };
 
-  const isCompleted = messagesCount >= 6;
-  const isFullyFinished = messagesCount >= CONVERSATION.length;
-
   return (
-    <div
-      id="automate-demo"
-      className="py-20 sm:py-28 relative border-t border-[#252C38]/60 bg-[#080A0F]"
-    >
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
-        <div className="text-center max-w-3xl mx-auto">
+    <div id="automate-demo" className="py-20 sm:py-28 relative border-t border-[#2A3D63]">
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+        <div className="max-w-3xl">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/40 bg-[#8B5CF6]/10 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#C084FC] uppercase">
-              Simulação em Tempo Real
-            </span>
+            <p className="lume-eyebrow text-[#F36B32]">Simulação em tempo real</p>
           </Reveal>
 
-          <Reveal delay={80}>
-            <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-[#F5F7FA] sm:text-5xl leading-tight">
-              Veja a <span className="text-gradient">automação acontecendo.</span>
+          <Reveal delay={60}>
+            <h3 className="mt-4 font-heading text-3xl font-extrabold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
+              Veja a automação acontecendo.
             </h3>
           </Reveal>
 
-          <Reveal delay={140}>
-            <p className="mt-4 text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
+          <Reveal delay={120}>
+            <p className="mt-4 max-w-[65ch] text-base text-[#B8C0D0] leading-relaxed">
               Uma conversa que começa como dúvida do visitante e termina como reunião agendada —{" "}
-              <span className="text-[#F5F7FA] font-semibold">
-                sem a sua equipa tocar em uma tecla.
-              </span>
+              <strong className="text-[#F5F3EE]">sem a sua equipa tocar numa tecla.</strong>
             </p>
           </Reveal>
         </div>
 
-        {/* Demo Interface: Chat on Left, System Events on Right */}
-        <div className="mt-14 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
           {/* Chat Simulator Window */}
-          <Reveal delay={180}>
-            <div className="rounded-3xl border border-[#252C38] bg-[#0E121A] p-5 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-              {/* Chat Header */}
-              <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
+          <Reveal delay={150}>
+            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-5 sm:p-7">
+              <div className="flex items-center justify-between border-b border-[#2A3D63] pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="relative flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#3B82F6] to-[#8B5CF6] text-white">
-                    <Bot className="size-5" />
-                    <span className="absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full bg-[#22C55E] ring-2 ring-[#0E121A]" />
+                  <div className="flex size-10 items-center justify-center rounded-[10px] bg-[#F36B32] text-[#101D35]">
+                    <Bot className="size-5" aria-hidden="true" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-[#F5F7FA]">Agente IA • Automate Pro</h4>
-                      <span className="rounded bg-[#22C55E]/10 px-1.5 py-0.5 font-mono text-[9px] font-bold text-[#22C55E] uppercase">
-                        ONLINE
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#A7B0BF]">Widget ativo no website do cliente</p>
+                    <h4 className="font-heading text-sm font-bold text-[#F5F3EE]">
+                      Agente IA · Automate Pro
+                    </h4>
+                    <p className="text-xs text-[#B8C0D0]">Widget ativo no website do cliente</p>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-[#252C38] bg-[#151A23] px-2.5 py-1.5 text-xs text-[#A7B0BF] hover:text-[#F5F7FA] hover:border-[#3B82F6] transition-colors"
+                  className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#2A3D63] bg-[#101D35] px-3 py-1.5 text-xs font-medium text-[#B8C0D0] hover:text-[#F5F3EE] hover:border-[#F36B32] transition-colors cursor-pointer"
                 >
-                  <RotateCcw className="size-3.5" />
+                  <RotateCcw className="size-3.5" aria-hidden="true" />
                   <span className="hidden sm:inline">Reiniciar</span>
                 </button>
               </div>
 
               {/* Chat Messages */}
-              <div className="mt-5 space-y-3.5 min-h-[380px] max-h-[460px] overflow-y-auto pr-1">
+              <div className="mt-5 space-y-3.5 min-h-[360px] max-h-[440px] overflow-y-auto pr-1">
                 {CONVERSATION.slice(0, messagesCount).map((msg) => {
                   const isIA = msg.from === "ia";
                   return (
                     <div
                       key={msg.id}
-                      className={`flex flex-col gap-1 transition-all duration-300 ${
+                      className={`flex flex-col gap-1 transition-opacity duration-200 ${
                         isIA ? "items-start" : "items-end"
                       }`}
                     >
@@ -183,29 +164,30 @@ export function AutomateInteractiveDemo() {
                           isIA ? "" : "flex-row-reverse"
                         }`}
                       >
-                        <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-[#252C38] bg-[#151A23] text-xs">
+                        <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-[#2A3D63] bg-[#101D35] text-xs">
                           {isIA ? (
-                            <Bot className="size-3.5 text-[#3B82F6]" />
+                            <Bot className="size-3.5 text-[#F36B32]" aria-hidden="true" />
                           ) : (
-                            <User className="size-3.5 text-[#A7B0BF]" />
+                            <User className="size-3.5 text-[#B8C0D0]" aria-hidden="true" />
                           )}
                         </span>
                         <div>
                           <div
-                            className={`rounded-2xl px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
+                            className={`rounded-[12px] px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                               isIA
-                                ? "border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[#F5F7FA]"
-                                : "border border-[#252C38] bg-[#151A23] text-[#F5F7FA]"
+                                ? "border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE]"
+                                : "bg-[#F5F3EE] text-[#101D35] font-medium"
                             }`}
                           >
                             {msg.text}
                           </div>
-                          <div className="mt-1 flex items-center gap-2 px-1 text-[10px] text-[#667085]">
+                          <div className="mt-1 flex items-center gap-2 px-1 text-[11px] text-[#B8C0D0] tabular-nums">
                             <span>{msg.time}</span>
-                            {msg.badge && (
-                              <span className="inline-flex items-center gap-1 font-mono text-[#3B82F6]">
-                                • <Sparkles className="size-2.5" /> {msg.badge}
-                              </span>
+                            {msg.note && (
+                              <>
+                                <span aria-hidden="true">·</span>
+                                <span className="text-[#F4C542] font-medium">{msg.note}</span>
+                              </>
                             )}
                           </div>
                         </div>
@@ -214,34 +196,23 @@ export function AutomateInteractiveDemo() {
                   );
                 })}
 
-                {/* Typing indicator */}
                 {isTyping && (
                   <div className="flex items-center gap-2 pl-8 pt-1">
-                    <span className="text-[11px] text-[#A7B0BF]">IA formulando resposta...</span>
-                    <div className="flex gap-1">
-                      {[0, 1, 2].map((d) => (
-                        <span
-                          key={d}
-                          className="size-1.5 animate-bounce rounded-full bg-[#3B82F6]"
-                          style={{ animationDelay: `${d * 140}ms` }}
-                        />
-                      ))}
-                    </div>
+                    <span className="text-xs text-[#B8C0D0]">IA formulando resposta...</span>
                   </div>
                 )}
               </div>
 
-              {/* Chat footer note */}
-              <div className="mt-4 pt-3 border-t border-[#252C38] flex items-center justify-between text-xs text-[#667085]">
+              <div className="mt-4 pt-3 border-t border-[#2A3D63] flex items-center justify-between text-xs text-[#B8C0D0]">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="size-3.5 text-[#22C55E]" />
+                  <ShieldCheck className="size-3.5 text-[#2E9E6B]" aria-hidden="true" />
                   Triagem em tempo real com base na sua empresa
                 </span>
                 {messagesCount < CONVERSATION.length && (
                   <button
                     type="button"
                     onClick={() => setMessagesCount(CONVERSATION.length)}
-                    className="text-[#3B82F6] hover:underline font-medium text-[11px]"
+                    className="text-[#F36B32] hover:underline font-semibold text-xs cursor-pointer"
                   >
                     Exibir tudo
                   </button>
@@ -250,149 +221,88 @@ export function AutomateInteractiveDemo() {
             </div>
           </Reveal>
 
-          {/* Right Column: System Automated Events Checklist */}
-          <Reveal delay={240}>
-            <div className="space-y-5">
-              <div className="rounded-3xl border border-[#252C38] bg-[#0E121A] p-6 sm:p-7 shadow-[0_12px_36px_rgba(0,0,0,0.4)]">
-                <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-[#F5F7FA] flex items-center gap-2">
-                    <Database className="size-4 text-[#3B82F6]" /> Ações em Segundo Plano
-                  </h4>
-                  <span className="font-mono text-[10px] text-[#22C55E] bg-[#22C55E]/10 px-2 py-0.5 rounded-full border border-[#22C55E]/20">
-                    AUTOMATIZADO
-                  </span>
-                </div>
+          {/* Right Column: Background Events */}
+          <Reveal delay={200}>
+            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-7">
+              <div className="flex items-center justify-between border-b border-[#2A3D63] pb-4">
+                <h4 className="font-heading text-sm font-bold uppercase tracking-wider text-[#F5F3EE] flex items-center gap-2">
+                  <Database className="size-4 text-[#F36B32]" aria-hidden="true" /> Ações em segundo
+                  plano
+                </h4>
+                <span className="text-xs font-semibold text-[#2E9E6B]">Automatizado</span>
+              </div>
 
-                <p className="mt-4 text-xs text-[#A7B0BF]">
-                  Enquanto a conversa ocorre, a infraestrutura da Agentes Digital executa as
-                  seguintes ações automáticas nos seus sistemas:
+              <p className="mt-4 text-xs text-[#B8C0D0] leading-relaxed">
+                Enquanto a conversa ocorre, a infraestrutura executa as seguintes ações nos seus
+                sistemas:
+              </p>
+
+              <div className="mt-5 space-y-3">
+                {[
+                  {
+                    active: messagesCount >= 4,
+                    title: "Lead qualificado",
+                    desc: 'Intenção detetada: "Sistema de gestão e atendimento".',
+                  },
+                  {
+                    active: messagesCount >= 5,
+                    title: "Contacto registado",
+                    desc: "Dados de sessão, origem e horário capturados.",
+                  },
+                  {
+                    active: messagesCount >= 6,
+                    title: "CRM atualizado",
+                    desc: "Novo card criado no pipeline com resumo da conversa.",
+                  },
+                  {
+                    active: messagesCount >= 7,
+                    title: "Equipa notificada",
+                    desc: "Alerta enviado por WhatsApp para o vendedor responsável.",
+                  },
+                ].map((ev) => (
+                  <div
+                    key={ev.title}
+                    className={`flex items-start gap-3 rounded-[12px] border p-3.5 transition-colors duration-200 ${
+                      ev.active
+                        ? "border-[#2E9E6B] bg-[#101D35] text-[#F5F3EE]"
+                        : "border-[#2A3D63] bg-[#101D35]/50 text-[#B8C0D0]"
+                    }`}
+                  >
+                    <span
+                      className={`flex size-6 shrink-0 items-center justify-center rounded-full mt-0.5 ${
+                        ev.active ? "bg-[#2E9E6B] text-[#101D35]" : "bg-[#1A2A4A] text-[#5B6B8C]"
+                      }`}
+                    >
+                      <Check className="size-3.5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p className="font-heading text-xs font-bold">{ev.title}</p>
+                      <p className="text-xs text-[#B8C0D0] mt-0.5">{ev.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-7 pt-6 border-t border-[#2A3D63]">
+                <a
+                  href={CTA.automateDemo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackAutomateProEvent("automate_demo_click", {
+                      location: "demo_section",
+                      label: "Agendar uma demonstração",
+                    })
+                  }
+                  className="lume-btn-primary w-full inline-flex items-center justify-center gap-2 text-sm"
+                >
+                  <Calendar className="size-4" aria-hidden="true" />
+                  <span>Agendar demonstração</span>
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </a>
+                <p className="mt-2.5 text-center text-xs text-[#B8C0D0]">
+                  Demonstração aplicada ao domínio da sua empresa · sem compromisso
                 </p>
-
-                {/* 4 Required Checklist Items from prompt */}
-                <div className="mt-5 space-y-3">
-                  {/* Item 1: Lead Qualificado */}
-                  <div
-                    className={`flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-500 ${
-                      messagesCount >= 4
-                        ? "border-[#22C55E]/40 bg-[#22C55E]/5 text-[#F5F7FA]"
-                        : "border-[#252C38] bg-[#151A23]/50 text-[#667085]"
-                    }`}
-                  >
-                    <span
-                      className={`flex size-6 shrink-0 items-center justify-center rounded-full mt-0.5 ${
-                        messagesCount >= 4
-                          ? "bg-[#22C55E]/20 text-[#22C55E]"
-                          : "bg-[#252C38] text-[#667085]"
-                      }`}
-                    >
-                      <Check className="size-3.5" />
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold font-mono">✓ Lead qualificado</p>
-                      <p className="text-[11px] text-[#A7B0BF]">
-                        Intenção de compra detectada: "Sistema de gestão e atendimento".
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Item 2: Contacto Registrado */}
-                  <div
-                    className={`flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-500 ${
-                      messagesCount >= 5
-                        ? "border-[#22C55E]/40 bg-[#22C55E]/5 text-[#F5F7FA]"
-                        : "border-[#252C38] bg-[#151A23]/50 text-[#667085]"
-                    }`}
-                  >
-                    <span
-                      className={`flex size-6 shrink-0 items-center justify-center rounded-full mt-0.5 ${
-                        messagesCount >= 5
-                          ? "bg-[#22C55E]/20 text-[#22C55E]"
-                          : "bg-[#252C38] text-[#667085]"
-                      }`}
-                    >
-                      <Check className="size-3.5" />
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold font-mono">✓ Contacto registrado</p>
-                      <p className="text-[11px] text-[#A7B0BF]">
-                        Dados de sessão, origem e horário capturados sem fricção.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Item 3: CRM Atualizado */}
-                  <div
-                    className={`flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-500 ${
-                      messagesCount >= 6
-                        ? "border-[#22C55E]/40 bg-[#22C55E]/5 text-[#F5F7FA]"
-                        : "border-[#252C38] bg-[#151A23]/50 text-[#667085]"
-                    }`}
-                  >
-                    <span
-                      className={`flex size-6 shrink-0 items-center justify-center rounded-full mt-0.5 ${
-                        messagesCount >= 6
-                          ? "bg-[#22C55E]/20 text-[#22C55E]"
-                          : "bg-[#252C38] text-[#667085]"
-                      }`}
-                    >
-                      <Check className="size-3.5" />
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold font-mono">✓ CRM atualizado</p>
-                      <p className="text-[11px] text-[#A7B0BF]">
-                        Novo card criado no pipeline de vendas com notas da conversa.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Item 4: Equipa Notificada */}
-                  <div
-                    className={`flex items-start gap-3 rounded-xl border p-3.5 transition-all duration-500 ${
-                      messagesCount >= 7
-                        ? "border-[#22C55E]/40 bg-[#22C55E]/5 text-[#F5F7FA]"
-                        : "border-[#252C38] bg-[#151A23]/50 text-[#667085]"
-                    }`}
-                  >
-                    <span
-                      className={`flex size-6 shrink-0 items-center justify-center rounded-full mt-0.5 ${
-                        messagesCount >= 7
-                          ? "bg-[#22C55E]/20 text-[#22C55E]"
-                          : "bg-[#252C38] text-[#667085]"
-                      }`}
-                    >
-                      <Check className="size-3.5" />
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold font-mono">✓ Equipa notificada</p>
-                      <p className="text-[11px] text-[#A7B0BF]">
-                        Alerta enviado por WhatsApp para o vendedor responsável.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Conversion CTA Block */}
-                <div className="mt-7 pt-6 border-t border-[#252C38]">
-                  <a
-                    href={CTA.automateDemo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() =>
-                      trackAutomateProEvent("automate_demo_click", {
-                        location: "demo_section",
-                        label: "Agendar uma demonstração",
-                      })
-                    }
-                    className="w-full inline-flex h-[48px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] px-6 text-sm font-bold text-white shadow-[0_12px_24px_rgba(59,130,246,0.25)] transition-transform hover:scale-[1.02]"
-                  >
-                    <Calendar className="size-4" />
-                    <span>Agendar uma demonstração</span>
-                    <ArrowRight className="size-4" />
-                  </a>
-                  <p className="mt-2.5 text-center text-[11px] text-[#667085]">
-                    Demonstração interativa aplicada ao domínio da sua empresa — sem compromisso
-                  </p>
-                </div>
               </div>
             </div>
           </Reveal>

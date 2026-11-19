@@ -1,5 +1,4 @@
 import { Reveal } from "./Reveal";
-import { Badge } from "@/components/ui/badge";
 import { site } from "@/lib/site-config";
 import {
   ArrowRight,
@@ -32,7 +31,7 @@ const metrics = [
     icon: Clock,
     label: "Tempo de resposta",
     before: "2-24h",
-    after: "<10 segundos",
+    after: "<10 seg",
     improvement: "500x mais rápido",
   },
   {
@@ -62,23 +61,18 @@ export function Benefits() {
   return (
     <section
       id="beneficios"
-      className="relative overflow-hidden bg-gradient-to-b from-[#111827] via-[#111827] to-[#0E121A] py-20 sm:py-28 scroll-mt-20"
+      className="relative bg-[#F5F3EE] text-[#101D35] py-24 sm:py-32 scroll-mt-20"
     >
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#22C55E]/5 blur-[120px] rounded-full pointer-events-none" />
-
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <div className="text-center">
-            <Badge className="mb-4 border-[#22C55E]/30 bg-[#22C55E]/10 text-[#22C55E]">
-              A Transformação
-            </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#F5F7FA] tracking-tight">
-              O que muda quando o seu negócio{" "}
-              <span className="text-[#22C55E]">começa a fechar negócios 24/7</span>
+          <div className="max-w-3xl">
+            <p className="lume-eyebrow text-[#D9531C]">02 · A transformação</p>
+            <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-bold text-[#101D35] leading-[1.15] text-balance">
+              O que muda quando o seu negócio passa a atender e fechar 24/7
             </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#A7B0BF] leading-relaxed">
-              Não vendemos ferramentas — entregamos resultados. Veja a diferença entre um negócio
-              que perde leads e um que os converte automaticamente.
+            <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
+              Não vendemos ferramentas soltas — entregamos operação previsível. Veja a diferença
+              entre perder oportunidades por demora e convertê-las automaticamente.
             </p>
           </div>
         </Reveal>
@@ -87,52 +81,62 @@ export function Benefits() {
         <Reveal delay={80}>
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {/* Before */}
-            <div className="rounded-[16px] border border-[#EF4444]/30 bg-[#EF4444]/5 p-6 sm:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <XCircle className="size-5 text-[#EF4444]" />
-                <span className="text-xs font-bold tracking-wider text-[#EF4444] uppercase">
-                  Antes do Sistema
-                </span>
+            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
+                  <span className="font-heading text-xs font-bold tracking-wider text-[#D64545] uppercase">
+                    Antes do sistema
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg font-bold text-[#101D35]">
+                  Enquanto a sua equipa dorme, os seus leads fogem
+                </h3>
+                <ul className="mt-6 space-y-3">
+                  {beforeItems.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-[#5B6B8C]">
+                      <XCircle
+                        className="size-4 mt-0.5 shrink-0 text-[#D64545]"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-lg font-bold text-[#F5F7FA]">
-                Enquanto a sua equipa dorme, os seus leads fogem
-              </h3>
-              <ul className="mt-6 space-y-3">
-                {beforeItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-[#A7B0BF]">
-                    <XCircle className="size-4 mt-0.5 shrink-0 text-[#EF4444]" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 p-3 rounded-[8px] border border-[#EF4444]/20 bg-[#EF4444]/5">
-                <p className="text-xs text-[#EF4444] font-medium">
+              <div className="mt-6 pt-4 border-t border-[#E7E3D9]">
+                <p className="text-xs font-semibold text-[#D64545]">
                   Resultado: receita que vai para a concorrência todos os meses
                 </p>
               </div>
             </div>
 
             {/* After */}
-            <div className="rounded-[16px] border border-[#22C55E]/30 bg-[#22C55E]/5 p-6 sm:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="size-5 text-[#22C55E]" />
-                <span className="text-xs font-bold tracking-wider text-[#22C55E] uppercase">
-                  Depois do Sistema
-                </span>
+            <div className="rounded-[16px] border border-[#101D35] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="size-5 text-[#2E9E6B]" aria-hidden="true" />
+                  <span className="font-heading text-xs font-bold tracking-wider text-[#F4C542] uppercase">
+                    Depois do sistema
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg font-bold text-[#F5F3EE]">
+                  O seu negócio trabalha enquanto você descansa
+                </h3>
+                <ul className="mt-6 space-y-3">
+                  {afterItems.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-[#F5F3EE]">
+                      <CheckCircle2
+                        className="size-4 mt-0.5 shrink-0 text-[#2E9E6B]"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-lg font-bold text-[#F5F7FA]">
-                O seu negócio trabalha enquanto você descansa
-              </h3>
-              <ul className="mt-6 space-y-3">
-                {afterItems.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-[#F5F7FA]">
-                    <CheckCircle2 className="size-4 mt-0.5 shrink-0 text-[#22C55E]" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 p-3 rounded-[8px] border border-[#22C55E]/20 bg-[#22C55E]/5">
-                <p className="text-xs text-[#22C55E] font-medium">
+              <div className="mt-6 pt-4 border-t border-[#2A3D63]">
+                <p className="text-xs font-semibold text-[#F4C542]">
                   Resultado: leads convertidos, reuniões agendadas, receita a crescer
                 </p>
               </div>
@@ -141,24 +145,29 @@ export function Benefits() {
         </Reveal>
 
         {/* Metrics */}
-        <Reveal delay={160}>
-          <div className="mt-12 rounded-[16px] border border-[#252C38] bg-[#151A23] p-6 sm:p-8">
-            <h3 className="text-xl font-bold text-[#F5F7FA] text-center">
-              Números que falam por si
+        <Reveal delay={140}>
+          <div className="mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
+            <h3 className="font-heading text-xl font-bold text-[#101D35] text-center">
+              Números comparativos da operação
             </h3>
             <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
               {metrics.map((m) => (
-                <div key={m.label} className="text-center">
-                  <div className="mx-auto flex size-10 items-center justify-center rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 text-[#22C55E]">
-                    <m.icon className="size-5" />
+                <div
+                  key={m.label}
+                  className="text-center rounded-[12px] border border-[#E7E3D9] bg-[#F5F3EE] p-5"
+                >
+                  <div className="mx-auto flex size-10 items-center justify-center rounded-full bg-[#101D35] text-[#F4C542]">
+                    <m.icon className="size-5" aria-hidden="true" />
                   </div>
-                  <p className="mt-3 text-xs text-[#A7B0BF]">{m.label}</p>
-                  <div className="mt-2 flex items-center justify-center gap-2">
-                    <span className="text-sm text-[#EF4444] line-through">{m.before}</span>
-                    <ArrowRight className="size-3 text-[#A7B0BF]" />
-                    <span className="text-lg font-bold text-[#22C55E]">{m.after}</span>
+                  <p className="mt-3 text-xs font-medium text-[#5B6B8C]">{m.label}</p>
+                  <div className="mt-2 flex items-center justify-center gap-2 tabular-nums">
+                    <span className="text-sm text-[#D64545] line-through">{m.before}</span>
+                    <ArrowRight className="size-3 text-[#5B6B8C]" aria-hidden="true" />
+                    <span className="font-heading text-lg font-extrabold text-[#101D35]">
+                      {m.after}
+                    </span>
                   </div>
-                  <p className="mt-1 text-[11px] font-mono text-[#22C55E] font-medium">
+                  <p className="mt-1.5 text-xs font-semibold text-[#2E9E6B] tabular-nums">
                     {m.improvement}
                   </p>
                 </div>
@@ -168,17 +177,19 @@ export function Benefits() {
         </Reveal>
 
         {/* CTA */}
-        <Reveal delay={240}>
+        <Reveal delay={180}>
           <div className="mt-12 text-center">
             <a
               href={site.ctaSecond.href}
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-[10px] bg-[#22C55E] px-8 text-sm font-semibold text-white transition-all hover:bg-[#16A34A] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm"
             >
-              Quero estes resultados
-              <ArrowRight className="size-4" />
+              <span>Quero estes resultados</span>
+              <ArrowRight className="size-4" aria-hidden="true" />
             </a>
-            <p className="mt-3 text-xs text-[#667085]">
-              Diagnóstico gratuito • Apenas 5 empresas/mês
+            <p className="mt-3 text-xs text-[#5B6B8C]">
+              Diagnóstico gratuito · Apenas 5 empresas/mês
             </p>
           </div>
         </Reveal>

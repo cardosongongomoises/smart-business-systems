@@ -1,15 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Bot,
-  User,
-  ShieldCheck,
-  CheckCircle2,
-  RotateCcw,
-  Send,
-  Calendar,
-  MessageSquare,
-  Zap,
-} from "lucide-react";
+import { Bot, User, CheckCircle2, RotateCcw, Calendar, Zap, ArrowRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTA } from "@/lib/site-config";
 
@@ -24,7 +14,7 @@ const scenarioConsultoria: Message[] = [
   { from: "cliente", text: "Olá, gostaria de agendar uma reunião.", time: "14:20" },
   {
     from: "ia",
-    text: "Claro. Posso ajudar. Qual serviço você procura?",
+    text: "Claro. Posso ajudar. Qual serviço procura?",
     time: "14:20",
     badge: "Resposta em 0.8s",
   },
@@ -45,7 +35,11 @@ const scenarioConsultoria: Message[] = [
 ];
 
 const scenarioAutomacao: Message[] = [
-  { from: "cliente", text: "Vocês conseguem automatizar nosso WhatsApp comercial?", time: "10:04" },
+  {
+    from: "cliente",
+    text: "Vocês conseguem automatizar o nosso WhatsApp comercial?",
+    time: "10:04",
+  },
   {
     from: "ia",
     text: "Sim! Integramos agentes inteligentes para qualificar leads, responder dúvidas e agendar reuniões diretamente no seu número oficial.",
@@ -74,124 +68,138 @@ export function AIAgent() {
   useEffect(() => {
     setShownCount(1);
     let current = 1;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
     const interval = setInterval(() => {
       if (current < activeMessages.length) {
         setIsTyping(true);
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
           current += 1;
           setShownCount(current);
           setIsTyping(false);
-        }, 800);
+        }, 700);
       } else {
         clearInterval(interval);
       }
-    }, 2400);
+    }, 2200);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [selectedScenario, activeMessages.length]);
 
   return (
     <section
       id="agente-ia"
-      className="relative py-20 sm:py-28 overflow-hidden bg-[#0E121A] border-t border-[#252C38] scroll-mt-20"
+      className="py-20 sm:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="pointer-events-none absolute top-1/3 right-0 size-[32rem] rounded-full bg-[#8B5CF6]/5 blur-[140px]" />
-      <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_1fr]">
+      <div className="mx-auto grid w-full max-w-[1200px] items-center gap-12 lg:gap-14 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#8B5CF6] uppercase">
-              <Bot className="size-3.5" aria-hidden="true" /> Agentes de Inteligência Artificial
-            </span>
+            <p className="lume-eyebrow text-[#D9531C]">Agentes de Inteligência Artificial</p>
           </Reveal>
 
-          <Reveal delay={80}>
-            <h2 className="mt-5 text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
-              Seu próximo colaborador corporativo pode ser uma{" "}
-              <span className="text-gradient">Inteligência Artificial.</span>
+          <Reveal delay={60}>
+            <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
+              O seu próximo colaborador corporativo pode ser uma{" "}
+              <span className="text-[#D9531C]">Inteligência Artificial.</span>
             </h2>
           </Reveal>
 
-          <Reveal delay={160}>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#A7B0BF]">
+          <Reveal delay={120}>
+            <p className="mt-5 max-w-xl text-base leading-[1.65] text-[#5B6B8C]">
               Um agente virtual corporativo treinado exclusivamente com as diretrizes e dados da sua
-              empresa. Ele atende no WhatsApp e na web, responde dúvidas com precisão, qualifica
+              empresa. Atende no WhatsApp e na web, responde dúvidas com precisão, qualifica
               oportunidades e agenda reuniões no calendário da sua equipa.
             </p>
           </Reveal>
 
-          <Reveal delay={240}>
+          <Reveal delay={180}>
             <div className="mt-8 grid grid-cols-2 gap-4 max-w-lg">
-              <div className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-4">
-                <div className="flex items-center gap-2 text-[#3B82F6]">
+              <div className="rounded-[12px] border border-[#E7E3D9] bg-[#FFFFFF] p-5">
+                <div className="flex items-center gap-2 text-[#D9531C]">
                   <Zap className="size-4" aria-hidden="true" />
-                  <span className="font-mono text-sm font-bold tabular-nums">0.8s</span>
+                  <span className="font-heading text-xl font-extrabold text-[#101D35] tabular-nums">
+                    0.8s
+                  </span>
                 </div>
-                <p className="mt-1.5 text-xs text-[#A7B0BF]">Tempo médio de resposta</p>
+                <p className="mt-1.5 text-xs text-[#5B6B8C]">Tempo médio de resposta</p>
               </div>
-              <div className="rounded-[12px] border border-[#252C38] bg-[#151A23] p-4">
-                <div className="flex items-center gap-2 text-[#22C55E]">
+              <div className="rounded-[12px] border border-[#E7E3D9] bg-[#FFFFFF] p-5">
+                <div className="flex items-center gap-2 text-[#2E9E6B]">
                   <Calendar className="size-4" aria-hidden="true" />
-                  <span className="font-mono text-sm font-bold tabular-nums">24 / 7 / 365</span>
+                  <span className="font-heading text-xl font-extrabold text-[#101D35] tabular-nums">
+                    24 / 7 / 365
+                  </span>
                 </div>
-                <p className="mt-1.5 text-xs text-[#A7B0BF]">Disponibilidade ininterrupta</p>
+                <p className="mt-1.5 text-xs text-[#5B6B8C]">Disponibilidade ininterrupta</p>
               </div>
             </div>
           </Reveal>
 
-          <Reveal delay={300}>
-            <div className="mt-9 flex flex-col sm:flex-row gap-3">
+          <Reveal delay={240}>
+            <div className="mt-9 flex flex-col sm:flex-row gap-3.5">
               <a
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] bg-[#3B82F6] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#2563EB]"
+                className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                Falar com um especialista
+                <span>Falar com um especialista</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="#canais"
-                className="inline-flex h-[44px] items-center justify-center gap-2 rounded-[8px] border border-[#252C38] bg-transparent px-6 text-sm font-semibold text-[#F5F7FA] transition-colors hover:bg-[#151A23] hover:border-[#3B82F6]"
+                className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                Ver canais de atendimento
+                <span>Ver canais de atendimento</span>
               </a>
             </div>
           </Reveal>
         </div>
 
-        {/* Live Chat Simulator */}
-        <Reveal delay={180}>
-          <div className="ai-card relative overflow-hidden rounded-[16px] border border-[#8B5CF6]/35 bg-[#151A23] p-5 sm:p-6 shadow-[0_0_32px_-8px_rgba(139,92,246,0.20)]">
+        {/* Live Chat Simulator in Lume Navy */}
+        <Reveal delay={140}>
+          <div className="rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-5 sm:p-6 text-[#F5F3EE]">
+            {/* Lume Accent Bar */}
+            <div className="flex gap-2 mb-5">
+              <span className="h-1.5 flex-1 rounded-full bg-[#2A3D63]" />
+              <span className="h-1.5 flex-1 rounded-full bg-[#F36B32]" />
+              <span className="h-1.5 flex-1 rounded-full bg-[#F4C542]" />
+              <span className="h-1.5 flex-1 rounded-full bg-[#F5F3EE]" />
+            </div>
+
             {/* Header Simulator */}
-            <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#2A3D63] pb-4">
               <div className="flex items-center gap-3">
-                <span className="relative flex size-9 items-center justify-center rounded-[8px] bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30">
+                <span className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F36B32]">
                   <Bot className="size-4" aria-hidden="true" />
-                  <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-[#22C55E]" />
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs font-bold uppercase tracking-wider text-[#F5F7FA]">
+                    <p className="font-heading text-xs font-bold uppercase tracking-wider text-[#F5F3EE]">
                       Agente Digital IA
                     </p>
-                    <span className="inline-flex items-center gap-1 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 px-2 py-0.5 font-mono text-[9px] font-bold text-[#22C55E] tracking-wider uppercase">
-                      ● ONLINE
+                    <span className="rounded-full bg-[#F4C542] px-2 py-0.5 font-heading text-[10px] font-bold text-[#101D35] tracking-wider uppercase">
+                      ONLINE
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#A7B0BF]">
-                    Atendimento corporativo • Agentes Digital
+                  <p className="text-[11px] text-[#B8C0D0]">
+                    Atendimento corporativo · Agentes Digital
                   </p>
                 </div>
               </div>
 
-              {/* Scenarios switch */}
-              <div className="flex items-center gap-1 rounded-[8px] border border-[#252C38] bg-[#0E121A] p-1">
+              {/* Scenario Switch */}
+              <div className="flex items-center gap-1 rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] p-1">
                 <button
                   type="button"
                   onClick={() => setSelectedScenario("consultoria")}
-                  className={`rounded-[6px] px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                  className={`rounded-[6px] px-2.5 py-1 font-heading text-[11px] font-bold transition-colors cursor-pointer ${
                     selectedScenario === "consultoria"
-                      ? "bg-[#3B82F6] text-white"
-                      : "text-[#A7B0BF] hover:text-[#F5F7FA]"
+                      ? "bg-[#F36B32] text-[#101D35]"
+                      : "text-[#B8C0D0] hover:text-[#F5F3EE]"
                   }`}
                 >
                   Agendamento
@@ -199,10 +207,10 @@ export function AIAgent() {
                 <button
                   type="button"
                   onClick={() => setSelectedScenario("automacao")}
-                  className={`rounded-[6px] px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                  className={`rounded-[6px] px-2.5 py-1 font-heading text-[11px] font-bold transition-colors cursor-pointer ${
                     selectedScenario === "automacao"
-                      ? "bg-[#3B82F6] text-white"
-                      : "text-[#A7B0BF] hover:text-[#F5F7FA]"
+                      ? "bg-[#F36B32] text-[#101D35]"
+                      : "text-[#B8C0D0] hover:text-[#F5F3EE]"
                   }`}
                 >
                   WhatsApp
@@ -217,18 +225,18 @@ export function AIAgent() {
                 return (
                   <div
                     key={i}
-                    className={`flex flex-col gap-1 transition-all duration-300 ${
+                    className={`flex flex-col gap-1 transition-all duration-200 ${
                       isAI ? "items-start" : "items-end"
                     }`}
                   >
                     <div
-                      className={`flex gap-2.5 max-w-[86%] sm:max-w-[78%] ${
+                      className={`flex gap-2.5 max-w-[88%] sm:max-w-[80%] ${
                         isAI ? "" : "flex-row-reverse"
                       }`}
                     >
-                      <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-[#252C38] bg-[#0E121A] text-[#A7B0BF]">
+                      <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-[#2A3D63] bg-[#1A2A4A] text-[#B8C0D0]">
                         {isAI ? (
-                          <Bot className="size-3.5 text-[#3B82F6]" aria-hidden="true" />
+                          <Bot className="size-3.5 text-[#F36B32]" aria-hidden="true" />
                         ) : (
                           <User className="size-3.5" aria-hidden="true" />
                         )}
@@ -237,17 +245,18 @@ export function AIAgent() {
                         <div
                           className={`rounded-[12px] px-4 py-2.5 text-xs sm:text-sm leading-relaxed ${
                             isAI
-                              ? "border border-[#3B82F6]/25 bg-[#3B82F6]/10 text-[#F5F7FA]"
-                              : "border border-[#252C38] bg-[#252C38] text-[#F5F7FA]"
+                              ? "border border-[#2A3D63] bg-[#1A2A4A] text-[#F5F3EE]"
+                              : "border border-[#F5F3EE] bg-[#F5F3EE] text-[#101D35] font-medium"
                           }`}
                         >
                           {m.text}
                         </div>
-                        <div className="mt-1 flex items-center gap-2 px-1 text-[10px] text-[#667085]">
-                          <span>{m.time}</span>
+                        <div className="mt-1 flex flex-wrap items-center gap-2 px-1 text-[11px] text-[#B8C0D0]">
+                          <span className="tabular-nums">{m.time}</span>
                           {m.badge && (
-                            <span className="inline-flex items-center gap-1 font-mono text-[#3B82F6]">
-                              • <CheckCircle2 className="size-2.5" aria-hidden="true" /> {m.badge}
+                            <span className="inline-flex items-center gap-1 font-medium text-[#F4C542]">
+                              <CheckCircle2 className="size-3" aria-hidden="true" />
+                              {m.badge}
                             </span>
                           )}
                         </div>
@@ -257,36 +266,31 @@ export function AIAgent() {
                 );
               })}
 
-              {/* Typing indicator */}
               {isTyping && (
                 <div className="flex items-center gap-2 pl-8 pt-1">
-                  <span className="text-[11px] font-mono text-[#8B5CF6]">
-                    ••• Agente processando
+                  <span className="font-heading text-[11px] font-semibold text-[#F4C542]">
+                    Agente a responder...
                   </span>
-                  <div className="flex gap-1">
-                    {[0, 1, 2].map((d) => (
-                      <span
-                        key={d}
-                        className="size-1.5 animate-bounce rounded-full bg-[#8B5CF6]"
-                        style={{ animationDelay: `${d * 140}ms` }}
-                      />
-                    ))}
-                  </div>
                 </div>
               )}
             </div>
 
             {/* Bottom Actions */}
-            <div className="mt-5 pt-3 border-t border-[#252C38] flex items-center justify-between text-xs">
+            <div className="mt-5 pt-3.5 border-t border-[#2A3D63] flex items-center justify-between text-xs">
               <button
                 type="button"
-                onClick={() => setShownCount(activeMessages.length)}
-                className="inline-flex items-center gap-1.5 text-[#A7B0BF] hover:text-[#F5F7FA] transition-colors"
+                onClick={() => {
+                  setIsTyping(false);
+                  setShownCount(activeMessages.length);
+                }}
+                className="inline-flex items-center gap-1.5 text-[#B8C0D0] hover:text-[#F5F3EE] transition-colors cursor-pointer"
               >
-                <RotateCcw className="size-3" aria-hidden="true" /> Ver conversa completa
+                <RotateCcw className="size-3.5" aria-hidden="true" />
+                <span>Ver conversa completa</span>
               </button>
-              <span className="inline-flex items-center gap-1 text-[#22C55E] font-semibold text-[11px]">
-                <CheckCircle2 className="size-3.5" aria-hidden="true" /> Atendimento Ativo
+              <span className="inline-flex items-center gap-1.5 text-[#2E9E6B] font-semibold text-xs">
+                <CheckCircle2 className="size-3.5" aria-hidden="true" />
+                Atendimento Ativo
               </span>
             </div>
           </div>

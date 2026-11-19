@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lume Studio — Design System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap">
+<style>
+:root{
+  --navy:#101D35;--navy-800:#1A2A4A;--navy-600:#2A3D63;--navy-400:#5B6B8C;--navy-200:#B8C0D0;
+  --orange:#F36B32;--orange-600:#D9531C;--orange-100:#FDE3D6;
+  --yellow:#F4C542;--yellow-600:#D9A91F;--yellow-100:#FCF0C8;
+  --white:#F5F3EE;--white-200:#E7E3D9;
+  --ok:#2E9E6B;--err:#D64545;--info:#3B82C4;
+  --bg:#F5F3EE;--surface:#FFFFFF;--text:#101D35;--muted:#5B6B8C;--line:#E7E3D9;--accent:#F36B32;--on-accent:#101D35;
+  --fh:'Montserrat','Helvetica Neue',Arial,sans-serif;--fb:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101D35;--surface:#1A2A4A;--text:#F5F3EE;--muted:#B8C0D0;--line:#2A3D63;--accent:#F36B32;--on-accent:#101D35}}
+:root[data-theme="dark"]{--bg:#101D35;--surface:#1A2A4A;--text:#F5F3EE;--muted:#B8C0D0;--line:#2A3D63;--accent:#F36B32;--on-accent:#101D35}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:48px 24px 96px}
+h1,h2,h3{font-family:var(--fh);margin:0;line-height:1.1;letter-spacing:-.02em}
+h1{font-size:clamp(40px,7vw,72px);font-weight:800}
+h2{font-size:32px;font-weight:700;margin-bottom:8px}
+h3{font-size:18px;font-weight:600;margin:32px 0 12px}
+p{margin:0 0 16px}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--fh);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+section{padding-top:72px}
+.bar{display:flex;gap:8px;margin:24px 0 0}
+.bar i{height:8px;border-radius:4px;flex:1}
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.chip{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.chip .c{height:96px}
+.chip div.t{padding:12px 14px;font-size:14px}
+.chip b{font-family:var(--fh);display:block}
+.chip code{color:var(--muted);font-size:13px}
+.ramp{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-bottom:12px}
+.ramp div{flex:1;height:56px;font-size:11px;padding:6px 8px;display:flex;align-items:flex-end}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--fh);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.scroll{overflow-x:auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.sp{display:flex;align-items:center;gap:16px;margin:6px 0;font-size:14px}
+.sp i{display:block;height:16px;background:var(--accent);border-radius:3px}
+.cols{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin:12px 0}
+.cols div{height:56px;background:var(--accent);opacity:.18;border-radius:6px}
+.btn{font-family:var(--fh);font-weight:700;font-size:15px;border:2px solid transparent;border-radius:999px;padding:12px 24px;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn.p{background:var(--accent);color:var(--on-accent)}
+.btn.p:hover{background:var(--orange-600)}
+.btn.s{background:transparent;color:var(--text);border-color:var(--text)}
+.btn.t{background:var(--yellow);color:var(--navy)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.badge{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+input{font-family:var(--fb);font-size:15px;width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+input:focus{outline:2px solid var(--accent);outline-offset:2px}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+pre{background:var(--navy);color:var(--white);padding:20px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;margin:0}
+.do{border-left:4px solid var(--ok);padding-left:14px}
+.dont{border-left:4px solid var(--err);padding-left:14px}
+.tog{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:16px;z-index:5}
+</style>
+</head>
+<body>
+<div class="tog"><button class="btn s" id="th" style="padding:8px 16px;font-size:13px;background:var(--bg)">Claro / Escuro</button></div>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Lume Studio · Design System v1.0</div>
+  <h1 style="margin:16px 0 20px">Clareza com<br>calor humano.</h1>
+  <p class="muted" style="max-width:560px;font-size:18px">Um sistema construído sobre grelhas suíças, geometria simples, espaçamento generoso e hierarquia tipográfica forte. Navy dá estrutura; laranja e amarelo dão energia.</p>
+  <div class="bar"><i style="background:var(--navy);border:1px solid var(--navy-600)"></i><i style="background:var(--orange)"></i><i style="background:var(--yellow)"></i><i style="background:var(--white);border:1px solid var(--white-200)"></i></div>
+</header>
+
+<section>
+  <div class="eyebrow">01</div><h2>Princípios</h2>
+  <div class="grid2" style="margin-top:20px">
+    <div class="card"><h3 style="margin-top:0">Ordem</h3><p class="muted" style="margin:0">Grelha de 12 colunas, alinhamentos rigorosos e muito espaço em branco.</p></div>
+    <div class="card"><h3 style="margin-top:0">Simplicidade</h3><p class="muted" style="margin:0">Formas geométricas básicas: retângulos, círculos, linhas. Sem ornamento.</p></div>
+    <div class="card"><h3 style="margin-top:0">Hierarquia</h3><p class="muted" style="margin:0">Títulos Montserrat fortes; texto Inter legível. Um foco por ecrã.</p></div>
+    <div class="card"><h3 style="margin-top:0">Discrição</h3><p class="muted" style="margin:0">Movimento subtil que orienta, nunca distrai.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">02</div><h2>Cores</h2>
+  <p class="muted">Paleta oficial e escalas derivadas. Os sites de clientes podem ter paleta própria; este sistema é a base da marca Lume Studio.</p>
+  <h3>Paleta oficial</h3>
+  <div class="sw">
+    <div class="chip"><div class="c" style="background:#101D35"></div><div class="t"><b>Navy</b><code>#101D35</code></div></div>
+    <div class="chip"><div class="c" style="background:#F36B32"></div><div class="t"><b>Orange</b><code>#F36B32</code></div></div>
+    <div class="chip"><div class="c" style="background:#F4C542"></div><div class="t"><b>Yellow</b><code>#F4C542</code></div></div>
+    <div class="chip"><div class="c" style="background:#F5F3EE"></div><div class="t"><b>Warm White</b><code>#F5F3EE</code></div></div>
+  </div>
+
+  <h3>Escalas derivadas</h3>
+  <div class="ramp">
+    <div style="background:#101D35;color:#F5F3EE">Navy 900<br>#101D35</div>
+    <div style="background:#1A2A4A;color:#F5F3EE">800<br>#1A2A4A</div>
+    <div style="background:#2A3D63;color:#F5F3EE">600<br>#2A3D63</div>
+    <div style="background:#5B6B8C;color:#F5F3EE">400<br>#5B6B8C</div>
+    <div style="background:#B8C0D0;color:#101D35">200<br>#B8C0D0</div>
+  </div>
+  <div class="ramp">
+    <div style="background:#F36B32;color:#101D35">Orange 500<br>#F36B32</div>
+    <div style="background:#D9531C;color:#F5F3EE">600<br>#D9531C</div>
+    <div style="background:#FDE3D6;color:#101D35">100<br>#FDE3D6</div>
+  </div>
+  <div class="ramp">
+    <div style="background:#F4C542;color:#101D35">Yellow 500<br>#F4C542</div>
+    <div style="background:#D9A91F;color:#101D35">600<br>#D9A91F</div>
+    <div style="background:#FCF0C8;color:#101D35">100<br>#FCF0C8</div>
+  </div>
+  <div class="ramp">
+    <div style="background:#F5F3EE;color:#101D35">Warm White 50<br>#F5F3EE</div>
+    <div style="background:#E7E3D9;color:#101D35">200<br>#E7E3D9</div>
+  </div>
+
+  <h3>Cores semânticas</h3>
+  <div class="row">
+    <span class="badge" style="background:var(--ok);color:#fff">Sucesso #2E9E6B</span>
+    <span class="badge" style="background:var(--err);color:#fff">Erro #D64545</span>
+    <span class="badge" style="background:var(--info);color:#fff">Info #3B82C4</span>
+    <span class="badge" style="background:var(--yellow);color:var(--navy)">Aviso #F4C542</span>
+  </div>
+
+  <h3>Contraste e uso</h3>
+  <div class="scroll"><table>
+    <tr><th>Combinação</th><th>Rácio aprox.</th><th>Uso</th></tr>
+    <tr><td>Warm White sobre Navy</td><td>~15:1 (AAA)</td><td>Texto principal em fundos escuros</td></tr>
+    <tr><td>Navy sobre Warm White</td><td>~15:1 (AAA)</td><td>Texto principal em fundos claros</td></tr>
+    <tr><td>Navy sobre Orange</td><td>~5.9:1 (AA)</td><td>Botões primários</td></tr>
+    <tr><td>Navy sobre Yellow</td><td>~9:1 (AAA)</td><td>Destaques, etiquetas</td></tr>
+    <tr><td>Orange sobre Navy</td><td>~5.9:1 (AA)</td><td>Links, ícones, números grandes</td></tr>
+    <tr><td>Warm White sobre Orange</td><td>~2.9:1 (falha)</td><td>Evitar para texto</td></tr>
+  </table></div>
+  <p class="muted" style="margin-top:12px;font-size:14px">Regra de proporção: 60% Navy/Warm White · 25% neutros · 10% Orange · 5% Yellow.</p>
+</section>
+
+<section>
+  <div class="eyebrow">03</div><h2>Tipografia</h2>
+  <p class="muted">Montserrat para títulos e destaque. Inter para texto, navegação e conteúdo.</p>
+  <div class="card">
+    <div class="scroll"><table>
+      <tr><th>Estilo</th><th>Fonte</th><th>Tamanho / Linha</th></tr>
+      <tr><td style="font-family:var(--fh);font-weight:800;font-size:48px;line-height:1.05">Display</td><td>Montserrat 800</td><td>72 / 76 (mobile 40 / 44)</td></tr>
+      <tr><td style="font-family:var(--fh);font-weight:700;font-size:36px;line-height:1.1">Título H1</td><td>Montserrat 700</td><td>48 / 52</td></tr>
+      <tr><td style="font-family:var(--fh);font-weight:700;font-size:28px">Título H2</td><td>Montserrat 700</td><td>32 / 38</td></tr>
+      <tr><td style="font-family:var(--fh);font-weight:600;font-size:20px">Título H3</td><td>Montserrat 600</td><td>20 / 28</td></tr>
+      <tr><td style="font-size:18px">Texto grande</td><td>Inter 400</td><td>18 / 28</td></tr>
+      <tr><td>Texto base</td><td>Inter 400</td><td>16 / 26</td></tr>
+      <tr><td style="font-size:13px">Legenda e metadados</td><td>Inter 500</td><td>13 / 20</td></tr>
+      <tr><td class="eyebrow">Eyebrow</td><td>Montserrat 700</td><td>12 / 16 · MAIÚSCULAS · +12%</td></tr>
+    </table></div>
+  </div>
+  <p class="muted" style="margin-top:12px;font-size:14px">Largura máxima de leitura: 65 caracteres. Letter-spacing de títulos: −2%.</p>
+</section>
+
+<section>
+  <div class="eyebrow">04</div><h2>Espaçamento e grelha</h2>
+  <p class="muted">Base de 8px. Secções respiram: 96–128px entre blocos principais em desktop.</p>
+  <div class="card">
+    <div class="sp"><i style="width:4px"></i>4 · xs</div>
+    <div class="sp"><i style="width:8px"></i>8 · sm</div>
+    <div class="sp"><i style="width:16px"></i>16 · md</div>
+    <div class="sp"><i style="width:24px"></i>24 · lg</div>
+    <div class="sp"><i style="width:32px"></i>32 · xl</div>
+    <div class="sp"><i style="width:48px"></i>48 · 2xl</div>
+    <div class="sp"><i style="width:64px"></i>64 · 3xl</div>
+    <div class="sp"><i style="width:96px"></i>96 · 4xl</div>
+    <div class="sp"><i style="width:128px"></i>128 · 5xl</div>
+  </div>
+  <h3>Grelha suíça de 12 colunas</h3>
+  <div class="cols"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  <div class="scroll"><table>
+    <tr><th>Ponto</th><th>Largura</th><th>Colunas</th><th>Gutter</th><th>Margem</th></tr>
+    <tr><td>Mobile</td><td>&lt; 640px</td><td>4</td><td>16</td><td>20</td></tr>
+    <tr><td>Tablet</td><td>640–1024px</td><td>8</td><td>24</td><td>32</td></tr>
+    <tr><td>Desktop</td><td>&gt; 1024px</td><td>12</td><td>24</td><td>max-width 1200px</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <div class="eyebrow">05</div><h2>Forma, elevação e movimento</h2>
+  <div class="grid2" style="margin-top:20px">
+    <div class="card">
+      <h3 style="margin-top:0">Raios</h3>
+      <p class="muted" style="margin:0">Pequeno 8px (inputs, tags) · Médio 12–16px (cartões) · Pílula 999px (botões e badges). Círculos para avatares e ícones.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Elevação</h3>
+      <p class="muted" style="margin:0">Preferir bordas de 1px a sombras. Sombra só em overlays: <code>0 12px 32px rgba(16,29,53,.16)</code>.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Movimento</h3>
+      <p class="muted" style="margin:0">Duração 150–300ms, easing <code>ease</code> ou <code>cubic-bezier(.2,.7,.2,1)</code>. Fade, translateY até 8px. Respeitar <code>prefers-reduced-motion</code>.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Fotografia</h3>
+      <p class="muted" style="margin:0">Comercial natural: luz real, pessoas reais, enquadramentos limpos. Sem filtros pesados nem bancos de imagens artificiais.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">06</div><h2>Componentes</h2>
+  <h3>Botões</h3>
+  <div class="row">
+    <button class="btn p">Pedir proposta</button>
+    <button class="btn s">Ver projetos</button>
+    <button class="btn t">Destaque</button>
+  </div>
+  <h3>Badges</h3>
+  <div class="row">
+    <span class="badge" style="background:var(--orange-100);color:var(--orange-600)">Novo</span>
+    <span class="badge" style="background:var(--yellow-100);color:#7A5A00">Em curso</span>
+    <span class="badge" style="background:var(--navy);color:var(--white)">Concluído</span>
+  </div>
+  <h3>Cartão e formulário</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="eyebrow">Website</div>
+      <h3 style="margin:8px 0">Site institucional</h3>
+      <p class="muted">Design à medida, rápido e pensado para converter visitas em contactos.</p>
+      <button class="btn p">Saber mais</button>
+    </div>
+    <div class="card">
+      <label for="n">Nome</label><input id="n" placeholder="O seu nome"><br><br>
+      <label for="e">Email</label><input id="e" placeholder="nome@empresa.com"><br><br>
+      <button class="btn p">Enviar</button>
+    </div>
+  </div>
+  <h3>Estados</h3>
+  <p class="muted">Hover: elevar 1px e escurecer o laranja para #D9531C. Foco: contorno de 2px em Orange com offset de 2px. Desativado: 40% de opacidade, sem hover.</p>
+</section>
+
+<section>
+  <div class="eyebrow">07</div><h2>Usar e evitar</h2>
+  <div class="grid2" style="margin-top:20px">
+    <div class="do"><b>Usar</b><p class="muted" style="margin:8px 0 0">Navy ou Warm White como base. Laranja num único elemento de ação por ecrã. Amarelo como destaque pontual. Títulos grandes com muito ar à volta.</p></div>
+    <div class="dont"><b>Evitar</b><p class="muted" style="margin:8px 0 0">Texto branco sobre laranja. Laranja e amarelo lado a lado em blocos grandes. Sombras pesadas, gradientes e animações longas.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">08</div><h2>Tokens CSS</h2>
+  <p class="muted">Copie para o seu projeto.</p>
+<pre>:root {
+  /* Marca */
+  --navy: #101D35;   --navy-800: #1A2A4A;  --navy-600: #2A3D63;
+  --navy-400: #5B6B8C; --navy-200: #B8C0D0;
+  --orange: #F36B32; --orange-600: #D9531C; --orange-100: #FDE3D6;
+  --yellow: #F4C542; --yellow-600: #D9A91F; --yellow-100: #FCF0C8;
+  --white: #F5F3EE;  --white-200: #E7E3D9;
+  /* Semânticas */
+  --ok: #2E9E6B; --err: #D64545; --info: #3B82C4;
+  /* Tipografia */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  /* Espaçamento (base 8) */
+  --s1: 4px; --s2: 8px; --s3: 16px; --s4: 24px;
+  --s5: 32px; --s6: 48px; --s7: 64px; --s8: 96px; --s9: 128px;
+  /* Forma e movimento */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-pill: 999px;
+  --ease: cubic-bezier(.2,.7,.2,1); --dur: 200ms;
+}</pre>
+</section>
+
+</div>
+<script>
+(function(){
+  var b=document.getElementById('th');
+  b.addEventListener('click',function(){
+    var r=document.documentElement;
+    var dark=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme',dark?'light':'dark');
+  });
+})();
+</script>
+</body>
+</html>

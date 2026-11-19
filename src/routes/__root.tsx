@@ -123,7 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:image", content: "https://agentes-digital.com/favicon-512.png" },
       { name: "twitter:site", content: "@AgentesDigital" },
-      { name: "theme-color", content: "#080A0F" },
+      { name: "theme-color", content: "#F5F3EE" },
     ],
     links: [
       { rel: "canonical", href: "https://agentes-digital.com/" },
@@ -135,7 +135,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap",
       },
       {
         rel: "stylesheet",
@@ -155,7 +155,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt" style={{ colorScheme: "dark" }}>
+    <html lang="pt">
       <head>
         <HeadContent />
         <script
@@ -174,7 +174,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-[#F36B32] focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold focus:text-[#101D35] focus:outline-none focus:ring-2 focus:ring-[#F36B32] focus:ring-offset-2 focus:ring-offset-[#F5F3EE]"
         >
           Saltar para o conteÃºdo principal
         </a>

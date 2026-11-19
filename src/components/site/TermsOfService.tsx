@@ -45,67 +45,70 @@ export function TermsOfService() {
   return (
     <div
       id="topo"
-      className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary"
+      className="min-h-screen bg-[#F5F3EE] text-[#101D35] flex flex-col selection:bg-[#F4C542] selection:text-[#101D35]"
     >
       <Header />
 
       <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Top Actions / Breadcrumb */}
-          <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-border/60">
+          <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-[#E7E3D9]">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-[#5B6B8C] hover:text-[#D9531C] transition-colors"
             >
-              <ArrowLeft className="size-4" />
+              <ArrowLeft className="size-4" aria-hidden="true" />
               <span>Voltar à Página Inicial</span>
             </Link>
 
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/80 bg-surface/50 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors cursor-pointer"
-            >
-              <Printer className="size-3.5" />
-              <span>Imprimir / Salvar PDF</span>
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/privacidade"
+                className="text-xs font-medium text-[#5B6B8C] hover:text-[#101D35] transition-colors hidden sm:inline"
+              >
+                Ver Política de Privacidade →
+              </Link>
+              <button
+                type="button"
+                onClick={handlePrint}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] border border-[#E7E3D9] bg-[#FFFFFF] text-xs font-semibold text-[#101D35] hover:border-[#101D35] transition-colors cursor-pointer"
+              >
+                <Printer className="size-3.5" aria-hidden="true" />
+                <span>Imprimir / Salvar PDF</span>
+              </button>
+            </div>
           </div>
 
           {/* Title Header Card */}
-          <div className="rounded-2xl border border-border/80 bg-surface/40 p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden mb-10 shadow-sm">
-            <div className="pointer-events-none absolute -right-12 -bottom-12 size-48 rounded-full bg-primary/10 blur-3xl" />
-
+          <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8 mb-10">
             <div className="flex items-center gap-3 mb-4">
-              <div className="size-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shrink-0">
-                <ShieldCheck className="size-5" />
+              <div className="size-10 rounded-[10px] bg-[#101D35] flex items-center justify-center text-[#F4C542] shrink-0">
+                <ShieldCheck className="size-5" aria-hidden="true" />
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary/15 text-primary border border-primary/30">
-                Documento Legal Oficial
-              </span>
+              <span className="lume-eyebrow text-[#D9531C]">Documento Legal Oficial</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+            <h1 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-[#101D35]">
               TERMOS DE SERVIÇO
             </h1>
 
-            <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
-              <strong className="text-foreground">Última atualização:</strong> 10 de Setembro de
-              2026
+            <p className="mt-2 text-xs sm:text-sm text-[#5B6B8C]">
+              <strong className="text-[#101D35]">Última atualização:</strong> 10 de Setembro de 2026
             </p>
 
-            <div className="mt-6 pt-6 border-t border-border/60 text-sm text-muted-foreground leading-relaxed space-y-3">
+            <div className="mt-6 pt-6 border-t border-[#E7E3D9] text-sm text-[#5B6B8C] leading-relaxed space-y-3">
               <p>
                 Bem-vindo à{" "}
-                <strong className="text-foreground font-semibold">Agentes Digital</strong>.
+                <strong className="text-[#101D35] font-semibold">Agentes Digital</strong>.
               </p>
               <p>
                 Estes Termos de Serviço estabelecem as condições gerais aplicáveis à utilização do
                 website{" "}
-                <strong className="text-foreground font-semibold">agentes-digital.com</strong>, à
+                <strong className="text-[#101D35] font-semibold">agentes-digital.com</strong>, à
                 contratação dos nossos serviços e à utilização das soluções digitais fornecidas pela
                 Agentes Digital.
               </p>
-              <p className="p-3 rounded-lg bg-surface-2/60 border border-border/60 text-xs text-foreground/90 font-medium">
+              <p className="p-3.5 rounded-[10px] bg-[#F5F3EE] border border-[#E7E3D9] text-xs text-[#101D35] font-medium">
                 Ao utilizar o website, solicitar uma proposta ou contratar os nossos serviços, o
                 utilizador declara que leu e compreendeu estes Termos.
               </p>
@@ -113,16 +116,17 @@ export function TermsOfService() {
           </div>
 
           {/* Quick Navigation Drawer / Table of Contents */}
-          <div className="rounded-xl border border-border/60 bg-surface-2/30 p-5 mb-12">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
-              <FileText className="size-3.5 text-primary" /> Índice Rápido das Cláusulas (1 a 30)
+          <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 mb-10">
+            <h2 className="font-heading text-xs font-bold uppercase tracking-wider text-[#5B6B8C] mb-3 flex items-center gap-2">
+              <FileText className="size-3.5 text-[#D9531C]" aria-hidden="true" /> Índice Rápido das
+              Cláusulas (1 a 30)
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
               {sections.map((sec) => (
                 <a
                   key={sec.id}
                   href={`#secao-${sec.id}`}
-                  className="p-1.5 rounded hover:bg-surface-2 text-muted-foreground hover:text-primary transition-colors truncate"
+                  className="p-2 rounded-[8px] hover:bg-[#F5F3EE] text-[#5B6B8C] hover:text-[#D9531C] font-medium transition-colors truncate"
                 >
                   {sec.title}
                 </a>
@@ -135,10 +139,10 @@ export function TermsOfService() {
             {/* 1. IDENTIFICAÇÃO */}
             <section
               id="secao-1"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   1
                 </span>
                 IDENTIFICAÇÃO
@@ -163,7 +167,7 @@ export function TermsOfService() {
                   <strong className="text-foreground">NIF:</strong> [inserir NIF]
                 </p>
               </div>
-              <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 A identificação jurídica completa da entidade contratante deverá constar da
                 proposta, factura ou contrato aplicável.
               </p>
@@ -172,10 +176,10 @@ export function TermsOfService() {
             {/* 2. OBJECTO DOS SERVIÇOS */}
             <section
               id="secao-2"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   2
                 </span>
                 OBJECTO DOS SERVIÇOS
@@ -204,12 +208,12 @@ export function TermsOfService() {
                   "Manutenção e suporte técnico",
                 ].map((item, idx) => (
                   <li key={idx} className="flex items-center gap-2">
-                    <CheckCircle className="size-3.5 text-primary shrink-0" />
+                    <CheckCircle className="size-3.5 text-[#2E9E6B] shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 O serviço efectivamente contratado será definido na proposta comercial, orçamento,
                 contrato, ordem de serviço ou documento equivalente.
               </p>
@@ -218,10 +222,10 @@ export function TermsOfService() {
             {/* 3. PROPOSTAS E ORÇAMENTOS */}
             <section
               id="secao-3"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   3
                 </span>
                 PROPOSTAS E ORÇAMENTOS
@@ -246,7 +250,7 @@ export function TermsOfService() {
                 <li>serviços de terceiros;</li>
                 <li>condições específicas do projecto.</li>
               </ul>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Em caso de conflito entre estes Termos e um contrato específico assinado pelas
                 partes, prevalecerão as condições específicas do contrato, na medida permitida pela
                 lei.
@@ -256,10 +260,10 @@ export function TermsOfService() {
             {/* 4. CONTRATAÇÃO */}
             <section
               id="secao-4"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   4
                 </span>
                 CONTRATAÇÃO
@@ -283,10 +287,10 @@ export function TermsOfService() {
             {/* 5. PAGAMENTOS */}
             <section
               id="secao-5"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   5
                 </span>
                 PAGAMENTOS
@@ -303,7 +307,7 @@ export function TermsOfService() {
                 <li>mensalidade de infraestrutura;</li>
                 <li>mensalidade de automação ou IA.</li>
               </ul>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Impostos, taxas de terceiros, serviços externos ou custos extraordinários serão
                 tratados conforme indicado na proposta.
               </p>
@@ -312,10 +316,10 @@ export function TermsOfService() {
             {/* 6. PLANOS MENSAIS */}
             <section
               id="secao-6"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   6
                 </span>
                 PLANOS MENSAIS
@@ -331,7 +335,7 @@ export function TermsOfService() {
                 contactos, conversas de IA ou outros recursos poderão variar conforme o plano
                 contratado.
               </p>
-              <p className="text-xs font-semibold text-primary">
+              <p className="text-xs font-semibold text-[#D9531C]">
                 Serviços que excedam os limites contratados poderão ser cobrados separadamente.
               </p>
             </section>
@@ -339,10 +343,10 @@ export function TermsOfService() {
             {/* 7. DOMÍNIOS */}
             <section
               id="secao-7"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   7
                 </span>
                 DOMÍNIOS
@@ -358,7 +362,7 @@ export function TermsOfService() {
                 transferência de um domínio também poderá depender das regras da entidade
                 registradora ou fornecedor utilizado.
               </p>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 A perda de um domínio causada por informações incorrectas fornecidas pelo cliente,
                 falta de pagamento ou incumprimento das regras do registrador poderá não ser
                 imputável à Agentes Digital.
@@ -368,10 +372,10 @@ export function TermsOfService() {
             {/* 8. ALOJAMENTO E SERVIÇOS DE TERCEIROS */}
             <section
               id="secao-8"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   8
                 </span>
                 ALOJAMENTO E SERVIÇOS DE TERCEIROS
@@ -396,10 +400,10 @@ export function TermsOfService() {
             {/* 9. INTELIGÊNCIA ARTIFICIAL */}
             <section
               id="secao-9"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   9
                 </span>
                 INTELIGÊNCIA ARTIFICIAL
@@ -416,7 +420,7 @@ export function TermsOfService() {
                 cliente deve definir quais decisões podem ser automatizadas e quais devem exigir
                 intervenção humana.
               </p>
-              <p className="text-xs font-semibold text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20">
+              <p className="text-xs font-semibold text-[#101D35] bg-[#FCF0C8] p-3.5 rounded-[10px] border border-[#F4C542]">
                 A Agentes Digital não garante que uma solução de IA produzirá resultados comerciais
                 específicos, determinado número de clientes, vendas, leads ou receitas.
               </p>
@@ -425,10 +429,10 @@ export function TermsOfService() {
             {/* 10. RESPONSABILIDADE DO CLIENTE */}
             <section
               id="secao-10"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   10
                 </span>
                 RESPONSABILIDADE DO CLIENTE
@@ -444,7 +448,7 @@ export function TermsOfService() {
                 <li>informar alterações relevantes;</li>
                 <li>utilizar os sistemas de acordo com a legislação.</li>
               </ul>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 O cliente não deverá fornecer à Agentes Digital informações pessoais, confidenciais
                 ou sensíveis que não sejam necessárias para a execução do serviço.
               </p>
@@ -453,10 +457,10 @@ export function TermsOfService() {
             {/* 11. CONTEÚDOS FORNECIDOS PELO CLIENTE */}
             <section
               id="secao-11"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   11
                 </span>
                 CONTEÚDOS FORNECIDOS PELO CLIENTE
@@ -474,10 +478,10 @@ export function TermsOfService() {
             {/* 12. PROPRIEDADE INTELECTUAL */}
             <section
               id="secao-12"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   12
                 </span>
                 PROPRIEDADE INTELECTUAL
@@ -492,7 +496,7 @@ export function TermsOfService() {
                 Os direitos sobre os entregáveis especificamente desenvolvidos para o cliente serão
                 definidos na proposta ou contrato.
               </p>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Licenças, software de terceiros, imagens licenciadas, fontes, plugins, APIs e outros
                 componentes externos permanecem sujeitos às respectivas licenças.
               </p>
@@ -501,10 +505,10 @@ export function TermsOfService() {
             {/* 13. PORTFÓLIO */}
             <section
               id="secao-13"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   13
                 </span>
                 PORTFÓLIO
@@ -523,10 +527,10 @@ export function TermsOfService() {
             {/* 14. PRAZOS */}
             <section
               id="secao-14"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   14
                 </span>
                 PRAZOS
@@ -551,10 +555,10 @@ export function TermsOfService() {
             {/* 15. ALTERAÇÕES DE ESCOPO */}
             <section
               id="secao-15"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   15
                 </span>
                 ALTERAÇÕES DE ESCOPO
@@ -563,7 +567,7 @@ export function TermsOfService() {
                 Pedidos adicionais que não estejam incluídos no escopo original poderão gerar:
                 alteração de prazo, custo adicional e necessidade de nova proposta.
               </p>
-              <p className="text-xs font-semibold text-primary">
+              <p className="text-xs font-semibold text-[#D9531C]">
                 Nenhuma alteração relevante deverá ser considerada incluída automaticamente apenas
                 por ter sido solicitada durante o projecto.
               </p>
@@ -572,10 +576,10 @@ export function TermsOfService() {
             {/* 16. MANUTENÇÃO E SUPORTE */}
             <section
               id="secao-16"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   16
                 </span>
                 MANUTENÇÃO E SUPORTE
@@ -601,10 +605,10 @@ export function TermsOfService() {
             {/* 17. SUSPENSÃO DOS SERVIÇOS */}
             <section
               id="secao-17"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   17
                 </span>
                 SUSPENSÃO DOS SERVIÇOS
@@ -615,7 +619,7 @@ export function TermsOfService() {
                 esteja a ser utilizado para actividades fraudulentas; exista violação grave destes
                 Termos; a suspensão seja necessária para proteger sistemas, clientes ou terceiros.
               </p>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Quando possível, o cliente será informado antes da suspensão.
               </p>
             </section>
@@ -623,10 +627,10 @@ export function TermsOfService() {
             {/* 18. CANCELAMENTO */}
             <section
               id="secao-18"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   18
                 </span>
                 CANCELAMENTO
@@ -649,10 +653,10 @@ export function TermsOfService() {
             {/* 19. GARANTIA E CORRECÇÃO DE ERROS */}
             <section
               id="secao-19"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   19
                 </span>
                 GARANTIA E CORRECÇÃO DE ERROS
@@ -676,10 +680,10 @@ export function TermsOfService() {
             {/* 20. DISPONIBILIDADE DOS SERVIÇOS */}
             <section
               id="secao-20"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   20
                 </span>
                 DISPONIBILIDADE DOS SERVIÇOS
@@ -696,10 +700,10 @@ export function TermsOfService() {
             {/* 21. LIMITAÇÃO DE RESULTADOS */}
             <section
               id="secao-21"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   21
                 </span>
                 LIMITAÇÃO DE RESULTADOS
@@ -717,7 +721,7 @@ export function TermsOfService() {
                 <li>crescimento garantido;</li>
                 <li>funcionamento perfeito de sistemas de terceiros.</li>
               </ul>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Os resultados comerciais dependem de diversos factores que podem estar fora do
                 controlo da Agentes Digital.
               </p>
@@ -726,10 +730,10 @@ export function TermsOfService() {
             {/* 22. UTILIZAÇÃO PROIBIDA */}
             <section
               id="secao-22"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   22
                 </span>
                 UTILIZAÇÃO PROIBIDA
@@ -752,10 +756,10 @@ export function TermsOfService() {
             {/* 23. PROTECÇÃO DE DADOS */}
             <section
               id="secao-23"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   23
                 </span>
                 PROTECÇÃO DE DADOS
@@ -777,10 +781,10 @@ export function TermsOfService() {
             {/* 24. SEGURANÇA */}
             <section
               id="secao-24"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   24
                 </span>
                 SEGURANÇA
@@ -790,7 +794,7 @@ export function TermsOfService() {
                 responsabilidade. Contudo, nenhum sistema conectado à Internet é completamente imune
                 a ataques, falhas ou acessos não autorizados.
               </p>
-              <p className="text-xs font-semibold text-primary">
+              <p className="text-xs font-semibold text-[#D9531C]">
                 O cliente também é responsável por proteger as suas credenciais e acessos.
               </p>
             </section>
@@ -798,10 +802,10 @@ export function TermsOfService() {
             {/* 25. RESPONSABILIDADE */}
             <section
               id="secao-25"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   25
                 </span>
                 RESPONSABILIDADE
@@ -810,7 +814,7 @@ export function TermsOfService() {
                 A responsabilidade da Agentes Digital será determinada de acordo com a legislação
                 aplicável e com o contrato celebrado com o cliente.
               </p>
-              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-border/40">
+              <p className="text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
                 Nada nestes Termos pretende excluir ou limitar responsabilidades que não possam
                 legalmente ser excluídas ou limitadas.
               </p>
@@ -819,10 +823,10 @@ export function TermsOfService() {
             {/* 26. FORÇA MAIOR */}
             <section
               id="secao-26"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   26
                 </span>
                 FORÇA MAIOR
@@ -847,10 +851,10 @@ export function TermsOfService() {
             {/* 27. ALTERAÇÕES DOS TERMOS */}
             <section
               id="secao-27"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   27
                 </span>
                 ALTERAÇÕES DOS TERMOS
@@ -869,10 +873,10 @@ export function TermsOfService() {
             {/* 28. LEGISLAÇÃO APLICÁVEL */}
             <section
               id="secao-28"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   28
                 </span>
                 LEGISLAÇÃO APLICÁVEL
@@ -892,10 +896,10 @@ export function TermsOfService() {
             {/* 29. RESOLUÇÃO DE CONFLITOS */}
             <section
               id="secao-29"
-              className="scroll-mt-24 p-6 rounded-xl border border-border/60 bg-surface/20"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary/10 text-primary flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#101D35] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#101D35] text-[#F4C542] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   29
                 </span>
                 RESOLUÇÃO DE CONFLITOS
@@ -914,50 +918,50 @@ export function TermsOfService() {
             {/* 30. CONTACTO */}
             <section
               id="secao-30"
-              className="scroll-mt-24 p-6 rounded-xl border border-primary/40 bg-primary/5"
+              className="scroll-mt-24 p-6 rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE]"
             >
-              <h2 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
-                <span className="size-6 rounded-md bg-primary text-white flex items-center justify-center text-xs font-mono font-bold">
+              <h2 className="font-heading text-base font-bold text-[#F5F3EE] mb-3 flex items-center gap-2">
+                <span className="size-6 rounded-[6px] bg-[#F36B32] text-[#101D35] flex items-center justify-center font-heading text-xs font-bold tabular-nums">
                   30
                 </span>
                 CONTACTO
               </h2>
-              <p className="mb-3">Para questões relacionadas com estes Termos:</p>
-              <div className="space-y-1.5 text-xs sm:text-sm">
+              <p className="mb-3 text-[#B8C0D0]">Para questões relacionadas com estes Termos:</p>
+              <div className="space-y-1.5 text-xs sm:text-sm text-[#B8C0D0]">
                 <p>
-                  <strong className="text-foreground">Agentes Digital</strong>
+                  <strong className="text-[#F5F3EE]">Agentes Digital</strong>
                 </p>
                 <p>
-                  <strong className="text-foreground">Website:</strong> agentes-digital.com
+                  <strong className="text-[#F5F3EE]">Website:</strong> agentes-digital.com
                 </p>
                 <p>
-                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]
+                  <strong className="text-[#F5F3EE]">E-mail:</strong> [inserir e-mail oficial]
                 </p>
                 <p>
-                  <strong className="text-foreground">WhatsApp:</strong> [inserir número]
+                  <strong className="text-[#F5F3EE]">WhatsApp:</strong> [inserir número]
                 </p>
                 <p>
-                  <strong className="text-foreground">Endereço:</strong> [inserir endereço]
+                  <strong className="text-[#F5F3EE]">Endereço:</strong> [inserir endereço]
                 </p>
               </div>
-              <p className="mt-4 text-xs font-bold text-primary pt-3 border-t border-primary/20">
+              <p className="mt-4 text-xs font-bold text-[#F4C542] pt-3 border-t border-[#2A3D63]">
                 Última actualização: 10 de Setembro de 2026.
               </p>
             </section>
           </div>
 
           {/* Bottom Back button */}
-          <div className="mt-12 pt-6 border-t border-border/60 flex items-center justify-between">
+          <div className="mt-12 pt-6 border-t border-[#E7E3D9] flex items-center justify-between">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#D9531C] hover:underline"
             >
-              <ArrowLeft className="size-4" />
+              <ArrowLeft className="size-4" aria-hidden="true" />
               <span>Voltar à Página Inicial</span>
             </Link>
             <a
               href="#topo"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs font-medium text-[#5B6B8C] hover:text-[#101D35] transition-colors"
             >
               Voltar ao Topo ↑
             </a>

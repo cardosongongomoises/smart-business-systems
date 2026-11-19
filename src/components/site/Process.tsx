@@ -32,38 +32,37 @@ export function Process() {
   return (
     <section
       id="como-funciona"
-      className="py-20 sm:py-28 bg-[#080A0F] border-t border-[#252C38] scroll-mt-20"
+      className="py-20 sm:py-28 bg-[#101D35] text-[#F5F3EE] border-t border-[#2A3D63] scroll-mt-20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#252C38] bg-[#151A23] px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.2em] text-[#3B82F6] uppercase mb-4">
-            Metodologia de Implantação
-          </span>
-          <h2 className="text-3xl leading-[1.15] font-bold tracking-[-0.03em] text-[#F5F7FA] sm:text-4xl text-balance">
+          <p className="lume-eyebrow text-[#F4C542]">Metodologia de Implantação</p>
+          <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#F5F3EE] sm:text-4xl text-balance">
             Do primeiro contacto ao cliente recorrente.
           </h2>
-          <p className="mt-4 max-w-2xl text-base text-[#A7B0BF]">
+          <p className="mt-4 max-w-2xl text-base text-[#B8C0D0] leading-[1.65]">
             Um processo estruturado de 5 etapas para colocar a tecnologia a trabalhar pelo
             crescimento da sua empresa em Angola.
           </p>
         </Reveal>
 
-        <ol className="relative mt-14 space-y-4 border-l border-[#252C38] pl-6 sm:pl-10">
+        <ol className="mt-12 grid gap-4 md:grid-cols-5">
           {steps.map((s, i) => (
-            <Reveal as="li" key={s.n} delay={i * 80}>
-              <div className="relative rounded-[16px] p-6 border border-[#252C38] bg-[#151A23] transition-colors hover:border-[#3B82F6]/50">
-                <span
-                  aria-hidden="true"
-                  className="absolute top-7 -left-[1.95rem] size-3.5 rounded-full bg-[#3B82F6] border-2 border-[#080A0F] sm:-left-[2.95rem]"
-                />
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-[#3B82F6]">
+            <Reveal as="li" key={s.n} delay={i * 60}>
+              <div className="flex h-full flex-col rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 transition-colors hover:border-[#F36B32]">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex size-9 items-center justify-center rounded-[8px] bg-[#F36B32] font-heading text-xs font-extrabold text-[#101D35] tabular-nums">
                     <span className="sr-only">Etapa </span>
-                    ETAPA {s.n}
+                    {s.n}
+                  </span>
+                  <span className="font-heading text-[11px] font-bold uppercase tracking-wider text-[#F4C542] tabular-nums">
+                    Etapa {s.n}
                   </span>
                 </div>
-                <h3 className="mt-2 text-lg font-bold text-[#F5F7FA] tracking-tight">{s.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[#A7B0BF]">{s.text}</p>
+                <h3 className="mt-5 font-heading text-base font-bold text-[#F5F3EE] tracking-tight">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#B8C0D0]">{s.text}</p>
               </div>
             </Reveal>
           ))}

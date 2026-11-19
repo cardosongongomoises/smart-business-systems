@@ -42,44 +42,26 @@ export function AutomateProSection() {
     <section
       id="automate-pro"
       ref={sectionRef}
-      className="relative bg-[#080A0F] text-[#F5F7FA] overflow-hidden scroll-mt-20 border-t border-[#252C38]/80"
+      className="relative bg-[#101D35] text-[#F5F3EE] overflow-hidden scroll-mt-20 border-t border-[#2A3D63]"
     >
-      {/* Hero Block with Eyebrow, Headline, Subheadline and CTAs */}
       <AutomateHero />
 
-      {/* Main Connected Technological Flow Composition (System Operational View) */}
-      <div id="automate-sistema" className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 pb-16">
+      <div
+        id="automate-sistema"
+        className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8 pb-16"
+      >
         <AutomationSystemFlow />
       </div>
 
-      {/* O Problema: "Seu site recebe visitantes. Mas o que acontece depois?" */}
       <AutomateProblem />
-
-      {/* Transformação: Antes vs. Com Automate Pro */}
       <AutomateTransformation />
-
-      {/* Não Precisa de um Novo Website: "Você não precisa começar do zero." */}
       <AutomateNoNewSite />
-
-      {/* Recursos do Automate Pro: 8 Pilares */}
       <AutomateFeatures />
-
-      {/* Demonstração Interativa da IA e Automação */}
       <AutomateInteractiveDemo />
-
-      {/* Fluxo do Automate Pro: Timeline 01 a 08 */}
       <AutomateTimeline />
-
-      {/* Arquitetura Visual Tecnológica */}
       <AutomateArchitecture />
-
-      {/* Benefícios e Resultados */}
       <AutomateBenefits />
-
-      {/* Pricing Dedicado Automate Pro */}
       <AutomatePricing />
-
-      {/* Final Section CTA */}
       <AutomateCTA />
     </section>
   );

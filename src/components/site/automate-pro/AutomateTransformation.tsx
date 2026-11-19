@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, XCircle, Sparkles, ArrowDown } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowDown } from "lucide-react";
 import { Reveal } from "../Reveal";
 
 const ANTES_STEPS = [
@@ -7,7 +7,7 @@ const ANTES_STEPS = [
   { label: "Mensagem", detail: "Cai numa caixa sem alerta prioritário" },
   { label: "Atendimento manual", detail: "Equipa tenta responder quando disponível" },
   { label: "Espera", detail: "Horas ou dias de atraso no retorno" },
-  { label: "Possível perda da oportunidade", detail: "Lead esfria ou contrata concorrente" },
+  { label: "Possível perda", detail: "Lead esfria ou contrata concorrente" },
 ];
 
 const COM_STEPS = [
@@ -15,157 +15,150 @@ const COM_STEPS = [
   { label: "IA", detail: "Agente inteligente saúda e orienta" },
   { label: "Atendimento", detail: "Tira dúvidas em menos de 1 segundo" },
   { label: "Qualificação", detail: "Avalia necessidade, orçamento e prazos" },
-  { label: "CRM", detail: "Registra e organiza os dados no funil" },
+  { label: "CRM", detail: "Regista e organiza os dados no funil" },
   { label: "Agendamento", detail: "Marca a reunião nos horários livres" },
   { label: "Follow-up", detail: "Ativa lembretes automáticos multicanal" },
   { label: "Equipa", detail: "Recebe o lead pronto para fechar" },
-  { label: "Cliente", detail: "Experiência ágil, moderna e convertida" },
+  { label: "Cliente", detail: "Experiência ágil e convertida" },
 ];
 
 export function AutomateTransformation() {
   return (
-    <div className="py-20 sm:py-28 relative border-t border-[#252C38]/60 bg-[#080A0F]">
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
-        <div className="text-center max-w-3xl mx-auto">
+    <div className="py-20 sm:py-28 relative border-t border-[#2A3D63]">
+      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+        <div className="max-w-3xl">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#8B5CF6]/40 bg-[#8B5CF6]/10 px-4 py-1 text-[11px] font-semibold tracking-[0.22em] text-[#C084FC] uppercase">
-              Transformação Operacional
-            </span>
+            <p className="lume-eyebrow text-[#F36B32]">Transformação operacional</p>
           </Reveal>
 
-          <Reveal delay={80}>
-            <h3 className="mt-4 text-2xl font-bold tracking-tight text-[#F5F7FA] sm:text-4xl">
-              O que acontece quando a IA{" "}
-              <span className="text-gradient">assume o atendimento.</span>
+          <Reveal delay={60}>
+            <h3 className="mt-4 font-heading text-2xl font-bold text-[#F5F3EE] sm:text-4xl text-balance">
+              O que acontece quando a IA assume o atendimento.
             </h3>
           </Reveal>
 
-          <Reveal delay={140}>
-            <p className="mt-3 text-sm sm:text-base text-[#A7B0BF]">
+          <Reveal delay={120}>
+            <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
               Enquanto o modelo manual perde leads por lentidão, o Automate Pro converte em segundos
               —{" "}
-              <span className="text-[#F5F7FA] font-semibold">
-                sem férias, sem esquecimentos, sem folga.
-              </span>
+              <strong className="text-[#F5F3EE]">sem férias, sem esquecimentos, sem folga.</strong>
             </p>
           </Reveal>
         </div>
 
-        {/* Comparison columns */}
-        <div className="mt-14 grid gap-8 lg:grid-cols-2">
+        <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* ANTES */}
-          <Reveal delay={180}>
-            <div className="rounded-3xl border border-[#252C38] bg-[#0E121A]/70 p-6 sm:p-8 flex flex-col justify-between h-full">
+          <Reveal delay={150}>
+            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8 flex flex-col justify-between h-full">
               <div>
-                <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
+                <div className="flex items-center justify-between border-b border-[#2A3D63] pb-4">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 items-center justify-center rounded-lg bg-[#EF4444]/10 text-[#EF4444]">
-                      <XCircle className="size-4" />
-                    </span>
-                    <h4 className="text-lg font-bold uppercase tracking-wider text-[#F5F7FA]">
+                    <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
+                    <h4 className="font-heading text-lg font-bold uppercase tracking-wider text-[#F5F3EE]">
                       Antes
                     </h4>
                   </div>
-                  <span className="font-mono text-xs text-[#EF4444] bg-[#EF4444]/10 px-2.5 py-0.5 rounded-full border border-[#EF4444]/20">
-                    Processo Manual e Frágil
+                  <span className="text-xs font-semibold text-[#D64545]">
+                    Processo manual e frágil
                   </span>
                 </div>
 
-                <p className="mt-4 text-xs text-[#A7B0BF]">
-                  Fluxo dependente de tempo humano imediato e sujeito a falhas operacionais:
+                <p className="mt-4 text-xs text-[#B8C0D0]">
+                  Fluxo dependente de disponibilidade imediata e sujeito a falhas:
                 </p>
 
-                {/* Steps List */}
-                <div className="mt-6 space-y-3">
+                <div className="mt-5 space-y-2.5">
                   {ANTES_STEPS.map((step, idx) => (
                     <div
                       key={step.label}
-                      className="group relative flex items-center gap-3 rounded-xl border border-[#252C38]/60 bg-[#151A23]/50 p-3 transition-colors hover:border-[#EF4444]/30"
+                      className="flex items-center gap-3 rounded-[10px] border border-[#2A3D63] bg-[#101D35] p-3"
                     >
-                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#252C38] text-[11px] font-mono text-[#667085]">
+                      <span className="flex size-6 shrink-0 items-center justify-center rounded-[6px] bg-[#1A2A4A] font-heading text-xs font-bold text-[#B8C0D0] tabular-nums">
                         {idx + 1}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-[#F5F7FA]">{step.label}</p>
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-heading text-xs font-bold text-[#F5F3EE]">
+                            {step.label}
+                          </p>
                           {idx === ANTES_STEPS.length - 1 && (
-                            <span className="text-[10px] font-bold text-[#EF4444] uppercase tracking-wider">
+                            <span className="text-[11px] font-bold text-[#D64545] uppercase">
                               Perda
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-[#A7B0BF] truncate">{step.detail}</p>
+                        <p className="text-xs text-[#B8C0D0] truncate">{step.detail}</p>
                       </div>
                       {idx < ANTES_STEPS.length - 1 && (
-                        <ArrowDown className="size-3 text-[#667085] shrink-0" />
+                        <ArrowDown
+                          className="size-3.5 text-[#5B6B8C] shrink-0"
+                          aria-hidden="true"
+                        />
                       )}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#252C38] text-center text-xs text-[#EF4444] font-semibold">
-                Cada hora sem automação = leads que vão para a concorrência.
+              <div className="mt-6 pt-4 border-t border-[#2A3D63] text-xs text-[#D64545] font-semibold">
+                Cada hora sem automação significa leads que vão para a concorrência.
               </div>
             </div>
           </Reveal>
 
           {/* COM AUTOMATE PRO */}
-          <Reveal delay={240}>
-            <div className="rounded-3xl border border-[#3B82F6]/50 bg-[#0E121A] p-6 sm:p-8 shadow-[0_12px_40px_rgba(59,130,246,0.15)] flex flex-col justify-between h-full relative overflow-hidden ring-1 ring-[#3B82F6]/30">
-              <div className="absolute top-0 right-0 w-36 h-36 bg-[#8B5CF6]/10 blur-[50px] pointer-events-none" />
-
+          <Reveal delay={200}>
+            <div className="rounded-[16px] border border-[#F36B32] bg-[#1A2A4A] p-6 sm:p-8 flex flex-col justify-between h-full">
               <div>
-                <div className="flex items-center justify-between border-b border-[#252C38] pb-4">
+                <div className="flex items-center justify-between border-b border-[#2A3D63] pb-4">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex size-8 items-center justify-center rounded-lg bg-[#3B82F6]/20 text-[#3B82F6]">
-                      <CheckCircle2 className="size-4" />
-                    </span>
-                    <h4 className="text-lg font-bold uppercase tracking-wider text-[#F5F7FA]">
+                    <CheckCircle2 className="size-5 text-[#2E9E6B]" aria-hidden="true" />
+                    <h4 className="font-heading text-lg font-bold uppercase tracking-wider text-[#F5F3EE]">
                       Com Automate Pro
                     </h4>
                   </div>
-                  <span className="font-mono text-xs text-[#60A5FA] bg-[#3B82F6]/10 px-2.5 py-0.5 rounded-full border border-[#3B82F6]/30 flex items-center gap-1">
-                    <Sparkles className="size-3 text-[#8B5CF6]" /> Sistema Inteligente Ativo
-                  </span>
+                  <span className="text-xs font-semibold text-[#F4C542]">Operação ativa 24/7</span>
                 </div>
 
-                <p className="mt-4 text-xs text-[#A7B0BF]">
-                  Operação contínua 24/7 que qualifica, organiza e agenda sem atrito:
+                <p className="mt-4 text-xs text-[#B8C0D0]">
+                  Operação contínua que qualifica, organiza e agenda sem atrito:
                 </p>
 
-                {/* Steps List */}
-                <div className="mt-6 space-y-2.5">
+                <div className="mt-5 space-y-2">
                   {COM_STEPS.map((step, idx) => (
                     <div
                       key={step.label}
-                      className="group relative flex items-center gap-3 rounded-xl border border-[#252C38] bg-[#151A23] p-2.5 transition-all hover:border-[#3B82F6]/50 hover:translate-x-1"
+                      className="flex items-center gap-3 rounded-[10px] border border-[#2A3D63] bg-[#101D35] p-2.5"
                     >
-                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#3B82F6]/20 border border-[#3B82F6]/40 text-[11px] font-mono text-[#60A5FA]">
+                      <span className="flex size-6 shrink-0 items-center justify-center rounded-[6px] bg-[#F36B32] font-heading text-xs font-bold text-[#101D35] tabular-nums">
                         {idx + 1}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs font-bold text-[#F5F7FA]">{step.label}</p>
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="font-heading text-xs font-bold text-[#F5F3EE]">
+                            {step.label}
+                          </p>
                           {idx === COM_STEPS.length - 1 && (
-                            <span className="text-[10px] font-bold text-[#22C55E] uppercase tracking-wider">
+                            <span className="text-[11px] font-bold text-[#2E9E6B] uppercase">
                               Conversão
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-[#A7B0BF] truncate">{step.detail}</p>
+                        <p className="text-xs text-[#B8C0D0] truncate">{step.detail}</p>
                       </div>
                       {idx < COM_STEPS.length - 1 && (
-                        <ArrowDown className="size-3 text-[#3B82F6]/70 shrink-0" />
+                        <ArrowDown
+                          className="size-3.5 text-[#F36B32] shrink-0"
+                          aria-hidden="true"
+                        />
                       )}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#252C38] text-center text-xs font-semibold text-[#60A5FA] flex items-center justify-center gap-1.5">
-                <Sparkles className="size-3.5 text-[#8B5CF6]" />
-                Lead qualificado em 47 segundos. Reunião agendada na hora. Zero perdas.
+              <div className="mt-6 pt-4 border-t border-[#2A3D63] text-xs font-semibold text-[#F4C542]">
+                Lead qualificado em segundos. Reunião agendada na hora. Zero perdas.
               </div>
             </div>
           </Reveal>
