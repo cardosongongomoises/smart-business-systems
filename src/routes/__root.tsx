@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -36,11 +37,12 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    const err = error instanceof Error ? error : new Error(String(error));
+    reportLovableError(err, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -79,16 +81,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Agentes Digital | CriaÃ§Ã£o de Websites e Agentes de IA em Angola" },
+      { title: "Agentes Digital | Criação de Websites e Agentes de IA em Angola" },
       {
         name: "description",
         content:
-          "CriaÃ§Ã£o de websites profissionais, agentes de IA para WhatsApp e automaÃ§Ã£o comercial para empresas em Angola. Atendimento 24/7 e qualificaÃ§Ã£o de leads.",
+          "Criação de websites profissionais, agentes de IA para WhatsApp e automação comercial para empresas em Angola. Atendimento 24/7 e qualificação de leads.",
       },
       {
         name: "keywords",
         content:
-          "criaÃ§Ã£o de websites angola, desenvolvimento de sites luanda, agentes de inteligÃªncia artificial angola, automaÃ§Ã£o whatsapp empresas, chatbot ia angola, crm angola, automate pro",
+          "criação de websites angola, desenvolvimento de sites luanda, agentes de inteligência artificial angola, automação whatsapp empresas, chatbot ia angola, crm angola, automate pro",
       },
       { name: "author", content: "Agentes Digital" },
       {
@@ -99,12 +101,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "geo.placename", content: "Luanda, Angola" },
       {
         property: "og:title",
-        content: "Agentes Digital | CriaÃ§Ã£o de Websites e Agentes de IA em Angola",
+        content: "Agentes Digital | Criação de Websites e Agentes de IA em Angola",
       },
       {
         property: "og:description",
         content:
-          "Websites profissionais, agentes de IA para WhatsApp e automaÃ§Ã£o de atendimento para empresas em Luanda e em toda Angola.",
+          "Websites profissionais, agentes de IA para WhatsApp e automação de atendimento para empresas em Luanda e em toda Angola.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://agentes-digital.com/" },
@@ -119,7 +121,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Transforme o atendimento e aquisiÃ§Ã£o da sua empresa com websites modernos e agentes inteligentes em Angola.",
+          "Transforme o atendimento e aquisição da sua empresa com websites modernos e agentes inteligentes em Angola.",
       },
       { name: "twitter:image", content: "https://agentes-digital.com/favicon-512.png" },
       { name: "twitter:site", content: "@AgentesDigital" },
@@ -176,7 +178,7 @@ function RootShell({ children }: { children: ReactNode }) {
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-[#F36B32] focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold focus:text-[#101D35] focus:outline-none focus:ring-2 focus:ring-[#F36B32] focus:ring-offset-2 focus:ring-offset-[#F5F3EE]"
         >
-          Saltar para o conteÃºdo principal
+          Saltar para o conteúdo principal
         </a>
         {children}
         <Scripts />

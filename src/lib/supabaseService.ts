@@ -1,14 +1,86 @@
 import { supabase, isSupabaseConfigured } from "./supabase";
-import {
-  Lead,
-  LeadStatus,
-  ChatMessage,
-  ActivityItem,
-  VendedorSkillDoc,
-  Appointment,
-  LeadNote,
-} from "@/components/operations/types";
-import { initialVendedorSkills } from "@/components/operations/vendedorSkillsData";
+export type LeadStatus =
+  | "novo"
+  | "qualificado"
+  | "em_atendimento"
+  | "agendado"
+  | "proposta_enviada"
+  | "ganho"
+  | "perdido"
+  | string;
+
+export interface ChatMessage {
+  id: string;
+  sender: "client" | "ai" | "agent" | string;
+  text: string;
+  timestamp: string;
+  sentiment?: "positive" | "neutral" | "negative" | string;
+  aiMetadata?: Record<string, unknown> | undefined;
+}
+
+export interface ActivityItem {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  timestamp: string;
+}
+
+export interface Appointment {
+  id: string;
+  title?: string;
+  date: string;
+  time?: string;
+  status?: string;
+  notes?: string;
+}
+
+export interface LeadNote {
+  id: string;
+  author: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface Lead {
+  id: string;
+  name: string;
+  company: string;
+  role: string;
+  phone: string;
+  email: string;
+  location: string;
+  channel: "website" | "whatsapp" | "email" | "indicacao" | string;
+  status: LeadStatus;
+  packageInterest:
+    "Presença" | "Profissional" | "Autoridade" | "Domínio IA" | "Automate Pro" | string;
+  aiQualified: boolean;
+  qualificationScore: number;
+  estimatedValue: string;
+  firstContactAt: string;
+  lastActive: string;
+  aiProcessingStatus: "ativo" | "pausado" | "concluido" | string;
+  unreadMessagesCount: number;
+  appointments: Appointment[];
+  notes: LeadNote[];
+  activities: ActivityItem[];
+  conversation: ChatMessage[];
+}
+
+export interface VendedorSkillDoc {
+  id: string;
+  title: string;
+  filename: string;
+  type: "skill" | "prompt" | "script" | string;
+  category: string;
+  triggerCondition?: string;
+  contentMd: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const initialVendedorSkills: VendedorSkillDoc[] = [];
 
 export interface ContactFormData {
   nome: string;
