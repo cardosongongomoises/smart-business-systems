@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "Quanto custa realmente?",
-    a: "Os pacotes começam em Kz 125.000/mês para presença digital básica, até Kz 700.000/mês para domínio total com IA avançada. Se cada reunião que o sistema agendar valer Kz 200.000+, basta 2 a 3 reuniões adicionais por mês para cobrir o investimento.",
+    a: "Os pacotes começam em 125.000 Kz de implementação (e mensalidade de 20.000 Kz ao mês) para presença digital básica, até 700.000 Kz de implementação (150.000 Kz ao mês) para domínio total com IA avançada. Se cada reunião que o sistema agendar valer 200.000 Kz+, basta 2 a 3 reuniões adicionais por mês para cobrir o investimento.",
   },
   {
     q: "Preciso de mudar tudo o que já tenho?",

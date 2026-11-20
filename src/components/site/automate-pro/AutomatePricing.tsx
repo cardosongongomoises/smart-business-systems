@@ -78,28 +78,29 @@ export function AutomatePricing() {
 
               {/* Price Breakdown */}
               <div className="mt-8 grid gap-6 sm:grid-cols-2 rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-6">
-                <div>
+                <div className="flex flex-col items-center justify-center text-center">
                   <p className="text-xs font-semibold text-[#B8C0D0] uppercase tracking-wider">
-                    Implementação única
+                    Implementação
                   </p>
-                  <p className="mt-1.5 font-heading text-3xl font-extrabold text-[#F5F3EE] tabular-nums">
-                    Kz 300.000
-                  </p>
-                  <p className="mt-1 text-xs text-[#B8C0D0]">
-                    Setup, engenharia de prompt e integrações
-                  </p>
+                  <div className="mt-1.5 flex items-baseline justify-center gap-1.5 tabular-nums">
+                    <span className="font-heading text-3xl font-extrabold text-[#F5F3EE]">
+                      300.000
+                    </span>
+                    <span className="text-sm font-bold text-[#F5F3EE]">Kz</span>
+                  </div>
                 </div>
 
-                <div className="sm:border-l sm:border-[#2A3D63] sm:pl-6">
+                <div className="flex flex-col items-center justify-center text-center border-t border-[#2A3D63] pt-6 sm:border-t-0 sm:pt-0 sm:border-l sm:border-[#2A3D63]">
                   <p className="text-xs font-semibold text-[#F4C542] uppercase tracking-wider">
-                    Operação e gestão
+                    Mensalidade
                   </p>
-                  <p className="mt-1.5 font-heading text-3xl font-extrabold text-[#F36B32] tabular-nums">
-                    Kz 65.000 <span className="text-sm font-normal text-[#B8C0D0]">/ mês</span>
-                  </p>
-                  <p className="mt-1 text-xs text-[#B8C0D0]">
-                    Manutenção, monitoramento e suporte contínuo
-                  </p>
+                  <div className="mt-1.5 flex items-baseline justify-center gap-1.5 tabular-nums">
+                    <span className="font-heading text-3xl font-extrabold text-[#F36B32]">
+                      65.000
+                    </span>
+                    <span className="text-sm font-bold text-[#F36B32]">Kz</span>
+                    <span className="text-xs font-normal text-[#B8C0D0]">ao mês</span>
+                  </div>
                 </div>
               </div>
 

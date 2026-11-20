@@ -50,17 +50,7 @@ export function Hero() {
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <Reveal>
-            <div className="flex flex-wrap items-center gap-2.5 lume-eyebrow text-[#D9531C]">
-              <span>Resultados comprovados em Angola</span>
-              <span aria-hidden="true" className="text-[#5B6B8C]">
-                ·
-              </span>
-              <span className="text-[#5B6B8C]">Luanda &amp; Empresas B2B</span>
-            </div>
-          </Reveal>
-
-          <Reveal delay={60}>
-            <h1 className="mt-5 font-heading text-[40px] leading-[1.06] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[54px] lg:text-[60px] text-balance">
+            <h1 className="font-heading text-[40px] leading-[1.06] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[54px] lg:text-[60px] text-balance">
               Enquanto sua equipa dorme,{" "}
               <span className="text-[#D9531C]">o seu negócio continua a fechar vendas.</span>
             </h1>

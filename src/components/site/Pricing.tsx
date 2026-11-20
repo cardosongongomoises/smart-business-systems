@@ -6,9 +6,8 @@ const plans = [
   {
     name: "Presença",
     icon: Star,
-    price: "125.000",
-    period: "/mês",
-    build: "20.000",
+    implementation: "125.000",
+    monthly: "20.000",
     tagline: "Presença digital que transmite credibilidade",
     result: "Mais visitas qualificadas ao site e mais pedidos de orçamento",
     popular: false,
@@ -24,9 +23,8 @@ const plans = [
   {
     name: "Profissional",
     icon: Zap,
-    price: "250.000",
-    period: "/mês",
-    build: "50.000",
+    implementation: "250.000",
+    monthly: "50.000",
     tagline: "Atendimento automático + presença + gestão",
     result: "Resposta em <10s, +40% agendamentos, zero leads perdidos",
     popular: true,
@@ -43,9 +41,8 @@ const plans = [
   {
     name: "Autoridade",
     icon: Shield,
-    price: "450.000",
-    period: "/mês",
-    build: "85.000",
+    implementation: "450.000",
+    monthly: "85.000",
     tagline: "Máxima conversão + IA avançada + Automação",
     result: "Funil totalmente automatizado e presença premium no Google",
     popular: false,
@@ -62,9 +59,8 @@ const plans = [
   {
     name: "Domínio IA",
     icon: Rocket,
-    price: "700.000",
-    period: "/mês",
-    build: null,
+    implementation: "700.000",
+    monthly: "150.000",
     tagline: "Máximo domínio + IA completa + Consultoria",
     result: "Máximo domínio de mercado e operação totalmente automatizada",
     popular: false,
@@ -147,36 +143,42 @@ export function Pricing() {
                     p.popular ? "border-[#2A3D63]" : "border-[#E7E3D9]"
                   }`}
                 >
-                  <div className="flex items-baseline gap-1">
-                    <span
-                      className={`text-xs font-semibold ${
-                        p.popular ? "text-[#B8C0D0]" : "text-[#5B6B8C]"
-                      }`}
-                    >
-                      Kz
-                    </span>
-                    <span
-                      className={`font-heading text-3xl font-extrabold tracking-[-0.02em] tabular-nums ${
-                        p.popular ? "text-[#F4C542]" : "text-[#101D35]"
-                      }`}
-                    >
-                      {p.price}
-                    </span>
-                    <span className={`text-xs ${p.popular ? "text-[#B8C0D0]" : "text-[#5B6B8C]"}`}>
-                      {p.period}
-                    </span>
-                  </div>
-                  {p.build ? (
+                  <div>
                     <p
-                      className={`mt-1.5 text-xs tabular-nums ${
+                      className={`text-[11px] font-semibold uppercase tracking-wider ${
                         p.popular ? "text-[#B8C0D0]" : "text-[#5B6B8C]"
                       }`}
                     >
-                      Setup: Kz {p.build} (pagamento único)
+                      Implementação
                     </p>
-                  ) : (
-                    <p className="mt-1.5 text-xs text-[#5B6B8C]">Setup personalizado incluído</p>
-                  )}
+                    <div className="mt-1 flex items-baseline gap-1.5">
+                      <span
+                        className={`font-heading text-3xl font-extrabold tracking-[-0.02em] tabular-nums ${
+                          p.popular ? "text-[#F4C542]" : "text-[#101D35]"
+                        }`}
+                      >
+                        {p.implementation}
+                      </span>
+                      <span
+                        className={`text-sm font-bold ${
+                          p.popular ? "text-[#F4C542]" : "text-[#101D35]"
+                        }`}
+                      >
+                        Kz
+                      </span>
+                    </div>
+                  </div>
+                  <p
+                    className={`mt-2 text-xs tabular-nums ${
+                      p.popular ? "text-[#B8C0D0]" : "text-[#5B6B8C]"
+                    }`}
+                  >
+                    Mensalidade:{" "}
+                    <strong className={p.popular ? "text-[#F5F3EE]" : "text-[#101D35]"}>
+                      {p.monthly} Kz
+                    </strong>{" "}
+                    ao mês
+                  </p>
 
                   {/* Resultado */}
                   <div
