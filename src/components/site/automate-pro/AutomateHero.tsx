@@ -25,43 +25,43 @@ export function AutomateHero() {
         <div className="flex flex-col items-start max-w-4xl">
           <Reveal>
             <div className="flex flex-wrap items-center gap-2.5 lume-eyebrow text-[#F36B32]">
-              <span>Automate Pro</span>
+              <span>Já tem website?</span>
               <span aria-hidden="true" className="text-[#B8C0D0]">
                 ·
               </span>
-              <span className="text-[#B8C0D0]">Automação sobre website existente</span>
+              <span className="text-[#B8C0D0]">Automate Pro</span>
             </div>
           </Reveal>
 
           <Reveal delay={60}>
             <h2 className="mt-5 font-heading text-3xl font-extrabold tracking-[-0.02em] sm:text-5xl lg:text-[54px] text-[#F5F3EE] leading-[1.1] text-balance">
-              Seu website já existe. Agora faça ele{" "}
-              <span className="text-[#F4C542]">atender, qualificar e vender</span> por você.
+              Já tem website? Não o refazemos. Fazemos ele{" "}
+              <span className="text-[#F4C542]">responder e marcar reuniões</span> por si.
             </h2>
           </Reveal>
 
           <Reveal delay={120}>
             <div className="mt-6 max-w-[65ch] space-y-3 text-base sm:text-lg text-[#B8C0D0] leading-relaxed">
               <p className="font-medium text-[#F5F3EE]">
-                Não reconstruímos o que já funciona. Adicionamos inteligência ao que já tem.
+                Juntamos o atendimento imediato ao site que já tem, em dias e sem o tirar do ar.
               </p>
               <p className="text-sm sm:text-base text-[#B8C0D0]">
-                Visitante entra no site → IA atende em menos de 8 segundos → qualifica o lead →
-                agenda reunião → executa follow-up automático. Tudo no seu site atual, sem
-                reconstrução.
+                O visitante entra no site → recebe resposta em menos de 10 segundos → tira dúvidas →
+                marca a reunião no WhatsApp ou no próprio site → tudo fica registado para a sua
+                equipa fechar.
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={180}>
             <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-[#B8C0D0]">
-              <span className="text-[#F5F3EE]">Atendimento 24/7</span>
+              <span className="text-[#F5F3EE]">Resposta em &lt;10 segundos</span>
               <span aria-hidden="true">·</span>
-              <span>Qualificação de leads</span>
+              <span>WhatsApp oficial ligado ao site</span>
               <span aria-hidden="true">·</span>
-              <span>CRM sincronizado</span>
+              <span>Marcação automática</span>
               <span aria-hidden="true">·</span>
-              <span>Agendamento automático</span>
+              <span>Sem refazer o site</span>
             </div>
           </Reveal>
 
@@ -74,7 +74,7 @@ export function AutomateHero() {
                 onClick={handlePrimaryClick}
                 className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
               >
-                <span>Quero automatizar o atendimento</span>
+                <span>Quero parar de perder clientes</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
 
@@ -93,8 +93,8 @@ export function AutomateHero() {
             <div className="mt-6 flex items-center gap-2 text-xs text-[#B8C0D0]">
               <ShieldCheck className="size-4 text-[#2E9E6B] shrink-0" aria-hidden="true" />
               <span>
-                Sem downtime. Integração direta com WordPress, Webflow, código próprio e qualquer
-                CMS.
+                Sem tirar o site do ar. Funciona com WordPress, Webflow, código próprio e qualquer
+                plataforma.
               </span>
             </div>
           </Reveal>

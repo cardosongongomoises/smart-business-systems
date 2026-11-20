@@ -28,15 +28,16 @@ export function AutomateCTA() {
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-2xl font-extrabold text-[#F5F3EE] sm:text-4xl lg:text-5xl leading-tight text-balance">
-              Cada dia sem automação é um lead perdido.{" "}
-              <span className="text-[#F4C542]">Comece hoje sem reconstruir o site.</span>
+              Cada dia sem resposta rápida é um cliente que vai para a concorrência.{" "}
+              <span className="text-[#F4C542]">Comece hoje sem refazer o site.</span>
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-5 max-w-2xl mx-auto text-base text-[#B8C0D0] leading-relaxed">
-              Agende uma demonstração gratuita de 30 minutos e veja exatamente como a IA vai
-              atender, qualificar e agendar — enquanto a sua equipa foca em fechar negócios.
+              Peça uma demonstração gratuita e veja como o seu website atual pode responder em menos
+              de 10 segundos, qualificar interessados e marcar reuniões, enquanto a sua equipa foca
+              em fechar.
             </p>
           </Reveal>
 
@@ -50,7 +51,7 @@ export function AutomateCTA() {
                 className="lume-btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
               >
                 <Calendar className="size-4" aria-hidden="true" />
-                <span>Agendar demonstração</span>
+                <span>Quero o meu diagnóstico gratuito</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
 
@@ -62,7 +63,7 @@ export function AutomateCTA() {
                 className="lume-btn-secondary-dark w-full sm:w-auto inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
               >
                 <MessageSquare className="size-4 text-[#2E9E6B]" aria-hidden="true" />
-                <span>Falar com especialista</span>
+                <span>Quero parar de perder clientes</span>
               </a>
             </div>
           </Reveal>
@@ -70,8 +71,7 @@ export function AutomateCTA() {
           <Reveal delay={220}>
             <div className="mt-10 pt-8 border-t border-[#2A3D63] text-center">
               <p className="text-sm text-[#B8C0D0]">
-                “Não construímos apenas presença digital. Construímos sistemas que trabalham para o
-                seu negócio.”
+                30 dias de garantia. Se não entregarmos o que prometemos, devolvemos 100% do valor.
               </p>
               <p className="mt-2 lume-eyebrow text-[#F4C542]">Automate Pro · Agentes Digital</p>
             </div>

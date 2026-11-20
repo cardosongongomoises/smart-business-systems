@@ -4,22 +4,22 @@ import { Reveal } from "./Reveal";
 const timeline = [
   {
     tag: "09:41 · Novo contacto",
-    text: "Boa tarde, gostaria de marcar uma reunião com a direção comercial.",
+    text: "Boa tarde, gostaria de marcar uma reunião para saber como funciona para a minha empresa.",
     ia: false,
   },
   {
-    tag: "Agente Digital IA",
-    text: "Olá! Com certeza. Será um prazer auxiliá-lo. Qual solução ou serviço da Agentes Digital procura?",
+    tag: "Atendimento Automático",
+    text: "Boa tarde! Com certeza. Em que sector actua a sua empresa e qual é o principal serviço que procuram?",
     ia: true,
   },
   {
     tag: "Cliente",
-    text: "Consultoria de automação e implantação de website com IA.",
+    text: "Temos uma clínica em Luanda e perdemos muitos pedidos no WhatsApp fora de horas.",
     ia: false,
   },
   {
-    tag: "Agente Digital IA",
-    text: "Excelente escolha. Consultei a disponibilidade dos nossos especialistas e temos vagas amanhã às 10h ou às 15h. Qual horário é mais conveniente?",
+    tag: "Atendimento Automático",
+    text: "Perfeito, conseguimos ligar o atendimento imediato ao vosso WhatsApp e agenda. Tenho horários livres amanhã às 10h ou às 15h. Qual prefere?",
     ia: true,
   },
 ];
@@ -33,19 +33,19 @@ export function LiveDemo() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
-            <p className="lume-eyebrow text-[#D9531C]">Demonstração ao Vivo</p>
+            <p className="lume-eyebrow text-[#D9531C]">Na prática</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
-              Assim o seu cliente seria <span className="text-[#2E9E6B]">atendido e agendado</span>{" "}
-              amanhã de manhã
+              Assim o seu cliente é <span className="text-[#2E9E6B]">atendido e marcado</span> antes
+              de procurar a concorrência
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base text-[#5B6B8C] leading-[1.65]">
-              Este não é um exemplo fictício — é exactamente o que acontece no seu WhatsApp quando
-              um lead entra. Resposta em 8 segundos. Qualificação automática. Reunião agendada sem
-              ninguém tocar no telemóvel.
+              É isto que acontece no WhatsApp da sua empresa quando entra um novo pedido: resposta
+              em menos de 10 segundos, qualificação útil e reunião marcada sem ninguém parar o que
+              está a fazer.
             </p>
           </Reveal>
         </div>
@@ -55,7 +55,7 @@ export function LiveDemo() {
             <div className="flex items-center justify-center mb-4">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#2E9E6B]/30 bg-[#FFFFFF] px-4 py-1.5 font-heading text-xs font-bold text-[#2E9E6B] tabular-nums">
                 <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                Tempo total: &lt;30 segundos · Reunião confirmada
+                Resposta em menos de 10 segundos · Reunião confirmada
               </span>
             </div>
           </Reveal>
@@ -100,7 +100,7 @@ export function LiveDemo() {
             <div className="mt-4 mx-auto flex max-w-md items-center justify-center gap-2.5 rounded-[12px] border border-[#2E9E6B] bg-[#FFFFFF] px-6 py-4">
               <CheckCircle2 className="size-4 text-[#2E9E6B] shrink-0" aria-hidden="true" />
               <p className="font-heading text-xs font-bold tracking-[0.1em] uppercase text-[#101D35]">
-                Reunião agendada &amp; confirmada no CRM
+                Reunião confirmada e contacto registado
               </p>
             </div>
           </Reveal>
@@ -111,45 +111,45 @@ export function LiveDemo() {
           <div className="mt-12 max-w-3xl mx-auto rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
             <div className="grid sm:grid-cols-2 gap-6">
               <div>
-                <p className="lume-eyebrow text-[#D64545]">Sem o Motor ATQA</p>
+                <p className="lume-eyebrow text-[#D64545]">Sem atendimento imediato</p>
                 <ul className="mt-4 space-y-2.5 text-sm text-[#5B6B8C]">
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] shrink-0 mt-0.5" aria-hidden="true" />
-                    <span>Lead envia mensagem → ninguém responde</span>
+                    <span>Cliente envia mensagem → ninguém responde</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] shrink-0 mt-0.5" aria-hidden="true" />
-                    <span>Passam 2h → lead já foi para a concorrência</span>
+                    <span>Passam horas → já falou com outro fornecedor</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] shrink-0 mt-0.5" aria-hidden="true" />
-                    <span>Ninguém sabe que o lead existiu</span>
+                    <span>Ninguém sabe sequer que o pedido existiu</span>
                   </li>
                 </ul>
               </div>
               <div className="pt-6 border-t border-[#E7E3D9] sm:pt-0 sm:border-t-0 sm:border-l sm:pl-6">
-                <p className="lume-eyebrow text-[#2E9E6B]">Com o Motor ATQA</p>
+                <p className="lume-eyebrow text-[#2E9E6B]">Com a Agentes Digital</p>
                 <ul className="mt-4 space-y-2.5 text-sm text-[#101D35]">
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2
                       className="size-4 text-[#2E9E6B] shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
-                    <span>Lead envia mensagem → resposta em 8 segundos</span>
+                    <span>Cliente envia mensagem → resposta em menos de 10 segundos</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2
                       className="size-4 text-[#2E9E6B] shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
-                    <span>Qualificado automaticamente → reunião agendada</span>
+                    <span>Dúvidas respondidas → reunião marcada no chat</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2
                       className="size-4 text-[#2E9E6B] shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
-                    <span>Cada lead rastreável no CRM — zero perdas</span>
+                    <span>Cada contacto registado e acompanhado até ao fecho</span>
                   </li>
                 </ul>
               </div>
@@ -160,7 +160,7 @@ export function LiveDemo() {
         <Reveal delay={220}>
           <p className="mt-10 flex items-center justify-center gap-2 text-center text-sm text-[#5B6B8C]">
             <Bot className="size-4 text-[#D9531C]" aria-hidden="true" />
-            Cada conversa é uma oportunidade capturada — não um lead perdido.
+            Cada conversa respondida a tempo é um cliente que fica consigo.
           </p>
         </Reveal>
       </div>

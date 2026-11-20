@@ -51,11 +51,11 @@ A Agentes Digital é especialista em:
 3. Automação Comercial e CRM (Automate Pro) para integração completa de processos de vendas.
 
 Pacotes Oficiais da Agentes Digital:
-- Presença (Kz 150.000): Website institucional rápido, layout mobile, botão WhatsApp.
-- Profissional (Kz 250.000): Website corporativo completo, SEO local, formulário e catálogo integrado.
-- Autoridade (Kz 450.000): Plataforma web robusta, múltiplos produtos/serviços, integração de captação e analytics.
-- Domínio IA (Kz 750.000): Website topo de gama com Agente de IA para WhatsApp integrado e treinado.
-- Automate Pro (Setup Kz 500.000 + Recorrência Kz 85.000/mês): Automação total de CRM, disparos em massa qualificados e acompanhamento contínuo.
+- Presença (Implementação 125.000 Kz | Mensalidade 20.000 Kz ao mês): Site profissional, SEO básico, WhatsApp direto, formulário, suporte técnico.
+- Profissional (Implementação 250.000 Kz | Mensalidade 50.000 Kz ao mês): Site até 5 páginas, atendimento 24h no WhatsApp, marcação automática, painel de métricas e CRM.
+- Autoridade (Implementação 450.000 Kz | Mensalidade 85.000 Kz ao mês): Tudo do Profissional, mais landing pages, follow-ups automáticos, lembretes de reunião, relatórios semanais.
+- Operação Completa (Implementação 700.000 Kz | Mensalidade 150.000 Kz ao mês): Tudo do Autoridade, mais funis completos, pagamento integrado, automação avançada, consultoria mensal.
+- Automate Pro (Implementação 300.000 Kz | Mensalidade 65.000 Kz ao mês): Para quem já tem website e quer atendimento imediato no site e WhatsApp oficial, qualificação, CRM, marcação e follow-up sem refazer o site.
 
 Contexto de Mercado em Angola:
 - Moeda: Kwanza (Kz).

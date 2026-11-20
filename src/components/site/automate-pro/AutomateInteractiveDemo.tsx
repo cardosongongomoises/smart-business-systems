@@ -33,7 +33,7 @@ const CONVERSATION: DemoMessage[] = [
     from: "ia",
     text: "Olá! Posso ajudá-lo. Qual serviço procura?",
     time: "10:30",
-    note: "Resposta em 0.6s",
+    note: "Resposta em <10s",
   },
   {
     id: 3,
@@ -115,7 +115,7 @@ export function AutomateInteractiveDemo() {
 
           <Reveal delay={120}>
             <p className="mt-4 max-w-[65ch] text-base text-[#B8C0D0] leading-relaxed">
-              Uma conversa que começa como dúvida do visitante e termina como reunião agendada —{" "}
+              Uma conversa que começa como dúvida do visitante e termina como reunião agendada,{" "}
               <strong className="text-[#F5F3EE]">sem a sua equipa tocar numa tecla.</strong>
             </p>
           </Reveal>
@@ -132,7 +132,7 @@ export function AutomateInteractiveDemo() {
                   </div>
                   <div>
                     <h4 className="font-heading text-sm font-bold text-[#F5F3EE]">
-                      Agente IA · Automate Pro
+                      Atendimento · Automate Pro
                     </h4>
                     <p className="text-xs text-[#B8C0D0]">Widget ativo no website do cliente</p>
                   </div>
@@ -198,7 +198,7 @@ export function AutomateInteractiveDemo() {
 
                 {isTyping && (
                   <div className="flex items-center gap-2 pl-8 pt-1">
-                    <span className="text-xs text-[#B8C0D0]">IA formulando resposta...</span>
+                    <span className="text-xs text-[#B8C0D0]">A preparar resposta...</span>
                   </div>
                 )}
               </div>
@@ -233,8 +233,8 @@ export function AutomateInteractiveDemo() {
               </div>
 
               <p className="mt-4 text-xs text-[#B8C0D0] leading-relaxed">
-                Enquanto a conversa ocorre, a infraestrutura executa as seguintes ações nos seus
-                sistemas:
+                Enquanto a conversa acontece, o sistema executa as seguintes ações para não perder o
+                contacto:
               </p>
 
               <div className="mt-5 space-y-3">

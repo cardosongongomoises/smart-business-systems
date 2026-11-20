@@ -10,21 +10,21 @@ export function AutomateNoNewSite() {
             {/* Left Column */}
             <div>
               <Reveal>
-                <p className="lume-eyebrow text-[#F36B32]">Compatibilidade total</p>
+                <p className="lume-eyebrow text-[#F36B32]">Sem refazer o site</p>
               </Reveal>
 
               <Reveal delay={60}>
                 <h3 className="mt-4 font-heading text-3xl font-extrabold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
-                  Você não precisa começar do zero.
+                  Não precisa de deitar fora o website que já pagou.
                 </h3>
               </Reveal>
 
               <Reveal delay={120}>
                 <p className="mt-5 text-base text-[#B8C0D0] leading-relaxed">
-                  Se a sua empresa já possui um website, não precisa de desperdiçar o investimento
-                  que já fez.{" "}
+                  Se a sua empresa já tem website, aproveitamos o que já construiu.{" "}
                   <strong className="text-[#F5F3EE]">
-                    Adicionamos a camada inteligente por cima.
+                    Ligamos o atendimento automático diretamente por cima, em dias e sem tirar o
+                    site do ar.
                   </strong>
                 </p>
               </Reveal>
@@ -32,27 +32,23 @@ export function AutomateNoNewSite() {
               <Reveal delay={180}>
                 <div className="mt-8 rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-5">
                   <p className="text-xs font-semibold text-[#B8C0D0] mb-3">
-                    A fórmula do Automate Pro:
+                    Como funciona na prática:
                   </p>
                   <div className="flex flex-wrap items-center gap-2 font-heading text-xs font-bold">
                     <span className="rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] px-3 py-1.5 text-[#F5F3EE]">
-                      Website
+                      O seu site actual
                     </span>
                     <span className="text-[#F36B32]">+</span>
                     <span className="rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] px-3 py-1.5 text-[#F36B32]">
-                      IA
+                      Atendimento &lt;10s
                     </span>
                     <span className="text-[#F36B32]">+</span>
                     <span className="rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] px-3 py-1.5 text-[#F4C542]">
-                      Automação
-                    </span>
-                    <span className="text-[#F36B32]">+</span>
-                    <span className="rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] px-3 py-1.5 text-[#F5F3EE]">
-                      Integrações
+                      WhatsApp e Agenda
                     </span>
                     <span className="text-[#2E9E6B]">=</span>
                     <span className="rounded-[8px] bg-[#2E9E6B] px-3 py-1.5 text-[#101D35]">
-                      Sistema de atendimento
+                      Mais reuniões marcadas
                     </span>
                   </div>
                 </div>
@@ -61,10 +57,10 @@ export function AutomateNoNewSite() {
               <Reveal delay={240}>
                 <div className="mt-6 border-t border-[#2A3D63] pt-5">
                   <p className="font-heading font-bold text-sm sm:text-base text-[#F4C542]">
-                    “Não substituímos o que já construiu — fazemos isso trabalhar 10x melhor.”
+                    “Mantém o seu site intacto e ele passa a atender e agendar sozinho.”
                   </p>
                   <p className="mt-1.5 text-xs text-[#B8C0D0]">
-                    Sem migração dolorosa. Sem downtime. Sem perder o que já funciona.
+                    Sem migração dolorosa. Sem interrupções. Sem perder o que já funciona.
                   </p>
                 </div>
               </Reveal>
@@ -81,34 +77,35 @@ export function AutomateNoNewSite() {
                       </span>
                       <div>
                         <h4 className="font-heading text-sm font-bold text-[#F5F3EE] uppercase">
-                          Camada de Inteligência
+                          Atendimento &amp; Agenda
                         </h4>
                         <p className="text-xs text-[#B8C0D0]">
-                          Agentes IA · Triagem · Agendamento · Follow-up
+                          Resposta 24h · Triagem · Marcação · Follow-up
                         </p>
                       </div>
                     </div>
                     <span className="rounded-full bg-[#F4C542] px-2.5 py-0.5 font-heading text-[11px] font-bold text-[#101D35]">
-                      Nova
+                      Ligado
                     </span>
                   </div>
 
                   <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-medium">
                     <div className="rounded-[8px] bg-[#1A2A4A] p-2 border border-[#2A3D63] text-[#F5F3EE]">
-                      WhatsApp API
+                      WhatsApp Oficial
                     </div>
                     <div className="rounded-[8px] bg-[#1A2A4A] p-2 border border-[#2A3D63] text-[#F5F3EE]">
-                      CRM Sync
+                      Registo CRM
                     </div>
                     <div className="rounded-[8px] bg-[#1A2A4A] p-2 border border-[#2A3D63] text-[#F5F3EE]">
-                      Calendar AI
+                      Agenda Livre
                     </div>
                   </div>
                 </div>
 
                 <div className="flex justify-center">
                   <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F4C542]">
-                    <Zap className="size-3.5" aria-hidden="true" /> Ligação direta sem downtime
+                    <Zap className="size-3.5" aria-hidden="true" /> Instalação sem tirar o site do
+                    ar
                   </span>
                 </div>
 
@@ -120,10 +117,10 @@ export function AutomateNoNewSite() {
                       </span>
                       <div>
                         <h4 className="font-heading text-sm font-bold text-[#F5F3EE] uppercase">
-                          Website Existente
+                          O Seu Website Existente
                         </h4>
                         <p className="text-xs text-[#B8C0D0]">
-                          Design · Conteúdo · Domínio · Estrutura atual
+                          Design · Conteúdo · Domínio · Estrutura actual
                         </p>
                       </div>
                     </div>
@@ -131,8 +128,8 @@ export function AutomateNoNewSite() {
                   </div>
 
                   <p className="mt-3 text-xs text-[#B8C0D0] leading-relaxed">
-                    Mantemos o seu investimento intacto. Integramos scripts e webhooks seguros que
-                    habilitam o atendimento inteligente sem alterar o seu site atual.
+                    Mantemos todo o trabalho que já fez. Apenas ligamos o atendimento imediato para
+                    transformar visitas em reuniões marcadas.
                   </p>
                 </div>
               </div>

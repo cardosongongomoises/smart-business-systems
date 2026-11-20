@@ -5,32 +5,32 @@ import { site, CTA } from "@/lib/site-config";
 
 const faqs = [
   {
-    q: "Preciso de saber programar para usar o Motor ATQA?",
-    a: "Não. Nós tratamos de tudo: configuração, integração com WhatsApp, CRM e dashboard. Você apenas usa como qualquer outra ferramenta do dia a dia — como usa o WhatsApp. A sua equipa não precisa de formação técnica complexa.",
+    q: "Preciso de saber programar?",
+    a: "Não. Tratamos da configuração, do WhatsApp, do registo de contactos e do painel. A sua equipa usa como usa o WhatsApp.",
   },
   {
     q: "Quanto tempo demora a ver resultados?",
-    a: "A maioria dos nossos clientes vê resultados nas primeiras 48 horas — leads a receberem respostas imediatas. A qualificação automática e o agendamento começam a funcionar desde o primeiro dia activo.",
+    a: "O sistema arranca em dias. No primeiro mês mede-se o tempo de resposta em menos de 10 segundos e quantos contactos passaram a reunião marcada.",
   },
   {
     q: "Funciona com o WhatsApp que já uso?",
-    a: "Sim. O Motor ATQA integra-se ao seu WhatsApp Business existente — não precisa de mudar de número nem de criar uma conta nova. A integração segue as diretrizes oficiais da Meta.",
+    a: "Ligamos ao WhatsApp da empresa através da API oficial da Meta para responder automaticamente, qualificar contactos e marcar reuniões.",
   },
   {
-    q: "O que acontece se houver um problema?",
-    a: "Temos suporte técnico dedicado. Cada cliente tem um ponto de contacto directo. Além disso, o sistema é monitorizado continuamente — se algo exigir ajuste, a nossa equipa actua rapidamente.",
+    q: "E se houver um problema?",
+    a: "Monitorizamos o sistema de forma contínua e tem suporte técnico incluído. Quando uma conversa exige uma pessoa, passa para a sua equipa com o histórico completo.",
   },
   {
     q: "Quanto custa realmente?",
-    a: "Os pacotes começam em 125.000 Kz de implementação (e mensalidade de 20.000 Kz ao mês) para presença digital básica, até 700.000 Kz de implementação (150.000 Kz ao mês) para domínio total com IA avançada. Se cada reunião que o sistema agendar valer 200.000 Kz+, basta 2 a 3 reuniões adicionais por mês para cobrir o investimento.",
+    a: "Os valores estão na secção de planos: desde 125.000 Kz de implementação (20.000 Kz ao mês) no plano Presença até 700.000 Kz (150.000 Kz ao mês) na Operação Completa, além do Automate Pro (300.000 Kz e 65.000 Kz ao mês) para quem já tem site. Só os custos de plataformas de terceiros variam com a utilização.",
   },
   {
     q: "Preciso de mudar tudo o que já tenho?",
-    a: "Não. Trabalhamos com o que já tem — site actual, WhatsApp e ferramentas existentes. O Motor ATQA e o Automate Pro integram-se e complementam a operação sem precisar de reconstruir tudo.",
+    a: "Não. Se já tem website, acrescentamos o atendimento automático por cima com o Automate Pro, sem migração e sem o tirar do ar.",
   },
   {
-    q: "E se eu não gostar do resultado?",
-    a: "Oferecemos garantia de satisfação nos primeiros 30 dias. Se o sistema não entregar o que foi acordado, devolvemos 100% do investimento sem burocracia.",
+    q: "E se não gostar do resultado?",
+    a: "Tem 30 dias de garantia. Se não entregarmos o que prometemos, devolvemos 100% do investimento.",
   },
 ];
 
@@ -46,13 +46,13 @@ export function FAQ() {
         <Reveal>
           <p className="lume-eyebrow text-[#D9531C]">Perguntas Frequentes</p>
           <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
-            Resultados rápidos, sem surpresas
+            Dúvidas comuns antes de começar
           </h2>
         </Reveal>
 
         <Reveal delay={60}>
           <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-            Todas as respostas de que precisa para tomar a decisão certa — com total transparência.
+            Respostas diretas, sem rodeios nem letra pequena.
           </p>
         </Reveal>
 
@@ -105,7 +105,7 @@ export function FAQ() {
                   Ainda tem dúvidas?
                 </h3>
                 <p className="mt-2 text-sm text-[#5B6B8C] leading-relaxed">
-                  Fale directamente com um especialista. Sem compromisso, sem pressão — apenas
+                  Fale directamente com um especialista. Sem compromisso e sem pressão, apenas
                   respostas claras para o seu caso.
                 </p>
                 <a
@@ -127,8 +127,8 @@ export function FAQ() {
                   Diagnóstico gratuito
                 </h3>
                 <p className="mt-2 text-sm text-[#B8C0D0] leading-relaxed">
-                  Apenas 5 empresas/mês recebem um diagnóstico personalizado — análise do seu funil
-                  de vendas, identificação de gargalos e plano de acção concreto.
+                  Em 24 horas recebe um plano com os seus números: quantos contactos perde, quanto
+                  isso vale e como os recuperar.
                 </p>
                 <a
                   href={CTA.diagnostic}
@@ -136,7 +136,7 @@ export function FAQ() {
                   rel="noopener noreferrer"
                   className="lume-btn-primary mt-5 inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap"
                 >
-                  <span>Pedir diagnóstico gratuito</span>
+                  <span>Quero o meu diagnóstico gratuito</span>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>

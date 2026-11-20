@@ -8,16 +8,16 @@ const plans = [
     icon: Star,
     implementation: "125.000",
     monthly: "20.000",
-    tagline: "Presença digital que transmite credibilidade",
+    tagline: "Para quem não tem site, ou tem um que não gera contactos",
     result: "Mais visitas qualificadas ao site e mais pedidos de orçamento",
     popular: false,
     href: CTA.planPresenca,
     features: [
-      "Site institucional profissional",
+      "Site profissional rápido e claro",
       "SEO básico para Google",
-      "Integração WhatsApp",
+      "Ligação directa ao WhatsApp",
       "Formulário de contacto",
-      "Suporte técnico",
+      "Suporte técnico incluído",
     ],
   },
   {
@@ -25,17 +25,17 @@ const plans = [
     icon: Zap,
     implementation: "250.000",
     monthly: "50.000",
-    tagline: "Atendimento automático + presença + gestão",
-    result: "Resposta em <10s, +40% agendamentos, zero leads perdidos",
+    tagline: "Para quem quer site, atendimento 24h e reuniões marcadas",
+    result: "Resposta em <10s, +40% agendamentos, zero contactos esquecidos",
     popular: true,
     href: CTA.planProfissional,
     features: [
-      "Tudo do plano Presença",
-      "Motor ATQA activo",
-      "Atendimento 24/7 via WhatsApp",
-      "Agendamento automático de reuniões",
-      "CRM com gestão de leads",
-      "Dashboard de métricas",
+      "Site até 5 páginas (tudo do Presença)",
+      "Atendimento automático 24h no WhatsApp",
+      "Marcação automática de reuniões",
+      "Registo e gestão de contactos (CRM)",
+      "Painel com métricas de atendimento",
+      "Suporte técnico prioritário",
     ],
   },
   {
@@ -43,35 +43,35 @@ const plans = [
     icon: Shield,
     implementation: "450.000",
     monthly: "85.000",
-    tagline: "Máxima conversão + IA avançada + Automação",
-    result: "Funil totalmente automatizado e presença premium no Google",
+    tagline: "Para quem quer acompanhar e fechar mais contactos",
+    result: "Seguimento automático, menos faltas e presença forte no Google",
     popular: false,
     href: CTA.planAutoridade,
     features: [
       "Tudo do plano Profissional",
-      "Landing pages otimizadas para conversão",
-      "Automação de follow-ups",
+      "Landing pages para gerar mais pedidos",
+      "Follow-ups automáticos de propostas",
       "Lembretes automáticos de reunião",
       "Relatórios semanais automáticos",
-      "Suporte prioritário 24/7",
+      "Suporte técnico dedicado",
     ],
   },
   {
-    name: "Domínio IA",
+    name: "Operação Completa",
     icon: Rocket,
     implementation: "700.000",
     monthly: "150.000",
-    tagline: "Máximo domínio + IA completa + Consultoria",
-    result: "Máximo domínio de mercado e operação totalmente automatizada",
+    tagline: "Para quem quer a operação comercial toda organizada",
+    result: "Do primeiro contacto ao pagamento e fecho num único processo",
     popular: false,
     href: CTA.planDominioIA,
     features: [
       "Tudo do plano Autoridade",
-      "Landing pages e funis completos",
+      "Funis comerciais completos",
       "Sistema de pagamento integrado",
-      "Automação avançada com IA",
+      "Automação comercial avançada",
       "Consultoria estratégica mensal",
-      "Suporte VIP 24/7",
+      "Suporte técnico VIP dedicado",
     ],
   },
 ];
@@ -85,13 +85,17 @@ export function Pricing() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <div className="text-center">
-            <p className="lume-eyebrow text-[#D9531C]">Investimento</p>
+            <p className="lume-eyebrow text-[#D9531C]">Planos e Investimento</p>
             <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
-              O investimento que se paga no <span className="text-[#D9531C]">primeiro mês</span>
+              Escolha por onde <span className="text-[#D9531C]">começar</span>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-              Cada plano é um investimento com retorno mensurável — não um custo. Se o sistema
-              fechar 2-3 negócios adicionais por mês, já pagou o investimento.
+              Cada plano paga-se logo com as primeiras reuniões recuperadas. Já tem website e não o
+              quer refazer? Veja acima o{" "}
+              <a href="#automate-pricing" className="font-semibold text-[#D9531C] hover:underline">
+                Automate Pro
+              </a>
+              .
             </p>
           </div>
         </Reveal>
@@ -225,19 +229,23 @@ export function Pricing() {
               </div>
             ))}
           </div>
+          <p className="mt-5 text-center text-xs text-[#5B6B8C]">
+            Custos de plataformas de terceiros (WhatsApp, serviços de IA, e-mail e outros) podem
+            variar conforme a utilização.
+          </p>
         </Reveal>
 
         {/* Cálculo de ROI */}
         <Reveal delay={160}>
-          <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 sm:p-8 text-center text-[#F5F3EE]">
+          <div className="mt-10 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 sm:p-8 text-center text-[#F5F3EE]">
             <h3 className="font-heading text-xl font-extrabold text-[#F5F3EE]">
-              Quanto vale cada reunião que perde hoje?
+              Quanto vale cada reunião que hoje perde?
             </h3>
             <p className="mt-2 text-sm text-[#B8C0D0] max-w-xl mx-auto">
-              Se cada reunião que o sistema agendar valer Kz 200.000 ou mais em receita, basta{" "}
-              <strong className="text-[#F4C542]">2-3 reuniões adicionais por mês</strong> para o
-              sistema se pagar sozinho. No plano Profissional, isso são apenas 2 reuniões — o resto
-              é lucro.
+              Se cada reunião valer Kz 200.000 ou mais, o plano Profissional (Kz 250.000 de
+              implementação) cobre-se com cerca de{" "}
+              <strong className="text-[#F4C542]">1,3 reuniões</strong>. Com +8 a 12 reuniões
+              adicionais por mês, o resto é lucro.
             </p>
             <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
@@ -247,7 +255,7 @@ export function Pricing() {
                 </p>
               </div>
               <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
-                <p className="text-xs text-[#B8C0D0]">Investimento</p>
+                <p className="text-xs text-[#B8C0D0]">Implementação</p>
                 <p className="mt-1 font-heading text-lg font-extrabold text-[#F5F3EE] tabular-nums">
                   Kz 250k
                 </p>
@@ -255,7 +263,7 @@ export function Pricing() {
               <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
                 <p className="text-xs text-[#B8C0D0]">Para cobrir</p>
                 <p className="mt-1 font-heading text-lg font-extrabold text-[#F4C542] tabular-nums">
-                  ~1.3
+                  ~1,3
                 </p>
               </div>
               <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
@@ -268,15 +276,16 @@ export function Pricing() {
           </div>
         </Reveal>
 
-        {/* Testimonial */}
+        {/* Garantia 30 dias */}
         <Reveal delay={200}>
-          <div className="mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6 sm:p-8 text-center max-w-2xl mx-auto">
-            <p className="text-sm sm:text-base text-[#101D35] italic leading-relaxed">
-              &ldquo;O sistema pagou-se no primeiro mês — com 4 reuniões que antes teriam sido leads
-              perdidos. Agora é o meu melhor vendedor, e nem precisa de férias.&rdquo;
-            </p>
-            <p className="mt-4 font-heading text-sm font-bold text-[#101D35]">
-              — CEO, Empresa de Consultoria
+          <div className="mt-10 rounded-[16px] border border-[#2E9E6B]/50 bg-[#F5F3EE] p-6 sm:p-8 text-center max-w-3xl mx-auto">
+            <p className="lume-eyebrow text-[#2E9E6B]">Garantia sem risco</p>
+            <h3 className="mt-2 font-heading text-xl font-extrabold text-[#101D35]">
+              30 dias. Se não entregarmos o que prometemos, devolvemos 100%.
+            </h3>
+            <p className="mt-3 text-sm text-[#5B6B8C] leading-relaxed">
+              Se nos primeiros 30 dias o sistema não entregar o que combinámos, devolvemos todo o
+              investimento. Sem perguntas, sem burocracia. O risco é nosso, não seu.
             </p>
           </div>
         </Reveal>

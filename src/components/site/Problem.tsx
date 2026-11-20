@@ -1,24 +1,57 @@
-import { MessageSquare, Clock, LogOut, CheckCircle2, XCircle } from "lucide-react";
+import {
+  MessageSquare,
+  Clock,
+  LogOut,
+  CheckCircle2,
+  XCircle,
+  ArrowRight,
+  MessageSquareX,
+  Shuffle,
+  AlertCircle,
+} from "lucide-react";
 import { Reveal } from "./Reveal";
 
 const flow = [
   {
     icon: MessageSquare,
-    title: "Cliente manda mensagem",
-    text: "Olá, gostaria de saber mais sobre o serviço.",
-    status: "Interessado",
+    title: "O cliente escreve às 19h ou ao sábado",
+    text: "Ou enquanto a sua equipa está ocupada numa reunião. Tem interesse real e quer uma resposta rápida.",
+    status: "À espera",
   },
   {
     icon: Clock,
-    title: "Ninguém responde",
-    text: "5 minutos sem resposta. O lead começa a questionar se a empresa é ágil.",
-    status: "A esfriar",
+    title: "Passam 5 minutos. Depois meia hora.",
+    text: "Ninguém responde. Em Angola, muitas empresas demoram entre 2 e 24 horas a responder no WhatsApp.",
+    status: "A procurar alternativa",
   },
   {
     icon: LogOut,
-    title: "Cliente vai embora",
-    text: "Enquanto procura outro fornecedor, já perdeu a oportunidade e a receita.",
-    status: "Lead perdido",
+    title: "Escreve a outro fornecedor",
+    text: "Quem responde primeiro fica com o cliente. A sua empresa ficou na lista, mas a venda já não é sua.",
+    status: "Sem deixar rasto",
+  },
+];
+
+const silentLosses = [
+  {
+    icon: Clock,
+    title: "Respondem tarde",
+    text: "O cliente escreve quando a equipa não está disponível e procura o concorrente seguinte.",
+  },
+  {
+    icon: MessageSquareX,
+    title: "A equipa repete as mesmas respostas",
+    text: "Preços, horários, localização: o dia inteiro, em vez de fechar negócios.",
+  },
+  {
+    icon: Shuffle,
+    title: "Os contactos ficam espalhados",
+    text: "WhatsApp, e-mail e formulários soltos. Ninguém sabe quantos são nem em que ponto estão.",
+  },
+  {
+    icon: AlertCircle,
+    title: "O acompanhamento depende da memória",
+    text: "Propostas enviadas caem no esquecimento e o cliente nunca mais é retomado.",
   },
 ];
 
@@ -30,22 +63,22 @@ export function Problem() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#F36B32]">01 · O custo invisível</p>
+          <p className="lume-eyebrow text-[#F36B32]">01 · O problema</p>
           <h2 className="mt-4 max-w-3xl font-heading text-3xl leading-[1.15] font-bold text-[#F5F3EE] sm:text-4xl text-balance">
-            Enquanto sua equipa trabalha, quantos negócios estão a ser fechados pela concorrência?
+            Cada mensagem sem resposta é um cliente a falar com outra empresa.
           </h2>
         </Reveal>
 
         <Reveal delay={80}>
           <div className="mt-5 max-w-[65ch] space-y-3 text-base leading-[1.65] text-[#B8C0D0]">
             <p>
-              Muitas empresas em Angola têm excelentes serviços, boa reputação e clientes
-              interessados.
+              O seu serviço é bom e a sua reputação também.{" "}
+              <strong className="text-[#F5F3EE]">O que falha é o tempo.</strong>
             </p>
             <p>
-              O problema não é a qualidade — é a velocidade. Cada minuto sem resposta é um cliente
-              que procura outro fornecedor. Onde o WhatsApp é o principal canal comercial, isto
-              acontece <strong className="text-[#F5F3EE]">todos os dias</strong>.
+              Em Angola, onde o WhatsApp é o principal canal comercial, isto acontece todos os dias.
+              E quase ninguém vê, porque o cliente que desiste antes de falar consigo não deixa
+              rasto.
             </p>
           </div>
         </Reveal>
@@ -60,7 +93,7 @@ export function Problem() {
                       <c.icon className="size-5" aria-hidden="true" />
                     </span>
                     <span className="font-heading text-xs font-bold text-[#B8C0D0] tabular-nums">
-                      Etapa 0{i + 1}
+                      0{i + 1}
                     </span>
                   </div>
                   <h3 className="mt-5 font-heading text-lg font-semibold text-[#F5F3EE]">
@@ -69,7 +102,7 @@ export function Problem() {
                   <p className="mt-2.5 text-sm leading-relaxed text-[#B8C0D0]">{c.text}</p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-[#2A3D63] flex items-center justify-between text-xs">
-                  <span className="text-[#B8C0D0]">Estado do lead</span>
+                  <span className="text-[#B8C0D0]">Situação</span>
                   <span
                     className={
                       i === 2 ? "text-[#F4C542] font-semibold" : "text-[#F5F3EE] font-medium"
@@ -83,17 +116,52 @@ export function Problem() {
           ))}
         </ul>
 
-        {/* Stat Callout */}
+        {/* Stat + Concrete Cost Example */}
         <Reveal delay={80}>
-          <div className="mt-10 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 flex flex-col sm:flex-row sm:items-center gap-5">
-            <span className="font-heading text-4xl sm:text-5xl font-extrabold text-[#F4C542] tabular-nums shrink-0">
-              70%
-            </span>
-            <p className="text-sm sm:text-base text-[#B8C0D0] max-w-[65ch]">
-              dos leads desistem se não receberem resposta nos{" "}
-              <strong className="text-[#F5F3EE]">primeiros 5 minutos</strong>. Em Angola, a maioria
-              das empresas leva 2 a 24 horas — ou deixa mensagens sem resposta.
-            </p>
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 flex flex-col sm:flex-row sm:items-center gap-5">
+              <span className="font-heading text-4xl sm:text-5xl font-extrabold text-[#F4C542] tabular-nums shrink-0">
+                70%
+              </span>
+              <p className="text-sm sm:text-base text-[#B8C0D0]">
+                dos contactos desistem se não recebem resposta nos{" "}
+                <strong className="text-[#F5F3EE]">primeiros 5 minutos</strong>. Em muitas empresas
+                angolanas a resposta demora entre 2 e 24 horas.
+              </p>
+            </div>
+
+            <div className="rounded-[16px] border border-[#F36B32]/50 bg-[#1A2A4A] p-6 flex flex-col justify-center">
+              <p className="lume-eyebrow text-[#F36B32]">Quanto isto custa (exemplo real)</p>
+              <p className="mt-2 text-sm sm:text-base text-[#B8C0D0]">
+                60 contactos por mês, 25% sem resposta a tempo e ticket médio de Kz 150.000. São{" "}
+                <strong className="text-[#F5F3EE]">15 clientes</strong> e{" "}
+                <strong className="text-[#F4C542] tabular-nums">Kz 2.250.000 por mês</strong> que
+                ficam à porta.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Four Silent Ways to Lose Clients */}
+        <Reveal delay={110}>
+          <div className="mt-12">
+            <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#F5F3EE]">
+              Quatro formas de perder clientes sem dar por isso
+            </h3>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {silentLosses.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-[14px] border border-[#2A3D63] bg-[#1A2A4A] p-5"
+                >
+                  <item.icon className="size-5 text-[#F36B32]" aria-hidden="true" />
+                  <h4 className="mt-3.5 font-heading text-sm font-bold text-[#F5F3EE]">
+                    {item.title}
+                  </h4>
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#B8C0D0]">{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
 
@@ -101,9 +169,9 @@ export function Problem() {
         <Reveal delay={120}>
           <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8">
             <div className="border-b border-[#2A3D63] pb-5">
-              <p className="lume-eyebrow text-[#F36B32]">Diagnóstico diário</p>
+              <p className="lume-eyebrow text-[#F36B32]">O que muda no dia a dia</p>
               <h3 className="mt-2 font-heading text-xl sm:text-2xl font-bold text-[#F5F3EE]">
-                Quanto dinheiro está a deixar na mesa?
+                Atender horas depois vs. responder em menos de 10 segundos
               </h3>
             </div>
 
@@ -112,37 +180,37 @@ export function Problem() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#2A3D63]">
                   <span className="inline-flex items-center gap-2 font-heading text-sm font-bold text-[#F5F3EE] uppercase tracking-wider">
                     <XCircle className="size-4 text-[#D64545]" aria-hidden="true" />
-                    Sem sistema automatizado
+                    Como acontece hoje
                   </span>
-                  <span className="text-xs font-medium text-[#D64545]">Perda diária</span>
+                  <span className="text-xs font-medium text-[#D64545]">Clientes perdidos</span>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-[#B8C0D0]">
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Tempo de resposta:</strong> 2h a 24h —
-                      enquanto o lead procura outro fornecedor.
+                      <strong className="text-[#F5F3EE]">Resposta em 2h a 24h:</strong> o
+                      interessado fala com o concorrente primeiro.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Noites e fins de semana:</strong> 0% de
-                      resposta — cada mensagem é um lead perdido.
+                      <strong className="text-[#F5F3EE]">Noites e fins de semana:</strong> ninguém
+                      responde até ao dia útil seguinte.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Equipa sobrecarregada:</strong> Repetem as
-                      mesmas perguntas o dia todo em vez de fechar negócios.
+                      <strong className="text-[#F5F3EE]">Equipa a triar curiosos:</strong> repete
+                      preços e horários o dia inteiro.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Gestão dispersa:</strong> Mensagens
-                      perdidas em telemóveis individuais sem rastreio.
+                      <strong className="text-[#F5F3EE]">Sem registo:</strong> contactos perdidos em
+                      telemóveis individuais.
                     </span>
                   </li>
                 </ul>
@@ -152,9 +220,9 @@ export function Problem() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#2A3D63]">
                   <span className="inline-flex items-center gap-2 font-heading text-sm font-bold text-[#F5F3EE] uppercase tracking-wider">
                     <CheckCircle2 className="size-4 text-[#2E9E6B]" aria-hidden="true" />
-                    Com o sistema a funcionar
+                    Com a Agentes Digital
                   </span>
-                  <span className="text-xs font-medium text-[#2E9E6B]">Resultado diário</span>
+                  <span className="text-xs font-medium text-[#2E9E6B]">Zero esperas</span>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-[#F5F3EE]">
                   <li className="flex items-start gap-2.5">
@@ -163,8 +231,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Resposta imediata:</strong> Menos de 10 segundos, 24 horas por dia —
-                      sem depender de ninguém.
+                      <strong>Resposta em menos de 10 segundos:</strong> 24h por dia, incluindo
+                      noites e fins de semana.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -173,8 +241,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Qualificação automática:</strong> Filtra quem está pronto para comprar
-                      sem desperdiçar tempo.
+                      <strong>Reuniões marcadas no chat:</strong> o cliente escolhe o horário e
+                      recebe lembretes.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -183,8 +251,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Agendamento direto:</strong> Reuniões marcadas automaticamente no
-                      calendário.
+                      <strong>Equipa focada no fecho:</strong> só atende quem já está qualificado e
+                      quer comprar.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -193,8 +261,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Visibilidade total:</strong> Cada lead rastreado do primeiro contacto
-                      ao contrato.
+                      <strong>Cada contacto acompanhado:</strong> tudo guardado com histórico até à
+                      assinatura.
                     </span>
                   </li>
                 </ul>
@@ -203,80 +271,23 @@ export function Problem() {
           </div>
         </Reveal>
 
-        {/* Social Proof — Results in Numbers */}
-        <Reveal delay={160}>
-          <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8">
-            <p className="lume-eyebrow text-center text-[#F4C542]">
-              Resultados reais de empresas em Angola
-            </p>
-
-            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#F5F3EE] tabular-nums">
-                  +50
-                </p>
-                <p className="text-xs text-[#B8C0D0] mt-1.5">Empresas a fechar negócios 24/7</p>
-              </div>
-              <div>
-                <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#F36B32] tabular-nums">
-                  +40%
-                </p>
-                <p className="text-xs text-[#B8C0D0] mt-1.5">Mais agendamentos confirmados</p>
-              </div>
-              <div>
-                <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#F4C542] tabular-nums">
-                  -75%
-                </p>
-                <p className="text-xs text-[#B8C0D0] mt-1.5">Redução em faltas de reuniões</p>
-              </div>
-              <div>
-                <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#2E9E6B] tabular-nums">
-                  +35%
-                </p>
-                <p className="text-xs text-[#B8C0D0] mt-1.5">Aumento na taxa de conversão</p>
-              </div>
-            </div>
-
-            <div className="mt-8 grid md:grid-cols-2 gap-4">
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-5">
-                <p className="text-sm text-[#F5F3EE] leading-relaxed">
-                  “O sistema agendou 23 reuniões numa semana sem que a minha equipa tocasse num
-                  único WhatsApp.”
-                </p>
-                <p className="mt-3 text-xs font-medium text-[#B8C0D0]">
-                  Diretor Comercial · Empresa de Construção Civil, Luanda
-                </p>
-              </div>
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-5">
-                <p className="text-sm text-[#F5F3EE] leading-relaxed">
-                  “Passámos de 2h para 8 segundos no primeiro contacto. A taxa de conversão subiu
-                  35%.”
-                </p>
-                <p className="mt-3 text-xs font-medium text-[#B8C0D0]">
-                  CEO · Clínica Médica em Luanda
-                </p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
         {/* CTA */}
-        <Reveal delay={200}>
+        <Reveal delay={160}>
           <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div>
               <p className="font-heading text-lg font-bold text-[#F5F3EE]">
-                Cada minuto sem automação são leads perdidos para a concorrência.
+                Quer saber quanto a sua empresa perde por mês em mensagens sem resposta?
               </p>
               <p className="mt-1 text-sm text-[#B8C0D0]">
-                Atendimento automático imediato, qualificação estruturada e agendamento direto na
-                sua agenda.
+                Simule com os seus próprios números abaixo ou peça o seu diagnóstico gratuito.
               </p>
             </div>
             <a
-              href="#como-funciona"
-              className="lume-btn-primary shrink-0 inline-flex items-center justify-center text-xs uppercase tracking-wider whitespace-nowrap"
+              href="#valor"
+              className="lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider whitespace-nowrap"
             >
-              Ver como funciona
+              <span>Calcular quanto perco</span>
+              <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </div>
         </Reveal>

@@ -32,10 +32,10 @@ const NODES: FlowNode[] = [
   },
   {
     id: "ia",
-    name: "IA",
-    category: "Atendimento Digital",
+    name: "Atendimento",
+    category: "Resposta Imediata",
     icon: Bot,
-    status: "Resposta 0.8s",
+    status: "Resposta <10s",
   },
   {
     id: "whatsapp",
@@ -103,10 +103,10 @@ const FLOW_STEPS: FlowStep[] = [
   {
     step: 3,
     nodeIndex: 1,
-    entity: "IA",
-    message: "Agente IA respondeu e orientou o utilizador",
+    entity: "Atendimento",
+    message: "Sistema respondeu em <10s e orientou o utilizador",
     label: "Atendimento imediato",
-    detail: "Resposta contextual gerada com base na empresa",
+    detail: "Resposta clara gerada com base na sua empresa",
   },
   {
     step: 4,
@@ -177,7 +177,7 @@ export function AutomationSystemFlow() {
               Fluxo operacional de atendimento
             </h4>
             <p className="text-xs text-[#B8C0D0]">
-              Ligação contínua entre website existente, IA, automações e equipa
+              Ligação contínua entre o website existente, atendimento automático, agenda e equipa
             </p>
           </div>
         </div>

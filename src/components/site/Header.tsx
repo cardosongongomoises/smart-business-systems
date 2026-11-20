@@ -3,11 +3,11 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { CTA } from "@/lib/site-config";
 
 const links = [
-  { href: "/#servicos", label: "Serviços" },
-  { href: "/#automate-pro", label: "Automate Pro" },
-  { href: "/#agente-ia", label: "Soluções IA" },
-  { href: "/#planos", label: "Planos" },
+  { href: "/#problema", label: "O Problema" },
+  { href: "/#servicos", label: "O que Resolvemos" },
+  { href: "/#automate-pro", label: "Já tem site?" },
   { href: "/#resultados", label: "Resultados" },
+  { href: "/#planos", label: "Planos" },
 ];
 
 export function Header() {
@@ -67,7 +67,7 @@ export function Header() {
             rel="noopener noreferrer"
             className="lume-btn-primary inline-flex h-[40px] min-h-[40px] items-center justify-center gap-2 px-5 py-2 text-[13px] whitespace-nowrap shrink-0"
           >
-            <span>Falar com especialista</span>
+            <span>Parar de perder clientes</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
           </a>
         </div>
@@ -114,14 +114,14 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className="lume-btn-primary flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
               >
-                Falar com especialista <ArrowRight className="size-4" aria-hidden="true" />
+                Quero parar de perder clientes <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="/#contacto"
                 onClick={() => setOpen(false)}
                 className="lume-btn-secondary-light flex items-center justify-center text-xs"
               >
-                Solicitar Proposta Comercial
+                Pedir diagnóstico gratuito
               </a>
             </div>
           </div>

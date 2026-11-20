@@ -13,65 +13,65 @@ import { Reveal } from "../Reveal";
 const features = [
   {
     icon: Bot,
-    title: "Agente de IA",
-    subtitle: "Atendimento Conversacional",
-    desc: "Responde, orienta e qualifica visitantes em tempo real. Um agente treinado exclusivamente no seu negócio.",
+    title: "Atendimento Imediato",
+    subtitle: "Resposta em <10 segundos",
+    desc: "Responde, orienta e qualifica visitantes a qualquer hora com base nos serviços e regras da sua empresa.",
     badge: "01",
-    tag: "IA Contextual",
+    tag: "<10 segundos",
   },
   {
     icon: Filter,
-    title: "Qualificação",
-    subtitle: "Filtro Comercial Ativo",
-    desc: "Descobre o orçamento, a urgência e a necessidade antes de passar ao humano. Só leads qualificados chegam à equipa.",
+    title: "Qualificação Comercial",
+    subtitle: "Filtro Antes da Equipa",
+    desc: "Apura necessidade, urgência e orçamento antes de passar ao vendedor. Só clientes prontos chegam à equipa.",
     badge: "02",
-    tag: "Score de Lead",
+    tag: "Filtro Ativo",
   },
   {
     icon: MessageSquare,
-    title: "WhatsApp",
-    subtitle: "Canal de Alto Engajamento",
-    desc: "95% das mensagens de WhatsApp são lidas em menos de 3 minutos. Conectamos o seu site a esse poder.",
+    title: "WhatsApp Oficial",
+    subtitle: "Canal Principal de Vendas",
+    desc: "Liga o seu site diretamente ao WhatsApp oficial da empresa, para nenhum pedido ficar sem resposta.",
     badge: "03",
     tag: "API Oficial",
   },
   {
     icon: Database,
-    title: "CRM",
-    subtitle: "Centralização de Leads",
-    desc: "Cada lead fica com nome, telefone, interesse e histórico — tudo rastreável num só lugar.",
+    title: "Registo de Contactos",
+    subtitle: "Zero Pedidos Perdidos",
+    desc: "Cada contacto fica guardado com nome, telefone, interesse e histórico, tudo organizado num só lugar.",
     badge: "04",
-    tag: "Funil Visual",
+    tag: "CRM Incluído",
   },
   {
     icon: Calendar,
-    title: "Agendamento",
-    subtitle: "Calendário Automático",
-    desc: "O cliente escolhe o horário. O sistema confirma, envia lembrete e bloqueia a agenda sem troca de e-mails.",
+    title: "Marcação Automática",
+    subtitle: "Reuniões na Agenda",
+    desc: "O cliente escolhe o horário no próprio chat. O sistema confirma e bloqueia a agenda sem troca de mensagens.",
     badge: "05",
-    tag: "Auto-Booking",
+    tag: "Agenda Direta",
   },
   {
     icon: Clock,
-    title: "Follow-up",
-    subtitle: "Acompanhamento Inteligente",
-    desc: "Dispara lembretes nos dias certos, no canal certo. Retoma leads que pararam de responder.",
+    title: "Follow-up Automático",
+    subtitle: "Retoma Sem Esquecimentos",
+    desc: "Dispara lembretes nos dias certos, no canal certo, para retomar contactos que pararam de responder.",
     badge: "06",
     tag: "Cadência Ativa",
   },
   {
     icon: Mail,
-    title: "E-mail",
-    subtitle: "Confirmações e Lembretes",
-    desc: "Reduz faltas em reuniões com lembretes automáticos 24h antes e confirmações instantâneas.",
+    title: "Lembretes de Reunião",
+    subtitle: "Menos Faltas Marcadas",
+    desc: "Envia confirmações imediatas e lembretes antes da hora para reduzir ausências nas reuniões.",
     badge: "07",
-    tag: "Automação",
+    tag: "Confirmação",
   },
   {
     icon: UserCheck,
-    title: "Transferência Humana",
-    subtitle: "Passagem Transparente",
-    desc: "Quando o lead está pronto, a IA passa o bastão com o histórico completo para o vendedor fechar.",
+    title: "Passagem para a Equipa",
+    subtitle: "Fecho Humano Informado",
+    desc: "Quando o cliente está pronto para fechar, o sistema passa a conversa com o histórico completo para o vendedor.",
     badge: "08",
     tag: "Equipa Notificada",
   },
@@ -83,19 +83,19 @@ export function AutomateFeatures() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#F36B32]">Recursos nativos integrados</p>
+            <p className="lume-eyebrow text-[#F36B32]">O que ligamos ao seu site</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-2xl font-bold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
-              Os 8 pilares da infraestrutura Automate Pro
+              Tudo o que precisa para transformar visitas em reuniões marcadas
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
-              Cada módulo foi desenhado para funcionar como um sistema integrado — do primeiro
-              clique ao contrato assinado.
+              Sem reconstruir o seu website atual. Ligamos atendimento, qualificação e marcação de
+              ponta a ponta.
             </p>
           </Reveal>
         </div>

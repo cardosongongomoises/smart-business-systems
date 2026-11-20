@@ -13,53 +13,53 @@ import {
 
 const steps = [
   {
-    title: "Encontrar",
+    title: "Encontra",
     icon: Search,
-    subtitle: "Visibilidade & Tráfego",
+    subtitle: "Pesquisa no Google",
     text: "Website + Google + SEO local",
-    desc: "Sua empresa é descoberta exatamente quando o potencial cliente procura pelos seus serviços.",
+    desc: "O cliente encontra a sua empresa no momento exato em que procura pelo serviço.",
   },
   {
-    title: "Confiar",
+    title: "Confia",
     icon: Shield,
-    subtitle: "Autoridade Digital",
-    text: "Design profissional + conteúdo + autoridade",
-    desc: "Uma presença visual de alto nível que elimina dúvidas e posiciona sua marca como referência.",
+    subtitle: "Primeira Impressão",
+    text: "Site claro + prova + oferta directa",
+    desc: "Em vez de um site genérico, vê provas reais e percebe por que razão deve escolher a sua empresa.",
   },
   {
-    title: "Contactar",
+    title: "Contacta",
     icon: MessageCircle,
-    subtitle: "Canais Diretos",
-    text: "WhatsApp + formulário + telefone",
-    desc: "Pontos de contacto imediatos e sem atrito nos canais que o seu cliente mais utiliza.",
+    subtitle: "Sem Atrito",
+    text: "WhatsApp directo + formulário",
+    desc: "Envia mensagem no canal que já usa todos os dias, sem formulários longos nem esperas.",
   },
   {
-    title: "Atender",
+    title: "É atendido",
     icon: Bot,
-    subtitle: "Disponibilidade Total",
-    text: "Agente de IA",
-    desc: "Resposta instantânea em segundos, 24 horas por dia, 7 dias por semana, sem filas de espera.",
+    subtitle: "Em menos de 10s",
+    text: "Resposta automática 24h",
+    desc: "Recebe resposta imediata, mesmo à noite ou ao fim de semana, antes de pensar na concorrência.",
   },
   {
-    title: "Qualificar",
+    title: "É qualificado",
     icon: Filter,
-    subtitle: "Filtro Inteligente",
-    text: "IA identifica necessidade e perfil",
-    desc: "A IA compreende a demanda real, filtra curiosos e identifica clientes com perfil ideal.",
+    subtitle: "Triagem Útil",
+    text: "Necessidade, prazo e perfil",
+    desc: "Dúvidas comuns ficam resolvidas logo ali e só quem tem interesse real segue para a sua equipa.",
   },
   {
-    title: "Agendar",
+    title: "Marca",
     icon: Calendar,
-    subtitle: "Compromisso Marcado",
-    text: "Calendário integrado",
-    desc: "Agendamento automático sincronizado com a disponibilidade da sua equipa e lembretes.",
+    subtitle: "Sem Vai-e-Vem",
+    text: "Agenda integrada + lembretes",
+    desc: "O próprio cliente escolhe o horário da reunião e recebe confirmação para não faltar.",
   },
   {
-    title: "Converter",
+    title: "Fecha",
     icon: TrendingUp,
-    subtitle: "Fecho Comercial",
-    text: "CRM + follow-up + equipa comercial",
-    desc: "Oportunidade pronta entregue à sua equipa com histórico completo para fechar negócio.",
+    subtitle: "Venda Acompanhada",
+    text: "Histórico + seguimento + equipa",
+    desc: "O seu vendedor recebe o contacto pronto com todo o contexto e ninguém cai no esquecimento.",
   },
 ];
 
@@ -72,17 +72,17 @@ export function Journey() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#D9531C]">03 · Pipeline integrado</p>
+            <p className="lume-eyebrow text-[#D9531C]">03 · Do pedido ao fecho</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-bold text-[#101D35] sm:text-4xl text-balance">
-              Transformamos o caminho do cliente num sistema contínuo.
+              O caminho completo para nenhum contacto se perder pelo meio.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 max-w-[65ch] text-base text-[#5B6B8C] sm:text-lg">
-              Cada etapa é conectada com precisão para guiar o visitante desde a primeira pesquisa
-              até a conversão em cliente real.
+              Desde o momento em que o cliente procura pelo seu serviço até se sentar consigo na
+              reunião, cada passo fica ligado.
             </p>
           </Reveal>
         </div>
@@ -113,7 +113,7 @@ export function Journey() {
                 </div>
 
                 <div className="mt-5 pt-3 border-t border-[#E7E3D9] flex items-center justify-between text-xs text-[#5B6B8C]">
-                  <span>Etapa automatizada</span>
+                  <span>Passo acompanhado</span>
                   {i < steps.length - 1 ? (
                     <ArrowRight
                       className="size-3.5 text-[#101D35] group-hover:translate-x-0.5 transition-transform"
@@ -122,7 +122,7 @@ export function Journey() {
                   ) : (
                     <span className="inline-flex items-center gap-1 font-semibold text-[#2E9E6B]">
                       <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                      Conversão
+                      Cliente fechado
                     </span>
                   )}
                 </div>
@@ -135,12 +135,11 @@ export function Journey() {
         <Reveal delay={160}>
           <div className="mt-12 rounded-[16px] bg-[#101D35] p-7 sm:p-9 text-center text-[#F5F3EE]">
             <p className="font-heading text-base sm:text-xl font-semibold max-w-3xl mx-auto">
-              “Não construímos apenas presença digital. Construímos sistemas que trabalham para o
-              seu negócio.”
+              &ldquo;Como fazemos: um assistente automático, treinado com a informação da sua
+              empresa, atende e qualifica. Quando a conversa exige uma pessoa, passa para a sua
+              equipa.&rdquo;
             </p>
-            <p className="mt-3 lume-eyebrow text-[#F4C542]">
-              Agentes Digital · Sistemas Digitais &amp; Inteligência Artificial
-            </p>
+            <p className="mt-3 lume-eyebrow text-[#F4C542]">Agentes Digital · Luanda, Angola</p>
           </div>
         </Reveal>
       </div>

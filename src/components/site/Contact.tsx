@@ -54,14 +54,15 @@ export function Contact() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <div className="text-center">
-            <p className="lume-eyebrow text-[#D9531C]">Comece Agora</p>
+            <p className="lume-eyebrow text-[#D9531C]">Diagnóstico Gratuito</p>
             <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
-              Cada dia sem o sistema é um dia de{" "}
-              <span className="text-[#D64545]">leads perdidos</span>
+              Cada dia sem resposta rápida é um cliente que{" "}
+              <span className="text-[#D64545]">vai para outra empresa</span>.
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-              Não espere mais. Comece hoje — o primeiro mês é sobre recuperar os clientes que está a
-              perder por demora ou falta de atendimento.
+              Peça o diagnóstico gratuito. Em 24 horas recebe um plano com os seus números: quantos
+              contactos perde, quanto isso vale e como os recuperar. Só fazemos 5 por mês, para
+              garantir qualidade.
             </p>
           </div>
         </Reveal>
@@ -71,11 +72,10 @@ export function Contact() {
             {/* Form Card */}
             <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
               <h3 className="font-heading text-lg font-bold text-[#101D35]">
-                Diagnóstico gratuito — Apenas 5 empresas/mês
+                Quero o meu diagnóstico gratuito (5 vagas/mês)
               </h3>
               <p className="mt-2 text-sm text-[#5B6B8C]">
-                Preencha os seus dados para receber em 24h um plano personalizado com os seus
-                números.
+                Preencha os dados abaixo para receber em 24h um plano com os seus números.
               </p>
 
               {submitted ? (
@@ -234,7 +234,7 @@ export function Contact() {
                     className="lume-btn-primary inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap cursor-pointer"
                   >
                     <Calendar className="size-4" aria-hidden="true" />
-                    <span>{site.ctaSecond.label}</span>
+                    <span>Quero o meu diagnóstico gratuito</span>
                     <ArrowRight className="size-4" aria-hidden="true" />
                   </button>
 
@@ -252,8 +252,8 @@ export function Contact() {
                   Contacte-nos directamente
                 </h3>
                 <p className="mt-2 text-sm text-[#5B6B8C]">
-                  Prefere falar directamente? Estamos disponíveis no WhatsApp — resposta em minutos,
-                  não em horas.
+                  Prefere falar directamente? Estamos disponíveis no WhatsApp, com resposta em
+                  minutos, não em horas.
                 </p>
 
                 <ul className="mt-5 space-y-3.5 text-sm">
@@ -331,6 +331,16 @@ export function Contact() {
                 </div>
               </div>
             </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={140}>
+          <div className="mt-8 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 text-center max-w-3xl mx-auto">
+            <p className="text-sm text-[#5B6B8C] leading-relaxed">
+              <strong className="text-[#101D35]">PS:</strong> Enquanto lê isto, alguém pode estar a
+              escrever à sua empresa. Quanto mais cedo ligarmos o atendimento, menos clientes ficam
+              sem resposta. Peça o diagnóstico gratuito hoje.
+            </p>
           </div>
         </Reveal>
       </div>

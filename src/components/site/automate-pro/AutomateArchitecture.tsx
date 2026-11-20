@@ -16,20 +16,20 @@ export function AutomateArchitecture() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#F36B32]">Topologia do sistema</p>
+            <p className="lume-eyebrow text-[#F36B32]">Como ligamos ao seu site</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-3xl font-extrabold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
-              Arquitetura tecnológica de alta precisão
+              Do clique no seu site atual à reunião marcada na agenda
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
-              Cada camada foi projetada para operar sem perda de dados e sem latência —{" "}
+              Cada passo garante que nenhum pedido se perde.{" "}
               <strong className="text-[#F5F3EE]">
-                um sistema orquestrado, não ferramentas soltas.
+                Um processo completo, sem ferramentas soltas nem trabalho manual.
               </strong>
             </p>
           </Reveal>
@@ -42,7 +42,7 @@ export function AutomateArchitecture() {
                 <Globe className="size-4 text-[#F36B32]" aria-hidden="true" /> WEBSITE EXISTENTE
               </div>
               <p className="text-xs text-[#B8C0D0] mt-1">
-                Interface de captação — onde o visitante inicia contacto
+                Interface de captação onde o visitante inicia contacto
               </p>
             </div>
 
@@ -50,10 +50,10 @@ export function AutomateArchitecture() {
 
             <div className="w-full sm:w-80 rounded-[12px] border border-[#F36B32] bg-[#1A2A4A] p-4 text-center">
               <div className="flex items-center justify-center gap-2 font-heading text-xs font-bold text-[#F4C542]">
-                <Bot className="size-4 text-[#F36B32]" aria-hidden="true" /> NÚCLEO DE IA
+                <Bot className="size-4 text-[#F36B32]" aria-hidden="true" /> ATENDIMENTO E TRIAGEM
               </div>
               <p className="text-xs text-[#B8C0D0] mt-1">
-                Compreensão semântica, triagem em tempo real e roteamento
+                Resposta em &lt;10 segundos, qualificação e encaminhamento
               </p>
             </div>
 

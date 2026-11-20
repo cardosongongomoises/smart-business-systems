@@ -4,27 +4,27 @@ import { Reveal } from "./Reveal";
 const channels = [
   {
     icon: MessageCircle,
-    title: "WhatsApp Oficial com IA",
-    desc: "Atendimento automático 24/7 no canal de comunicação mais utilizado em Angola.",
+    title: "WhatsApp Oficial da Empresa",
+    desc: "Atendimento imediato 24h no principal canal comercial de Angola, sem mudar o ritmo da sua equipa.",
     items: [
       "Resposta imediata em menos de 10 segundos",
-      "Resolução de perguntas frequentes do negócio",
-      "Qualificação de orçamento e urgência",
-      "Agendamento automático de reuniões",
-      "Confirmação e lembretes prévios",
-      "Follow-up de oportunidades abertas",
+      "Resolução das perguntas mais frequentes do negócio",
+      "Qualificação de orçamento, necessidade e urgência",
+      "Marcação automática de reuniões no próprio chat",
+      "Confirmação e lembretes para reduzir faltas",
+      "Retoma automática de contactos que pararam de responder",
     ],
   },
   {
     icon: Mail,
-    title: "E-mail Corporativo Inteligente",
-    desc: "Triagem e categorização de mensagens empresariais sem perder oportunidades.",
+    title: "E-mail e Formulários do Website",
+    desc: "Nenhum pedido enviado pelo site ou por e-mail fica esquecido numa caixa de entrada.",
     items: [
-      "Respostas automáticas personalizadas",
-      "Classificação por relevância e prioridade",
-      "Encaminhamento para o responsável certo",
-      "Follow-up programado para propostas",
-      "Notificações instantâneas para a direção",
+      "Resposta automática personalizada em segundos",
+      "Registo imediato com nome, telefone e histórico",
+      "Encaminhamento para o comercial responsável",
+      "Acompanhamento programado de propostas enviadas",
+      "Notificações claras quando um contacto quer comprar",
     ],
   },
 ];
@@ -37,13 +37,13 @@ export function Channels() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#D9531C]">Canais de Comunicação Omnichannel</p>
+          <p className="lume-eyebrow text-[#D9531C]">Onde atendemos os seus clientes</p>
           <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
-            Um atendimento corporativo que não dorme.
+            WhatsApp e e-mail atendidos sem esperar pela equipa.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#5B6B8C] leading-[1.65]">
-            Conecte a sua empresa aos canais em que os clientes tomam decisões diárias de compra em
-            Angola.
+            Onde quer que o cliente entre em contacto com a sua empresa em Angola, recebe resposta
+            na hora e avança para a reunião.
           </p>
         </Reveal>
 
@@ -72,10 +72,10 @@ export function Channels() {
                   </ul>
                 </div>
                 <div className="mt-7 pt-4 border-t border-[#E7E3D9] flex items-center justify-between text-xs text-[#5B6B8C]">
-                  <span className="font-medium tabular-nums">Disponibilidade 24/7</span>
+                  <span className="font-medium tabular-nums">Atendimento 24h</span>
                   <span className="inline-flex items-center gap-1.5 text-[#2E9E6B] font-semibold">
                     <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                    Sincronizado
+                    Ligado ao seu painel
                   </span>
                 </div>
               </div>
@@ -88,14 +88,14 @@ export function Channels() {
             <p className="text-base sm:text-lg text-[#B8C0D0] leading-relaxed">
               Enquanto a sua equipa está em reunião ou fora do expediente,{" "}
               <span className="font-semibold text-[#F5F3EE]">
-                o seu agente digital continua a atender, qualificar e agendar.
+                os pedidos continuam a ser respondidos, qualificados e marcados na agenda.
               </span>
             </p>
             <a
               href="#contacto"
               className="lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
             >
-              <span>Ativar canais agora</span>
+              <span>Quero o meu diagnóstico gratuito</span>
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </div>

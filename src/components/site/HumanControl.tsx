@@ -12,30 +12,30 @@ import { Reveal } from "./Reveal";
 const branches = [
   {
     icon: MessageSquare,
-    from: "Pergunta frequente / catálogo",
-    to: "Resposta em 8 segundos",
-    result: "Lead satisfeito, curiosidade despertada",
+    from: "Pergunta frequente / preços",
+    to: "Resposta em menos de 10 segundos",
+    result: "Cliente atendido na hora, sem espera",
     human: false,
   },
   {
     icon: CalendarCheck,
-    from: "Solicitação de reunião",
-    to: "Reunião agendada automaticamente",
-    result: "Agendamento sem tocar no telemóvel",
+    from: "Pedido de reunião",
+    to: "Reunião marcada no próprio chat",
+    result: "Horário confirmado sem vai-e-vem",
     human: false,
   },
   {
     icon: Database,
-    from: "Lead comercial qualificado",
-    to: "Registo no CRM + alerta à equipa",
-    result: "Zero leads perdidos, rastreabilidade total",
+    from: "Contacto qualificado",
+    to: "Registo completo + alerta à equipa",
+    result: "Nenhum pedido cai no esquecimento",
     human: false,
   },
   {
     icon: UserCog,
-    from: "Negociação complexa ou exceção",
-    to: "Encaminhamento ao consultor",
-    result: "Equipa focada no que fecha negócios",
+    from: "Negociação ou pedido complexo",
+    to: "Passagem para um vendedor",
+    result: "Equipa focada em fechar negócio",
     human: true,
   },
 ];
@@ -48,15 +48,15 @@ export function HumanControl() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#D9531C]">Controlo Humano Total</p>
+          <p className="lume-eyebrow text-[#D9531C]">Controlo Humano</p>
           <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
-            A IA fecha negócios. A sua equipa{" "}
-            <span className="text-[#2E9E6B]">foca no que importa</span>.
+            O atendimento filtra as dúvidas. A sua equipa{" "}
+            <span className="text-[#2E9E6B]">foca-se em fechar</span>.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#5B6B8C] leading-[1.65]">
-            O sistema resolve 80% do fluxo repetitivo — sem atrasos, sem esquecimentos, sem horário
-            de expediente. A sua equipa recebe apenas leads qualificados, prontos para fechar
-            contrato, mantendo controlo total sobre cada conversa.
+            As dúvidas comuns são respondidas automaticamente, a qualquer hora. Quando o cliente
+            está pronto para avançar, ou quando a conversa exige uma pessoa, passa para a sua equipa
+            com todo o histórico.
           </p>
         </Reveal>
 
@@ -69,16 +69,16 @@ export function HumanControl() {
                 </span>
                 <div>
                   <p className="font-heading text-sm font-bold text-[#101D35]">
-                    Roteamento Inteligente de Decisões
+                    Quando responde o sistema e quando entra a equipa
                   </p>
                   <p className="text-xs text-[#5B6B8C]">
-                    Cada lead segue o caminho certo — automaticamente
+                    Regras claras definidas consigo antes de arrancar
                   </p>
                 </div>
               </div>
               <span className="inline-flex items-center gap-1.5 font-heading text-xs font-bold text-[#2E9E6B] uppercase tracking-wider">
                 <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                Supervisão Ativa
+                Controlo Total
               </span>
             </div>
 
@@ -99,7 +99,7 @@ export function HumanControl() {
                       />
                       {b.human && (
                         <span className="font-heading text-[10px] font-bold text-[#F4C542] tracking-wider uppercase">
-                          Consultor
+                          Equipa
                         </span>
                       )}
                     </div>
@@ -146,18 +146,16 @@ export function HumanControl() {
         <Reveal delay={140}>
           <div className="mt-8 rounded-[12px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-sm sm:text-base text-[#5B6B8C]">
-              A IA filtra e resolve{" "}
-              <strong className="text-[#101D35]">80% do fluxo repetitivo</strong> — sem atrasos, sem
-              esquecimentos, sem horário de expediente.{" "}
+              Pode intervir em qualquer conversa a qualquer momento.{" "}
               <span className="font-semibold text-[#2E9E6B]">
-                A sua equipa recebe os leads prontos para fechar contrato.
+                A sua equipa só gasta tempo com quem quer mesmo comprar.
               </span>
             </p>
             <a
               href="#contacto"
               className="shrink-0 font-heading text-xs font-bold text-[#D9531C] hover:underline whitespace-nowrap"
             >
-              Configurar regras da empresa →
+              Pedir diagnóstico gratuito →
             </a>
           </div>
         </Reveal>

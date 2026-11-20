@@ -1,25 +1,20 @@
 import { Check, Minus } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const columns = ["Presença", "Profissional", "Autoridade", "Domínio IA"];
+const columns = ["Presença", "Profissional", "Autoridade", "Operação Completa"];
 
 const rows: Array<[string, (boolean | string)[]]> = [
-  ["Website", ["Landing Page", "Até 5 páginas", "Até 10 páginas", "Personalizado"]],
-  ["Domínio", [true, true, true, true]],
-  ["Hospedagem", [true, true, true, true]],
-  ["SSL", [true, true, true, true]],
-  ["WhatsApp", ["Link direto", "Integrado", "Automatizado", "Agentes de IA"]],
-  ["Agendamento", [false, true, "Automático", "Automático"]],
-  ["Google", ["Maps", "Business Profile", "Business + Blog", "Completo"]],
-  ["SEO", ["Básico", "Local", "Avançado", "Avançado"]],
-  ["IA", [false, "Básica", "Avançada", "Agentes dedicados"]],
+  ["Website", ["Site profissional", "Até 5 páginas", "Até 10 páginas", "Personalizado"]],
+  ["Domínio e Hospedagem", [true, true, true, true]],
+  ["WhatsApp", ["Link direto", "Atendimento 24h", "Atendimento 24h", "Operação completa"]],
+  ["Marcação de reuniões", [false, true, "Automática + lembretes", "Automática + lembretes"]],
+  ["Google e SEO", ["Básico", "Local", "Avançado", "Completo"]],
   ["E-mail", [false, "Automatizado", "Automatizado", "Automatizado"]],
-  ["CRM", [false, false, true, true]],
-  ["Automação", [false, "Respostas", "Processos", "Operação completa"]],
-  ["Follow-up", [false, false, true, true]],
-  ["Analytics", [false, true, true, "Dashboards"]],
-  ["Suporte", ["Padrão", "Prioritário", "Prioritário", "Premium"]],
-  ["Optimização", [false, false, "Contínua", "Contínua + consultoria"]],
+  ["Registo de contactos (CRM)", [false, true, true, true]],
+  ["Follow-up automático", [false, false, true, true]],
+  ["Painel de métricas", [false, true, true, "Completo"]],
+  ["Suporte técnico", ["Incluído", "Prioritário", "Dedicado", "VIP Dedicado"]],
+  ["Acompanhamento mensal", [false, false, "Contínuo", "Contínuo + consultoria"]],
 ];
 
 function Cell({ value, highlighted }: { value: boolean | string; highlighted?: boolean }) {
@@ -56,12 +51,12 @@ export function Comparison() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#D9531C]">Matriz Comparativa Detalhada</p>
+          <p className="lume-eyebrow text-[#D9531C]">Comparação de Planos</p>
           <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
-            Compare minuciosamente os quatro planos.
+            Compare o que entra em cada plano.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#5B6B8C] leading-[1.65]">
-            Transparência total sobre escopo, entregáveis e infraestrutura técnica de cada pacote.
+            Transparência total para escolher exatamente o que a sua empresa precisa agora.
           </p>
         </Reveal>
 
@@ -75,7 +70,7 @@ export function Comparison() {
             <table className="w-full min-w-[760px] border-collapse text-left">
               <caption className="sr-only">
                 Tabela comparativa de funcionalidades dos planos Presença, Profissional, Autoridade
-                e Domínio IA
+                e Operação Completa
               </caption>
               <thead>
                 <tr className="border-b border-[#E7E3D9] bg-[#F5F3EE]">

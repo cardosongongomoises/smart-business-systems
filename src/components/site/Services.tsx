@@ -1,62 +1,89 @@
 import { Reveal } from "./Reveal";
-import { ArrowUpRight, Globe, BotMessageSquare, Cog, Smartphone, Check } from "lucide-react";
+import {
+  ArrowUpRight,
+  Globe,
+  BotMessageSquare,
+  Calendar,
+  Database,
+  Users,
+  Check,
+} from "lucide-react";
 import { site } from "@/lib/site-config";
 
 const services = [
   {
     num: "01",
-    icon: Globe,
-    title: "Websites que convertem visitantes em clientes",
+    icon: BotMessageSquare,
+    problem: "Mensagens sem resposta",
+    title: "Atendimento imediato, 24 horas por dia",
     description:
-      "Não é só um site — é uma ferramenta que transforma visitas em receita. Design profissional, carregamento rápido, SEO para ser encontrado e estrutura que guia o visitante até à ação.",
-    result: "+40% mais contactos diretos do que sites genéricos",
+      "Cada contacto por WhatsApp ou website recebe resposta em menos de 10 segundos, incluindo noites, fins de semana e feriados.",
+    result: "Nenhum contacto fica à espera, mesmo às 3 da manhã.",
     features: [
-      "SEO local para ser encontrado no Google",
-      "Design que transmite credibilidade",
-      "Integração direta com WhatsApp",
-      "Carregamento em menos de 2 segundos",
+      "Resposta automática em menos de 10 segundos",
+      "Atendimento ativo à noite, fins de semana e feriados",
+      "Funciona diretamente no WhatsApp e no website",
+      "Respostas adaptadas às regras e serviços da sua empresa",
     ],
   },
   {
     num: "02",
-    icon: BotMessageSquare,
-    title: "Atendimento 24/7 que fecha negócios sozinho",
+    icon: Calendar,
+    problem: "Reuniões que não se marcam, ou a que ninguém aparece",
+    title: "Marcação automática com lembretes",
     description:
-      "O Motor ATQA responde, qualifica e agenda reuniões automaticamente — ao contrário de um formulário que ninguém preenche ou de um WhatsApp sem resposta.",
-    result: "Resposta em <10 segundos, 24/7/365",
+      "O cliente escolhe o horário no próprio chat. O sistema confirma, bloqueia a agenda e envia lembretes antes da reunião.",
+    result: "Menos faltas (até -75%) e agenda preenchida sem troca de e-mails.",
     features: [
-      "Resposta em menos de 10 segundos",
-      "Qualificação automática do lead",
-      "Agendamento direto na sua agenda",
-      "Zero leads perdidos — mesmo às 3 da manhã",
+      "O cliente escolhe o horário livre direto no chat",
+      "Confirmação imediata e bloqueio na agenda",
+      "Lembretes automáticos antes da reunião",
+      "Zero vai-e-vem para tentar combinar uma hora",
     ],
   },
   {
     num: "03",
-    icon: Cog,
-    title: "Automação que liberta a sua equipa",
+    icon: Database,
+    problem: "Contactos esquecidos",
+    title: "Registo e acompanhamento automáticos",
     description:
-      "Automatize tarefas repetitivas: follow-ups, lembretes, relatórios e atualizações de estado. A sua equipa deixa de perder tempo em tarefas manuais e passa a fechar negócios.",
-    result: "-50% tempo gasto em tarefas repetitivas",
+      "Cada contacto fica guardado com nome, telefone, interesse e histórico. Quem parou de responder é retomado nos dias certos.",
+    result: "Ninguém cai no esquecimento e passa a saber quantos negócios tem em curso.",
     features: [
-      "Lembretes automáticos — zero faltas",
-      "Follow-ups comerciais automáticos",
-      "Relatórios semanais sem esforço",
-      "Integração com as ferramentas que já usa",
+      "Nome, telefone, interesse e histórico num só lugar",
+      "Retoma automática para quem pediu orçamento e parou",
+      "Visibilidade clara de cada negócio em curso",
+      "Fim dos contactos perdidos em telemóveis pessoais",
     ],
   },
   {
     num: "04",
-    icon: Smartphone,
-    title: "Sistemas sob medida para o seu negócio",
+    icon: Users,
+    problem: "Equipa a repetir respostas",
+    title: "Só chega à equipa quem quer comprar",
     description:
-      "Cada empresa tem um processo diferente. Desenvolvemos sistemas que se adaptam ao seu fluxo — CRM, gestão de leads e painéis operacionais construídos à medida.",
-    result: "Solução feita para o seu processo",
+      "As dúvidas comuns são respondidas automaticamente. Quando o cliente está pronto, a conversa passa para um vendedor com o histórico completo.",
+    result: "A sua equipa gasta o tempo a fechar negócios, não a triar curiosos.",
     features: [
-      "CRM personalizado para o seu fluxo",
-      "Painel de controlo com indicadores em tempo real",
-      "Sistema de gestão de leads automatizado",
-      "Integração com WhatsApp, e-mail e calendário",
+      "Triagem automática de dúvidas frequentes, preços e prazos",
+      "Filtro de orçamento e urgência antes de chamar a equipa",
+      "Passagem imediata para um vendedor com resumo completo",
+      "Controlo total para assumir a conversa a qualquer momento",
+    ],
+  },
+  {
+    num: "05",
+    icon: Globe,
+    problem: "Site que não traz pedidos",
+    title: "Website que transforma visitas em contactos",
+    description:
+      "Para quem não tem site, ou tem um que ninguém contacta: site rápido, com SEO local e ligação direta ao WhatsApp.",
+    result: "+40% de contactos diretos face a sites genéricos.",
+    features: [
+      "SEO local para aparecer quando procuram no Google",
+      "Design profissional que transmite confiança imediata",
+      "Ligação direta ao WhatsApp e formulário simples",
+      "Carregamento rápido no telemóvel",
     ],
   },
 ];
@@ -69,28 +96,32 @@ export function Services() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#D9531C]">04 · Nossos serviços</p>
+          <p className="lume-eyebrow text-[#D9531C]">04 · O que resolvemos</p>
           <h2 className="mt-4 max-w-3xl font-heading text-3xl leading-[1.15] font-bold text-[#101D35] sm:text-4xl text-balance">
-            Cada serviço é um resultado concreto entregue ao seu negócio
+            Não vendemos tecnologia. Resolvemos cinco problemas concretos do seu atendimento
+            comercial.
           </h2>
         </Reveal>
 
         <Reveal delay={80}>
           <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
-            Não vendemos tecnologia abstrata. Entregamos o que ela produz na prática: mais contactos
-            qualificados, menos tempo desperdiçado e negócios fechados enquanto dorme.
+            Como fazemos: um assistente automático, treinado com a informação da sua empresa, atende
+            e qualifica. Quando a conversa exige uma pessoa, passa para a sua equipa.
           </p>
         </Reveal>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 70}>
+            <Reveal key={s.title} delay={i * 70} className={i === 4 ? "lg:col-span-2" : ""}>
               <div className="group flex h-full flex-col rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 transition-colors duration-200 hover:border-[#101D35]">
-                <div className="flex items-center justify-between">
-                  <div className="flex size-11 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F36B32]">
-                    <s.icon className="size-5" aria-hidden="true" />
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-11 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F36B32] shrink-0">
+                      <s.icon className="size-5" aria-hidden="true" />
+                    </div>
+                    <span className="text-xs font-semibold text-[#D9531C]">{s.problem}</span>
                   </div>
-                  <span className="font-heading text-sm font-extrabold text-[#5B6B8C] tabular-nums">
+                  <span className="font-heading text-sm font-extrabold text-[#5B6B8C] tabular-nums shrink-0">
                     {s.num}
                   </span>
                 </div>
@@ -101,7 +132,11 @@ export function Services() {
 
                 <p className="mt-4 text-xs font-semibold text-[#2E9E6B]">Resultado: {s.result}</p>
 
-                <ul className="mt-5 space-y-2.5 border-t border-[#E7E3D9] pt-5">
+                <ul
+                  className={`mt-5 gap-2.5 border-t border-[#E7E3D9] pt-5 ${
+                    i === 4 ? "grid sm:grid-cols-2" : "space-y-2.5"
+                  }`}
+                >
                   {s.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-[#101D35]">
                       <Check className="size-4 mt-0.5 text-[#F36B32] shrink-0" aria-hidden="true" />
@@ -117,7 +152,7 @@ export function Services() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 font-heading text-sm font-bold text-[#101D35] transition-colors hover:text-[#D9531C]"
                   >
-                    {site.ctaSecond.label}
+                    <span>Quero resolver isto na minha empresa</span>
                     <ArrowUpRight className="size-4" aria-hidden="true" />
                   </a>
                 </div>
@@ -135,11 +170,11 @@ export function Services() {
               </div>
               <div>
                 <h4 className="font-heading text-base font-bold text-[#F5F3EE]">
-                  Já tem um website? Adicione Inteligência Artificial sem começar do zero
+                  Já tem website? Não o refazemos.
                 </h4>
                 <p className="mt-1 text-sm text-[#B8C0D0] max-w-[60ch]">
-                  O Motor ATQA integra-se ao seu site atual em dias — com atendimento automático via
-                  WhatsApp, CRM e dashboard de conversas.
+                  Juntamos o atendimento imediato no WhatsApp, qualificação e marcação de reuniões
+                  ao site que já tem, em dias e sem o tirar do ar.
                 </p>
               </div>
             </div>

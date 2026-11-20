@@ -81,16 +81,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Agentes Digital | Criação de Websites e Agentes de IA em Angola" },
+      { title: "Atendimento 24h no WhatsApp para empresas em Angola | Agentes Digital" },
       {
         name: "description",
         content:
-          "Criação de websites profissionais, agentes de IA para WhatsApp e automação comercial para empresas em Angola. Atendimento 24/7 e qualificação de leads.",
+          "Pare de perder clientes por falta de resposta. Atendimento imediato no WhatsApp e no website, reuniões marcadas e acompanhamento automático para empresas em Luanda e em toda Angola.",
       },
       {
         name: "keywords",
         content:
-          "criação de websites angola, desenvolvimento de sites luanda, agentes de inteligência artificial angola, automação whatsapp empresas, chatbot ia angola, crm angola, automate pro",
+          "atendimento whatsapp empresas angola, responder clientes whatsapp automatico, marcacao automatica reunioes luanda, criacao de websites angola, gestao de contactos crm angola, agentes digital",
       },
       { name: "author", content: "Agentes Digital" },
       {
@@ -101,12 +101,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "geo.placename", content: "Luanda, Angola" },
       {
         property: "og:title",
-        content: "Agentes Digital | Criação de Websites e Agentes de IA em Angola",
+        content: "Atendimento 24h no WhatsApp para empresas em Angola | Agentes Digital",
       },
       {
         property: "og:description",
         content:
-          "Websites profissionais, agentes de IA para WhatsApp e automação de atendimento para empresas em Luanda e em toda Angola.",
+          "Pare de perder clientes por falta de resposta. Atendimento imediato em menos de 10 segundos no WhatsApp e no website, reuniões marcadas e acompanhamento automático em Angola.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://agentes-digital.com/" },
@@ -115,13 +115,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image", content: "https://agentes-digital.com/favicon-512.png" },
       { property: "og:image:width", content: "512" },
       { property: "og:image:height", content: "512" },
-      { property: "og:image:alt", content: "Agentes Digital - Websites e IA em Angola" },
+      {
+        property: "og:image:alt",
+        content: "Agentes Digital - Atendimento 24h e Websites em Angola",
+      },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Agentes Digital | Websites e Agentes de IA em Angola" },
+      {
+        name: "twitter:title",
+        content: "Atendimento 24h no WhatsApp para empresas em Angola | Agentes Digital",
+      },
       {
         name: "twitter:description",
         content:
-          "Transforme o atendimento e aquisição da sua empresa com websites modernos e agentes inteligentes em Angola.",
+          "Pare de perder clientes por falta de resposta. Atendimento imediato no WhatsApp e no website para empresas em Angola.",
       },
       { name: "twitter:image", content: "https://agentes-digital.com/favicon-512.png" },
       { name: "twitter:site", content: "@AgentesDigital" },

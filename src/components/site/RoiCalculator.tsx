@@ -25,7 +25,7 @@ export function RoiCalculator() {
             meses?
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#5B6B8C] leading-[1.65]">
-            Use o simulador abaixo para ver o impacto real — com base nos seus números, não em
+            Use o simulador abaixo para ver o impacto real com base nos seus números, não em
             estimativas genéricas. Cada contacto sem resposta é receita que vai para a concorrência.
           </p>
         </Reveal>
@@ -118,16 +118,14 @@ export function RoiCalculator() {
               <div>
                 <p className="lume-eyebrow text-[#F4C542]">Quanto está a perder por mês?</p>
                 <p className="mt-5 text-xs text-[#B8C0D0]">
-                  Contactos perdidos por falta de resposta:
+                  Contactos que ficam à porta por demora:
                 </p>
                 <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#F36B32] tabular-nums mt-1">
                   {missedContacts}{" "}
-                  <span className="text-sm font-sans font-normal text-[#B8C0D0]">
-                    contactos/mês
-                  </span>
+                  <span className="text-sm font-sans font-normal text-[#B8C0D0]">clientes/mês</span>
                 </p>
 
-                <p className="mt-6 text-xs text-[#B8C0D0]">Receita potencial em risco mensal:</p>
+                <p className="mt-6 text-xs text-[#B8C0D0]">Receita mensal que fica na mesa:</p>
                 <p className="font-heading text-3xl sm:text-4xl font-extrabold text-[#F4C542] tabular-nums mt-1">
                   Kz {fmt(potential)}
                 </p>
@@ -135,10 +133,10 @@ export function RoiCalculator() {
 
               <div className="mt-7 pt-5 border-t border-[#2A3D63] space-y-4">
                 <p className="text-xs leading-relaxed text-[#B8C0D0]">
-                  * Simulação com base nas variáveis informadas. O Motor ATQA responde 100% dos
-                  contactos em menos de 10 segundos — convertendo leads em reuniões qualificadas.{" "}
+                  * Simulação com base nos seus números. Com resposta em menos de 10 segundos e
+                  marcação automática no chat,{" "}
                   <span className="text-[#F5F3EE] font-semibold">
-                    Este valor é recuperável desde o primeiro mês.
+                    este valor pode começar a ser recuperado já no primeiro mês.
                   </span>
                 </p>
                 <a

@@ -5,28 +5,28 @@ import { CTA } from "@/lib/site-config";
 
 const flow = [
   {
-    label: "Cliente interessado",
-    detail: "Alguém manda mensagem às 2h da manhã",
-    tag: "Lead",
-    desc: '"Quero saber o preço do vosso serviço"',
+    label: "O cliente escreve",
+    detail: "Manda mensagem no WhatsApp às 19h ou ao sábado",
+    tag: "Contacto",
+    desc: '"Boa noite, quanto custa o vosso serviço?"',
   },
   {
-    label: "Resposta imediata",
-    detail: "Em menos de 10 segundos, sem ninguém online",
-    tag: "8s",
-    desc: "A IA responde como um consultor humano faria",
+    label: "Resposta em menos de 10s",
+    detail: "Atendimento imediato a qualquer hora, sem ninguém parar",
+    tag: "<10s",
+    desc: "Responde dúvidas iniciais e recolhe o que o cliente precisa",
   },
   {
-    label: "Qualificação automática",
-    detail: "Filtro de orçamento, urgência e perfil",
-    tag: "Filtro",
-    desc: "Só leads qualificados chegam à sua equipa",
+    label: "Filtro de interessados",
+    detail: "Separa curiosos de clientes prontos a avançar",
+    tag: "Triagem",
+    desc: "A sua equipa só fala com quem quer mesmo comprar",
   },
   {
-    label: "Reunião agendada",
-    detail: "O lead agenda direto no chat — sem vai-e-vem",
-    tag: "Conversão",
-    desc: "Consulta marcada no Google Calendar automaticamente",
+    label: "Reunião marcada",
+    detail: "Horário escolhido no próprio chat, sem vai-e-vem",
+    tag: "Agenda",
+    desc: "Cada contacto fica registado e confirmado no calendário",
   },
 ];
 
@@ -50,30 +50,64 @@ export function Hero() {
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <Reveal>
-            <h1 className="font-heading text-[40px] leading-[1.06] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[54px] lg:text-[60px] text-balance">
-              Enquanto sua equipa dorme,{" "}
-              <span className="text-[#D9531C]">o seu negócio continua a fechar vendas.</span>
+            <h1 className="font-heading text-[38px] leading-[1.06] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[50px] lg:text-[56px] text-balance">
+              O cliente escreve no WhatsApp. Ninguém responde.{" "}
+              <span className="text-[#D9531C]">Vai comprar à concorrência.</span>
             </h1>
           </Reveal>
 
-          <Reveal delay={120}>
-            <p className="mt-6 max-w-[60ch] text-base leading-[1.65] text-[#5B6B8C] sm:text-lg">
-              Um cliente envia mensagem às 2h da manhã. Em{" "}
-              <strong className="font-semibold text-[#101D35]">menos de 10 segundos</strong>, o seu
-              website atende, qualifica e agenda uma reunião — sem ninguém da sua equipa tocar num
-              telemóvel.
+          <Reveal delay={100}>
+            <p className="mt-6 max-w-[60ch] text-base leading-[1.65] text-[#101D35] font-medium sm:text-lg">
+              Para empresas em Angola (clínicas, construtoras, escritórios de advocacia,
+              consultoras) que recebem pedidos por WhatsApp e pelo website e não conseguem responder
+              a todos a tempo.
             </p>
           </Reveal>
 
-          <Reveal delay={180}>
-            <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+          <Reveal delay={140}>
+            <p className="mt-3 max-w-[60ch] text-sm leading-[1.65] text-[#5B6B8C] sm:text-base">
+              O seu atendimento passa a responder em{" "}
+              <strong className="font-semibold text-[#101D35]">menos de 10 segundos</strong>, a
+              qualquer hora, marca a reunião e acompanha cada contacto até ao fecho. A sua equipa só
+              fala com quem quer mesmo comprar.
+            </p>
+          </Reveal>
+
+          <Reveal delay={170}>
+            <ul className="mt-6 space-y-2 text-sm text-[#101D35]">
+              <li className="flex items-start gap-2.5">
+                <CheckCircle2
+                  className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Resposta a todos os contactos, também à noite e ao fim de semana</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <CheckCircle2
+                  className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Reunião marcada no próprio chat, sem vai-e-vem de mensagens</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <CheckCircle2
+                  className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Nenhum contacto esquecido: cada um fica registado e acompanhado</span>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
               <a
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                <span>Quero este resultado</span>
+                <span>Quero parar de perder clientes</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
@@ -87,18 +121,16 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={240}>
-            <div className="mt-10 pt-6 border-t border-[#E7E3D9]">
+            <div className="mt-9 pt-6 border-t border-[#E7E3D9]">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] font-medium text-[#5B6B8C]">
                 <span className="font-heading font-bold text-[#101D35] tabular-nums">
-                  +50 empresas em operação
+                  +50 empresas atendidas
                 </span>
                 <span aria-hidden="true">·</span>
-                <span className="tabular-nums">Resposta em &lt;10 segundos</span>
-                <span aria-hidden="true">·</span>
-                <span>Atendimento 24/7/365</span>
+                <span className="tabular-nums">Resposta em menos de 10 segundos</span>
                 <span aria-hidden="true">·</span>
                 <span className="text-[#2E9E6B] font-semibold">
-                  Diagnóstico gratuito (5 vagas/mês)
+                  Diagnóstico gratuito (5 vagas por mês)
                 </span>
               </div>
             </div>
@@ -123,9 +155,9 @@ export function Hero() {
                 </div>
                 <div>
                   <p className="font-heading text-xs font-bold tracking-[0.06em] uppercase text-[#F5F3EE]">
-                    Quando alguém contacta
+                    Quando um cliente escreve
                   </p>
-                  <p className="text-xs text-[#B8C0D0]">Fluxo automático em tempo real</p>
+                  <p className="text-xs text-[#B8C0D0]">Do contacto à reunião marcada</p>
                 </div>
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F4C542] px-3 py-1 font-heading text-[11px] font-bold text-[#101D35] uppercase tracking-wider">
@@ -183,7 +215,7 @@ export function Hero() {
                         <span className="text-[#F5F3EE]">{step.desc}</span>
                         <span className="inline-flex items-center gap-1 shrink-0 text-[#2E9E6B] font-semibold tabular-nums">
                           <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                          8.2s
+                          &lt;10s
                         </span>
                       </div>
                     )}

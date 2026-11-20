@@ -4,39 +4,39 @@ import { Reveal } from "../Reveal";
 const benefits = [
   {
     icon: Clock,
-    title: "Atendimento 24/7",
-    desc: "Respostas automáticas mesmo fora do horário comercial. Enquanto a concorrência dorme, o seu site continua a atender.",
+    title: "Atendimento 24 horas por dia",
+    desc: "Respostas imediatas mesmo à noite, fins de semana e feriados. O cliente nunca fica sem resposta.",
     tag: "Disponibilidade",
   },
   {
     icon: Zap,
-    title: "Respostas em menos de 1 segundo",
-    desc: "Elimina a fila de espera. O visitante não abandona o site por demora — a IA responde na hora, com precisão.",
+    title: "Respostas em menos de 10 segundos",
+    desc: "Acaba com a espera. O visitante recebe resposta na hora em vez de ir falar com a concorrência.",
     tag: "Velocidade",
   },
   {
     icon: Folders,
-    title: "Leads organizados e classificados",
-    desc: "Cada contacto fica registado com qualidade, origem e histórico. Ninguém cai no esquecimento.",
+    title: "Contactos registados e organizados",
+    desc: "Cada pedido fica guardado com nome, origem e histórico. Passa a saber quantos negócios tem em curso.",
     tag: "Organização",
   },
   {
     icon: Send,
-    title: "Follow-up que nunca esquece",
-    desc: "Lembretes automáticos por WhatsApp e e-mail. Garante acompanhamento consistente de todos os leads.",
-    tag: "Acompanhamento",
+    title: "Acompanhamento que não falha",
+    desc: "Lembretes automáticos por WhatsApp e e-mail retomam quem parou de responder.",
+    tag: "Follow-up",
   },
   {
     icon: Users,
-    title: "Equipa foca em leads quentes",
-    desc: "A IA qualifica e filtra. Só chega à equipa comercial quem demonstrou intenção real de compra.",
-    tag: "Eficiência",
+    title: "Equipa só fala com quem quer comprar",
+    desc: "O sistema responde às dúvidas repetidas e entrega à equipa quem já tem interesse real.",
+    tag: "Foco comercial",
   },
   {
     icon: TrendingUp,
-    title: "Processo escalável sem inchar",
-    desc: "10 ou 10.000 visitantes por mês — o sistema absorve o volume sem precisar aumentar a equipa.",
-    tag: "Crescimento",
+    title: "Cresce sem aumentar a equipa",
+    desc: "Receba 50 ou 500 contactos por mês, todos atendidos com a mesma rapidez e critério.",
+    tag: "Escala",
   },
 ];
 
@@ -46,19 +46,19 @@ export function AutomateBenefits() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#F36B32]">Ganhos de eficiência</p>
+            <p className="lume-eyebrow text-[#F36B32]">Benefícios concretos</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-3xl font-extrabold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
-              O que muda na operação quando a IA entra no atendimento.
+              O que muda na sua empresa desde a primeira semana.
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
-              Benefícios reais que a sua equipa sente no primeiro mês de uso — sem exageros, sem
-              promessas vazias.
+              Mais contactos respondidos na hora, mais reuniões confirmadas e menos vendas perdidas
+              por demora.
             </p>
           </Reveal>
         </div>

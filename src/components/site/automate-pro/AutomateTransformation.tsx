@@ -12,14 +12,13 @@ const ANTES_STEPS = [
 
 const COM_STEPS = [
   { label: "Website", detail: "Visitante recebido instantaneamente" },
-  { label: "IA", detail: "Agente inteligente saúda e orienta" },
-  { label: "Atendimento", detail: "Tira dúvidas em menos de 1 segundo" },
-  { label: "Qualificação", detail: "Avalia necessidade, orçamento e prazos" },
-  { label: "CRM", detail: "Regista e organiza os dados no funil" },
-  { label: "Agendamento", detail: "Marca a reunião nos horários livres" },
-  { label: "Follow-up", detail: "Ativa lembretes automáticos multicanal" },
-  { label: "Equipa", detail: "Recebe o lead pronto para fechar" },
-  { label: "Cliente", detail: "Experiência ágil e convertida" },
+  { label: "Atendimento", detail: "Resposta em menos de 10 segundos, 24h" },
+  { label: "Triagem", detail: "Avalia necessidade, orçamento e prazo" },
+  { label: "Registo (CRM)", detail: "Guarda nome, contacto e histórico" },
+  { label: "Marcação", detail: "Cliente escolhe o horário da reunião" },
+  { label: "Lembretes", detail: "Confirmações para reduzir faltas" },
+  { label: "Equipa", detail: "Recebe o contacto pronto para fechar" },
+  { label: "Cliente", detail: "Atendido a tempo e convertido" },
 ];
 
 export function AutomateTransformation() {
@@ -28,20 +27,22 @@ export function AutomateTransformation() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#F36B32]">Transformação operacional</p>
+            <p className="lume-eyebrow text-[#F36B32]">Antes e depois no seu site</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-2xl font-bold text-[#F5F3EE] sm:text-4xl text-balance">
-              O que acontece quando a IA assume o atendimento.
+              O que muda quando o seu site passa a responder na hora.
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
-              Enquanto o modelo manual perde leads por lentidão, o Automate Pro converte em segundos
-              —{" "}
-              <strong className="text-[#F5F3EE]">sem férias, sem esquecimentos, sem folga.</strong>
+              Enquanto o formulário normal deixa o cliente à espera durante horas, o seu atendimento
+              responde em menos de 10 segundos,{" "}
+              <strong className="text-[#F5F3EE]">
+                sem férias, sem esquecimentos, sem horário de fecho.
+              </strong>
             </p>
           </Reveal>
         </div>

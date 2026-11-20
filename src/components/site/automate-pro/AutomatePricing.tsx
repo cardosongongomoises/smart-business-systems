@@ -4,19 +4,16 @@ import { CTA } from "@/lib/site-config";
 import { trackAutomateProEvent } from "./automateAnalytics";
 
 const pricingItems = [
-  "Agente IA configurado para a empresa",
-  "Chat inteligente integrado ao site existente",
-  "Base de conhecimento personalizada",
-  "Qualificação automática de leads",
-  "Integração oficial WhatsApp",
-  "CRM para organização de oportunidades",
-  "Sistema de agendamento automático",
-  "Automação de follow-up pós-atendimento",
-  "Confirmações e lembretes por e-mail",
-  "Transferência transparente para atendente humano",
-  "Monitoramento contínuo de estabilidade",
-  "Manutenção preventiva de rotinas",
-  "Otimizações periódicas de respostas",
+  "Atendimento no site e no WhatsApp oficial em <10 segundos",
+  "Base de conhecimento configurada para a sua empresa",
+  "Qualificação automática de interessados",
+  "Registo e organização de contactos (CRM)",
+  "Marcação automática de reuniões na agenda",
+  "Follow-up automático pós-atendimento",
+  "Confirmações e lembretes antes da reunião",
+  "Passagem com histórico completo para a equipa",
+  "Monitorização contínua de estabilidade",
+  "Ajustes mensais e suporte técnico incluído",
 ];
 
 export function AutomatePricing() {
@@ -43,7 +40,7 @@ export function AutomatePricing() {
 
           <Reveal delay={120}>
             <p className="mt-3 text-sm sm:text-base text-[#B8C0D0]">
-              Um investimento que se paga logo nas primeiras reuniões — com cada lead atendido
+              Um investimento que se paga logo nas primeiras reuniões, com cada lead atendido
               automaticamente.
             </p>
           </Reveal>
@@ -55,7 +52,7 @@ export function AutomatePricing() {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <span className="inline-block rounded-full bg-[#F4C542] px-3 py-1 font-heading text-[11px] font-bold text-[#101D35] uppercase tracking-wider">
-                    Infraestrutura completa
+                    Sem refazer o seu site
                   </span>
                   <h4 className="mt-3 font-heading text-2xl sm:text-3xl font-extrabold uppercase text-[#F5F3EE]">
                     Automate Pro
@@ -72,8 +69,8 @@ export function AutomatePricing() {
               </div>
 
               <p className="mt-4 text-sm text-[#B8C0D0] leading-relaxed">
-                Implementação personalizada da infraestrutura de atendimento e automação sobre o
-                website existente.
+                Para quem já tem website e quer atendimento imediato, marcação de reuniões e
+                acompanhamento de contactos sem o refazer.
               </p>
 
               {/* Price Breakdown */}

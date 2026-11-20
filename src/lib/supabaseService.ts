@@ -53,7 +53,7 @@ export interface Lead {
   channel: "website" | "whatsapp" | "email" | "indicacao" | string;
   status: LeadStatus;
   packageInterest:
-    "Presença" | "Profissional" | "Autoridade" | "Domínio IA" | "Automate Pro" | string;
+    "Presença" | "Profissional" | "Autoridade" | "Operação Completa" | "Automate Pro" | string;
   aiQualified: boolean;
   qualificationScore: number;
   estimatedValue: string;
@@ -142,9 +142,14 @@ export function setLocalLeads(leads: Lead[]) {
  */
 function mapServiceToPackage(servico: string) {
   const s = servico.toLowerCase();
-  if (s.includes("ia") || s.includes("agente")) {
+  if (
+    s.includes("ia") ||
+    s.includes("agente") ||
+    s.includes("operacao") ||
+    s.includes("operação")
+  ) {
     return {
-      packageInterest: "Domínio IA" as const,
+      packageInterest: "Operação Completa" as const,
       estimatedValue: "Kz 700.000",
       qualificationScore: 88,
     };
@@ -158,7 +163,7 @@ function mapServiceToPackage(servico: string) {
   }
   if (s.includes("sistema")) {
     return {
-      packageInterest: "Domínio IA" as const,
+      packageInterest: "Operação Completa" as const,
       estimatedValue: "Kz 700.000",
       qualificationScore: 92,
     };

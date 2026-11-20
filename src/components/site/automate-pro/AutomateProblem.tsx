@@ -55,7 +55,7 @@ export function AutomateProblem() {
           <Reveal delay={120}>
             <p className="mt-4 max-w-[65ch] text-base text-[#B8C0D0] leading-relaxed">
               O website atrai visitantes, mas sem atendimento imediato e automação, cada lead
-              torna-se uma oportunidade perdida — independentemente da qualidade do design.
+              torna-se uma oportunidade perdida, independentemente da qualidade do design.
             </p>
           </Reveal>
         </div>

@@ -12,9 +12,9 @@ export const LOCATION = "Luanda, Angola";
 export const site = {
   ctaSecond: {
     href: whatsappLink(
-      "Olá. Quero que a minha empresa comece a fechar negócios enquanto dorme. Gostaria de falar com um especialista.",
+      "Olá. Estou a perder clientes por demora no atendimento e quero falar com um especialista.",
     ),
-    label: "Falar com especialista",
+    label: "Quero parar de perder clientes",
   },
   whatsapp: {
     number: WHATSAPP_DISPLAY,
@@ -25,30 +25,30 @@ export const site = {
 
 export const CTA = {
   specialist: whatsappLink(
-    "Olá. Quero que a minha empresa comece a fechar negócios enquanto dorme. Gostaria de falar com um especialista.",
+    "Olá. Estou a perder clientes por demora no atendimento e quero falar com um especialista.",
   ),
   diagnostic: whatsappLink(
-    "Olá. Quero descobrir quantos leads a minha empresa está perdendo todos os dias. Gostaria de um diagnóstico gratuito.",
+    "Olá. Quero o meu diagnóstico gratuito para descobrir quantos clientes estou a perder por demora no atendimento.",
   ),
   meeting: whatsappLink(
-    "Olá. Quero ver como outras empresas em Angola estão a fechar negócios 24/7. Agende uma demonstração para mim.",
+    "Olá. Quero ver como o atendimento imediato pode parar a perda de clientes na minha empresa.",
   ),
   planPresenca: whatsappLink(
-    "Olá. Quero que a minha empresa tenha presença digital profissional e comece a receber contactos automaticamente. Pacote Presença.",
+    "Olá. Quero um site que gere contactos para a minha empresa. Tenho interesse no plano Presença.",
   ),
   planProfissional: whatsappLink(
-    "Olá. Quero que o meu website atenda, qualifique e agende reuniões automaticamente. Pacote Profissional — quero este.",
+    "Olá. Quero parar de perder pedidos no WhatsApp e marcar reuniões automaticamente. Tenho interesse no plano Profissional.",
   ),
   planAutoridade: whatsappLink(
-    "Olá. Quero dominar o Google, automatizar o atendimento e escalar vendas. Pacote Autoridade.",
+    "Olá. Quero acompanhar e fechar mais contactos automaticamente. Tenho interesse no plano Autoridade.",
   ),
   planDominioIA: whatsappLink(
-    "Olá. Quero uma operação digital completa — website, IA, automação, CRM. Pacote Domínio IA. Falar com especialista.",
+    "Olá. Quero organizar toda a operação comercial da minha empresa. Tenho interesse no plano Operação Completa.",
   ),
   automatePro: whatsappLink(
-    "Olá. Já tenho website e quero que ele comece a fechar negócios sozinho. Quero o AUTOMATE PRO.",
+    "Olá. Já tenho website e quero ligar o atendimento automático sem o refazer. Tenho interesse no Automate Pro.",
   ),
   automateDemo: whatsappLink(
-    "Olá. Quero ver o AUTOMATE PRO a fechar negócios em tempo real. Agende uma demonstração.",
+    "Olá. Já tenho website e quero ver na prática como o atendimento imediato funciona no Automate Pro.",
   ),
 };

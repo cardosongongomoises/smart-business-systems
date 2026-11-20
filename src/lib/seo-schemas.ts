@@ -8,7 +8,7 @@ export const organizationSchema = {
   logo: "https://agentes-digital.com/favicon-512.png",
   image: "https://agentes-digital.com/favicon-512.png",
   description:
-    "Especialistas em criação de websites profissionais, agentes de Inteligência Artificial para WhatsApp e automação comercial para empresas em Angola.",
+    "Atendimento imediato no WhatsApp e no website em menos de 10 segundos, marcação automática de reuniões e acompanhamento comercial para empresas em Angola.",
   telephone: "+244934024904",
   email: "agentesdigital.suporte@gmail.com",
   priceRange: "Kz 125.000 - Kz 700.000",
@@ -32,42 +32,42 @@ export const organizationSchema = {
   sameAs: ["https://instagram.com/agentesdigital", "https://linkedin.com/company/agentes-digital"],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Serviços Digitais e Automação com IA",
+    name: "Atendimento Comercial 24h e Websites para Empresas",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Criação de Websites e Landing Pages",
+          name: "Atendimento Imediato no WhatsApp e Website",
           description:
-            "Websites profissionais responsivos e otimizados para conversão e SEO local em Angola.",
+            "Resposta em menos de 10 segundos, qualificação de pedidos e marcação automática de reuniões para empresas em Angola.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Agentes de IA para Atendimento WhatsApp",
+          name: "Websites que Transformam Visitas em Contactos",
           description:
-            "Assistentes inteligentes que atendem, tiram dúvidas e qualificam clientes 24/7 no WhatsApp.",
+            "Websites rápidos com SEO local e ligação direta ao WhatsApp para gerar pedidos de orçamento.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Automate Pro: Automação sobre Website Existente",
+          name: "Automate Pro: Atendimento Imediato em Website Existente",
           description:
-            "Camada de inteligência e qualificação conectando site existente ao WhatsApp, CRM e agendamento.",
+            "Ligação de atendimento automático no WhatsApp, qualificação e marcação de reuniões ao site que a empresa já tem, sem o refazer.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Sistemas Web e Gestão Comercial",
+          name: "Registo e Acompanhamento Comercial",
           description:
-            "Dashboards, CRM integrado e automação de follow-up para equipas de vendas em Angola.",
+            "Centralização de contactos, histórico completo, lembretes de reunião e acompanhamento automático para equipas de vendas em Angola.",
         },
       },
     ],
@@ -80,7 +80,8 @@ export const websiteSchema = {
   "@id": "https://agentes-digital.com/#website",
   url: "https://agentes-digital.com",
   name: "Agentes Digital",
-  description: "Websites, Inteligência Artificial, Automação e Sistemas Digitais em Angola",
+  description:
+    "Atendimento 24h no WhatsApp, marcação automática de reuniões e websites comerciais para empresas em Angola",
   inLanguage: "pt-AO",
   publisher: {
     "@id": "https://agentes-digital.com/#organization",
@@ -93,50 +94,58 @@ export const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "O que é um agente de inteligência artificial para atendimento?",
+      name: "Preciso de saber programar?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "É um assistente virtual inteligente treinado com as informações específicas da sua empresa. Ele atende no WhatsApp e no website 24 horas por dia, entende a intenção do cliente, tira dúvidas, qualifica a oportunidade e agenda reuniões automaticamente.",
+        text: "Não. Tratamos da configuração, do WhatsApp, do registo de contactos e do painel. A sua equipa usa como usa o WhatsApp.",
       },
     },
     {
       "@type": "Question",
-      name: "Se a minha empresa já tem um website, preciso criar outro do zero?",
+      name: "Quanto tempo demora a ver resultados?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Não. Com a solução AUTOMATE PRO, instalamos uma camada inteligente de chat, qualificação e automação diretamente sobre o seu website atual, integrando-o ao WhatsApp e ao CRM sem precisar reconstruir o site.",
+        text: "O sistema arranca em dias. No primeiro mês mede-se o tempo de resposta em menos de 10 segundos e quantos contactos passaram a reunião marcada.",
       },
     },
     {
       "@type": "Question",
-      name: "Quanto tempo demora para implementar um website ou automação com IA?",
+      name: "Funciona com o WhatsApp que já uso?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A entrega varia entre 7 a 21 dias úteis dependendo da complexidade do plano escolhido, incluindo design, engenharia de prompt, testes e integração com o WhatsApp.",
+        text: "Ligamos ao WhatsApp da empresa através da API oficial da Meta para responder automaticamente, qualificar contactos e marcar reuniões.",
       },
     },
     {
       "@type": "Question",
-      name: "A minha equipa pode intervir no atendimento a qualquer momento?",
+      name: "E se houver um problema?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sim. O sistema possui transferência humana transparente. A equipa recebe notificações em tempo real e pode assumir o chat no WhatsApp ou painel instantaneamente.",
+        text: "Monitorizamos o sistema de forma contínua e tem suporte técnico incluído. Quando uma conversa exige uma pessoa, passa para a sua equipa com o histórico completo.",
       },
     },
     {
       "@type": "Question",
-      name: "A inteligência artificial funciona diretamente no WhatsApp em Angola?",
+      name: "Quanto custa realmente?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sim, conectamos diretamente com a infraestrutura oficial de WhatsApp (Cloud API), permitindo que o número da sua empresa atenda clientes com inteligência artificial, envie lembretes e qualifique potenciais compradores 24 horas por dia.",
+        text: "Os planos começam em 125.000 Kz de implementação (20.000 Kz ao mês) no plano Presença, 250.000 Kz (50.000 Kz ao mês) no plano Profissional, 450.000 Kz (85.000 Kz ao mês) no Autoridade e 700.000 Kz (150.000 Kz ao mês) na Operação Completa, além do Automate Pro (300.000 Kz e 65.000 Kz ao mês). Só os custos de plataformas de terceiros variam com a utilização.",
       },
     },
     {
       "@type": "Question",
-      name: "Quais são os pacotes de websites e automação disponíveis?",
+      name: "Preciso de mudar tudo o que já tenho?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Temos 4 pacotes estruturados em Kwanzas: Presença (Kz 125.000), Profissional (Kz 250.000, o mais escolhido), Autoridade (Kz 450.000) e Domínio IA (Kz 700.000), além da solução AUTOMATE PRO para empresas que já possuem website.",
+        text: "Não. Se já tem website, acrescentamos o atendimento automático por cima com o Automate Pro, sem migração e sem o tirar do ar.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "E se não gostar do resultado?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Tem 30 dias de garantia. Se não entregarmos o que prometemos, devolvemos 100% do investimento.",
       },
     },
   ],

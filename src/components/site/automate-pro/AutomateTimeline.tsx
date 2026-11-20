@@ -22,15 +22,15 @@ const timelineSteps = [
     n: "02",
     name: "Conversar",
     icon: MessageCircle,
-    desc: "A IA inicia o atendimento.",
-    detail: "Interação instantânea com mensagem contextual.",
+    desc: "Atendimento imediato em <10s.",
+    detail: "Resposta automática clara, a qualquer hora do dia ou da noite.",
   },
   {
     n: "03",
     name: "Entender",
     icon: BrainCircuit,
-    desc: "A IA identifica a necessidade.",
-    detail: "Compreensão da necessidade, volume e segmento do negócio.",
+    desc: "Identifica o que o cliente procura.",
+    detail: "Compreensão do serviço pretendido, urgência e perfil do cliente.",
   },
   {
     n: "04",
@@ -75,19 +75,19 @@ export function AutomateTimeline() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="lume-eyebrow text-[#F36B32]">Ciclo completo de atendimento</p>
+            <p className="lume-eyebrow text-[#F36B32]">Do contacto ao negócio fechado</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h3 className="mt-4 font-heading text-2xl font-bold text-[#F5F3EE] sm:text-4xl leading-tight text-balance">
-              O fluxo estruturado do Automate Pro
+              O caminho de cada pedido sem esperas nem esquecimentos
             </h3>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-3 max-w-[65ch] text-sm sm:text-base text-[#B8C0D0]">
-              Cada etapa é automatizada. Do clique do visitante ao contrato assinado —{" "}
-              <strong className="text-[#F5F3EE]">o sistema nunca para.</strong>
+              Do clique no seu website à reunião confirmada na agenda:{" "}
+              <strong className="text-[#F5F3EE]">cada contacto é acompanhado até ao fecho.</strong>
             </p>
           </Reveal>
         </div>

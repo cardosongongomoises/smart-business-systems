@@ -14,44 +14,44 @@ const scenarioConsultoria: Message[] = [
   { from: "cliente", text: "Olá, gostaria de agendar uma reunião.", time: "14:20" },
   {
     from: "ia",
-    text: "Claro. Posso ajudar. Qual serviço procura?",
+    text: "Olá! Com certeza. Qual serviço da nossa empresa procura neste momento?",
     time: "14:20",
-    badge: "Resposta em 0.8s",
+    badge: "Resposta em <10s",
   },
   { from: "cliente", text: "Consultoria empresarial.", time: "14:21" },
   {
     from: "ia",
-    text: "Perfeito. Tenho disponibilidade amanhã às 10h ou às 15h. Qual horário prefere?",
+    text: "Perfeito. Temos horários livres amanhã às 10h ou às 15h. Qual prefere?",
     time: "14:21",
-    badge: "Calendário consultado",
+    badge: "Agenda verificada",
   },
   { from: "cliente", text: "15h.", time: "14:21" },
   {
     from: "ia",
-    text: "Reunião agendada para amanhã às 15h. Enviarei a confirmação por WhatsApp e e-mail.",
+    text: "Reunião marcada para amanhã às 15h. Já enviei a confirmação no WhatsApp e e-mail.",
     time: "14:22",
-    badge: "Sincronizado com CRM & Google Calendar",
+    badge: "Registado e confirmado",
   },
 ];
 
 const scenarioAutomacao: Message[] = [
   {
     from: "cliente",
-    text: "Vocês conseguem automatizar o nosso WhatsApp comercial?",
-    time: "10:04",
+    text: "Boa noite, quanto custa o atendimento automático para o nosso WhatsApp?",
+    time: "21:14",
   },
   {
     from: "ia",
-    text: "Sim! Integramos agentes inteligentes para qualificar leads, responder dúvidas e agendar reuniões diretamente no seu número oficial.",
-    time: "10:04",
-    badge: "Detecção de intenção",
+    text: "Boa noite! Posso ajudar já. Depende se já têm website ou se precisam de um site novo. Já têm website ativo?",
+    time: "21:14",
+    badge: "Ativo fora do expediente",
   },
-  { from: "cliente", text: "E se o cliente quiser falar com um atendente?", time: "10:05" },
+  { from: "cliente", text: "Sim, já temos site, mas quero falar com um comercial.", time: "21:15" },
   {
     from: "ia",
-    text: "O agente transfere a conversa imediatamente com o resumo de tudo o que foi falado.",
-    time: "10:05",
-    badge: "Encaminhamento Humano",
+    text: "Sem problema. Passei o seu pedido e o resumo desta conversa para um especialista continuar consigo.",
+    time: "21:15",
+    badge: "Passagem para a equipa",
   },
 ];
 
@@ -97,21 +97,21 @@ export function AIAgent() {
       <div className="mx-auto grid w-full max-w-[1200px] items-center gap-12 lg:gap-14 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
           <Reveal>
-            <p className="lume-eyebrow text-[#D9531C]">Agentes de Inteligência Artificial</p>
+            <p className="lume-eyebrow text-[#D9531C]">Como fazemos</p>
           </Reveal>
 
           <Reveal delay={60}>
             <h2 className="mt-4 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
-              O seu próximo colaborador corporativo pode ser uma{" "}
-              <span className="text-[#D9531C]">Inteligência Artificial.</span>
+              Atendimento que responde, qualifica e{" "}
+              <span className="text-[#D9531C]">marca a reunião por si.</span>
             </h2>
           </Reveal>
 
           <Reveal delay={120}>
             <p className="mt-5 max-w-xl text-base leading-[1.65] text-[#5B6B8C]">
-              Um agente virtual corporativo treinado exclusivamente com as diretrizes e dados da sua
-              empresa. Atende no WhatsApp e na web, responde dúvidas com precisão, qualifica
-              oportunidades e agenda reuniões no calendário da sua equipa.
+              Um assistente automático, treinado com a informação da sua empresa, atende no WhatsApp
+              e no website a qualquer hora, responde às dúvidas comuns e marca a reunião na agenda.
+              Quando a conversa exige uma pessoa, passa para a sua equipa com o histórico completo.
             </p>
           </Reveal>
 
@@ -121,10 +121,10 @@ export function AIAgent() {
                 <div className="flex items-center gap-2 text-[#D9531C]">
                   <Zap className="size-4" aria-hidden="true" />
                   <span className="font-heading text-xl font-extrabold text-[#101D35] tabular-nums">
-                    0.8s
+                    &lt;10s
                   </span>
                 </div>
-                <p className="mt-1.5 text-xs text-[#5B6B8C]">Tempo médio de resposta</p>
+                <p className="mt-1.5 text-xs text-[#5B6B8C]">Resposta ao primeiro contacto</p>
               </div>
               <div className="rounded-[12px] border border-[#E7E3D9] bg-[#FFFFFF] p-5">
                 <div className="flex items-center gap-2 text-[#2E9E6B]">
@@ -133,7 +133,7 @@ export function AIAgent() {
                     24 / 7 / 365
                   </span>
                 </div>
-                <p className="mt-1.5 text-xs text-[#5B6B8C]">Disponibilidade ininterrupta</p>
+                <p className="mt-1.5 text-xs text-[#5B6B8C]">Noites, fins de semana e feriados</p>
               </div>
             </div>
           </Reveal>
@@ -146,14 +146,14 @@ export function AIAgent() {
                 rel="noopener noreferrer"
                 className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                <span>Falar com um especialista</span>
+                <span>Quero parar de perder clientes</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="#canais"
                 className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                <span>Ver canais de atendimento</span>
+                <span>Ver canais atendidos</span>
               </a>
             </div>
           </Reveal>
@@ -179,15 +179,13 @@ export function AIAgent() {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-heading text-xs font-bold uppercase tracking-wider text-[#F5F3EE]">
-                      Agente Digital IA
+                      Atendimento Automático
                     </p>
                     <span className="rounded-full bg-[#F4C542] px-2 py-0.5 font-heading text-[10px] font-bold text-[#101D35] tracking-wider uppercase">
                       ONLINE
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#B8C0D0]">
-                    Atendimento corporativo · Agentes Digital
-                  </p>
+                  <p className="text-[11px] text-[#B8C0D0]">Exemplo real de resposta e marcação</p>
                 </div>
               </div>
 
@@ -202,7 +200,7 @@ export function AIAgent() {
                       : "text-[#B8C0D0] hover:text-[#F5F3EE]"
                   }`}
                 >
-                  Agendamento
+                  Marcação
                 </button>
                 <button
                   type="button"
@@ -213,7 +211,7 @@ export function AIAgent() {
                       : "text-[#B8C0D0] hover:text-[#F5F3EE]"
                   }`}
                 >
-                  WhatsApp
+                  Fora de hora
                 </button>
               </div>
             </div>

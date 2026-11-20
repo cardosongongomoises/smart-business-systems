@@ -1,59 +1,38 @@
 import { Reveal } from "./Reveal";
 import { site } from "@/lib/site-config";
-import {
-  ArrowRight,
-  CheckCircle2,
-  XCircle,
-  TrendingUp,
-  Clock,
-  Users,
-  BarChart3,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, XCircle, Building2, Stethoscope, Scale } from "lucide-react";
 
-const beforeItems = [
-  "Leads que enviam WhatsApp e nunca recebem resposta",
-  "Equipa sobrecarregada com perguntas repetitivas",
-  "Reuniões marcadas que o cliente não confirma",
-  "Zero visibilidade sobre quantos leads existem",
-  "Concorrência a fechar negócios que eram seus",
+const forWhoItems = [
+  "Recebe pedidos por WhatsApp, e-mail ou website e nem sempre consegue responder logo",
+  "A sua equipa gasta o dia a responder às mesmas perguntas sobre preços, horários e localização",
+  "Não sabe ao certo quantos contactos recebeu no mês nem quantos viraram cliente",
+  "Perde oportunidades à noite, ao fim de semana ou quando está em reunião",
 ];
 
-const afterItems = [
-  "Cada lead atendido em menos de 10 segundos",
-  "Equipa focada em negócios que fecham contratos",
-  "Reuniões agendadas automaticamente com confirmação",
-  "Dashboard com cada lead rastreado no CRM",
-  "Presença digital que converte visitantes em clientes",
+const notForWhoItems = [
+  "Ainda não tem o seu serviço e preço definidos",
+  "Não tem ninguém disponível para fechar as reuniões que o sistema marcar",
+  "Procura apenas curiosidades técnicas em vez de resolver o atendimento comercial",
 ];
 
-const metrics = [
+const sectorExamples = [
   {
-    icon: Clock,
-    label: "Tempo de resposta",
-    before: "2-24h",
-    after: "<10 seg",
-    improvement: "500x mais rápido",
+    icon: Stethoscope,
+    sector: "Clínicas e Saúde",
+    headline: "O paciente escreve a pedir consulta. Ninguém responde. Marca noutra clínica.",
+    outcome: "Resposta imediata e consulta confirmada com lembretes antes da hora.",
   },
   {
-    icon: Users,
-    label: "Leads processados/dia",
-    before: "5-10",
-    after: "Ilimitados",
-    improvement: "Sem teto",
+    icon: Building2,
+    sector: "Construtoras e Imobiliárias",
+    headline: "O interessado pergunta pelo imóvel. Ninguém responde. Visita outro empreendimento.",
+    outcome: "Qualificação do perfil e visita agendada em minutos com o comercial certo.",
   },
   {
-    icon: BarChart3,
-    label: "Taxa de conversão",
-    before: "2-5%",
-    after: "15-25%",
-    improvement: "+400%",
-  },
-  {
-    icon: TrendingUp,
-    label: "Reuniões agendadas/mês",
-    before: "3-5",
-    after: "15-25",
-    improvement: "+400%",
+    icon: Scale,
+    sector: "Advocacia e Consultorias",
+    headline: "O cliente pede uma reunião. Ninguém responde. Contrata outro escritório.",
+    outcome: "Triagem do caso e agendamento direto na agenda, sem depender da recepção.",
   },
 ];
 
@@ -66,65 +45,33 @@ export function Benefits() {
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <div className="max-w-3xl">
-            <p className="lume-eyebrow text-[#D9531C]">02 · A transformação</p>
+            <p className="lume-eyebrow text-[#D9531C]">02 · Para quem é</p>
             <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-bold text-[#101D35] leading-[1.15] text-balance">
-              O que muda quando o seu negócio passa a atender e fechar 24/7
+              Feito para empresários que sabem que perdem pedidos, mas ainda não sabem quantos
             </h2>
             <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
-              Não vendemos ferramentas soltas — entregamos operação previsível. Veja a diferença
-              entre perder oportunidades por demora e convertê-las automaticamente.
+              Não queremos impressionar com tecnologia. Queremos garantir que cada cliente que
+              procura a sua empresa é atendido na hora e encaminhado para o fecho.
             </p>
           </div>
         </Reveal>
 
-        {/* Before / After */}
+        {/* Qualification: For who / Not for who */}
         <Reveal delay={80}>
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {/* Before */}
-            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
-                  <span className="font-heading text-xs font-bold tracking-wider text-[#D64545] uppercase">
-                    Antes do sistema
-                  </span>
-                </div>
-                <h3 className="font-heading text-lg font-bold text-[#101D35]">
-                  Enquanto a sua equipa dorme, os seus leads fogem
-                </h3>
-                <ul className="mt-6 space-y-3">
-                  {beforeItems.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-[#5B6B8C]">
-                      <XCircle
-                        className="size-4 mt-0.5 shrink-0 text-[#D64545]"
-                        aria-hidden="true"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[#E7E3D9]">
-                <p className="text-xs font-semibold text-[#D64545]">
-                  Resultado: receita que vai para a concorrência todos os meses
-                </p>
-              </div>
-            </div>
-
-            {/* After */}
             <div className="rounded-[16px] border border-[#101D35] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="size-5 text-[#2E9E6B]" aria-hidden="true" />
                   <span className="font-heading text-xs font-bold tracking-wider text-[#F4C542] uppercase">
-                    Depois do sistema
+                    É para si se
                   </span>
                 </div>
                 <h3 className="font-heading text-lg font-bold text-[#F5F3EE]">
-                  O seu negócio trabalha enquanto você descansa
+                  A sua empresa já recebe pedidos, mas perde vendas por demora
                 </h3>
-                <ul className="mt-6 space-y-3">
-                  {afterItems.map((item) => (
+                <ul className="mt-6 space-y-3.5">
+                  {forWhoItems.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm text-[#F5F3EE]">
                       <CheckCircle2
                         className="size-4 mt-0.5 shrink-0 text-[#2E9E6B]"
@@ -137,38 +84,70 @@ export function Benefits() {
               </div>
               <div className="mt-6 pt-4 border-t border-[#2A3D63]">
                 <p className="text-xs font-semibold text-[#F4C542]">
-                  Resultado: leads convertidos, reuniões agendadas, receita a crescer
+                  Resultado: atendimento em menos de 10 segundos e agenda preenchida sem esforço
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
+                  <span className="font-heading text-xs font-bold tracking-wider text-[#D64545] uppercase">
+                    Não é para si se
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg font-bold text-[#101D35]">
+                  Preferimos ser diretos antes de avançar para uma conversa
+                </h3>
+                <ul className="mt-6 space-y-3.5">
+                  {notForWhoItems.map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-[#5B6B8C]">
+                      <XCircle
+                        className="size-4 mt-0.5 shrink-0 text-[#D64545]"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#E7E3D9]">
+                <p className="text-xs font-semibold text-[#5B6B8C]">
+                  O nosso sistema gera reuniões reais. Precisa de alguém preparado para fechar.
                 </p>
               </div>
             </div>
           </div>
         </Reveal>
 
-        {/* Metrics */}
+        {/* Sector scenarios */}
         <Reveal delay={140}>
           <div className="mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
             <h3 className="font-heading text-xl font-bold text-[#101D35] text-center">
-              Números comparativos da operação
+              Como este problema acontece no seu sector
             </h3>
-            <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {metrics.map((m) => (
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              {sectorExamples.map((s) => (
                 <div
-                  key={m.label}
-                  className="text-center rounded-[12px] border border-[#E7E3D9] bg-[#F5F3EE] p-5"
+                  key={s.sector}
+                  className="rounded-[12px] border border-[#E7E3D9] bg-[#F5F3EE] p-5 flex flex-col justify-between"
                 >
-                  <div className="mx-auto flex size-10 items-center justify-center rounded-full bg-[#101D35] text-[#F4C542]">
-                    <m.icon className="size-5" aria-hidden="true" />
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#101D35] text-[#F4C542]">
+                        <s.icon className="size-4" aria-hidden="true" />
+                      </span>
+                      <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#D9531C]">
+                        {s.sector}
+                      </span>
+                    </div>
+                    <p className="mt-4 font-heading text-sm font-bold text-[#101D35] leading-snug">
+                      {s.headline}
+                    </p>
                   </div>
-                  <p className="mt-3 text-xs font-medium text-[#5B6B8C]">{m.label}</p>
-                  <div className="mt-2 flex items-center justify-center gap-2 tabular-nums">
-                    <span className="text-sm text-[#D64545] line-through">{m.before}</span>
-                    <ArrowRight className="size-3 text-[#5B6B8C]" aria-hidden="true" />
-                    <span className="font-heading text-lg font-extrabold text-[#101D35]">
-                      {m.after}
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-xs font-semibold text-[#2E9E6B] tabular-nums">
-                    {m.improvement}
+                  <p className="mt-4 pt-3 border-t border-[#E7E3D9] text-xs font-medium text-[#2E9E6B]">
+                    Com o sistema: {s.outcome}
                   </p>
                 </div>
               ))}
@@ -185,11 +164,11 @@ export function Benefits() {
               rel="noopener noreferrer"
               className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm"
             >
-              <span>Quero estes resultados</span>
+              <span>Quero parar de perder clientes</span>
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
             <p className="mt-3 text-xs text-[#5B6B8C]">
-              Diagnóstico gratuito · Apenas 5 empresas/mês
+              Diagnóstico gratuito · Apenas 5 empresas por mês
             </p>
           </div>
         </Reveal>
