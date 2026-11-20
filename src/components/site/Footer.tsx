@@ -137,12 +137,6 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-[#2A3D63] pt-6 text-center text-xs text-[#B8C0D0] sm:flex-row sm:text-left">
           <p>© 2026 Agentes Digital. Todos os direitos reservados.</p>
-          <a
-            href="mailto:agentesdigital.suporte@gmail.com"
-            className="font-medium text-[#F4C542] hover:underline"
-          >
-            agentesdigital.suporte@gmail.com
-          </a>
           <p className="font-heading text-[11px] font-semibold uppercase tracking-wider">
             Sistemas Digitais Corporativos
           </p>
