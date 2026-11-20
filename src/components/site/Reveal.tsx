@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 export function Reveal({
   children,
@@ -12,35 +12,53 @@ export function Reveal({
   as?: "div" | "li" | "section" | "article";
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || typeof window === "undefined") return;
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || typeof el.animate !== "function") return;
+
+    const rect = el.getBoundingClientRect();
+    // Elements already in or above the viewport stay immediately visible without hiding
+    if (rect.top <= window.innerHeight * 0.95) return;
+
+    if (typeof IntersectionObserver !== "function") return;
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            setVisible(true);
             io.disconnect();
+            el.animate(
+              [
+                { opacity: 0, transform: "translateY(8px)" },
+                { opacity: 1, transform: "translateY(0)" },
+              ],
+              {
+                duration: 260,
+                delay: Math.min(delay, 200),
+                easing: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+                fill: "backwards",
+              },
+            );
           }
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
+      { threshold: 0, rootMargin: "40px 0px -20px 0px" },
     );
+
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [delay]);
 
   const Component = Tag as "div";
 
   return (
-    <Component
-      ref={ref}
-      data-visible={visible}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`reveal ${className}`}
-    >
+    <Component ref={ref} data-visible="true" className={`reveal ${className}`}>
       {children}
     </Component>
   );
