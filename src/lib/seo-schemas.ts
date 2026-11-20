@@ -9,8 +9,8 @@ export const organizationSchema = {
   image: "https://agentes-digital.com/favicon-512.png",
   description:
     "Especialistas em criação de websites profissionais, agentes de Inteligência Artificial para WhatsApp e automação comercial para empresas em Angola.",
-  telephone: "+244941647752",
-  email: "contacto@agentes-digital.com",
+  telephone: "+244934024904",
+  email: "agentesdigital.suporte@gmail.com",
   priceRange: "Kz 125.000 - Kz 700.000",
   currenciesAccepted: "AOA",
   paymentAccepted: "Transferência Bancária, Multicaixa Express",

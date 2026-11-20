@@ -1,7 +1,7 @@
-export const WHATSAPP_NUMBER = "244941647752";
-export const WHATSAPP_DISPLAY = "+244 941 647 752";
+export const WHATSAPP_NUMBER = "244934024904";
+export const WHATSAPP_DISPLAY = "+244 934 024 904";
 export const DOMAIN = "agentes-digital.com";
-export const EMAIL = "contacto@agentes-digital.com";
+export const EMAIL = "agentesdigital.suporte@gmail.com";
 
 export function whatsappLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
