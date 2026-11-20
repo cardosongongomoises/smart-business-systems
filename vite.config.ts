@@ -13,15 +13,7 @@ export default defineConfig({
     server: { entry: "server" },
     prerender: {
       enabled: true,
-      routes: [
-        "/",
-        "/operacoes",
-        "/admin",
-        "/privacidade",
-        "/termos",
-        "/politica-de-privacidade",
-        "/termos-de-servico",
-      ],
+      routes: ["/", "/privacidade", "/termos", "/politica-de-privacidade", "/termos-de-servico"],
     },
   },
   vite: {
