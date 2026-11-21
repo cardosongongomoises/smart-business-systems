@@ -1,6 +1,6 @@
 {
   "name": "Agentes Digital",
-  "description": "Criação de Websites, Agentes de Inteligência Artificial e Automação Comercial para empresas em Angola.",
+  "description": "Implementação de inteligência artificial e automatização de processos empresariais para empresas em Angola.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

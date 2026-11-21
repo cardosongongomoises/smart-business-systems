@@ -8,50 +8,68 @@ import {
   MessageSquareX,
   Shuffle,
   AlertCircle,
+  CalendarClock,
+  FileSpreadsheet,
+  BarChart3,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const flow = [
+const dailyFlow = [
   {
     icon: MessageSquare,
-    title: "O cliente escreve às 19h ou ao sábado",
-    text: "Ou enquanto a sua equipa está ocupada numa reunião. Tem interesse real e quer uma resposta rápida.",
-    status: "À espera",
+    title: "O cliente escreve quando precisa",
+    text: "Envia mensagem no WhatsApp ou preenche o formulário fora de horas ou enquanto a equipa está em reunião.",
+    status: "Contacto iniciado",
   },
   {
     icon: Clock,
-    title: "Passam 5 minutos. Depois meia hora.",
-    text: "Ninguém responde. Em Angola, muitas empresas demoram entre 2 e 24 horas a responder no WhatsApp.",
-    status: "A procurar alternativa",
+    title: "A resposta fica para mais tarde",
+    text: "Entre tarefas internas, chamadas e atendimento presencial, passam minutos ou horas até alguém responder.",
+    status: "Sem retorno imediato",
   },
   {
     icon: LogOut,
-    title: "Escreve a outro fornecedor",
-    text: "Quem responde primeiro fica com o cliente. A sua empresa ficou na lista, mas a venda já não é sua.",
-    status: "Sem deixar rasto",
+    title: "O pedido esfria sem deixar rasto",
+    text: "Quando finalmente respondem, o interessado já falou com outra empresa ou perdeu a urgência inicial.",
+    status: "Oportunidade perdida",
   },
 ];
 
-const silentLosses = [
+const operationalProblems = [
   {
     icon: Clock,
-    title: "Respondem tarde",
-    text: "O cliente escreve quando a equipa não está disponível e procura o concorrente seguinte.",
+    title: "1. Demora no primeiro contacto",
+    text: "Pedidos que chegam no WhatsApp ou no site ficam à espera enquanto a equipa resolve o expediente.",
   },
   {
     icon: MessageSquareX,
-    title: "A equipa repete as mesmas respostas",
-    text: "Preços, horários, localização: o dia inteiro, em vez de fechar negócios.",
+    title: "2. Perguntas repetitivas todos os dias",
+    text: "Preços base, localização, horários e documentos consomem tempo que devia ir para fechar propostas.",
   },
   {
     icon: Shuffle,
-    title: "Os contactos ficam espalhados",
-    text: "WhatsApp, e-mail e formulários soltos. Ninguém sabe quantos são nem em que ponto estão.",
+    title: "3. Contactos espalhados sem histórico",
+    text: "Conversas em vários telemóveis, e-mails e folhas soltas impedem saber quem já foi acompanhado.",
   },
   {
     icon: AlertCircle,
-    title: "O acompanhamento depende da memória",
-    text: "Propostas enviadas caem no esquecimento e o cliente nunca mais é retomado.",
+    title: "4. Falta de follow-up comercial",
+    text: "Propostas enviadas ficam sem retorno porque ninguém tem um lembrete automático nos dias certos.",
+  },
+  {
+    icon: CalendarClock,
+    title: "5. Reuniões sem confirmação",
+    text: "Trocas longas para marcar uma hora e ausências evitáveis por falta de lembretes automáticos.",
+  },
+  {
+    icon: FileSpreadsheet,
+    title: "6. Tarefas manuais repetitivas",
+    text: "Copiar dados de clientes, atualizar registos e preparar resumos diários consome horas da equipa.",
+  },
+  {
+    icon: BarChart3,
+    title: "7. Pouca visibilidade para a gestão",
+    text: "Sem organização centralizada, torna-se difícil acompanhar quantos pedidos entraram e avançaram.",
   },
 ];
 
@@ -63,28 +81,29 @@ export function Problem() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#F36B32]">01 · O problema</p>
+          <p className="lume-eyebrow text-[#F36B32]">01 · O problema no dia a dia</p>
           <h2 className="mt-4 max-w-3xl font-heading text-3xl leading-[1.15] font-bold text-[#F5F3EE] sm:text-4xl text-balance">
-            Cada mensagem sem resposta é um cliente a falar com outra empresa.
+            Muitas empresas não perdem clientes por falta de qualidade. Perdem por demora no
+            atendimento e falhas no acompanhamento.
           </h2>
         </Reveal>
 
         <Reveal delay={80}>
           <div className="mt-5 max-w-[65ch] space-y-3 text-base leading-[1.65] text-[#B8C0D0]">
             <p>
-              O seu serviço é bom e a sua reputação também.{" "}
-              <strong className="text-[#F5F3EE]">O que falha é o tempo.</strong>
+              Quando uma empresa cresce, o WhatsApp enche, os e-mails acumulam-se e a equipa tenta
+              atender clientes ao mesmo tempo que executa o trabalho diário.
             </p>
             <p>
-              Em Angola, onde o WhatsApp é o principal canal comercial, isto acontece todos os dias.
-              E quase ninguém vê, porque o cliente que desiste antes de falar consigo não deixa
-              rasto.
+              Sem um sistema organizado, o atendimento abranda, os follow-ups falham e oportunidades
+              que custaram esforço a atrair acabam por não avançar.
             </p>
           </div>
         </Reveal>
 
+        {/* Hook: 3 stages of a missed contact */}
         <ul className="mt-12 grid gap-6 md:grid-cols-3">
-          {flow.map((c, i) => (
+          {dailyFlow.map((c, i) => (
             <Reveal as="li" key={c.title} delay={i * 80}>
               <div className="flex h-full flex-col justify-between rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 transition-colors duration-200 hover:border-[#F36B32]">
                 <div>
@@ -102,7 +121,7 @@ export function Problem() {
                   <p className="mt-2.5 text-sm leading-relaxed text-[#B8C0D0]">{c.text}</p>
                 </div>
                 <div className="mt-6 pt-4 border-t border-[#2A3D63] flex items-center justify-between text-xs">
-                  <span className="text-[#B8C0D0]">Situação</span>
+                  <span className="text-[#B8C0D0]">Etapa</span>
                   <span
                     className={
                       i === 2 ? "text-[#F4C542] font-semibold" : "text-[#F5F3EE] font-medium"
@@ -116,40 +135,42 @@ export function Problem() {
           ))}
         </ul>
 
-        {/* Stat + Concrete Cost Example */}
+        {/* Agitation without invented stats */}
         <Reveal delay={80}>
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 flex flex-col sm:flex-row sm:items-center gap-5">
-              <span className="font-heading text-4xl sm:text-5xl font-extrabold text-[#F4C542] tabular-nums shrink-0">
-                70%
-              </span>
-              <p className="text-sm sm:text-base text-[#B8C0D0]">
-                dos contactos desistem se não recebem resposta nos{" "}
-                <strong className="text-[#F5F3EE]">primeiros 5 minutos</strong>. Em muitas empresas
-                angolanas a resposta demora entre 2 e 24 horas.
+            <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6">
+              <p className="lume-eyebrow text-[#F4C542]">Impacto nas vendas</p>
+              <h3 className="mt-2 font-heading text-lg font-bold text-[#F5F3EE]">
+                Oportunidades que não avançam por falta de acompanhamento
+              </h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-[#B8C0D0]">
+                Em mercados onde o cliente envia mensagem para duas ou três empresas ao mesmo tempo,
+                quem responde com clareza e acompanha o pedido ganha vantagem logo no primeiro
+                contacto.
               </p>
             </div>
 
-            <div className="rounded-[16px] border border-[#F36B32]/50 bg-[#1A2A4A] p-6 flex flex-col justify-center">
-              <p className="lume-eyebrow text-[#F36B32]">Quanto isto custa (exemplo real)</p>
-              <p className="mt-2 text-sm sm:text-base text-[#B8C0D0]">
-                60 contactos por mês, 25% sem resposta a tempo e ticket médio de Kz 150.000. São{" "}
-                <strong className="text-[#F5F3EE]">15 clientes</strong> e{" "}
-                <strong className="text-[#F4C542] tabular-nums">Kz 2.250.000 por mês</strong> que
-                ficam à porta.
+            <div className="rounded-[16px] border border-[#F36B32]/50 bg-[#1A2A4A] p-6">
+              <p className="lume-eyebrow text-[#F36B32]">Impacto na equipa</p>
+              <h3 className="mt-2 font-heading text-lg font-bold text-[#F5F3EE]">
+                Horas perdidas em tarefas que podiam estar automatizadas
+              </h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-[#B8C0D0]">
+                Responder sempre às mesmas dúvidas, copiar dados entre aplicações e lembrar cada
+                follow-up à mão reduz a produtividade e aumenta a margem de erro operacional.
               </p>
             </div>
           </div>
         </Reveal>
 
-        {/* Four Silent Ways to Lose Clients */}
+        {/* 7 Concrete Problems */}
         <Reveal delay={110}>
           <div className="mt-12">
             <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#F5F3EE]">
-              Quatro formas de perder clientes sem dar por isso
+              Sete entraves que travam o atendimento e a operação comercial
             </h3>
             <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {silentLosses.map((item) => (
+              {operationalProblems.map((item) => (
                 <div
                   key={item.title}
                   className="rounded-[14px] border border-[#2A3D63] bg-[#1A2A4A] p-5"
@@ -165,13 +186,13 @@ export function Problem() {
           </div>
         </Reveal>
 
-        {/* Before/After Comparison */}
+        {/* Illustrative Story (Before / After) */}
         <Reveal delay={120}>
           <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8">
             <div className="border-b border-[#2A3D63] pb-5">
-              <p className="lume-eyebrow text-[#F36B32]">O que muda no dia a dia</p>
+              <p className="lume-eyebrow text-[#F4C542]">Cenário ilustrativo</p>
               <h3 className="mt-2 font-heading text-xl sm:text-2xl font-bold text-[#F5F3EE]">
-                Atender horas depois vs. responder em menos de 10 segundos
+                Como um dia normal muda quando o atendimento e os processos estão organizados
               </h3>
             </div>
 
@@ -180,37 +201,30 @@ export function Problem() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#2A3D63]">
                   <span className="inline-flex items-center gap-2 font-heading text-sm font-bold text-[#F5F3EE] uppercase tracking-wider">
                     <XCircle className="size-4 text-[#D64545]" aria-hidden="true" />
-                    Como acontece hoje
+                    Sem estrutura automática
                   </span>
-                  <span className="text-xs font-medium text-[#D64545]">Clientes perdidos</span>
+                  <span className="text-xs font-medium text-[#D64545]">Desgaste diário</span>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-[#B8C0D0]">
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Resposta em 2h a 24h:</strong> o
-                      interessado fala com o concorrente primeiro.
+                      <strong className="text-[#F5F3EE]">Mensagens acumuladas:</strong> pedidos da
+                      tarde e da noite só são vistos no dia seguinte, já sem o mesmo interesse.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Noites e fins de semana:</strong> ninguém
-                      responde até ao dia útil seguinte.
+                      <strong className="text-[#F5F3EE]">Informação fragmentada:</strong> perguntas
+                      básicas respondidas à mão e orçamentos sem seguimento.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
                     <span>
-                      <strong className="text-[#F5F3EE]">Equipa a triar curiosos:</strong> repete
-                      preços e horários o dia inteiro.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <XCircle className="size-4 text-[#D64545] mt-0.5 shrink-0" aria-hidden="true" />
-                    <span>
-                      <strong className="text-[#F5F3EE]">Sem registo:</strong> contactos perdidos em
-                      telemóveis individuais.
+                      <strong className="text-[#F5F3EE]">Equipa sobrecarregada:</strong> comerciais
+                      a fazer trabalho administrativo em vez de negociar com clientes prontos.
                     </span>
                   </li>
                 </ul>
@@ -220,9 +234,9 @@ export function Problem() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#2A3D63]">
                   <span className="inline-flex items-center gap-2 font-heading text-sm font-bold text-[#F5F3EE] uppercase tracking-wider">
                     <CheckCircle2 className="size-4 text-[#2E9E6B]" aria-hidden="true" />
-                    Com a Agentes Digital
+                    Com IA e automatização
                   </span>
-                  <span className="text-xs font-medium text-[#2E9E6B]">Zero esperas</span>
+                  <span className="text-xs font-medium text-[#2E9E6B]">Operação fluida</span>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-[#F5F3EE]">
                   <li className="flex items-start gap-2.5">
@@ -231,8 +245,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Resposta em menos de 10 segundos:</strong> 24h por dia, incluindo
-                      noites e fins de semana.
+                      <strong>Primeiro atendimento imediato:</strong> dúvidas comuns esclarecidas na
+                      hora, mesmo fora do horário habitual.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -241,8 +255,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Reuniões marcadas no chat:</strong> o cliente escolhe o horário e
-                      recebe lembretes.
+                      <strong>Dados e agenda organizados:</strong> contactos qualificados ficam
+                      registados, com reuniões confirmadas e follow-ups programados.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -251,18 +265,8 @@ export function Problem() {
                       aria-hidden="true"
                     />
                     <span>
-                      <strong>Equipa focada no fecho:</strong> só atende quem já está qualificado e
-                      quer comprar.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <CheckCircle2
-                      className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
-                      aria-hidden="true"
-                    />
-                    <span>
-                      <strong>Cada contacto acompanhado:</strong> tudo guardado com histórico até à
-                      assinatura.
+                      <strong>Controlo humano nas decisões:</strong> a equipa recebe conversas
+                      prontas com contexto completo para concluir o atendimento.
                     </span>
                   </li>
                 </ul>
@@ -271,22 +275,23 @@ export function Problem() {
           </div>
         </Reveal>
 
-        {/* CTA */}
+        {/* Epiphany banner */}
         <Reveal delay={160}>
           <div className="mt-12 rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div>
               <p className="font-heading text-lg font-bold text-[#F5F3EE]">
-                Quer saber quanto a sua empresa perde por mês em mensagens sem resposta?
+                A sua empresa não precisa de trabalhar mais horas. Precisa de um atendimento e de
+                processos que trabalhem de forma organizada.
               </p>
               <p className="mt-1 text-sm text-[#B8C0D0]">
-                Simule com os seus próprios números abaixo ou peça o seu diagnóstico gratuito.
+                Veja abaixo como aplicamos inteligência artificial e automatização ao seu negócio.
               </p>
             </div>
             <a
-              href="#valor"
+              href="#servicos"
               className="lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider whitespace-nowrap"
             >
-              <span>Calcular quanto perco</span>
+              <span>Ver soluções</span>
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </div>

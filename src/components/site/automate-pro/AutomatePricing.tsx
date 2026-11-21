@@ -4,7 +4,7 @@ import { CTA } from "@/lib/site-config";
 import { trackAutomateProEvent } from "./automateAnalytics";
 
 const pricingItems = [
-  "Atendimento no site e no WhatsApp oficial em <10 segundos",
+  "Atendimento automático no site e no WhatsApp oficial",
   "Base de conhecimento configurada para a sua empresa",
   "Qualificação automática de interessados",
   "Registo e organização de contactos (CRM)",
@@ -12,7 +12,7 @@ const pricingItems = [
   "Follow-up automático pós-atendimento",
   "Confirmações e lembretes antes da reunião",
   "Passagem com histórico completo para a equipa",
-  "Monitorização contínua de estabilidade",
+  "Monitorização técnica de estabilidade",
   "Ajustes mensais e suporte técnico incluído",
 ];
 
@@ -25,7 +25,7 @@ export function AutomatePricing() {
   };
 
   return (
-    <div id="automate-pricing" className="py-20 sm:py-28 relative border-t border-[#2A3D63]">
+    <div id="automate-pricing" className="py-16 sm:py-24 relative border-t border-[#2A3D63]">
       <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto">
           <Reveal>
@@ -40,8 +40,8 @@ export function AutomatePricing() {
 
           <Reveal delay={120}>
             <p className="mt-3 text-sm sm:text-base text-[#B8C0D0]">
-              Um investimento que se paga logo nas primeiras reuniões, com cada lead atendido
-              automaticamente.
+              Solução pensada para empresas que já possuem website e querem integrar IA, marcação de
+              reuniões e acompanhamento sem reconstruir o site.
             </p>
           </Reveal>
         </div>
@@ -73,7 +73,7 @@ export function AutomatePricing() {
                 acompanhamento de contactos sem o refazer.
               </p>
 
-              {/* Price Breakdown */}
+              {/* Price Breakdown - Preserved centered layout without subtitles */}
               <div className="mt-8 grid gap-6 sm:grid-cols-2 rounded-[12px] border border-[#2A3D63] bg-[#101D35] p-6">
                 <div className="flex flex-col items-center justify-center text-center">
                   <p className="text-xs font-semibold text-[#B8C0D0] uppercase tracking-wider">
@@ -133,8 +133,8 @@ export function AutomatePricing() {
             </div>
 
             <p className="mt-4 text-center px-4 text-xs text-[#B8C0D0] leading-relaxed">
-              Custos de plataformas de terceiros, como APIs de IA, WhatsApp, CRM, e-mail ou outros
-              serviços externos, podem variar conforme utilização e arquitetura escolhida.
+              Custos externos de plataformas de terceiros, como APIs de IA, WhatsApp, CRM ou
+              serviços de e-mail, variam conforme a utilização e a arquitetura escolhida.
             </p>
           </div>
         </Reveal>

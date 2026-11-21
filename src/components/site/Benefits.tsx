@@ -1,74 +1,141 @@
 import { Reveal } from "./Reveal";
-import { site } from "@/lib/site-config";
-import { ArrowRight, CheckCircle2, XCircle, Building2, Stethoscope, Scale } from "lucide-react";
+import { CTA } from "@/lib/site-config";
+import {
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  MessageSquare,
+  TrendingUp,
+  Settings2,
+  BarChart3,
+} from "lucide-react";
+
+const benefitGroups = [
+  {
+    icon: MessageSquare,
+    title: "Atendimento",
+    subtitle: "Respostas consistentes sem atrasos",
+    items: [
+      "Resposta mais rápida ao primeiro contacto",
+      "Menos clientes à espera em horas de pico",
+      "Mais consistência nas respostas iniciais",
+      "Atendimento fora do horário tradicional",
+    ],
+  },
+  {
+    icon: TrendingUp,
+    title: "Vendas e acompanhamento",
+    subtitle: "Oportunidades com seguimento real",
+    items: [
+      "Menos oportunidades esquecidas após o primeiro contacto",
+      "Follow-ups comerciais consistentes e programados",
+      "Contacto pré-qualificado antes de chegar ao comercial",
+      "Reuniões marcadas e confirmadas com mais facilidade",
+    ],
+  },
+  {
+    icon: Settings2,
+    title: "Operação",
+    subtitle: "Menos trabalho repetitivo na rotina",
+    items: [
+      "Redução de tarefas manuais repetitivas",
+      "Menos erros ao copiar dados entre ferramentas",
+      "Processos comerciais e internos mais organizados",
+      "Equipa focada em tarefas de maior valor",
+    ],
+  },
+  {
+    icon: BarChart3,
+    title: "Gestão",
+    subtitle: "Visibilidade e organização diária",
+    items: [
+      "Informação centralizada num único histórico",
+      "Relatórios automáticos de acompanhamento",
+      "Maior visibilidade sobre pedidos e estados",
+      "Base mais sólida para o negócio crescer sem caos",
+    ],
+  },
+];
 
 const forWhoItems = [
-  "Recebe pedidos por WhatsApp, e-mail ou website e nem sempre consegue responder logo",
-  "A sua equipa gasta o dia a responder às mesmas perguntas sobre preços, horários e localização",
-  "Não sabe ao certo quantos contactos recebeu no mês nem quantos viraram cliente",
-  "Perde oportunidades à noite, ao fim de semana ou quando está em reunião",
+  "A empresa recebe pedidos no WhatsApp, e-mail ou website e perde tempo a responder tudo à mão",
+  "A equipa repete diariamente as mesmas informações sobre serviços, horários e requisitos",
+  "Contactos e orçamentos acabam esquecidos por falta de um sistema de acompanhamento",
+  "Quer organizar atendimento e processos internos com controlo e supervisão humana",
 ];
 
 const notForWhoItems = [
-  "Ainda não tem o seu serviço e preço definidos",
-  "Não tem ninguém disponível para fechar as reuniões que o sistema marcar",
-  "Procura apenas curiosidades técnicas em vez de resolver o atendimento comercial",
-];
-
-const sectorExamples = [
-  {
-    icon: Stethoscope,
-    sector: "Clínicas e Saúde",
-    headline: "O paciente escreve a pedir consulta. Ninguém responde. Marca noutra clínica.",
-    outcome: "Resposta imediata e consulta confirmada com lembretes antes da hora.",
-  },
-  {
-    icon: Building2,
-    sector: "Construtoras e Imobiliárias",
-    headline: "O interessado pergunta pelo imóvel. Ninguém responde. Visita outro empreendimento.",
-    outcome: "Qualificação do perfil e visita agendada em minutos com o comercial certo.",
-  },
-  {
-    icon: Scale,
-    sector: "Advocacia e Consultorias",
-    headline: "O cliente pede uma reunião. Ninguém responde. Contrata outro escritório.",
-    outcome: "Triagem do caso e agendamento direto na agenda, sem depender da recepção.",
-  },
+  "Ainda não tem uma oferta, serviço ou processo mínimo definidos",
+  "Procura fórmulas milagrosas sem disponibilidade para validar o fluxo da empresa",
+  "Não tem equipa ou responsável para dar seguimento aos clientes encaminhados",
 ];
 
 export function Benefits() {
   return (
     <section
       id="beneficios"
-      className="relative bg-[#F5F3EE] text-[#101D35] py-24 sm:py-32 scroll-mt-20"
+      className="relative bg-[#FFFFFF] text-[#101D35] py-24 sm:py-32 border-t border-[#E7E3D9] scroll-mt-20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
           <div className="max-w-3xl">
-            <p className="lume-eyebrow text-[#D9531C]">02 · Para quem é</p>
+            <p className="lume-eyebrow text-[#D9531C]">03 · Benefícios reais para a empresa</p>
             <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-bold text-[#101D35] leading-[1.15] text-balance">
-              Feito para empresários que sabem que perdem pedidos, mas ainda não sabem quantos
+              O que muda no atendimento, nas vendas, na operação e na gestão do seu negócio.
             </h2>
             <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
-              Não queremos impressionar com tecnologia. Queremos garantir que cada cliente que
-              procura a sua empresa é atendido na hora e encaminhado para o fecho.
+              Não implementamos tecnologia pela tecnologia. Estruturamos fluxos para poupar horas da
+              sua equipa e dar continuidade a cada contacto comercial.
             </p>
           </div>
         </Reveal>
 
+        {/* 4 Benefit Groups */}
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {benefitGroups.map((group, i) => (
+            <Reveal key={group.title} delay={i * 70}>
+              <div className="flex h-full flex-col rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0">
+                    <group.icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="font-heading text-base font-bold text-[#101D35]">
+                      {group.title}
+                    </h3>
+                    <p className="text-[11px] font-medium text-[#5B6B8C]">{group.subtitle}</p>
+                  </div>
+                </div>
+
+                <ul className="mt-5 space-y-2.5 border-t border-[#E7E3D9] pt-4 flex-1">
+                  {group.items.map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-[#101D35]">
+                      <CheckCircle2
+                        className="size-3.5 mt-0.5 shrink-0 text-[#2E9E6B]"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
         {/* Qualification: For who / Not for who */}
-        <Reveal delay={80}>
+        <Reveal delay={120}>
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <div className="rounded-[16px] border border-[#101D35] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="size-5 text-[#2E9E6B]" aria-hidden="true" />
                   <span className="font-heading text-xs font-bold tracking-wider text-[#F4C542] uppercase">
-                    É para si se
+                    Faz sentido para a sua empresa se
                   </span>
                 </div>
                 <h3 className="font-heading text-lg font-bold text-[#F5F3EE]">
-                  A sua empresa já recebe pedidos, mas perde vendas por demora
+                  Já existe procura, mas o atendimento e o acompanhamento dependem de esforço manual
                 </h3>
                 <ul className="mt-6 space-y-3.5">
                   {forWhoItems.map((item) => (
@@ -84,21 +151,21 @@ export function Benefits() {
               </div>
               <div className="mt-6 pt-4 border-t border-[#2A3D63]">
                 <p className="text-xs font-semibold text-[#F4C542]">
-                  Resultado: atendimento em menos de 10 segundos e agenda preenchida sem esforço
+                  Objetivo: atendimento ágil, histórico centralizado e menos tarefas repetitivas.
                 </p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8 flex flex-col justify-between">
+            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6 sm:p-8 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
                   <span className="font-heading text-xs font-bold tracking-wider text-[#D64545] uppercase">
-                    Não é para si se
+                    Não é o momento ideal se
                   </span>
                 </div>
                 <h3 className="font-heading text-lg font-bold text-[#101D35]">
-                  Preferimos ser diretos antes de avançar para uma conversa
+                  Preferimos ser transparentes antes de qualquer proposta
                 </h3>
                 <ul className="mt-6 space-y-3.5">
                   {notForWhoItems.map((item) => (
@@ -114,62 +181,26 @@ export function Benefits() {
               </div>
               <div className="mt-6 pt-4 border-t border-[#E7E3D9]">
                 <p className="text-xs font-semibold text-[#5B6B8C]">
-                  O nosso sistema gera reuniões reais. Precisa de alguém preparado para fechar.
+                  A tecnologia organiza e acelera o atendimento, mas precisa de uma equipa para
+                  atender casos complexos e fechar negócios.
                 </p>
               </div>
             </div>
           </div>
         </Reveal>
 
-        {/* Sector scenarios */}
-        <Reveal delay={140}>
-          <div className="mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
-            <h3 className="font-heading text-xl font-bold text-[#101D35] text-center">
-              Como este problema acontece no seu sector
-            </h3>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {sectorExamples.map((s) => (
-                <div
-                  key={s.sector}
-                  className="rounded-[12px] border border-[#E7E3D9] bg-[#F5F3EE] p-5 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center gap-2.5">
-                      <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#101D35] text-[#F4C542]">
-                        <s.icon className="size-4" aria-hidden="true" />
-                      </span>
-                      <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#D9531C]">
-                        {s.sector}
-                      </span>
-                    </div>
-                    <p className="mt-4 font-heading text-sm font-bold text-[#101D35] leading-snug">
-                      {s.headline}
-                    </p>
-                  </div>
-                  <p className="mt-4 pt-3 border-t border-[#E7E3D9] text-xs font-medium text-[#2E9E6B]">
-                    Com o sistema: {s.outcome}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-
         {/* CTA */}
-        <Reveal delay={180}>
+        <Reveal delay={160}>
           <div className="mt-12 text-center">
             <a
-              href={site.ctaSecond.href}
+              href={CTA.diagnostic}
               target="_blank"
               rel="noopener noreferrer"
               className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm"
             >
-              <span>Quero parar de perder clientes</span>
+              <span>Solicitar diagnóstico da minha operação</span>
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
-            <p className="mt-3 text-xs text-[#5B6B8C]">
-              Diagnóstico gratuito · Apenas 5 empresas por mês
-            </p>
           </div>
         </Reveal>
       </div>

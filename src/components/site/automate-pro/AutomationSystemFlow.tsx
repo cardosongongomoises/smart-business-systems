@@ -28,14 +28,14 @@ const NODES: FlowNode[] = [
     name: "Website",
     category: "Ponto de Entrada",
     icon: Globe,
-    status: "Ativo 24/7",
+    status: "Site existente",
   },
   {
     id: "ia",
-    name: "Atendimento",
-    category: "Resposta Imediata",
+    name: "IA de Atendimento",
+    category: "Resposta Ágil",
     icon: Bot,
-    status: "Resposta <10s",
+    status: "Dúvidas & Triagem",
   },
   {
     id: "whatsapp",
@@ -46,31 +46,31 @@ const NODES: FlowNode[] = [
   },
   {
     id: "crm",
-    name: "CRM",
-    category: "Gestão & Dados",
+    name: "Registo / CRM",
+    category: "Organização",
     icon: Database,
-    status: "Sincronizado",
+    status: "Atualizado",
   },
   {
     id: "agendamento",
-    name: "Agendamento",
-    category: "Calendário",
+    name: "Agenda",
+    category: "Marcações",
     icon: Calendar,
-    status: "Slots livres",
+    status: "Horários livres",
   },
   {
     id: "followup",
     name: "Follow-up",
     category: "Acompanhamento",
     icon: Clock,
-    status: "Cadência ativa",
+    status: "Lembretes ativos",
   },
   {
     id: "humano",
-    name: "Humano",
-    category: "Equipa Comercial",
+    name: "Equipa",
+    category: "Supervisão Humana",
     icon: UserCheck,
-    status: "Passagem pronta",
+    status: "Resumo pronto",
   },
 ];
 
@@ -88,65 +88,65 @@ const FLOW_STEPS: FlowStep[] = [
     step: 1,
     nodeIndex: 0,
     entity: "Visitante",
-    message: "Novo visitante acessou a página",
+    message: "Potencial cliente acede ao website da empresa",
     label: "Entrada no site",
-    detail: "Origem: Website corporativo existente",
+    detail: "Sem mudar a estrutura atual da página",
   },
   {
     step: 2,
     nodeIndex: 0,
-    entity: "Website",
-    message: "Visitante iniciou uma conversa no chat",
-    label: "Chat iniciado",
-    detail: "Widget interativo ativado sem recarregar a página",
+    entity: "Contacto",
+    message: "Inicia conversa no atendimento ou pelo formulário",
+    label: "Pedido enviado",
+    detail: "Ligação direta ao fluxo automatizado",
   },
   {
     step: 3,
     nodeIndex: 1,
-    entity: "Atendimento",
-    message: "Sistema respondeu em <10s e orientou o utilizador",
+    entity: "Inteligência Artificial",
+    message: "Esclarece dúvidas frequentes e recolhe dados essenciais",
     label: "Atendimento imediato",
-    detail: "Resposta clara gerada com base na sua empresa",
+    detail: "Respostas alinhadas com os serviços e regras da empresa",
   },
   {
     step: 4,
-    nodeIndex: 1,
-    entity: "Qualificação",
-    message: "Lead qualificado com orçamento e interesse",
-    label: "Lead qualificado",
-    detail: "Segmento, dimensão e prazo identificados",
+    nodeIndex: 2,
+    entity: "WhatsApp",
+    message: "Contacto qualificado continua no canal preferido",
+    label: "Canal integrado",
+    detail: "Conversa organizada com histórico contínuo",
   },
   {
     step: 5,
     nodeIndex: 3,
-    entity: "CRM",
-    message: "Lead registado e estruturado no funil comercial",
-    label: "CRM atualizado",
-    detail: "Histórico completo e contacto organizados",
+    entity: "Registo / CRM",
+    message: "Dados e interesse do cliente ficam registados automaticamente",
+    label: "Informação organizada",
+    detail: "Zero cópia manual de nomes e telefones",
   },
   {
     step: 6,
     nodeIndex: 4,
     entity: "Agendamento",
-    message: "Reunião de apresentação agendada automaticamente",
-    label: "Reunião marcada",
-    detail: "Convites e confirmações integrados ao Google Agenda",
+    message: "Reunião marcada e confirmada com base na agenda disponível",
+    label: "Reunião confirmada",
+    detail: "Menos trocas manuais de mensagens para acertar hora",
   },
   {
     step: 7,
     nodeIndex: 5,
     entity: "Follow-up",
-    message: "Automação ativada com lembretes e reforço de valor",
-    label: "Follow-up ativo",
-    detail: "Disparo automático programado por WhatsApp e e-mail",
+    message: "Lembretes e acompanhamento disparados nos prazos definidos",
+    label: "Sem esquecimentos",
+    detail: "Lembretes antes da reunião e retoma de contactos",
   },
   {
     step: 8,
     nodeIndex: 6,
-    entity: "Humano",
-    message: "Vendedor notificado com resumo executivo do lead",
-    label: "Entrega à equipa",
-    detail: "Equipa assume a reunião com todo o contexto prévio",
+    entity: "Equipa Comercial",
+    message: "Colaborador assume a conversa com todo o resumo pronto",
+    label: "Passagem humana",
+    detail: "Equipa focada na negociação e no fecho",
   },
 ];
 
@@ -173,11 +173,11 @@ export function AutomationSystemFlow() {
             <Activity className="size-5" aria-hidden="true" />
           </div>
           <div>
-            <h4 className="font-heading text-sm font-bold uppercase tracking-wider text-[#F5F3EE]">
-              Fluxo operacional de atendimento
-            </h4>
+            <h3 className="font-heading text-sm font-bold uppercase tracking-wider text-[#F5F3EE]">
+              Fluxo operacional integrado
+            </h3>
             <p className="text-xs text-[#B8C0D0]">
-              Ligação contínua entre o website existente, atendimento automático, agenda e equipa
+              Ligação contínua entre website existente, IA, WhatsApp, agenda e equipa
             </p>
           </div>
         </div>
@@ -215,7 +215,7 @@ export function AutomationSystemFlow() {
       {/* Connected Nodes */}
       <div className="mt-7">
         <div className="mb-4 flex items-center justify-between text-xs font-semibold text-[#B8C0D0]">
-          <span>Topologia do sistema integrado</span>
+          <span>Etapas do sistema integrado</span>
           <span className="font-heading font-bold text-[#F4C542] tabular-nums">
             Etapa {activeStep.step} de 8
           </span>
@@ -259,13 +259,13 @@ export function AutomationSystemFlow() {
 
                 <div className="mt-4">
                   <p className="text-[11px] text-[#B8C0D0]">{node.category}</p>
-                  <h5
+                  <h4
                     className={`mt-0.5 font-heading text-xs font-bold uppercase tracking-wide ${
                       isCurrentActive ? "text-[#F5F3EE]" : "text-[#B8C0D0]"
                     }`}
                   >
                     {node.name}
-                  </h5>
+                  </h4>
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-[#2A3D63] text-[11px] font-medium text-[#B8C0D0] truncate">

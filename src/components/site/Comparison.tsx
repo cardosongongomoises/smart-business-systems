@@ -6,14 +6,14 @@ const columns = ["Presença", "Profissional", "Autoridade", "Operação Completa
 const rows: Array<[string, (boolean | string)[]]> = [
   ["Website", ["Site profissional", "Até 5 páginas", "Até 10 páginas", "Personalizado"]],
   ["Domínio e Hospedagem", [true, true, true, true]],
-  ["WhatsApp", ["Link direto", "Atendimento 24h", "Atendimento 24h", "Operação completa"]],
+  ["WhatsApp", ["Link direto", "Atendimento com IA", "Atendimento com IA", "Operação completa"]],
   ["Marcação de reuniões", [false, true, "Automática + lembretes", "Automática + lembretes"]],
-  ["Google e SEO", ["Básico", "Local", "Avançado", "Completo"]],
-  ["E-mail", [false, "Automatizado", "Automatizado", "Automatizado"]],
+  ["Google e SEO", ["Base", "Local", "Avançado", "Completo"]],
+  ["E-mail", [false, "Integrado", "Integrado", "Integrado"]],
   ["Registo de contactos (CRM)", [false, true, true, true]],
   ["Follow-up automático", [false, false, true, true]],
-  ["Painel de métricas", [false, true, true, "Completo"]],
-  ["Suporte técnico", ["Incluído", "Prioritário", "Dedicado", "VIP Dedicado"]],
+  ["Painel / Relatórios", [false, true, true, "Completo"]],
+  ["Suporte técnico", ["Incluído", "Prioritário", "Dedicado", "Dedicado VIP"]],
   ["Acompanhamento mensal", [false, false, "Contínuo", "Contínuo + consultoria"]],
 ];
 
@@ -56,7 +56,8 @@ export function Comparison() {
             Compare o que entra em cada plano.
           </h2>
           <p className="mt-4 max-w-2xl text-base text-[#5B6B8C] leading-[1.65]">
-            Transparência total para escolher exatamente o que a sua empresa precisa agora.
+            Transparência para escolher exatamente o nível de atendimento e automatização que a sua
+            empresa precisa agora.
           </p>
         </Reveal>
 

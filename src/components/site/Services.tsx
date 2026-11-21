@@ -3,88 +3,88 @@ import {
   ArrowUpRight,
   Globe,
   BotMessageSquare,
-  Calendar,
-  Database,
-  Users,
+  Workflow,
   Check,
+  FileText,
+  Compass,
+  BookOpen,
+  Lightbulb,
 } from "lucide-react";
-import { site } from "@/lib/site-config";
+import { CTA } from "@/lib/site-config";
 
-const services = [
+const coreServices = [
   {
-    num: "01",
+    num: "Serviço 01",
     icon: BotMessageSquare,
-    problem: "Mensagens sem resposta",
-    title: "Atendimento imediato, 24 horas por dia",
+    tag: "Atendimento e Qualificação",
+    title: "Implementação de Inteligência Artificial",
     description:
-      "Cada contacto por WhatsApp ou website recebe resposta em menos de 10 segundos, incluindo noites, fins de semana e feriados.",
-    result: "Nenhum contacto fica à espera, mesmo às 3 da manhã.",
-    features: [
-      "Resposta automática em menos de 10 segundos",
-      "Atendimento ativo à noite, fins de semana e feriados",
-      "Funciona diretamente no WhatsApp e no website",
-      "Respostas adaptadas às regras e serviços da sua empresa",
+      "Estruturamos agentes e fluxos inteligentes ligados à informação real da sua empresa para atender melhor e preparar o contacto antes de chegar à sua equipa.",
+    capabilities: [
+      "Atender clientes de forma mais rápida",
+      "Responder a perguntas frequentes",
+      "Recolher e qualificar contactos",
+      "Organizar o atendimento comercial",
+      "Marcar e confirmar reuniões",
+      "Encaminhar conversas para colaboradores",
+      "Organizar informações dos clientes",
     ],
+    deliverables: [
+      "Levantamento dos canais e regras de atendimento da empresa",
+      "Configuração com os serviços, preços base e linguagem do negócio",
+      "Encaminhamento para humanos com resumo do histórico",
+      "Testes guiados e validação antes da entrada em produção",
+    ],
+    ctaLabel: "Pedir diagnóstico de IA",
+    ctaHref: CTA.aiService,
   },
   {
-    num: "02",
-    icon: Calendar,
-    problem: "Reuniões que não se marcam, ou a que ninguém aparece",
-    title: "Marcação automática com lembretes",
+    num: "Serviço 02",
+    icon: Workflow,
+    tag: "Processos e Acompanhamento",
+    title: "Automatização de Processos Empresariais",
     description:
-      "O cliente escolhe o horário no próprio chat. O sistema confirma, bloqueia a agenda e envia lembretes antes da reunião.",
-    result: "Menos faltas (até -75%) e agenda preenchida sem troca de e-mails.",
-    features: [
-      "O cliente escolhe o horário livre direto no chat",
-      "Confirmação imediata e bloqueio na agenda",
-      "Lembretes automáticos antes da reunião",
-      "Zero vai-e-vem para tentar combinar uma hora",
+      "Automatizamos rotinas comerciais e operacionais para que nenhuma oportunidade caia no esquecimento e a sua equipa deixe de perder horas em trabalho manual.",
+    capabilities: [
+      "Automatizar follow-ups comerciais",
+      "Enviar lembretes e notificações",
+      "Acompanhar potenciais clientes",
+      "Gerar relatórios automáticos",
+      "Atualizar e organizar informações",
+      "Reduzir tarefas repetitivas",
+      "Integrar ferramentas e processos empresariais",
     ],
+    deliverables: [
+      "Mapeamento das tarefas repetitivas e gargalos prioritários",
+      "Fluxos integrados entre WhatsApp, e-mail, agenda e CRM",
+      "Alertas de acompanhamento e rotinas de relatórios",
+      "Documentação clara para a equipa usar sem dependência técnica",
+    ],
+    ctaLabel: "Pedir diagnóstico de automatização",
+    ctaHref: CTA.automationService,
+  },
+];
+
+const complements = [
+  {
+    icon: Compass,
+    title: "Mapeamento de atendimento e processos",
+    text: "Diagnóstico claro de onde entram os contactos e onde o fluxo trava hoje.",
   },
   {
-    num: "03",
-    icon: Database,
-    problem: "Contactos esquecidos",
-    title: "Registo e acompanhamento automáticos",
-    description:
-      "Cada contacto fica guardado com nome, telefone, interesse e histórico. Quem parou de responder é retomado nos dias certos.",
-    result: "Ninguém cai no esquecimento e passa a saber quantos negócios tem em curso.",
-    features: [
-      "Nome, telefone, interesse e histórico num só lugar",
-      "Retoma automática para quem pediu orçamento e parou",
-      "Visibilidade clara de cada negócio em curso",
-      "Fim dos contactos perdidos em telemóveis pessoais",
-    ],
+    icon: BookOpen,
+    title: "Orientação prática para a equipa",
+    text: "Explicamos passo a passo como acompanhar pedidos, assumir conversas e gerir a agenda.",
   },
   {
-    num: "04",
-    icon: Users,
-    problem: "Equipa a repetir respostas",
-    title: "Só chega à equipa quem quer comprar",
-    description:
-      "As dúvidas comuns são respondidas automaticamente. Quando o cliente está pronto, a conversa passa para um vendedor com o histórico completo.",
-    result: "A sua equipa gasta o tempo a fechar negócios, não a triar curiosos.",
-    features: [
-      "Triagem automática de dúvidas frequentes, preços e prazos",
-      "Filtro de orçamento e urgência antes de chamar a equipa",
-      "Passagem imediata para um vendedor com resumo completo",
-      "Controlo total para assumir a conversa a qualquer momento",
-    ],
+    icon: FileText,
+    title: "Documentação dos fluxos implementados",
+    text: "Registo objetivo das regras, integrações e pontos de contacto do sistema.",
   },
   {
-    num: "05",
-    icon: Globe,
-    problem: "Site que não traz pedidos",
-    title: "Website que transforma visitas em contactos",
-    description:
-      "Para quem não tem site, ou tem um que ninguém contacta: site rápido, com SEO local e ligação direta ao WhatsApp.",
-    result: "+40% de contactos diretos face a sites genéricos.",
-    features: [
-      "SEO local para aparecer quando procuram no Google",
-      "Design profissional que transmite confiança imediata",
-      "Ligação direta ao WhatsApp e formulário simples",
-      "Carregamento rápido no telemóvel",
-    ],
+    icon: Lightbulb,
+    title: "Recomendações de melhoria contínua",
+    text: "Sugestões práticas para evoluir o atendimento e os processos ao ritmo da empresa.",
   },
 ];
 
@@ -96,63 +96,85 @@ export function Services() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <p className="lume-eyebrow text-[#D9531C]">04 · O que resolvemos</p>
+          <p className="lume-eyebrow text-[#D9531C]">02 · Os nossos serviços</p>
           <h2 className="mt-4 max-w-3xl font-heading text-3xl leading-[1.15] font-bold text-[#101D35] sm:text-4xl text-balance">
-            Não vendemos tecnologia. Resolvemos cinco problemas concretos do seu atendimento
-            comercial.
+            Atendimento com IA e automatização de processos: juntos ou em separado.
           </h2>
         </Reveal>
 
         <Reveal delay={80}>
           <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
-            Como fazemos: um assistente automático, treinado com a informação da sua empresa, atende
-            e qualifica. Quando a conversa exige uma pessoa, passa para a sua equipa.
+            Ajudamos empresas a atender melhor, acompanhar cada oportunidade e reduzir tarefas
+            repetitivas. Pode implementar apenas um dos serviços ou combiná-los numa estrutura
+            completa adaptada ao seu negócio.
           </p>
         </Reveal>
 
+        {/* Two Core Services */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 70} className={i === 4 ? "lg:col-span-2" : ""}>
-              <div className="group flex h-full flex-col rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 transition-colors duration-200 hover:border-[#101D35]">
+          {coreServices.map((s, i) => (
+            <Reveal key={s.title} delay={i * 80}>
+              <div className="flex h-full flex-col rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 transition-colors duration-200 hover:border-[#101D35]">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className="flex size-11 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F36B32] shrink-0">
                       <s.icon className="size-5" aria-hidden="true" />
                     </div>
-                    <span className="text-xs font-semibold text-[#D9531C]">{s.problem}</span>
+                    <span className="text-xs font-semibold text-[#D9531C]">{s.tag}</span>
                   </div>
-                  <span className="font-heading text-sm font-extrabold text-[#5B6B8C] tabular-nums shrink-0">
+                  <span className="font-heading text-xs font-extrabold uppercase tracking-wider text-[#5B6B8C] shrink-0">
                     {s.num}
                   </span>
                 </div>
 
-                <h3 className="mt-5 font-heading text-xl font-bold text-[#101D35]">{s.title}</h3>
+                <h3 className="mt-5 font-heading text-xl sm:text-2xl font-bold text-[#101D35]">
+                  {s.title}
+                </h3>
 
                 <p className="mt-3 text-sm leading-relaxed text-[#5B6B8C]">{s.description}</p>
 
-                <p className="mt-4 text-xs font-semibold text-[#2E9E6B]">Resultado: {s.result}</p>
+                <div className="mt-6 border-t border-[#E7E3D9] pt-5">
+                  <p className="font-heading text-xs font-bold uppercase tracking-wider text-[#101D35]">
+                    Como ajuda a sua empresa
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {s.capabilities.map((item) => (
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-[#101D35]">
+                        <Check
+                          className="size-4 mt-0.5 text-[#F36B32] shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                <ul
-                  className={`mt-5 gap-2.5 border-t border-[#E7E3D9] pt-5 ${
-                    i === 4 ? "grid sm:grid-cols-2" : "space-y-2.5"
-                  }`}
-                >
-                  {s.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#101D35]">
-                      <Check className="size-4 mt-0.5 text-[#F36B32] shrink-0" aria-hidden="true" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-6 rounded-[12px] border border-[#E7E3D9] bg-[#F5F3EE] p-4">
+                  <p className="font-heading text-xs font-bold uppercase tracking-wider text-[#2E9E6B]">
+                    O que o cliente recebe
+                  </p>
+                  <ul className="mt-2.5 space-y-1.5">
+                    {s.deliverables.map((d) => (
+                      <li key={d} className="flex items-start gap-2 text-xs text-[#101D35]">
+                        <Check
+                          className="size-3.5 mt-0.5 text-[#2E9E6B] shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span>{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                <div className="mt-auto pt-6 border-t border-[#E7E3D9]">
+                <div className="mt-auto pt-6">
                   <a
-                    href={site.ctaSecond.href}
+                    href={s.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-heading text-sm font-bold text-[#101D35] transition-colors hover:text-[#D9531C]"
+                    className="lume-btn-primary inline-flex w-full items-center justify-center gap-2 text-xs uppercase tracking-wider"
                   >
-                    <span>Quero resolver isto na minha empresa</span>
+                    <span>{s.ctaLabel}</span>
                     <ArrowUpRight className="size-4" aria-hidden="true" />
                   </a>
                 </div>
@@ -161,20 +183,72 @@ export function Services() {
           ))}
         </div>
 
+        {/* Website & Captation support card */}
+        <Reveal delay={140}>
+          <div className="mt-8 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="flex items-start gap-4">
+              <div className="flex size-11 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0">
+                <Globe className="size-5" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#D9531C]">
+                  Base digital para captação
+                </p>
+                <h3 className="mt-1 font-heading text-lg font-bold text-[#101D35]">
+                  Precisa também de um website preparado para converter contactos?
+                </h3>
+                <p className="mt-1.5 text-sm text-[#5B6B8C] max-w-[65ch]">
+                  Para empresas sem site ou com páginas desatualizadas, desenvolvemos websites e
+                  landing pages rápidos, com SEO estruturado e ligação direta ao atendimento no
+                  WhatsApp.
+                </p>
+              </div>
+            </div>
+            <a
+              href="#planos"
+              className="lume-btn-secondary-light shrink-0 inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider whitespace-nowrap"
+            >
+              <span>Ver planos com website</span>
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </a>
+          </div>
+        </Reveal>
+
+        {/* Real implementation deliverables / complements (Section 16) */}
+        <Reveal delay={170}>
+          <div className="mt-12">
+            <h3 className="font-heading text-lg font-bold text-[#101D35]">
+              O que acompanha cada implementação para facilitar a adaptação da empresa
+            </h3>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {complements.map((c) => (
+                <div
+                  key={c.title}
+                  className="rounded-[14px] border border-[#E7E3D9] bg-[#FFFFFF] p-5"
+                >
+                  <c.icon className="size-5 text-[#D9531C]" aria-hidden="true" />
+                  <h4 className="mt-3 font-heading text-sm font-bold text-[#101D35]">{c.title}</h4>
+                  <p className="mt-1.5 text-xs leading-relaxed text-[#5B6B8C]">{c.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
         {/* Automate Pro promo */}
         <Reveal delay={200}>
-          <div className="mt-12 rounded-[16px] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+          <div className="mt-10 rounded-[16px] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div className="flex items-start gap-4">
               <div className="flex size-11 items-center justify-center rounded-[10px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F4C542] shrink-0">
                 <BotMessageSquare className="size-5" aria-hidden="true" />
               </div>
               <div>
                 <h4 className="font-heading text-base font-bold text-[#F5F3EE]">
-                  Já tem website? Não o refazemos.
+                  Já tem website ativo? Não precisa de o refazer.
                 </h4>
                 <p className="mt-1 text-sm text-[#B8C0D0] max-w-[60ch]">
-                  Juntamos o atendimento imediato no WhatsApp, qualificação e marcação de reuniões
-                  ao site que já tem, em dias e sem o tirar do ar.
+                  Integramos atendimento automático, qualificação e marcação de reuniões sobre o
+                  site que já utiliza, sem tirar a sua página do ar.
                 </p>
               </div>
             </div>
@@ -182,7 +256,7 @@ export function Services() {
               href="/#automate-pro"
               className="lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider whitespace-nowrap"
             >
-              Ver Automate Pro
+              <span>Ver Automate Pro</span>
               <ArrowUpRight className="size-4" aria-hidden="true" />
             </a>
           </div>

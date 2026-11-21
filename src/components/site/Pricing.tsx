@@ -1,6 +1,6 @@
 import { Reveal } from "./Reveal";
-import { CTA, site } from "@/lib/site-config";
-import { ArrowRight, Check, Star, Zap, Shield, Rocket } from "lucide-react";
+import { CTA } from "@/lib/site-config";
+import { ArrowRight, Check, Star, Zap, Shield, Rocket, Sliders } from "lucide-react";
 
 const plans = [
   {
@@ -8,15 +8,15 @@ const plans = [
     icon: Star,
     implementation: "125.000",
     monthly: "20.000",
-    tagline: "Para quem não tem site, ou tem um que não gera contactos",
-    result: "Mais visitas qualificadas ao site e mais pedidos de orçamento",
+    tagline: "Para quem precisa de um website estruturado para gerar contactos diretos",
+    outcome: "Site profissional rápido ligado ao WhatsApp e formulário organizado",
     popular: false,
     href: CTA.planPresenca,
     features: [
       "Site profissional rápido e claro",
-      "SEO básico para Google",
-      "Ligação directa ao WhatsApp",
-      "Formulário de contacto",
+      "SEO base para pesquisas no Google",
+      "Ligação direta ao WhatsApp",
+      "Formulário de contacto organizado",
       "Suporte técnico incluído",
     ],
   },
@@ -25,16 +25,16 @@ const plans = [
     icon: Zap,
     implementation: "250.000",
     monthly: "50.000",
-    tagline: "Para quem quer site, atendimento 24h e reuniões marcadas",
-    result: "Resposta em <10s, +40% agendamentos, zero contactos esquecidos",
+    tagline: "Para quem quer website, atendimento com IA e marcação de reuniões",
+    outcome: "Atendimento inicial automatizado, agendamento e registo de contactos",
     popular: true,
     href: CTA.planProfissional,
     features: [
       "Site até 5 páginas (tudo do Presença)",
-      "Atendimento automático 24h no WhatsApp",
+      "Atendimento automático no WhatsApp",
       "Marcação automática de reuniões",
       "Registo e gestão de contactos (CRM)",
-      "Painel com métricas de atendimento",
+      "Painel com acompanhamento de pedidos",
       "Suporte técnico prioritário",
     ],
   },
@@ -43,16 +43,16 @@ const plans = [
     icon: Shield,
     implementation: "450.000",
     monthly: "85.000",
-    tagline: "Para quem quer acompanhar e fechar mais contactos",
-    result: "Seguimento automático, menos faltas e presença forte no Google",
+    tagline: "Para quem quer automatizar follow-ups, lembretes e acompanhamento",
+    outcome: "Menos oportunidades esquecidas e processos comerciais integrados",
     popular: false,
     href: CTA.planAutoridade,
     features: [
       "Tudo do plano Profissional",
-      "Landing pages para gerar mais pedidos",
+      "Landing pages para captação de pedidos",
       "Follow-ups automáticos de propostas",
       "Lembretes automáticos de reunião",
-      "Relatórios semanais automáticos",
+      "Relatórios automáticos semanais",
       "Suporte técnico dedicado",
     ],
   },
@@ -61,17 +61,17 @@ const plans = [
     icon: Rocket,
     implementation: "700.000",
     monthly: "150.000",
-    tagline: "Para quem quer a operação comercial toda organizada",
-    result: "Do primeiro contacto ao pagamento e fecho num único processo",
+    tagline: "Para quem quer atendimento com IA e operação comercial totalmente integrada",
+    outcome: "Fluxos completos do primeiro contacto à gestão e acompanhamento",
     popular: false,
     href: CTA.planDominioIA,
     features: [
       "Tudo do plano Autoridade",
       "Funis comerciais completos",
-      "Sistema de pagamento integrado",
+      "Integração de processos e pagamentos",
       "Automação comercial avançada",
-      "Consultoria estratégica mensal",
-      "Suporte técnico VIP dedicado",
+      "Acompanhamento estratégico mensal",
+      "Suporte técnico dedicado",
     ],
   },
 ];
@@ -87,15 +87,14 @@ export function Pricing() {
           <div className="text-center">
             <p className="lume-eyebrow text-[#D9531C]">Planos e Investimento</p>
             <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
-              Escolha por onde <span className="text-[#D9531C]">começar</span>
+              Escolha o formato adequado ao <span className="text-[#D9531C]">seu momento</span>
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-              Cada plano paga-se logo com as primeiras reuniões recuperadas. Já tem website e não o
-              quer refazer? Veja acima o{" "}
+              Temos pacotes completos para quem precisa de site + IA + automatização, além do{" "}
               <a href="#automate-pricing" className="font-semibold text-[#D9531C] hover:underline">
                 Automate Pro
-              </a>
-              .
+              </a>{" "}
+              para quem já tem website e de propostas personalizadas por processo.
             </p>
           </div>
         </Reveal>
@@ -184,7 +183,7 @@ export function Pricing() {
                     ao mês
                   </p>
 
-                  {/* Resultado */}
+                  {/* Foco do plano */}
                   <div
                     className={`mt-3 rounded-[8px] border p-2.5 ${
                       p.popular
@@ -192,7 +191,7 @@ export function Pricing() {
                         : "border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35]"
                     }`}
                   >
-                    <p className="text-[11px] font-semibold leading-snug">Resultado: {p.result}</p>
+                    <p className="text-[11px] font-semibold leading-snug">{p.outcome}</p>
                   </div>
                 </div>
 
@@ -223,69 +222,61 @@ export function Pricing() {
                     p.popular ? "lume-btn-primary" : "lume-btn-secondary-light"
                   }`}
                 >
-                  <span>{site.ctaSecond.label}</span>
+                  <span>Solicitar diagnóstico</span>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>
             ))}
           </div>
           <p className="mt-5 text-center text-xs text-[#5B6B8C]">
-            Custos de plataformas de terceiros (WhatsApp, serviços de IA, e-mail e outros) podem
-            variar conforme a utilização.
+            Custos externos de plataformas de terceiros (WhatsApp oficial, APIs de IA, serviço de
+            e-mail ou CRM externo) variam conforme a utilização e a arquitetura escolhida.
           </p>
         </Reveal>
 
-        {/* Cálculo de ROI */}
+        {/* Custom Proposal Card */}
         <Reveal delay={160}>
-          <div className="mt-10 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 sm:p-8 text-center text-[#F5F3EE]">
-            <h3 className="font-heading text-xl font-extrabold text-[#F5F3EE]">
-              Quanto vale cada reunião que hoje perde?
-            </h3>
-            <p className="mt-2 text-sm text-[#B8C0D0] max-w-xl mx-auto">
-              Se cada reunião valer Kz 200.000 ou mais, o plano Profissional (Kz 250.000 de
-              implementação) cobre-se com cerca de{" "}
-              <strong className="text-[#F4C542]">1,3 reuniões</strong>. Com +8 a 12 reuniões
-              adicionais por mês, o resto é lucro.
-            </p>
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
-                <p className="text-xs text-[#B8C0D0]">Reunião vale</p>
-                <p className="mt-1 font-heading text-lg font-extrabold text-[#F5F3EE] tabular-nums">
-                  Kz 200k
-                </p>
+          <div className="mt-10 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="flex items-start gap-4 max-w-2xl">
+              <div className="flex size-11 items-center justify-center rounded-[10px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F4C542] shrink-0">
+                <Sliders className="size-5" aria-hidden="true" />
               </div>
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
-                <p className="text-xs text-[#B8C0D0]">Implementação</p>
-                <p className="mt-1 font-heading text-lg font-extrabold text-[#F5F3EE] tabular-nums">
-                  Kz 250k
-                </p>
-              </div>
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
-                <p className="text-xs text-[#B8C0D0]">Para cobrir</p>
-                <p className="mt-1 font-heading text-lg font-extrabold text-[#F4C542] tabular-nums">
-                  ~1,3
-                </p>
-              </div>
-              <div className="rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4">
-                <p className="text-xs text-[#B8C0D0]">Reuniões/mês</p>
-                <p className="mt-1 font-heading text-lg font-extrabold text-[#2E9E6B] tabular-nums">
-                  +8 a 12
+              <div>
+                <p className="lume-eyebrow text-[#F4C542]">Proposta Personalizada</p>
+                <h3 className="mt-1.5 font-heading text-xl font-extrabold text-[#F5F3EE]">
+                  Precisa apenas de IA no WhatsApp ou de automatizar um processo específico?
+                </h3>
+                <p className="mt-2 text-sm text-[#B8C0D0] leading-relaxed">
+                  Quando a empresa precisa de um escopo sob medida (por exemplo, apenas follow-up
+                  comercial, relatórios automáticos ou integração com ferramentas internas),
+                  preparamos uma proposta ajustada após o diagnóstico.
                 </p>
               </div>
             </div>
+
+            <a
+              href={CTA.proposal}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-xs uppercase tracking-wider whitespace-nowrap"
+            >
+              <span>Pedir proposta personalizada</span>
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </a>
           </div>
         </Reveal>
 
-        {/* Garantia 30 dias */}
+        {/* Transparency note */}
         <Reveal delay={200}>
-          <div className="mt-10 rounded-[16px] border border-[#2E9E6B]/50 bg-[#F5F3EE] p-6 sm:p-8 text-center max-w-3xl mx-auto">
-            <p className="lume-eyebrow text-[#2E9E6B]">Garantia sem risco</p>
-            <h3 className="mt-2 font-heading text-xl font-extrabold text-[#101D35]">
-              30 dias. Se não entregarmos o que prometemos, devolvemos 100%.
+          <div className="mt-8 rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6 sm:p-7 text-center max-w-3xl mx-auto">
+            <p className="lume-eyebrow text-[#2E9E6B]">Como funciona o investimento</p>
+            <h3 className="mt-2 font-heading text-lg font-extrabold text-[#101D35]">
+              Implementação inicial para estruturar e ligar; mensalidade para manter e evoluir
             </h3>
-            <p className="mt-3 text-sm text-[#5B6B8C] leading-relaxed">
-              Se nos primeiros 30 dias o sistema não entregar o que combinámos, devolvemos todo o
-              investimento. Sem perguntas, sem burocracia. O risco é nosso, não seu.
+            <p className="mt-2.5 text-sm text-[#5B6B8C] leading-relaxed">
+              A implementação cobre o levantamento, configuração, integrações, testes e orientação
+              da equipa. A mensalidade assegura monitorização técnica, suporte e melhorias contínuas
+              para manter tudo estável no dia a dia.
             </p>
           </div>
         </Reveal>

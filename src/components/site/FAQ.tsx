@@ -1,36 +1,52 @@
 import { useState } from "react";
 import { Reveal } from "./Reveal";
 import { MessageSquare, ArrowRight, ChevronDown, HelpCircle } from "lucide-react";
-import { site, CTA } from "@/lib/site-config";
+import { CTA } from "@/lib/site-config";
 
 const faqs = [
   {
-    q: "Preciso de saber programar?",
-    a: "Não. Tratamos da configuração, do WhatsApp, do registo de contactos e do painel. A sua equipa usa como usa o WhatsApp.",
+    q: "O que faz a Agentes Digital?",
+    a: "Ajudamos empresas em Angola a atender clientes mais rápido, acompanhar oportunidades comerciais e reduzir tarefas repetitivas através da implementação de inteligência artificial e da automatização de processos empresariais.",
   },
   {
-    q: "Quanto tempo demora a ver resultados?",
-    a: "O sistema arranca em dias. No primeiro mês mede-se o tempo de resposta em menos de 10 segundos e quantos contactos passaram a reunião marcada.",
+    q: "Qual é a diferença entre os dois serviços?",
+    a: "A implementação de inteligência artificial foca-se no atendimento: responder a perguntas frequentes, recolher e qualificar contactos, marcar reuniões e encaminhar para a equipa. A automatização de processos foca-se na operação comercial e interna: follow-ups automáticos, lembretes, notificações, relatórios automáticos e integração entre ferramentas.",
   },
   {
-    q: "Funciona com o WhatsApp que já uso?",
-    a: "Ligamos ao WhatsApp da empresa através da API oficial da Meta para responder automaticamente, qualificar contactos e marcar reuniões.",
+    q: "A solução substitui funcionários?",
+    a: "Não. O objetivo é retirar o peso das respostas repetitivas e das tarefas manuais para que a sua equipa se concentre na negociação, no atendimento humano de qualidade e no fecho de negócios.",
   },
   {
-    q: "E se houver um problema?",
-    a: "Monitorizamos o sistema de forma contínua e tem suporte técnico incluído. Quando uma conversa exige uma pessoa, passa para a sua equipa com o histórico completo.",
+    q: "É possível encaminhar conversas para pessoas?",
+    a: "Sim. Sempre que o pedido exige análise humana, negociação ou decisão da sua equipa, a conversa é encaminhada para um colaborador com o resumo e o histórico completo.",
   },
   {
-    q: "Quanto custa realmente?",
-    a: "Os valores estão na secção de planos: desde 125.000 Kz de implementação (20.000 Kz ao mês) no plano Presença até 700.000 Kz (150.000 Kz ao mês) na Operação Completa, além do Automate Pro (300.000 Kz e 65.000 Kz ao mês) para quem já tem site. Só os custos de plataformas de terceiros variam com a utilização.",
+    q: "É possível utilizar ferramentas existentes?",
+    a: "Sim. Trabalhamos sobre o WhatsApp, e-mail, calendário, CRM e website que a empresa já utiliza, evitando reconstruções desnecessárias sempre que possível.",
   },
   {
-    q: "Preciso de mudar tudo o que já tenho?",
-    a: "Não. Se já tem website, acrescentamos o atendimento automático por cima com o Automate Pro, sem migração e sem o tirar do ar.",
+    q: "É possível automatizar apenas um processo?",
+    a: "Sim. Os dois serviços funcionam individualmente ou em conjunto. Pode começar apenas pelo atendimento no WhatsApp, pela marcação de reuniões ou por um fluxo específico de follow-up.",
   },
   {
-    q: "E se não gostar do resultado?",
-    a: "Tem 30 dias de garantia. Se não entregarmos o que prometemos, devolvemos 100% do investimento.",
+    q: "Quanto tempo demora a implementação?",
+    a: "O prazo depende da complexidade das integrações e dos fluxos definidos no diagnóstico. Na proposta apresentamos o calendário realista de planeamento, configuração, testes e entrada em funcionamento.",
+  },
+  {
+    q: "Como funciona o suporte?",
+    a: "Os planos com mensalidade incluem acompanhamento técnico, monitorização e ajustes conforme o plano contratado, com contacto direto com a nossa equipa.",
+  },
+  {
+    q: "Quais são os custos?",
+    a: "Temos planos definidos a partir de 125.000 Kz de implementação e 20.000 Kz ao mês, o Automate Pro (300.000 Kz de implementação e 65.000 Kz ao mês) para quem já tem website, e propostas personalizadas sob diagnóstico. Custos externos de plataformas de terceiros variam consoante a utilização.",
+  },
+  {
+    q: "É necessário conhecimento técnico?",
+    a: "Não. Tratamos do diagnóstico, configuração, integrações, testes e documentação, e orientamos a sua equipa para utilizar tudo no dia a dia com simplicidade.",
+  },
+  {
+    q: "Como saber se a solução é adequada à empresa?",
+    a: "Basta solicitar um diagnóstico. Avaliamos o seu fluxo de atendimento e processos atuais para indicar com transparência o que faz sentido implementar primeiro.",
   },
 ];
 
@@ -52,7 +68,7 @@ export function FAQ() {
 
         <Reveal delay={60}>
           <p className="mt-4 max-w-2xl text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-            Respostas diretas, sem rodeios nem letra pequena.
+            Respostas diretas e transparentes sobre implementação, suporte, ferramentas e custos.
           </p>
         </Reveal>
 
@@ -102,19 +118,19 @@ export function FAQ() {
                   <HelpCircle className="size-5" aria-hidden="true" />
                 </div>
                 <h3 className="mt-4 font-heading text-base font-bold text-[#101D35]">
-                  Ainda tem dúvidas?
+                  Ainda tem alguma dúvida?
                 </h3>
                 <p className="mt-2 text-sm text-[#5B6B8C] leading-relaxed">
-                  Fale directamente com um especialista. Sem compromisso e sem pressão, apenas
-                  respostas claras para o seu caso.
+                  Converse diretamente com a nossa equipa no WhatsApp para avaliar o seu cenário sem
+                  compromisso.
                 </p>
                 <a
-                  href={site.ctaSecond.href}
+                  href={CTA.specialist}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="lume-btn-secondary-light mt-5 inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap"
                 >
-                  <span>{site.ctaSecond.label}</span>
+                  <span>Conversar no WhatsApp</span>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>
@@ -124,19 +140,17 @@ export function FAQ() {
                   <MessageSquare className="size-5" aria-hidden="true" />
                 </div>
                 <h3 className="mt-4 font-heading text-base font-bold text-[#F5F3EE]">
-                  Diagnóstico gratuito
+                  Diagnóstico da operação
                 </h3>
                 <p className="mt-2 text-sm text-[#B8C0D0] leading-relaxed">
-                  Em 24 horas recebe um plano com os seus números: quantos contactos perde, quanto
-                  isso vale e como os recuperar.
+                  Analisamos os seus canais e processos atuais para indicar exatamente o que faz
+                  sentido implementar primeiro.
                 </p>
                 <a
-                  href={CTA.diagnostic}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#contacto"
                   className="lume-btn-primary mt-5 inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap"
                 >
-                  <span>Quero o meu diagnóstico gratuito</span>
+                  <span>Solicitar diagnóstico</span>
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>

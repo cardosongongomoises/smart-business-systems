@@ -8,7 +8,7 @@ export const organizationSchema = {
   logo: "https://agentes-digital.com/favicon-512.png",
   image: "https://agentes-digital.com/favicon-512.png",
   description:
-    "Atendimento imediato no WhatsApp e no website em menos de 10 segundos, marcação automática de reuniões e acompanhamento comercial para empresas em Angola.",
+    "Implementação de inteligência artificial e automatização de processos empresariais em Angola para melhorar o atendimento, acompanhar oportunidades comerciais e reduzir tarefas repetitivas.",
   telephone: "+244934024904",
   email: "agentesdigital.suporte@gmail.com",
   priceRange: "Kz 125.000 - Kz 700.000",
@@ -32,42 +32,33 @@ export const organizationSchema = {
   sameAs: ["https://instagram.com/agentesdigital", "https://linkedin.com/company/agentes-digital"],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Atendimento Comercial 24h e Websites para Empresas",
+    name: "Inteligência Artificial e Automatização de Processos Empresariais",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Atendimento Imediato no WhatsApp e Website",
+          name: "Implementação de Inteligência Artificial",
           description:
-            "Resposta em menos de 10 segundos, qualificação de pedidos e marcação automática de reuniões para empresas em Angola.",
+            "Atendimento rápido a clientes, respostas a perguntas frequentes, recolha e qualificação de contactos, marcação de reuniões e encaminhamento para colaboradores.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Websites que Transformam Visitas em Contactos",
+          name: "Automatização de Processos Empresariais",
           description:
-            "Websites rápidos com SEO local e ligação direta ao WhatsApp para gerar pedidos de orçamento.",
+            "Follow-ups comerciais automáticos, lembretes, notificações, relatórios automáticos, organização de dados e integração entre ferramentas.",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Automate Pro: Atendimento Imediato em Website Existente",
+          name: "Automate Pro: Integração sobre Website Existente",
           description:
-            "Ligação de atendimento automático no WhatsApp, qualificação e marcação de reuniões ao site que a empresa já tem, sem o refazer.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Registo e Acompanhamento Comercial",
-          description:
-            "Centralização de contactos, histórico completo, lembretes de reunião e acompanhamento automático para equipas de vendas em Angola.",
+            "Implementação de atendimento automático e fluxo de marcação de reuniões sobre o website que a empresa já possui, sem o reconstruir.",
         },
       },
     ],
@@ -81,7 +72,7 @@ export const websiteSchema = {
   url: "https://agentes-digital.com",
   name: "Agentes Digital",
   description:
-    "Atendimento 24h no WhatsApp, marcação automática de reuniões e websites comerciais para empresas em Angola",
+    "Implementação de inteligência artificial e automatização de processos para empresas em Angola",
   inLanguage: "pt-AO",
   publisher: {
     "@id": "https://agentes-digital.com/#organization",
@@ -94,58 +85,90 @@ export const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Preciso de saber programar?",
+      name: "O que faz a Agentes Digital?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Não. Tratamos da configuração, do WhatsApp, do registo de contactos e do painel. A sua equipa usa como usa o WhatsApp.",
+        text: "Ajudamos empresas em Angola a atender clientes mais rápido, acompanhar oportunidades comerciais e reduzir tarefas repetitivas através da implementação de inteligência artificial e da automatização de processos empresariais.",
       },
     },
     {
       "@type": "Question",
-      name: "Quanto tempo demora a ver resultados?",
+      name: "Qual é a diferença entre os dois serviços?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O sistema arranca em dias. No primeiro mês mede-se o tempo de resposta em menos de 10 segundos e quantos contactos passaram a reunião marcada.",
+        text: "A implementação de inteligência artificial foca-se no atendimento: responder a dúvidas, recolher e qualificar contactos, marcar reuniões e encaminhar para a equipa. A automatização de processos foca-se na operação interna e comercial: follow-ups, lembretes, relatórios automáticos, atualização de dados e ligação entre ferramentas.",
       },
     },
     {
       "@type": "Question",
-      name: "Funciona com o WhatsApp que já uso?",
+      name: "A solução substitui funcionários?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Ligamos ao WhatsApp da empresa através da API oficial da Meta para responder automaticamente, qualificar contactos e marcar reuniões.",
+        text: "Não. O objetivo é retirar o peso das respostas repetitivas e das tarefas manuais para que a sua equipa se concentre na negociação, no atendimento humano de qualidade e no fecho de negócios.",
       },
     },
     {
       "@type": "Question",
-      name: "E se houver um problema?",
+      name: "É possível encaminhar conversas para pessoas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Monitorizamos o sistema de forma contínua e tem suporte técnico incluído. Quando uma conversa exige uma pessoa, passa para a sua equipa com o histórico completo.",
+        text: "Sim. Sempre que o pedido exige análise humana, negociação ou decisão da sua equipa, a conversa é encaminhada para um colaborador com o resumo e o histórico completo.",
       },
     },
     {
       "@type": "Question",
-      name: "Quanto custa realmente?",
+      name: "É possível utilizar ferramentas existentes?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Os planos começam em 125.000 Kz de implementação (20.000 Kz ao mês) no plano Presença, 250.000 Kz (50.000 Kz ao mês) no plano Profissional, 450.000 Kz (85.000 Kz ao mês) no Autoridade e 700.000 Kz (150.000 Kz ao mês) na Operação Completa, além do Automate Pro (300.000 Kz e 65.000 Kz ao mês). Só os custos de plataformas de terceiros variam com a utilização.",
+        text: "Sim. Trabalhamos sobre o WhatsApp, e-mail, calendário, CRM e website que a empresa já utiliza, evitando reconstruções desnecessárias sempre que possível.",
       },
     },
     {
       "@type": "Question",
-      name: "Preciso de mudar tudo o que já tenho?",
+      name: "É possível automatizar apenas um processo?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Não. Se já tem website, acrescentamos o atendimento automático por cima com o Automate Pro, sem migração e sem o tirar do ar.",
+        text: "Sim. Os serviços funcionam individualmente ou em conjunto. Pode começar apenas pelo atendimento no WhatsApp, pela marcação de reuniões ou por um fluxo específico de follow-up.",
       },
     },
     {
       "@type": "Question",
-      name: "E se não gostar do resultado?",
+      name: "Quanto tempo demora a implementação?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Tem 30 dias de garantia. Se não entregarmos o que prometemos, devolvemos 100% do investimento.",
+        text: "O prazo depende da complexidade das integrações e do fluxo definido no diagnóstico. Na proposta apresentamos o calendário realista de planeamento, configuração, testes e entrada em funcionamento.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Como funciona o suporte?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Os planos com mensalidade incluem acompanhamento técnico, monitorização e ajustes conforme o plano contratado, com atendimento directo da nossa equipa.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Quais são os custos?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Temos planos definidos a partir de 125.000 Kz de implementação e 20.000 Kz ao mês, além de soluções personalizadas sob diagnóstico. Custos externos de plataformas de terceiros variam consoante a utilização.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "É necessário conhecimento técnico?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Não. Tratamos do diagnóstico, configuração, integrações, testes e documentação, e orientamos a sua equipa para utilizar tudo no dia a dia com simplicidade.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Como saber se a solução é adequada à empresa?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Basta solicitar um diagnóstico. Avaliamos o seu fluxo de atendimento e processos actuais para indicar com transparência o que faz sentido implementar primeiro.",
       },
     },
   ],

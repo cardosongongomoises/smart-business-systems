@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { WhatsAppFloat } from "./WhatsAppFloat";
+import { EMAIL, WHATSAPP_DISPLAY, LOCATION } from "@/lib/site-config";
 
 export function TermsOfService() {
   const handlePrint = () => {
@@ -155,16 +156,17 @@ export function TermsOfService() {
                   <strong className="text-foreground">Website:</strong> agentes-digital.com
                 </p>
                 <p>
-                  <strong className="text-foreground">E-mail:</strong> [inserir e-mail oficial]
+                  <strong className="text-foreground">E-mail:</strong> {EMAIL}
                 </p>
                 <p>
-                  <strong className="text-foreground">Telefone/WhatsApp:</strong> [inserir contacto]
+                  <strong className="text-foreground">Telefone/WhatsApp:</strong> {WHATSAPP_DISPLAY}
                 </p>
                 <p>
-                  <strong className="text-foreground">Endereço:</strong> [inserir endereço]
+                  <strong className="text-foreground">Endereço:</strong> {LOCATION}
                 </p>
                 <p>
-                  <strong className="text-foreground">NIF:</strong> [inserir NIF]
+                  <strong className="text-foreground">NIF:</strong> Constante em fatura ou contrato
+                  aplicável
                 </p>
               </div>
               <p className="mt-4 text-xs italic text-muted-foreground/80 pt-3 border-t border-[#E7E3D9]">
@@ -935,13 +937,13 @@ export function TermsOfService() {
                   <strong className="text-[#F5F3EE]">Website:</strong> agentes-digital.com
                 </p>
                 <p>
-                  <strong className="text-[#F5F3EE]">E-mail:</strong> [inserir e-mail oficial]
+                  <strong className="text-[#F5F3EE]">E-mail:</strong> {EMAIL}
                 </p>
                 <p>
-                  <strong className="text-[#F5F3EE]">WhatsApp:</strong> [inserir número]
+                  <strong className="text-[#F5F3EE]">WhatsApp:</strong> {WHATSAPP_DISPLAY}
                 </p>
                 <p>
-                  <strong className="text-[#F5F3EE]">Endereço:</strong> [inserir endereço]
+                  <strong className="text-[#F5F3EE]">Endereço:</strong> {LOCATION}
                 </p>
               </div>
               <p className="mt-4 text-xs font-bold text-[#F4C542] pt-3 border-t border-[#2A3D63]">

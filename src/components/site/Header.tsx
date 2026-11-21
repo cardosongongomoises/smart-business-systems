@@ -4,10 +4,10 @@ import { CTA } from "@/lib/site-config";
 
 const links = [
   { href: "/#problema", label: "O Problema" },
-  { href: "/#servicos", label: "O que Resolvemos" },
-  { href: "/#automate-pro", label: "Já tem site?" },
-  { href: "/#resultados", label: "Resultados" },
+  { href: "/#servicos", label: "Soluções" },
+  { href: "/#como-funciona", label: "Como Funciona" },
   { href: "/#planos", label: "Planos" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Header() {
@@ -59,15 +59,13 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Zone 3: Single Primary Action (Navy text on Orange) */}
+        {/* Zone 3: Single Primary Action */}
         <div className="hidden lg:flex items-center shrink-0">
           <a
-            href={CTA.specialist}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/#contacto"
             className="lume-btn-primary inline-flex h-[40px] min-h-[40px] items-center justify-center gap-2 px-5 py-2 text-[13px] whitespace-nowrap shrink-0"
           >
-            <span>Parar de perder clientes</span>
+            <span>Solicitar diagnóstico</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
           </a>
         </div>
@@ -108,20 +106,21 @@ export function Header() {
 
             <div className="mt-4 pt-4 border-t border-[#E7E3D9] flex flex-col gap-2.5">
               <a
+                href="/#contacto"
+                onClick={() => setOpen(false)}
+                className="lume-btn-primary flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
+              >
+                <span>Solicitar diagnóstico</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </a>
+              <a
                 href={CTA.specialist}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="lume-btn-primary flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
-              >
-                Quero parar de perder clientes <ArrowRight className="size-4" aria-hidden="true" />
-              </a>
-              <a
-                href="/#contacto"
-                onClick={() => setOpen(false)}
                 className="lume-btn-secondary-light flex items-center justify-center text-xs"
               >
-                Pedir diagnóstico gratuito
+                Conversar no WhatsApp
               </a>
             </div>
           </div>

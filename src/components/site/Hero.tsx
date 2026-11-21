@@ -1,32 +1,36 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, PlayCircle, Bot, CheckCircle2 } from "lucide-react";
+import { ArrowRight, MessageSquare, Bot, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTA } from "@/lib/site-config";
 
 const flow = [
   {
-    label: "O cliente escreve",
-    detail: "Manda mensagem no WhatsApp às 19h ou ao sábado",
-    tag: "Contacto",
-    desc: '"Boa noite, quanto custa o vosso serviço?"',
+    label: "O cliente envia mensagem",
+    detail: "Contacto por WhatsApp ou pelo website a qualquer hora",
+    tag: "Entrada",
+    desc: '"Boa tarde, gostaria de saber como funcionam os vossos serviços."',
+    badge: "Recebido",
   },
   {
-    label: "Resposta em menos de 10s",
-    detail: "Atendimento imediato a qualquer hora, sem ninguém parar",
-    tag: "<10s",
-    desc: "Responde dúvidas iniciais e recolhe o que o cliente precisa",
+    label: "IA atende e qualifica",
+    detail: "Responde às dúvidas iniciais e recolhe os dados certos",
+    tag: "IA",
+    desc: "Explica condições base, identifica a necessidade e organiza o contacto",
+    badge: "Qualificado",
   },
   {
-    label: "Filtro de interessados",
-    detail: "Separa curiosos de clientes prontos a avançar",
-    tag: "Triagem",
-    desc: "A sua equipa só fala com quem quer mesmo comprar",
+    label: "Agenda e follow-up",
+    detail: "Marca a reunião ou ativa lembretes automáticos",
+    tag: "Processo",
+    desc: "Confirma o horário na agenda e regista tudo no histórico da empresa",
+    badge: "Organizado",
   },
   {
-    label: "Reunião marcada",
-    detail: "Horário escolhido no próprio chat, sem vai-e-vem",
-    tag: "Agenda",
-    desc: "Cada contacto fica registado e confirmado no calendário",
+    label: "Equipa assume o fecho",
+    detail: "Colaborador recebe o resumo completo pronto para avançar",
+    tag: "Equipa",
+    desc: "Menos trabalho repetitivo e foco total nas negociações",
+    badge: "Encaminhado",
   },
 ];
 
@@ -36,7 +40,7 @@ export function Hero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % flow.length);
-    }, 3200);
+    }, 3400);
     return () => clearInterval(timer);
   }, []);
 
@@ -50,51 +54,53 @@ export function Hero() {
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <Reveal>
-            <h1 className="font-heading text-[38px] leading-[1.06] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[50px] lg:text-[56px] text-balance">
-              O cliente escreve no WhatsApp. Ninguém responde.{" "}
-              <span className="text-[#D9531C]">Vai comprar à concorrência.</span>
+            <h1 className="font-heading text-[36px] leading-[1.08] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-[48px] lg:text-[54px] text-balance">
+              O cliente escreve. A resposta atrasa.{" "}
+              <span className="text-[#D9531C]">A venda arrefece e vai para outro lado.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={100}>
             <p className="mt-6 max-w-[60ch] text-base leading-[1.65] text-[#101D35] font-medium sm:text-lg">
-              Para empresas em Angola (clínicas, construtoras, escritórios de advocacia,
-              consultoras) que recebem pedidos por WhatsApp e pelo website e não conseguem responder
-              a todos a tempo.
+              Ajudamos empresas em Angola a atender mais depressa, acompanhar cada oportunidade
+              comercial e reduzir tarefas repetitivas com implementação de inteligência artificial e
+              automatização de processos.
             </p>
           </Reveal>
 
           <Reveal delay={140}>
             <p className="mt-3 max-w-[60ch] text-sm leading-[1.65] text-[#5B6B8C] sm:text-base">
-              O seu atendimento passa a responder em{" "}
-              <strong className="font-semibold text-[#101D35]">menos de 10 segundos</strong>, a
-              qualquer hora, marca a reunião e acompanha cada contacto até ao fecho. A sua equipa só
-              fala com quem quer mesmo comprar.
+              Os dois serviços funcionam em conjunto ou individualmente, integrados com o WhatsApp,
+              o website, a agenda e as ferramentas que a sua equipa já utiliza.
             </p>
           </Reveal>
 
           <Reveal delay={170}>
-            <ul className="mt-6 space-y-2 text-sm text-[#101D35]">
+            <ul className="mt-6 space-y-2.5 text-sm text-[#101D35]">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2
                   className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <span>Resposta a todos os contactos, também à noite e ao fim de semana</span>
+                <span>Atendimento ágil a dúvidas frequentes, recolha e triagem de contactos</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2
                   className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <span>Reunião marcada no próprio chat, sem vai-e-vem de mensagens</span>
+                <span>
+                  Follow-ups, marcação de reuniões e lembretes sem depender da memória da equipa
+                </span>
               </li>
               <li className="flex items-start gap-2.5">
                 <CheckCircle2
                   className="size-4 text-[#2E9E6B] mt-0.5 shrink-0"
                   aria-hidden="true"
                 />
-                <span>Nenhum contacto esquecido: cada um fica registado e acompanhado</span>
+                <span>
+                  Menos trabalho manual diário para que os colaboradores se foquem em fechar vendas
+                </span>
               </li>
             </ul>
           </Reveal>
@@ -102,20 +108,20 @@ export function Hero() {
           <Reveal delay={200}>
             <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
               <a
-                href={CTA.specialist}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contacto"
                 className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                <span>Quero parar de perder clientes</span>
+                <span>Solicitar diagnóstico</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
-                href="#como-funciona"
+                href={CTA.specialist}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
               >
-                <PlayCircle className="size-4" aria-hidden="true" />
-                <span>Ver como funciona</span>
+                <MessageSquare className="size-4" aria-hidden="true" />
+                <span>Conversar no WhatsApp</span>
               </a>
             </div>
           </Reveal>
@@ -123,15 +129,13 @@ export function Hero() {
           <Reveal delay={240}>
             <div className="mt-9 pt-6 border-t border-[#E7E3D9]">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] font-medium text-[#5B6B8C]">
-                <span className="font-heading font-bold text-[#101D35] tabular-nums">
-                  +50 empresas atendidas
+                <span className="font-heading font-bold text-[#101D35]">
+                  Atendimento com IA e Automatização
                 </span>
                 <span aria-hidden="true">·</span>
-                <span className="tabular-nums">Resposta em menos de 10 segundos</span>
+                <span>Adaptado à realidade das empresas em Angola</span>
                 <span aria-hidden="true">·</span>
-                <span className="text-[#2E9E6B] font-semibold">
-                  Diagnóstico gratuito (5 vagas por mês)
-                </span>
+                <span className="text-[#2E9E6B] font-semibold">Implementação acompanhada</span>
               </div>
             </div>
           </Reveal>
@@ -155,20 +159,22 @@ export function Hero() {
                 </div>
                 <div>
                   <p className="font-heading text-xs font-bold tracking-[0.06em] uppercase text-[#F5F3EE]">
-                    Quando um cliente escreve
+                    Do contacto ao acompanhamento
                   </p>
-                  <p className="text-xs text-[#B8C0D0]">Do contacto à reunião marcada</p>
+                  <p className="text-xs text-[#B8C0D0]">
+                    Atendimento organizado com supervisão humana
+                  </p>
                 </div>
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F4C542] px-3 py-1 font-heading text-[11px] font-bold text-[#101D35] uppercase tracking-wider">
-                24/7
+                Fluxo
               </span>
             </div>
 
             <div
               className="mt-5 space-y-2.5"
               role="list"
-              aria-label="Etapas do atendimento automático"
+              aria-label="Etapas do atendimento e automatização"
             >
               {flow.map((step, i) => {
                 const isCurrent = activeStep === i;
@@ -213,9 +219,9 @@ export function Hero() {
                     {isCurrent && (
                       <div className="mt-3 border-t border-[#2A3D63] pt-2.5 flex items-center justify-between gap-2 text-xs">
                         <span className="text-[#F5F3EE]">{step.desc}</span>
-                        <span className="inline-flex items-center gap-1 shrink-0 text-[#2E9E6B] font-semibold tabular-nums">
+                        <span className="inline-flex items-center gap-1 shrink-0 text-[#2E9E6B] font-semibold">
                           <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                          &lt;10s
+                          {step.badge}
                         </span>
                       </div>
                     )}
@@ -225,7 +231,7 @@ export function Hero() {
             </div>
 
             <div className="mt-5 flex items-center justify-between border-t border-[#2A3D63] pt-3.5 text-xs text-[#B8C0D0]">
-              <span>Clique em qualquer etapa para inspecionar</span>
+              <span>Clique em qualquer etapa para ver o fluxo</span>
               <span className="font-heading font-bold text-[#F36B32] tabular-nums">
                 0{activeStep + 1} / 04
               </span>

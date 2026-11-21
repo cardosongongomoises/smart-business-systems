@@ -1,16 +1,8 @@
 import { useEffect, useRef } from "react";
 import { AutomateHero } from "./AutomateHero";
 import { AutomationSystemFlow } from "./AutomationSystemFlow";
-import { AutomateProblem } from "./AutomateProblem";
-import { AutomateTransformation } from "./AutomateTransformation";
 import { AutomateNoNewSite } from "./AutomateNoNewSite";
-import { AutomateFeatures } from "./AutomateFeatures";
-import { AutomateInteractiveDemo } from "./AutomateInteractiveDemo";
-import { AutomateTimeline } from "./AutomateTimeline";
-import { AutomateArchitecture } from "./AutomateArchitecture";
-import { AutomateBenefits } from "./AutomateBenefits";
 import { AutomatePricing } from "./AutomatePricing";
-import { AutomateCTA } from "./AutomateCTA";
 import { trackAutomateProEvent } from "./automateAnalytics";
 
 export function AutomateProSection() {
@@ -53,16 +45,8 @@ export function AutomateProSection() {
         <AutomationSystemFlow />
       </div>
 
-      <AutomateProblem />
-      <AutomateTransformation />
       <AutomateNoNewSite />
-      <AutomateFeatures />
-      <AutomateInteractiveDemo />
-      <AutomateTimeline />
-      <AutomateArchitecture />
-      <AutomateBenefits />
       <AutomatePricing />
-      <AutomateCTA />
     </section>
   );
 }
