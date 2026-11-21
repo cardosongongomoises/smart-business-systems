@@ -1,13 +1,25 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
+type RevealVariant = "up" | "down" | "left" | "right" | "scale";
+
+const startTransformMap: Record<RevealVariant, string> = {
+  up: "translateY(14px)",
+  down: "translateY(-14px)",
+  left: "translateX(16px)",
+  right: "translateX(-16px)",
+  scale: "scale(0.97)",
+};
+
 export function Reveal({
   children,
   delay = 0,
+  variant = "up",
   className = "",
   as: Tag = "div",
 }: {
   children: ReactNode;
   delay?: number;
+  variant?: RevealVariant;
   className?: string;
   as?: "div" | "li" | "section" | "article";
 }) {
@@ -35,25 +47,25 @@ export function Reveal({
             io.disconnect();
             el.animate(
               [
-                { opacity: 0, transform: "translateY(8px)" },
-                { opacity: 1, transform: "translateY(0)" },
+                { opacity: 0, transform: startTransformMap[variant] },
+                { opacity: 1, transform: "none" },
               ],
               {
-                duration: 260,
-                delay: Math.min(delay, 200),
-                easing: "cubic-bezier(0.2, 0.7, 0.2, 1)",
+                duration: 380,
+                delay: Math.min(delay, 260),
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
                 fill: "backwards",
               },
             );
           }
         }
       },
-      { threshold: 0, rootMargin: "40px 0px -20px 0px" },
+      { threshold: 0, rootMargin: "40px 0px -24px 0px" },
     );
 
     io.observe(el);
     return () => io.disconnect();
-  }, [delay]);
+  }, [delay, variant]);
 
   const Component = Tag as "div";
 

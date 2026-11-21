@@ -1,206 +1,133 @@
 import { Reveal } from "./Reveal";
-import { CTA } from "@/lib/site-config";
-import {
-  ArrowRight,
-  CheckCircle2,
-  XCircle,
-  MessageSquare,
-  TrendingUp,
-  Settings2,
-  BarChart3,
-} from "lucide-react";
+import { DEMO_CTA_LABEL } from "@/lib/site-config";
+import { ArrowRight, MessageSquare, CalendarCheck, Users, Smile, CheckCircle2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
-const benefitGroups = [
+const successCards = [
   {
     icon: MessageSquare,
-    title: "Atendimento",
-    subtitle: "Respostas consistentes sem atrasos",
-    items: [
-      "Resposta mais rápida ao primeiro contacto",
-      "Menos clientes à espera em horas de pico",
-      "Mais consistência nas respostas iniciais",
-      "Atendimento fora do horário tradicional",
-    ],
+    title: "Cada pergunta tem resposta.",
+    text: "Serviços, preços e horários que o seu espaço autorizou, apresentados com clareza.",
   },
   {
-    icon: TrendingUp,
-    title: "Vendas e acompanhamento",
-    subtitle: "Oportunidades com seguimento real",
-    items: [
-      "Menos oportunidades esquecidas após o primeiro contacto",
-      "Follow-ups comerciais consistentes e programados",
-      "Contacto pré-qualificado antes de chegar ao comercial",
-      "Reuniões marcadas e confirmadas com mais facilidade",
-    ],
+    icon: CalendarCheck,
+    title: "Cada marcação fica registada.",
+    text: "A cliente escolhe um horário disponível e a marcação entra na sua agenda.",
   },
   {
-    icon: Settings2,
-    title: "Operação",
-    subtitle: "Menos trabalho repetitivo na rotina",
-    items: [
-      "Redução de tarefas manuais repetitivas",
-      "Menos erros ao copiar dados entre ferramentas",
-      "Processos comerciais e internos mais organizados",
-      "Equipa focada em tarefas de maior valor",
-    ],
+    icon: Users,
+    title: "Há sempre uma pessoa quando é preciso.",
+    text: "A conversa passa para a sua equipa sempre que a situação o exige.",
   },
   {
-    icon: BarChart3,
-    title: "Gestão",
-    subtitle: "Visibilidade e organização diária",
-    items: [
-      "Informação centralizada num único histórico",
-      "Relatórios automáticos de acompanhamento",
-      "Maior visibilidade sobre pedidos e estados",
-      "Base mais sólida para o negócio crescer sem caos",
-    ],
+    icon: Smile,
+    title: "A equipa volta a cuidar de quem está presente.",
+    text: "Menos perguntas repetidas, menos interrupções, mais tranquilidade nos dias cheios.",
   },
 ];
 
-const forWhoItems = [
-  "A empresa recebe pedidos no WhatsApp, e-mail ou website e perde tempo a responder tudo à mão",
-  "A equipa repete diariamente as mesmas informações sobre serviços, horários e requisitos",
-  "Contactos e orçamentos acabam esquecidos por falta de um sistema de acompanhamento",
-  "Quer organizar atendimento e processos internos com controlo e supervisão humana",
-];
-
-const notForWhoItems = [
-  "Ainda não tem uma oferta, serviço ou processo mínimo definidos",
-  "Procura fórmulas milagrosas sem disponibilidade para validar o fluxo da empresa",
-  "Não tem equipa ou responsável para dar seguimento aos clientes encaminhados",
+const guidePillars = [
+  "Um sistema ligado à agenda do espaço para consultar horários e registar a marcação.",
+  "Testes antes de ativar: preços corretos, sem marcações duplicadas, passagem para uma pessoa.",
+  "Acompanhamento mensal e ajustes.",
 ];
 
 export function Benefits() {
   return (
     <section
-      id="beneficios"
-      className="relative bg-[#FFFFFF] text-[#101D35] py-24 sm:py-32 border-t border-[#E7E3D9] scroll-mt-20"
+      id="como-fica"
+      className="relative bg-[#F5F3EE] text-[#101D35] py-24 sm:py-32 scroll-mt-20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+        {/* Section 4: Como fica a sua recepção */}
         <Reveal>
-          <div className="max-w-3xl">
-            <p className="lume-eyebrow text-[#D9531C]">03 · Benefícios reais para a empresa</p>
-            <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-bold text-[#101D35] leading-[1.15] text-balance">
-              O que muda no atendimento, nas vendas, na operação e na gestão do seu negócio.
-            </h2>
-            <p className="mt-4 max-w-[65ch] text-base sm:text-lg text-[#5B6B8C] leading-relaxed">
-              Não implementamos tecnologia pela tecnologia. Estruturamos fluxos para poupar horas da
-              sua equipa e dar continuidade a cada contacto comercial.
-            </p>
-          </div>
-        </Reveal>
-
-        {/* 4 Benefit Groups */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {benefitGroups.map((group, i) => (
-            <Reveal key={group.title} delay={i * 70}>
-              <div className="flex h-full flex-col rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0">
-                    <group.icon className="size-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h3 className="font-heading text-base font-bold text-[#101D35]">
-                      {group.title}
-                    </h3>
-                    <p className="text-[11px] font-medium text-[#5B6B8C]">{group.subtitle}</p>
-                  </div>
-                </div>
-
-                <ul className="mt-5 space-y-2.5 border-t border-[#E7E3D9] pt-4 flex-1">
-                  {group.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2 text-xs text-[#101D35]">
-                      <CheckCircle2
-                        className="size-3.5 mt-0.5 shrink-0 text-[#2E9E6B]"
-                        aria-hidden="true"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* Qualification: For who / Not for who */}
-        <Reveal delay={120}>
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-[16px] border border-[#101D35] bg-[#101D35] p-6 sm:p-8 text-[#F5F3EE] flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <CheckCircle2 className="size-5 text-[#2E9E6B]" aria-hidden="true" />
-                  <span className="font-heading text-xs font-bold tracking-wider text-[#F4C542] uppercase">
-                    Faz sentido para a sua empresa se
-                  </span>
-                </div>
-                <h3 className="font-heading text-lg font-bold text-[#F5F3EE]">
-                  Já existe procura, mas o atendimento e o acompanhamento dependem de esforço manual
-                </h3>
-                <ul className="mt-6 space-y-3.5">
-                  {forWhoItems.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-[#F5F3EE]">
-                      <CheckCircle2
-                        className="size-4 mt-0.5 shrink-0 text-[#2E9E6B]"
-                        aria-hidden="true"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[#2A3D63]">
-                <p className="text-xs font-semibold text-[#F4C542]">
-                  Objetivo: atendimento ágil, histórico centralizado e menos tarefas repetitivas.
-                </p>
-              </div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="lume-eyebrow text-[#D9531C]">02 · Como fica a sua recepção</p>
+              <h2 className="mt-3 font-heading text-3xl sm:text-4xl font-bold text-[#101D35] leading-[1.15] text-balance">
+                Uma recepção organizada, mesmo quando a equipa está ocupada.
+              </h2>
             </div>
 
-            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#F5F3EE] p-6 sm:p-8 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <XCircle className="size-5 text-[#D64545]" aria-hidden="true" />
-                  <span className="font-heading text-xs font-bold tracking-wider text-[#D64545] uppercase">
-                    Não é o momento ideal se
-                  </span>
-                </div>
-                <h3 className="font-heading text-lg font-bold text-[#101D35]">
-                  Preferimos ser transparentes antes de qualquer proposta
-                </h3>
-                <ul className="mt-6 space-y-3.5">
-                  {notForWhoItems.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-[#5B6B8C]">
-                      <XCircle
-                        className="size-4 mt-0.5 shrink-0 text-[#D64545]"
-                        aria-hidden="true"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-6 pt-4 border-t border-[#E7E3D9]">
-                <p className="text-xs font-semibold text-[#5B6B8C]">
-                  A tecnologia organiza e acelera o atendimento, mas precisa de uma equipa para
-                  atender casos complexos e fechar negócios.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* CTA */}
-        <Reveal delay={160}>
-          <div className="mt-12 text-center">
             <a
-              href={CTA.diagnostic}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm"
+              href="#demonstracao-final"
+              className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0 self-start lg:self-auto"
             >
-              <span>Solicitar diagnóstico da minha operação</span>
+              <span>{DEMO_CTA_LABEL}</span>
               <ArrowRight className="size-4" aria-hidden="true" />
             </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={90}>
+          <div className="mt-12 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2">
+            {successCards.map((card, i) => (
+              <div
+                key={card.title}
+                className="group flex flex-col justify-between bg-[#FFFFFF] p-7 sm:p-9 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0 transition-transform duration-200 group-hover:scale-105">
+                    <card.icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <span className="font-heading text-xs font-bold text-[#5B6B8C] tabular-nums transition-colors duration-200 group-hover:text-[#D9531C]">
+                    0{i + 1}
+                  </span>
+                </div>
+                <div className="mt-6">
+                  <h3 className="font-heading text-lg font-bold text-[#101D35]">{card.title}</h3>
+                  <p className="mt-2 text-sm sm:text-base leading-relaxed text-[#5B6B8C] max-w-[46ch]">
+                    {card.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        {/* Section 5: O guia — Hairline split inside Navy panel, zero nested boxes */}
+        <Reveal delay={140}>
+          <div className="mt-14 overflow-hidden rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE]">
+            <div className="grid lg:grid-cols-[1.15fr_0.85fr] divide-y lg:divide-y-0 lg:divide-x divide-[#2A3D63]">
+              <div className="p-7 sm:p-10">
+                <p className="lume-eyebrow text-[#F4C542]">O guia</p>
+                <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-bold text-[#F5F3EE] text-balance">
+                  Sabemos como é um dia de recepção cheia.
+                </h3>
+                <p className="mt-4 text-sm sm:text-base leading-[1.68] text-[#B8C0D0] max-w-[58ch]">
+                  A Agentes Digital implementa recepções digitais para espaços de estética. Não lhe
+                  vendemos uma ferramenta para configurar sozinho. Montamos o atendimento à medida
+                  do seu espaço: serviços, preços, horários, profissionais e regras. Ligamo-lo à sua
+                  agenda, testamos tudo e acompanhamos o resultado.
+                </p>
+                <div className="mt-5">
+                  <Link
+                    to="/implementacao-ia-empresas-angola"
+                    className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#F4C542] underline-offset-4 hover:underline"
+                  >
+                    <span>Guia de implementação de IA para empresas em Angola</span>
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="bg-[#1A2A4A]/65 p-7 sm:p-10 flex flex-col justify-center">
+                <ul className="divide-y divide-[#2A3D63]">
+                  {guidePillars.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 py-3.5 first:pt-0 last:pb-0 text-sm text-[#F5F3EE] leading-relaxed"
+                    >
+                      <CheckCircle2
+                        className="size-4 mt-1 shrink-0 text-[#2E9E6B]"
+                        aria-hidden="true"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>

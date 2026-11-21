@@ -1,31 +1,32 @@
 import { useState, type FormEvent } from "react";
 import { Reveal } from "./Reveal";
+import { DemoDeck } from "./DemoDeck";
+import { HighlightWipe } from "./MotionPrimitives";
 import {
   Phone,
   Mail,
   MapPin,
-  Clock,
   ArrowRight,
-  Calendar,
-  ShieldCheck,
+  CalendarCheck,
   CheckCircle2,
   AlertCircle,
+  MessageSquare,
 } from "lucide-react";
-import { site, whatsappLink, CTA } from "@/lib/site-config";
+import { site, whatsappLink, CTA, DEMO_CTA_LABEL } from "@/lib/site-config";
 
 export function Contact() {
-  const [company, setCompany] = useState("");
+  const [spaceName, setSpaceName] = useState("");
   const [phone, setPhone] = useState("");
-  const [sector, setSector] = useState("");
-  const [serviceInterest, setServiceInterest] = useState("");
-  const [goal, setGoal] = useState("");
+  const [professionals, setProfessionals] = useState("");
+  const [currentAgenda, setCurrentAgenda] = useState("");
+  const [biggestTimeSink, setBiggestTimeSink] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!company.trim() || !phone.trim()) {
-      setError("Por favor, preencha o nome da empresa e o número de WhatsApp.");
+    if (!spaceName.trim() || !phone.trim()) {
+      setError("Por favor, preencha o nome do espaço e o número de WhatsApp.");
       return;
     }
     setError(null);
@@ -34,12 +35,12 @@ export function Contact() {
 
   const buildWhatsAppSummaryUrl = () => {
     const lines = [
-      "Olá. Gostaria de solicitar um diagnóstico para a minha empresa:",
-      `• Empresa: ${company.trim()}`,
+      "Olá, vi o site da Agentes Digital. Gostava de ver a demonstração da recepção digital para o meu espaço:",
+      `• Nome do espaço: ${spaceName.trim()}`,
       `• WhatsApp: ${phone.trim()}`,
-      sector ? `• Setor: ${sector}` : null,
-      serviceInterest ? `• Interesse principal: ${serviceInterest}` : null,
-      goal.trim() ? `• Objetivo / Gargalo atual: ${goal.trim()}` : null,
+      professionals ? `• Profissionais: ${professionals}` : null,
+      currentAgenda.trim() ? `• Agenda atual: ${currentAgenda.trim()}` : null,
+      biggestTimeSink ? `• O que consome mais tempo: ${biggestTimeSink}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -48,34 +49,53 @@ export function Contact() {
 
   return (
     <section
-      id="contacto"
+      id="demonstracao-final"
       className="py-20 sm:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
         <Reveal>
-          <div className="text-center">
-            <p className="lume-eyebrow text-[#D9531C]">Diagnóstico e Contacto</p>
-            <h2 className="mt-4 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
-              Organize o seu atendimento e os seus processos antes de{" "}
-              <span className="text-[#D9531C]">perder mais oportunidades</span>.
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="lume-eyebrow text-[#D9531C]">Demonstração de 7 minutos</p>
+            <h2 className="mt-3 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
+              Veja a sua recepção a funcionar{" "}
+              <span className="text-[#D9531C]">
+                <HighlightWipe highlightColor="#FDE3D6" delay={160}>
+                  antes de decidir.
+                </HighlightWipe>
+              </span>
             </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
-              Solicite um diagnóstico ou converse connosco no WhatsApp. Avaliamos a sua operação
-              atual para propor um plano prático, claro e ajustado à sua realidade.
+            <p className="mt-4 text-base sm:text-lg text-[#5B6B8C] leading-[1.65]">
+              Em 7 minutos vê uma conversa de WhatsApp acabar numa marcação registada. Depois,
+              conversamos sobre o seu espaço.
             </p>
+            <div className="mt-7 flex justify-center">
+              <a
+                href={CTA.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+              >
+                <span>{DEMO_CTA_LABEL}</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </Reveal>
 
-        <Reveal delay={80}>
-          <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_400px]">
-            {/* Form Card */}
-            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
-              <h3 className="font-heading text-lg font-bold text-[#101D35]">
-                Solicitar diagnóstico da operação
+        <Reveal delay={60}>
+          <DemoDeck />
+        </Reveal>
+
+        <Reveal delay={90}>
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
+            {/* Short 5-field Form Card */}
+            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] p-6 sm:p-9 shadow-[0_12px_36px_-12px_rgba(16,29,53,0.08)]">
+              <h3 className="font-heading text-xl font-bold text-[#101D35]">
+                Pedir demonstração para o meu espaço
               </h3>
               <p className="mt-2 text-sm text-[#5B6B8C]">
-                Preencha os dados abaixo para preparar a nossa conversa inicial sobre atendimento ou
-                automatização de processos.
+                Cinco perguntas rápidas para prepararmos a demonstração para a realidade do seu
+                espaço de estética.
               </p>
 
               {submitted ? (
@@ -87,12 +107,11 @@ export function Contact() {
                     />
                     <div>
                       <h4 className="font-heading text-base font-bold text-[#101D35]">
-                        Resumo pronto para envio
+                        Pedido preparado para {spaceName}
                       </h4>
                       <p className="mt-1 text-sm text-[#5B6B8C] leading-relaxed">
-                        Preparámos os dados da <strong className="text-[#101D35]">{company}</strong>
-                        . Clique abaixo para enviar diretamente para o nosso WhatsApp oficial e
-                        agendar a avaliação.
+                        Clique abaixo para enviar estes dados pelo WhatsApp oficial e agendar a sua
+                        demonstração de 7 minutos.
                       </p>
                     </div>
                   </div>
@@ -103,7 +122,7 @@ export function Contact() {
                       rel="noopener noreferrer"
                       className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
                     >
-                      <span>Enviar pedido no WhatsApp</span>
+                      <span>Confirmar no WhatsApp</span>
                       <ArrowRight className="size-4" aria-hidden="true" />
                     </a>
                     <button
@@ -130,34 +149,40 @@ export function Contact() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <label
-                        htmlFor="contact-company"
+                        htmlFor="space-name"
                         className="text-xs font-semibold text-[#101D35] block"
                       >
-                        Nome da Empresa *
+                        Nome do espaço *
                       </label>
                       <input
-                        id="contact-company"
+                        id="space-name"
                         type="text"
                         required
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                        placeholder="Ex: Clínica Central"
+                        value={spaceName}
+                        onChange={(e) => {
+                          setSpaceName(e.target.value);
+                          if (error) setError(null);
+                        }}
+                        placeholder="Ex: Espaço Beleza Luanda"
                         className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] placeholder:text-[#5B6B8C]/70 focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
                       />
                     </div>
                     <div className="space-y-1.5">
                       <label
-                        htmlFor="contact-phone"
+                        htmlFor="space-whatsapp"
                         className="text-xs font-semibold text-[#101D35] block"
                       >
-                        Contacto (WhatsApp) *
+                        WhatsApp *
                       </label>
                       <input
-                        id="contact-phone"
+                        id="space-whatsapp"
                         type="tel"
                         required
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => {
+                          setPhone(e.target.value);
+                          if (error) setError(null);
+                        }}
                         placeholder="+244 9XX XXX XXX"
                         className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] placeholder:text-[#5B6B8C]/70 focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
                       />
@@ -167,173 +192,128 @@ export function Contact() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <label
-                        htmlFor="contact-sector"
+                        htmlFor="space-professionals"
                         className="text-xs font-semibold text-[#101D35] block"
                       >
-                        Setor de Atividade
+                        Quantos profissionais tem
                       </label>
                       <select
-                        id="contact-sector"
-                        value={sector}
-                        onChange={(e) => setSector(e.target.value)}
+                        id="space-professionals"
+                        value={professionals}
+                        onChange={(e) => setProfessionals(e.target.value)}
                         className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
                       >
-                        <option value="">Selecione o setor</option>
-                        <option value="Saúde / Clínicas">Saúde / Clínicas</option>
-                        <option value="Construção Civil / Imobiliário">
-                          Construção Civil / Imobiliário
-                        </option>
-                        <option value="Advocacia / Consultoria">Advocacia / Consultoria</option>
-                        <option value="Educação / Formação">Educação / Formação</option>
-                        <option value="Comércio / Serviços">Comércio / Serviços</option>
-                        <option value="Logística / Operações">Logística / Operações</option>
-                        <option value="Outro">Outro</option>
+                        <option value="">Selecione</option>
+                        <option value="1 a 2 profissionais">1 a 2 profissionais</option>
+                        <option value="3 a 6 profissionais">3 a 6 profissionais</option>
+                        <option value="7 a 15 profissionais">7 a 15 profissionais</option>
+                        <option value="Mais de 15 profissionais">Mais de 15 profissionais</option>
                       </select>
                     </div>
 
                     <div className="space-y-1.5">
                       <label
-                        htmlFor="contact-service"
+                        htmlFor="space-agenda"
                         className="text-xs font-semibold text-[#101D35] block"
                       >
-                        Serviço de interesse
+                        Que agenda usa hoje
                       </label>
-                      <select
-                        id="contact-service"
-                        value={serviceInterest}
-                        onChange={(e) => setServiceInterest(e.target.value)}
-                        className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
-                      >
-                        <option value="">Selecione uma opção</option>
-                        <option value="Implementação de IA no atendimento">
-                          Implementação de IA no atendimento
-                        </option>
-                        <option value="Automatização de processos">
-                          Automatização de processos
-                        </option>
-                        <option value="Ambos os serviços">Ambos os serviços</option>
-                        <option value="Automate Pro (já tenho website)">
-                          Automate Pro (já tenho website)
-                        </option>
-                        <option value="Ainda quero avaliar no diagnóstico">
-                          Ainda quero avaliar no diagnóstico
-                        </option>
-                      </select>
+                      <input
+                        id="space-agenda"
+                        type="text"
+                        value={currentAgenda}
+                        onChange={(e) => setCurrentAgenda(e.target.value)}
+                        placeholder="Ex: Google Agenda, papel, Excel, software próprio"
+                        className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] placeholder:text-[#5B6B8C]/70 focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
+                      />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
                     <label
-                      htmlFor="contact-goal"
+                      htmlFor="space-bottleneck"
                       className="text-xs font-semibold text-[#101D35] block"
                     >
-                      O que pretende resolver primeiro?
+                      O que consome mais tempo hoje
                     </label>
-                    <textarea
-                      id="contact-goal"
-                      rows={3}
-                      value={goal}
-                      onChange={(e) => setGoal(e.target.value)}
-                      placeholder="Ex: Demora no WhatsApp, follow-ups manuais, agendamento de reuniões, relatórios internos..."
-                      className="w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 py-2.5 text-sm text-[#101D35] placeholder:text-[#5B6B8C]/70 focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors resize-none"
-                    />
+                    <select
+                      id="space-bottleneck"
+                      value={biggestTimeSink}
+                      onChange={(e) => setBiggestTimeSink(e.target.value)}
+                      className="h-11 w-full rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] px-3.5 text-sm text-[#101D35] focus:border-[#F36B32] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#F36B32] outline-none transition-colors"
+                    >
+                      <option value="">Selecione</option>
+                      <option value="Responder a perguntas repetidas">Responder a perguntas</option>
+                      <option value="Consultar horários na agenda">Consultar horários</option>
+                      <option value="Confirmar marcações">Confirmar marcações</option>
+                      <option value="Tudo o anterior">Tudo o anterior</option>
+                    </select>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      type="submit"
-                      className="lume-btn-primary inline-flex flex-1 items-center justify-center gap-2 text-sm whitespace-nowrap cursor-pointer"
-                    >
-                      <Calendar className="size-4" aria-hidden="true" />
-                      <span>Solicitar diagnóstico</span>
-                      <ArrowRight className="size-4" aria-hidden="true" />
-                    </button>
-                    <a
-                      href={CTA.specialist}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
-                    >
-                      <span>Conversar no WhatsApp</span>
-                    </a>
-                  </div>
-
-                  <p className="text-center text-xs text-[#5B6B8C]">
-                    Conversa direta e sem compromisso para avaliar a adequação à sua empresa.
-                  </p>
+                  <button
+                    type="submit"
+                    className="lume-btn-secondary-light inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap cursor-pointer"
+                  >
+                    <CalendarCheck className="size-4" aria-hidden="true" />
+                    <span>Pedir a minha demonstração</span>
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </button>
                 </form>
               )}
             </div>
 
             {/* Info Stack */}
             <div className="space-y-5">
-              <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6">
-                <h3 className="font-heading text-base font-bold text-[#101D35]">
-                  Canais oficiais de contacto
+              <div className="rounded-[16px] border border-[#2A3D63] bg-[#1A2A4A] p-6">
+                <h3 className="font-heading text-base font-bold text-[#F5F3EE]">
+                  Fale diretamente no WhatsApp
                 </h3>
-                <p className="mt-2 text-sm text-[#5B6B8C]">
-                  Fale diretamente com a nossa equipa através dos canais oficiais em Angola.
+                <p className="mt-2 text-sm text-[#B8C0D0]">
+                  Se preferir, abra já uma conversa com a mensagem pronta para pedir a sua
+                  demonstração.
                 </p>
 
                 <ul className="mt-5 space-y-3.5 text-sm">
                   <li className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] text-[#2E9E6B] shrink-0">
+                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#2E9E6B] shrink-0">
                       <Phone className="size-4" aria-hidden="true" />
                     </div>
                     <div>
-                      <p className="text-xs text-[#5B6B8C]">WhatsApp</p>
-                      <p className="font-semibold text-[#101D35] tabular-nums">
+                      <p className="text-xs text-[#B8C0D0]">WhatsApp</p>
+                      <p className="font-semibold text-[#F5F3EE] tabular-nums">
                         {site.whatsapp.number}
                       </p>
                     </div>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] text-[#D9531C] shrink-0">
+                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#F36B32] shrink-0">
                       <Mail className="size-4" aria-hidden="true" />
                     </div>
                     <div>
-                      <p className="text-xs text-[#5B6B8C]">Email</p>
-                      <p className="font-semibold text-[#101D35]">{site.email}</p>
+                      <p className="text-xs text-[#B8C0D0]">Email</p>
+                      <p className="font-semibold text-[#F5F3EE]">{site.email}</p>
                     </div>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] text-[#101D35] shrink-0">
+                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#F4C542] shrink-0">
                       <MapPin className="size-4" aria-hidden="true" />
                     </div>
                     <div>
-                      <p className="text-xs text-[#5B6B8C]">Localização</p>
-                      <p className="font-semibold text-[#101D35]">{site.location}</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#F5F3EE] text-[#3B82C4] shrink-0">
-                      <Clock className="size-4" aria-hidden="true" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-[#5B6B8C]">Horário</p>
-                      <p className="font-semibold text-[#101D35]">Seg a Sex: 08h - 17h</p>
+                      <p className="text-xs text-[#B8C0D0]">Localização</p>
+                      <p className="font-semibold text-[#F5F3EE]">{site.location}</p>
                     </div>
                   </li>
                 </ul>
-              </div>
 
-              {/* Next steps clarity card */}
-              <div className="rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 text-[#F5F3EE]">
-                <div className="flex items-start gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-[10px] border border-[#2A3D63] bg-[#1A2A4A] text-[#2E9E6B] shrink-0">
-                    <ShieldCheck className="size-5" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading text-sm font-bold text-[#F5F3EE]">
-                      O que acontece depois do pedido
-                    </h3>
-                    <p className="mt-2 text-xs text-[#B8C0D0] leading-relaxed">
-                      Marcamos uma conversa objetiva para mapear o seu fluxo atual, mostrar onde a
-                      IA ou a automatização trazem mais ganho e apresentar uma proposta com escopo
-                      claro.
-                    </p>
-                  </div>
-                </div>
+                <a
+                  href={CTA.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lume-btn-secondary-dark mt-6 inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap"
+                >
+                  <MessageSquare className="size-4" aria-hidden="true" />
+                  <span>Abrir WhatsApp agora</span>
+                </a>
               </div>
             </div>
           </div>

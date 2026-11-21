@@ -13,7 +13,14 @@ export default defineConfig({
     server: { entry: "server" },
     prerender: {
       enabled: true,
-      routes: ["/", "/privacidade", "/termos", "/politica-de-privacidade", "/termos-de-servico"],
+      routes: [
+        "/",
+        "/implementacao-ia-empresas-angola",
+        "/privacidade",
+        "/termos",
+        "/politica-de-privacidade",
+        "/termos-de-servico",
+      ],
     },
   },
   vite: {

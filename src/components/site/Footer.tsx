@@ -1,4 +1,6 @@
-import { CheckCircle2 } from "lucide-react";
+import { CalendarCheck } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { site, CTA } from "@/lib/site-config";
 
 export function Footer() {
   return (
@@ -11,29 +13,35 @@ export function Footer() {
                 AD
               </div>
               <div className="flex flex-col">
-                <span className="font-heading text-sm font-extrabold tracking-[0.06em] uppercase text-[#F5F3EE]">
+                <span className="font-heading text-sm font-extrabold tracking-tight text-[#F5F3EE]">
                   Agentes Digital
                 </span>
-                <span className="text-[11px] font-medium text-[#B8C0D0]">
-                  Inteligência Artificial · Automatização de Processos
+                <span className="text-xs font-medium text-[#B8C0D0]">
+                  Recepção digital para espaços de estética em Angola
                 </span>
               </div>
             </a>
-            <p className="mt-4 max-w-sm text-sm text-[#B8C0D0] leading-relaxed">
-              Ajudamos empresas em Angola a atender melhor, acompanhar cada oportunidade comercial e
-              reduzir tarefas repetitivas com inteligência artificial e automatização de processos.
+            <p className="mt-4 max-w-sm text-sm text-[#F5F3EE] font-medium leading-relaxed">
+              A sua recepção continua a atender, mesmo quando a equipa está ocupada.
             </p>
-            <p className="mt-2 text-xs text-[#B8C0D0]/80">
-              Atendimento com IA · Follow-up Comercial · Marcação de Reuniões · Integração de
-              Processos
+            <p className="mt-3 text-xs text-[#B8C0D0] tabular-nums">
+              {site.whatsapp.number} · {site.location}
             </p>
-            <p className="mt-4 font-heading text-[11px] font-bold tracking-wider text-[#F4C542] uppercase">
-              Luanda, Angola
+            <p className="mt-4 text-xs text-[#B8C0D0]/85 leading-relaxed">
+              Também desenvolvemos websites e automações à medida para outros negócios.{" "}
+              <a
+                href={CTA.otherBusiness}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#F4C542] underline-offset-4 hover:underline"
+              >
+                Falar connosco
+              </a>
             </p>
           </div>
 
           <div>
-            <p className="font-heading text-[11px] font-bold tracking-[0.14em] text-[#F5F3EE] uppercase">
+            <p className="font-heading text-xs font-bold tracking-[0.06em] text-[#F5F3EE]">
               Navegação
             </p>
             <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
@@ -47,7 +55,15 @@ export function Footer() {
                   href="/#problema"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
-                  O Problema
+                  O problema
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#como-fica"
+                  className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
+                >
+                  Como fica a recepção
                 </a>
               </li>
               <li>
@@ -55,23 +71,7 @@ export function Footer() {
                   href="/#servicos"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
-                  Soluções e Serviços
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#beneficios"
-                  className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
-                >
-                  Benefícios
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#agente-ia"
-                  className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
-                >
-                  Demonstração Prática
+                  Recepção Inteligente
                 </a>
               </li>
               <li>
@@ -79,75 +79,77 @@ export function Footer() {
                   href="/#como-funciona"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
-                  Como Trabalhamos
+                  Como funciona
                 </a>
               </li>
               <li>
                 <a
-                  href="/#automate-pro"
+                  href="/#investimento"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
-                  Automate Pro (Já tem site?)
+                  Investimento
                 </a>
               </li>
               <li>
                 <a
-                  href="/#planos"
+                  href="/#demonstracao-final"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
-                  Planos e Investimento
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#contacto"
-                  className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
-                >
-                  Solicitar Diagnóstico
+                  Demonstração de 7 minutos
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <p className="font-heading text-[11px] font-bold tracking-[0.14em] text-[#F5F3EE] uppercase">
-              Transparência &amp; Legal
+            <p className="font-heading text-xs font-bold tracking-[0.06em] text-[#F5F3EE]">
+              Dúvidas e informação legal
             </p>
             <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               <li>
+                <Link
+                  to="/implementacao-ia-empresas-angola"
+                  className="text-[#F4C542] font-medium transition-colors hover:text-[#F36B32]"
+                >
+                  IA para empresas em Angola
+                </Link>
+              </li>
+              <li>
                 <a href="/#faq" className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]">
-                  Perguntas Frequentes
+                  Dúvidas frequentes
                 </a>
               </li>
               <li>
-                <a
-                  href="/privacidade"
+                <Link
+                  to="/privacidade"
                   className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
                 >
                   Política de Privacidade
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/termos" className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]">
+                <Link
+                  to="/termos"
+                  className="text-[#B8C0D0] transition-colors hover:text-[#F36B32]"
+                >
                   Termos de Serviço
-                </a>
+                </Link>
               </li>
             </ul>
-            <div className="mt-6 rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4 text-xs text-[#B8C0D0]">
-              <div className="flex items-center gap-2 text-[#2E9E6B] font-heading font-bold text-[11px] uppercase tracking-wider mb-1.5">
-                <CheckCircle2 className="size-3.5" aria-hidden="true" />
-                <span>Implementação Acompanhada</span>
+            <div className="mt-6 rounded-[12px] border border-[#2A3D63] bg-[#1A2A4A] p-4 text-xs text-[#B8C0D0] leading-relaxed">
+              <div className="flex items-center gap-2 text-[#2E9E6B] font-heading font-bold text-xs mb-1.5">
+                <CalendarCheck className="size-3.5" aria-hidden="true" />
+                <span>Demonstração prática</span>
               </div>
-              Configuração personalizada, testes conjuntos antes do arranque e suporte técnico
-              contínuo conforme o plano.
+              Veja uma conversa de WhatsApp acabar numa marcação registada numa agenda de teste.
             </div>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-[#2A3D63] pt-6 text-center text-xs text-[#B8C0D0] sm:flex-row sm:text-left">
           <p>© 2026 Agentes Digital. Todos os direitos reservados.</p>
-          <p className="font-heading text-[11px] font-semibold uppercase tracking-wider">
-            Inteligência Artificial e Automatização em Angola
+          <p className="font-heading text-xs font-semibold text-[#B8C0D0]">
+            Recepção Digital para Espaços de Estética em Angola
           </p>
         </div>
       </div>

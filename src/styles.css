@@ -54,7 +54,7 @@
   --color-err: #d64545;
   --color-info: #3b82c4;
 
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -81,7 +81,7 @@
 
   /* Typography */
   --font-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Spacing & Shape */
   --s1: 4px;
@@ -189,8 +189,7 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 /* Swiss Grid Backdrop (subtle architectural lines) */
@@ -208,7 +207,7 @@
   background-size: 64px 64px;
 }
 
-/* Lume Studio Buttons (Navy text on Orange, 999px radius, crisp hover) */
+/* Lume Studio Buttons (Navy text on Orange, crisp hover <= 200ms) */
 @utility lume-btn-primary {
   font-family: var(--font-heading);
   font-weight: 700;
@@ -217,12 +216,18 @@
   border-radius: 999px;
   min-height: 44px;
   padding: 12px 24px;
+  box-shadow: 0 4px 14px -2px rgba(243, 107, 50, 0.35);
   transition:
-    background-color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
   &:hover {
     background-color: #d9531c;
+    box-shadow: 0 8px 20px -4px rgba(217, 83, 28, 0.45);
     transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0) scale(0.985);
   }
   &:focus-visible {
     outline: 2px solid #f36b32;
@@ -233,20 +238,23 @@
 @utility lume-btn-secondary-light {
   font-family: var(--font-heading);
   font-weight: 700;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.72);
   color: #101d35;
   border: 1.5px solid #101d35;
   border-radius: 999px;
   min-height: 44px;
   padding: 12px 24px;
   transition:
-    background-color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
   &:hover {
     background-color: #101d35;
     color: #f5f3ee;
     transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0) scale(0.985);
   }
   &:focus-visible {
     outline: 2px solid #f36b32;
@@ -259,18 +267,21 @@
   font-weight: 700;
   background-color: transparent;
   color: #f5f3ee;
-  border: 1.5px solid #b8c0d0;
+  border: 1.5px solid #5b6b8c;
   border-radius: 999px;
   min-height: 44px;
   padding: 12px 24px;
   transition:
-    background-color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    border-color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
   &:hover {
     background-color: #1a2a4a;
     border-color: #f5f3ee;
     transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0) scale(0.985);
   }
   &:focus-visible {
     outline: 2px solid #f36b32;
@@ -287,8 +298,8 @@
   min-height: 44px;
   padding: 12px 24px;
   transition:
-    background-color 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
   &:hover {
     background-color: #d9a91f;
     transform: translateY(-1px);
@@ -296,6 +307,74 @@
   &:focus-visible {
     outline: 2px solid #f36b32;
     outline-offset: 2px;
+  }
+}
+
+/* Intentional Motion Keyframes (GPU-composited transform & opacity only) */
+@keyframes lume-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lume-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes lume-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes lume-step-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes lume-typing-dot {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+@keyframes lume-ping-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  75%,
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
   }
 }
 

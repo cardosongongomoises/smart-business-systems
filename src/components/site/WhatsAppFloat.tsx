@@ -4,13 +4,19 @@ import { CTA } from "@/lib/site-config";
 export function WhatsAppFloat() {
   return (
     <a
-      href={CTA.specialist}
+      href={CTA.demo}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Falar no WhatsApp com a Agentes Digital"
-      className="fixed right-5 bottom-5 z-50 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-[#F36B32] px-4 py-3 font-heading text-sm font-bold text-[#101D35] shadow-[0_12px_32px_rgba(16,29,53,0.16)] transition-colors hover:bg-[#D9531C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3EE]"
+      aria-label="Pedir demonstração da recepção digital no WhatsApp"
+      className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-50 inline-flex h-11 items-center gap-2 rounded-full bg-[#2E9E6B] px-3.5 sm:px-4 font-heading text-sm font-bold text-[#FFFFFF] shadow-[0_10px_28px_-4px_rgba(16,29,53,0.28)] transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#258559] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E9E6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3EE]"
     >
-      <MessageCircle className="size-5" aria-hidden="true" />
+      <span className="relative flex size-5 items-center justify-center">
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 rounded-full bg-[#FFFFFF]/40 animate-[lume-ping-ring_2.8s_cubic-bezier(0,0,0.2,1)_infinite]"
+        />
+        <MessageCircle className="relative size-5" aria-hidden="true" />
+      </span>
       <span className="hidden sm:inline">WhatsApp</span>
     </a>
   );

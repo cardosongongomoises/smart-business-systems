@@ -2,6 +2,24 @@ import { createFileRoute } from "@tanstack/react-router";
 import { TermsOfService } from "@/components/site/TermsOfService";
 
 export const Route = createFileRoute("/termos")({
+  head: () => ({
+    meta: [
+      { title: "Termos de Serviço | Agentes Digital Angola" },
+      {
+        name: "description",
+        content:
+          "Leia os Termos de Serviço aplicáveis à utilização do website e à contratação de soluções da Agentes Digital em Angola.",
+      },
+      { name: "robots", content: "noindex, follow" },
+      { property: "og:title", content: "Termos de Serviço | Agentes Digital Angola" },
+      { property: "og:url", content: "https://agentes-digital.com/termos" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://agentes-digital.com/termos" },
+      { rel: "alternate", hrefLang: "pt-AO", href: "https://agentes-digital.com/termos" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://agentes-digital.com/termos" },
+    ],
+  }),
   component: TermsPage,
 });
 

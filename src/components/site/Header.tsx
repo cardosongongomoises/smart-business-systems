@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
-import { CTA } from "@/lib/site-config";
+import { DEMO_CTA_LABEL } from "@/lib/site-config";
 
 const links = [
-  { href: "/#problema", label: "O Problema" },
-  { href: "/#servicos", label: "Soluções" },
-  { href: "/#como-funciona", label: "Como Funciona" },
-  { href: "/#planos", label: "Planos" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/#problema", label: "O problema" },
+  { href: "/#como-funciona", label: "Como funciona" },
+  { href: "/#investimento", label: "Investimento" },
+  { href: "/#faq", label: "Dúvidas" },
 ];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(maxScroll > 0 ? Math.min(1, Math.max(0, y / maxScroll)) : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -23,12 +28,17 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 h-[72px] transition-[background-color,border-color] duration-200 ${
+      className={`fixed inset-x-0 top-0 z-50 h-16 sm:h-[72px] transition-[background-color,border-color,box-shadow] duration-200 ${
         scrolled
-          ? "bg-[#F5F3EE]/95 backdrop-blur-md border-b border-[#E7E3D9]"
-          : "bg-[#F5F3EE]/85 backdrop-blur-sm border-b border-[#E7E3D9]/60"
+          ? "bg-[#F5F3EE]/95 backdrop-blur-md border-b border-[#E7E3D9] shadow-[0_4px_24px_-8px_rgba(16,29,53,0.08)]"
+          : "bg-[#F5F3EE]/88 backdrop-blur-sm border-b border-[#E7E3D9]/60"
       }`}
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#F36B32] transition-transform duration-150"
+        style={{ transform: `scaleX(${progress})` }}
+      />
       <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:px-8">
         {/* Zone 1: Single-line Brand Wordmark */}
         <a
@@ -46,8 +56,8 @@ export function Header() {
           </span>
         </a>
 
-        {/* Zone 2: 5 Concise Single-line Navigation Links */}
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
+        {/* Zone 2: 4 Concise Single-line Navigation Links */}
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegação principal">
           {links.map((l) => (
             <a
               key={l.href}
@@ -62,10 +72,10 @@ export function Header() {
         {/* Zone 3: Single Primary Action */}
         <div className="hidden lg:flex items-center shrink-0">
           <a
-            href="/#contacto"
+            href="/#demonstracao-final"
             className="lume-btn-primary inline-flex h-[40px] min-h-[40px] items-center justify-center gap-2 px-5 py-2 text-[13px] whitespace-nowrap shrink-0"
           >
-            <span>Solicitar diagnóstico</span>
+            <span>{DEMO_CTA_LABEL}</span>
             <ArrowRight className="size-3.5" aria-hidden="true" />
           </a>
         </div>
@@ -76,7 +86,7 @@ export function Header() {
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="inline-flex size-11 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] transition-colors hover:border-[#101D35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32] lg:hidden"
+          className="inline-flex size-11 items-center justify-center rounded-[8px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] transition-colors cursor-pointer hover:border-[#101D35] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32] lg:hidden"
         >
           {open ? (
             <X className="size-5" aria-hidden="true" />
@@ -88,7 +98,7 @@ export function Header() {
 
       {/* Mobile Drawer */}
       {open && (
-        <div className="fixed inset-x-0 top-[72px] bottom-0 bg-[#101D35]/50 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-start p-4">
+        <div className="fixed inset-x-0 top-16 sm:top-[72px] bottom-0 bg-[#101D35]/50 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-start p-4">
           <div className="w-full rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 shadow-[0_12px_32px_rgba(16,29,53,0.16)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto overscroll-contain">
             <nav className="flex flex-col divide-y divide-[#E7E3D9]" aria-label="Menu móvel">
               {links.map((l) => (
@@ -106,21 +116,19 @@ export function Header() {
 
             <div className="mt-4 pt-4 border-t border-[#E7E3D9] flex flex-col gap-2.5">
               <a
-                href="/#contacto"
+                href="/#demonstracao-final"
                 onClick={() => setOpen(false)}
-                className="lume-btn-primary flex items-center justify-center gap-2 text-xs uppercase tracking-wider"
+                className="lume-btn-primary flex items-center justify-center gap-2 text-xs whitespace-nowrap"
               >
-                <span>Solicitar diagnóstico</span>
+                <span>{DEMO_CTA_LABEL}</span>
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
-                href={CTA.specialist}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/#avaliacao-whatsapp"
                 onClick={() => setOpen(false)}
-                className="lume-btn-secondary-light flex items-center justify-center text-xs"
+                className="lume-btn-secondary-light flex items-center justify-center text-xs whitespace-nowrap"
               >
-                Conversar no WhatsApp
+                Avaliar o atendimento do meu WhatsApp
               </a>
             </div>
           </div>

@@ -12,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { organizationSchema, websiteSchema, faqSchema } from "../lib/seo-schemas";
+import { organizationSchema, websiteSchema } from "../lib/seo-schemas";
 import { TooltipProvider } from "../components/ui/tooltip";
 
 function NotFoundComponent() {
@@ -20,16 +20,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          A página que procura não existe ou foi movida.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Voltar ao início
           </Link>
         </div>
       </div>
@@ -49,10 +49,10 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          Não foi possível carregar esta página
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Ocorreu um erro inesperado. Pode tentar novamente ou regressar ao início.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -62,13 +62,13 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            Tentar novamente
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Ir para o início
           </a>
         </div>
       </div>
@@ -81,35 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Agentes Digital | Inteligência Artificial e Automatização de Processos em Angola" },
-      {
-        name: "description",
-        content:
-          "Atenda clientes mais rápido, acompanhe cada oportunidade comercial e reduza tarefas repetitivas com inteligência artificial e automatização de processos em Angola. Peça um diagnóstico.",
-      },
-      {
-        name: "keywords",
-        content:
-          "inteligencia artificial empresas angola, automatizacao de processos empresariais luanda, atendimento whatsapp empresas angola, organizacao comercial crm angola, agentes digital",
-      },
       { name: "author", content: "Agentes Digital" },
-      {
-        name: "robots",
-        content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
-      },
       { name: "geo.region", content: "AO-LUA" },
       { name: "geo.placename", content: "Luanda, Angola" },
-      {
-        property: "og:title",
-        content: "Agentes Digital | Inteligência Artificial e Automatização de Processos em Angola",
-      },
-      {
-        property: "og:description",
-        content:
-          "Implementação de inteligência artificial e automatização de processos para empresas em Angola melhorarem o atendimento e reduzirem tarefas manuais.",
-      },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://agentes-digital.com/" },
       { property: "og:site_name", content: "Agentes Digital" },
       { property: "og:locale", content: "pt_AO" },
       { property: "og:image", content: "https://agentes-digital.com/favicon-512.png" },
@@ -117,24 +92,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:height", content: "512" },
       {
         property: "og:image:alt",
-        content: "Agentes Digital - Inteligência Artificial e Automatização de Processos em Angola",
+        content: "Agentes Digital - Implementação de IA e Recepção Digital em Angola",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Agentes Digital | Inteligência Artificial e Automatização de Processos em Angola",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Soluções de inteligência artificial e automatização de processos para empresas em Angola.",
-      },
       { name: "twitter:image", content: "https://agentes-digital.com/favicon-512.png" },
       { name: "twitter:site", content: "@AgentesDigital" },
       { name: "theme-color", content: "#F5F3EE" },
     ],
     links: [
-      { rel: "canonical", href: "https://agentes-digital.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
@@ -143,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Montserrat:wght@600;700;800&display=swap",
       },
       {
         rel: "stylesheet",
@@ -163,7 +128,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt">
+    <html lang="pt-AO">
       <head>
         <HeadContent />
         <script
@@ -173,10 +138,6 @@ function RootShell({ children }: { children: ReactNode }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
       <body>
