@@ -124,7 +124,7 @@ export function DemoDeck() {
       <div className="p-5 sm:p-8 lg:p-9 overflow-hidden">
         <div
           key={current.step}
-          className={`grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-center ${slideAnimClass}`}
+          className={`grid grid-cols-1 gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-center ${slideAnimClass}`}
         >
           <div>
             <div className="flex items-center gap-3 text-xs font-semibold text-[#F4C542]">

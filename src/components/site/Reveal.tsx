@@ -70,7 +70,7 @@ export function Reveal({
   const Component = Tag as "div";
 
   return (
-    <Component ref={ref} data-visible="true" className={`reveal ${className}`}>
+    <Component ref={ref} data-visible="true" className={`reveal min-w-0 ${className}`}>
       {children}
     </Component>
   );

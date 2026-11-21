@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="border-t border-[#2A3D63] bg-[#101D35] text-[#F5F3EE] pt-12 pb-20 sm:pt-16 sm:pb-10">
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
-        <div className="grid gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
           <div className="sm:col-span-2 lg:col-span-1">
             <a href="/#topo" className="inline-flex items-center gap-3 group">
               <div className="flex size-9 items-center justify-center rounded-[8px] bg-[#F36B32] text-[#101D35] font-heading text-sm font-extrabold tracking-tight transition-colors group-hover:bg-[#F4C542]">

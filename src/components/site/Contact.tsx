@@ -87,7 +87,7 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={90}>
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
             {/* Short 5-field Form Card */}
             <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] p-5 sm:p-7 lg:p-9 shadow-[0_12px_36px_-12px_rgba(16,29,53,0.08)]">
               <h3 className="font-heading text-xl font-bold text-[#101D35]">
@@ -146,7 +146,7 @@ export function Contact() {
                     </div>
                   )}
 
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <label
                         htmlFor="space-name"
@@ -189,7 +189,7 @@ export function Contact() {
                     </div>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
                       <label
                         htmlFor="space-professionals"

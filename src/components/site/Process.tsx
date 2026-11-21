@@ -66,7 +66,7 @@ export function Process() {
         </Reveal>
 
         <Reveal delay={80}>
-          <ol className="mt-10 sm:mt-12 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
+          <ol className="mt-10 sm:mt-12 grid grid-cols-1 gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
             {steps.map((s) => (
               <li
                 key={s.n}
@@ -121,7 +121,7 @@ export function Process() {
               Mostramos antes de lhe pedir que contrate.
             </h3>
 
-            <div className="mt-8 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2 lg:grid-cols-6">
+            <div className="mt-8 grid grid-cols-1 gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2 lg:grid-cols-6">
               {trustPillars.map((pillar, idx) => {
                 const spanClass =
                   idx < 3

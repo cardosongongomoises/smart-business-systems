@@ -54,7 +54,7 @@ export function HighlightWipe({
   }, [delay]);
 
   return (
-    <span className="relative inline-block px-1.5 -mx-1">
+    <span className="relative inline-block max-w-full px-1 -mx-0.5 sm:px-1.5 sm:-mx-1">
       <span
         ref={barRef}
         aria-hidden="true"

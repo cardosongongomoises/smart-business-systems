@@ -60,7 +60,7 @@ export function Benefits() {
         </Reveal>
 
         <Reveal delay={90}>
-          <div className="mt-10 sm:mt-12 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2">
+          <div className="mt-10 sm:mt-12 grid grid-cols-1 gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2">
             {successCards.map((card, i) => (
               <div
                 key={card.title}
@@ -88,7 +88,7 @@ export function Benefits() {
         {/* Section 5: O guia — Hairline split inside Navy panel, zero nested boxes */}
         <Reveal delay={140}>
           <div className="mt-10 sm:mt-14 overflow-hidden rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE]">
-            <div className="grid md:grid-cols-[1.1fr_0.9fr] divide-y md:divide-y-0 md:divide-x divide-[#2A3D63]">
+            <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] divide-y md:divide-y-0 md:divide-x divide-[#2A3D63]">
               <div className="p-6 sm:p-8 lg:p-10">
                 <p className="lume-eyebrow text-[#F4C542]">O guia</p>
                 <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-bold text-[#F5F3EE] text-balance">

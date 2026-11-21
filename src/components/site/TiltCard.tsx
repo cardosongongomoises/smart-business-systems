@@ -41,7 +41,7 @@ export function TiltCard({ children, className = "", maxTilt = 3.5 }: TiltCardPr
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={enabled ? { transform } : undefined}
-      className={`transition-transform duration-200 ease-out will-change-transform ${className}`}
+      className={`min-w-0 w-full transition-transform duration-200 ease-out will-change-transform ${className}`}
     >
       {children}
     </div>

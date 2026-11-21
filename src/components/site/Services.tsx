@@ -49,8 +49,8 @@ export function Services() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
-            <div>
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
+            <div className="min-w-0">
               <p className="lume-eyebrow text-[#D9531C]">03 · A solução</p>
               <h2 className="mt-3 font-heading text-3xl leading-[1.15] font-bold text-[#101D35] sm:text-4xl text-balance">
                 Recepção Inteligente: o atendimento do seu WhatsApp, organizado.
@@ -64,7 +64,7 @@ export function Services() {
           </div>
         </Reveal>
 
-        <div className="mt-10 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 sm:mt-12 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map((item, i) => {
             const isWideSafeguard = i === 4;
             return (

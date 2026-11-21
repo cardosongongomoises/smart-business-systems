@@ -382,8 +382,8 @@ export function EmpresaIAPillar() {
             id="escopo"
             className="mt-12 scroll-mt-24 overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35]"
           >
-            <div className="grid divide-y divide-[#E7E3D9] md:grid-cols-2 md:divide-x md:divide-y-0">
-              <div className="p-5 sm:p-8 lg:p-10">
+            <div className="grid grid-cols-1 divide-y divide-[#E7E3D9] md:grid-cols-2 md:divide-x md:divide-y-0">
+              <div className="min-w-0 p-5 sm:p-8 lg:p-10">
                 <div className="flex items-center gap-2.5 text-[#D9531C]">
                   <ShieldCheck className="size-5 shrink-0" aria-hidden="true" />
                   <p className="lume-eyebrow text-[#D9531C]">Critério técnico e transparência</p>

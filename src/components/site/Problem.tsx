@@ -60,15 +60,15 @@ export function Problem() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-end">
-            <div>
+          <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-end">
+            <div className="min-w-0">
               <p className="lume-eyebrow text-[#D9531C]">01 · O problema</p>
               <h2 className="mt-3 font-heading text-3xl leading-[1.14] font-bold text-[#101D35] sm:text-4xl text-balance">
                 Atender bem quem está presente. Responder bem a quem escreve. Ao mesmo tempo.
               </h2>
             </div>
 
-            <div className="space-y-3 text-base leading-[1.65] text-[#5B6B8C]">
+            <div className="min-w-0 space-y-3 text-base leading-[1.65] text-[#5B6B8C]">
               <p>Num dia movimentado, a recepção atende quem entra e o WhatsApp não pára.</p>
               <p className="text-[#101D35] font-semibold">
                 Perguntas sobre preços. Horários por confirmar. Pedidos de marcação.
@@ -87,7 +87,7 @@ export function Problem() {
             <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#101D35]">
               Reconhece isto?
             </h3>
-            <div className="mt-6 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-1 gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden sm:grid-cols-2 lg:grid-cols-4">
               {recognitionItems.map((item, i) => (
                 <div
                   key={item.title}
@@ -115,7 +115,7 @@ export function Problem() {
 
         {/* Section 3: O que está em jogo — Clean 2-column hairline ledger */}
         <Reveal delay={140}>
-          <div className="mt-12 sm:mt-16 pt-10 sm:pt-14 border-t border-[#E7E3D9] grid gap-8 sm:gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+          <div className="mt-12 sm:mt-16 pt-10 sm:pt-14 border-t border-[#E7E3D9] grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-start">
             <div>
               <p className="lume-eyebrow text-[#D9531C]">O que está em jogo</p>
               <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-bold text-[#101D35] leading-[1.2] text-balance">

@@ -185,9 +185,9 @@ export function AIAgent() {
       className="py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
-        <div className="grid items-start gap-8 sm:gap-10 lg:gap-14 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid grid-cols-1 items-start gap-8 sm:gap-10 lg:gap-14 lg:grid-cols-[0.95fr_1.05fr]">
           {/* Left Column: Section 9 Veja como funciona */}
-          <div>
+          <div className="min-w-0">
             <Reveal>
               <p className="lume-eyebrow text-[#D9531C]">05 · Veja como funciona</p>
               <h2 className="mt-3 font-heading text-3xl leading-[1.15] font-extrabold tracking-[-0.02em] text-[#101D35] sm:text-4xl text-balance">
@@ -217,7 +217,7 @@ export function AIAgent() {
                   </div>
 
                   <div className="flex items-center justify-between gap-3 border-b border-[#2A3D63] px-5 sm:px-6 py-4">
-                    <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="relative shrink-0">
                         <img
                           src={receptionAvatarImg}
@@ -230,7 +230,7 @@ export function AIAgent() {
                           className="absolute right-0 bottom-0 size-2.5 rounded-full bg-[#2E9E6B] ring-2 ring-[#101D35]"
                         />
                       </div>
-                      <div className="min-w-0">
+                      <div className="min-w-0 flex-1">
                         <p className="font-heading text-xs font-bold tracking-[0.04em] text-[#F5F3EE] truncate">
                           Recepção Digital · WhatsApp
                         </p>
@@ -369,7 +369,7 @@ export function AIAgent() {
           </div>
 
           {/* Right Column: Transitional Diagnostic Guide (8 perguntas) */}
-          <div id="avaliacao-whatsapp" className="scroll-mt-24">
+          <div id="avaliacao-whatsapp" className="min-w-0 scroll-mt-24">
             <Reveal delay={100}>
               <div className="overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]">
                 <div className="p-5 sm:p-7 lg:p-8 border-b border-[#E7E3D9]">

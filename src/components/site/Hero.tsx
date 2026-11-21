@@ -65,10 +65,10 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F5F3EE]/95 via-[#F5F3EE]/86 to-[#F5F3EE]/62" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#F5F3EE] to-transparent" />
 
-      <div className="relative mx-auto grid w-full max-w-[1200px] items-stretch gap-8 sm:gap-10 px-4 sm:px-8 lg:gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-        <div>
+      <div className="relative mx-auto grid grid-cols-1 w-full max-w-[1200px] items-stretch gap-8 sm:gap-10 px-4 sm:px-8 lg:gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+        <div className="min-w-0">
           <Reveal>
-            <h1 className="font-heading text-[clamp(1.85rem,5vw,3.35rem)] leading-[1.08] font-extrabold tracking-[-0.025em] text-[#101D35] text-balance">
+            <h1 className="font-heading text-[clamp(1.75rem,5.5vw,3.35rem)] leading-[1.08] font-extrabold tracking-[-0.025em] text-[#101D35] text-balance">
               Cliente à sua frente.{" "}
               <span className="text-[#D9531C]">
                 <HighlightWipe highlightColor="#FDE3D6" delay={180}>
@@ -90,7 +90,7 @@ export function Hero() {
             <div className="mt-7 sm:mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <a
                 href="#demonstracao-final"
-                className="group lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap shrink-0"
+                className="group lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-[13px] sm:text-sm sm:whitespace-nowrap shrink-0"
               >
                 <span>{DEMO_CTA_LABEL}</span>
                 <ArrowRight
@@ -100,7 +100,7 @@ export function Hero() {
               </a>
               <a
                 href="#avaliacao-whatsapp"
-                className="lume-btn-secondary-light inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap shrink-0"
+                className="lume-btn-secondary-light inline-flex w-full sm:w-auto items-center justify-center gap-2 text-[13px] sm:text-sm sm:whitespace-nowrap shrink-0"
               >
                 <MessageSquare className="size-4 shrink-0" aria-hidden="true" />
                 <span>Avaliar o atendimento do meu WhatsApp</span>
@@ -116,14 +116,14 @@ export function Hero() {
         </div>
 
         {/* Interactive Swiss Navy Showcase Card: WhatsApp to Registered Booking */}
-        <Reveal delay={140} variant="scale">
+        <Reveal delay={140} variant="scale" className="min-w-0 w-full">
           <TiltCard>
             <div
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}
               onFocus={() => setPaused(true)}
               onBlur={() => setPaused(false)}
-              className="overflow-hidden rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE] shadow-[0_24px_60px_-15px_rgba(16,29,53,0.28)]"
+              className="w-full overflow-hidden rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE] shadow-[0_24px_60px_-15px_rgba(16,29,53,0.28)]"
             >
               {/* Interactive Step Progress Indicator */}
               <div className="grid grid-cols-4 gap-1.5 bg-[#1A2A4A] px-4 sm:px-6 pt-4 sm:pt-5 pb-3.5 sm:pb-4 border-b border-[#2A3D63]">
@@ -151,11 +151,11 @@ export function Hero() {
               </div>
 
               <div className="flex items-center justify-between gap-3 sm:gap-4 border-b border-[#2A3D63] px-4 sm:px-6 py-4">
-                <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className="flex size-9 shrink-0 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F36B32]">
                     <CalendarCheck className="size-4" aria-hidden="true" />
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="font-heading text-xs font-bold tracking-[0.04em] text-[#F5F3EE] truncate">
                       Recepção Digital no WhatsApp
                     </p>
@@ -185,10 +185,10 @@ export function Hero() {
                         isCurrent ? "bg-[#1A2A4A]" : "bg-[#101D35] hover:bg-[#1A2A4A]/55"
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-3.5 min-w-0">
+                      <div className="flex items-start sm:items-center justify-between gap-3">
+                        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
                           <span
-                            className={`flex size-7 shrink-0 items-center justify-center rounded-[8px] font-heading text-xs font-bold tabular-nums transition-all duration-200 ${
+                            className={`mt-0.5 sm:mt-0 flex size-7 shrink-0 items-center justify-center rounded-[8px] font-heading text-xs font-bold tabular-nums transition-all duration-200 ${
                               isCurrent
                                 ? "bg-[#F36B32] text-[#101D35] scale-105"
                                 : "border border-[#2A3D63] bg-[#1A2A4A] text-[#B8C0D0]"
@@ -196,7 +196,7 @@ export function Hero() {
                           >
                             0{i + 1}
                           </span>
-                          <div className="min-w-0">
+                          <div className="min-w-0 flex-1">
                             <p
                               className={`font-heading text-xs font-bold tracking-wide transition-colors duration-200 ${
                                 isCurrent ? "text-[#F5F3EE]" : "text-[#B8C0D0]"
@@ -204,7 +204,9 @@ export function Hero() {
                             >
                               {step.label}
                             </p>
-                            <p className="text-xs text-[#B8C0D0] truncate">{step.detail}</p>
+                            <p className="mt-0.5 text-xs text-[#B8C0D0] leading-snug break-words">
+                              {step.detail}
+                            </p>
                           </div>
                         </div>
                         <span className="hidden sm:inline-block shrink-0 font-heading text-[11px] font-semibold text-[#F4C542] tabular-nums">

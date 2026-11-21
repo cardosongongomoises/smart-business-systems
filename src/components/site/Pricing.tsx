@@ -42,8 +42,8 @@ export function Pricing() {
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
-            <div>
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
+            <div className="min-w-0">
               <p className="lume-eyebrow text-[#D9531C]">06 · Investimento</p>
               <h2 className="mt-3 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
                 Antes de falar de preço, medimos o que o WhatsApp consome hoje no seu espaço.
@@ -60,7 +60,7 @@ export function Pricing() {
         {/* Interactive Arithmetic Estimator (Zero fake claims, purely user's own numbers) */}
         <Reveal delay={70}>
           <div className="mt-8 sm:mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-7 lg:p-8">
-            <div className="grid gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#101D35] text-[#F4C542] shrink-0">
@@ -161,7 +161,7 @@ export function Pricing() {
         </Reveal>
 
         <Reveal delay={90}>
-          <div className="mt-8 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
             {investmentPillars.map((item, i) => (
               <div
                 key={item.title}

@@ -61,7 +61,7 @@ export function FAQ() {
         </Reveal>
 
         <Reveal delay={90}>
-          <div className="mt-10 sm:mt-12 grid gap-6 sm:gap-8 lg:grid-cols-[1fr_380px]">
+          <div className="mt-10 sm:mt-12 grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[1fr_380px]">
             {/* Unified Editorial FAQ Ledger */}
             <div className="overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] divide-y divide-[#E7E3D9]">
               {faqs.map((f, i) => {
@@ -114,7 +114,7 @@ export function FAQ() {
             </div>
 
             {/* Sidebar */}
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-1 lg:sticky lg:top-24 lg:self-start">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-1 lg:sticky lg:top-24 lg:self-start">
               <div className="flex flex-col justify-between rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-7">
                 <div>
                   <div className="flex size-10 items-center justify-center rounded-[10px] border border-[#E7E3D9] bg-[#F5F3EE] text-[#D9531C]">
