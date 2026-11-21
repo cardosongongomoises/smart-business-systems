@@ -51,7 +51,7 @@ export function Hero() {
   return (
     <section
       id="topo"
-      className="relative overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-24 bg-[#F5F3EE] text-[#101D35]"
+      className="relative overflow-hidden pt-20 pb-14 sm:pt-24 sm:pb-20 lg:pb-24 bg-[#F5F3EE] text-[#101D35]"
     >
       <img
         src="/assets/aistudio/Profissional_Multitarefa_num_Escrit_rio_Moderno_bb546f5b.png"
@@ -65,10 +65,10 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#F5F3EE]/95 via-[#F5F3EE]/86 to-[#F5F3EE]/62" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#F5F3EE] to-transparent" />
 
-      <div className="relative mx-auto grid w-full max-w-[1200px] items-stretch gap-12 px-5 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+      <div className="relative mx-auto grid w-full max-w-[1200px] items-stretch gap-8 sm:gap-10 px-4 sm:px-8 lg:gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <div>
           <Reveal>
-            <h1 className="font-heading text-[clamp(2.15rem,4vw,3.35rem)] leading-[1.07] font-extrabold tracking-[-0.025em] text-[#101D35] text-balance">
+            <h1 className="font-heading text-[clamp(1.85rem,5vw,3.35rem)] leading-[1.08] font-extrabold tracking-[-0.025em] text-[#101D35] text-balance">
               Cliente à sua frente.{" "}
               <span className="text-[#D9531C]">
                 <HighlightWipe highlightColor="#FDE3D6" delay={180}>
@@ -87,22 +87,22 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+            <div className="mt-7 sm:mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <a
                 href="#demonstracao-final"
-                className="group lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
+                className="group lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap shrink-0"
               >
                 <span>{DEMO_CTA_LABEL}</span>
                 <ArrowRight
-                  className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                  className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
                   aria-hidden="true"
                 />
               </a>
               <a
                 href="#avaliacao-whatsapp"
-                className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
+                className="lume-btn-secondary-light inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap shrink-0"
               >
-                <MessageSquare className="size-4" aria-hidden="true" />
+                <MessageSquare className="size-4 shrink-0" aria-hidden="true" />
                 <span>Avaliar o atendimento do meu WhatsApp</span>
               </a>
             </div>
@@ -126,14 +126,14 @@ export function Hero() {
               className="overflow-hidden rounded-[16px] border border-[#2A3D63] bg-[#101D35] text-[#F5F3EE] shadow-[0_24px_60px_-15px_rgba(16,29,53,0.28)]"
             >
               {/* Interactive Step Progress Indicator */}
-              <div className="grid grid-cols-4 gap-1.5 bg-[#1A2A4A] px-6 pt-5 pb-4 border-b border-[#2A3D63]">
+              <div className="grid grid-cols-4 gap-1.5 bg-[#1A2A4A] px-4 sm:px-6 pt-4 sm:pt-5 pb-3.5 sm:pb-4 border-b border-[#2A3D63]">
                 {bookingFlow.map((step, i) => (
                   <button
                     key={step.label}
                     type="button"
                     aria-label={`Ver etapa ${i + 1}: ${step.label}`}
                     onClick={() => setActiveStep(i)}
-                    className="group py-1 cursor-pointer focus-visible:outline-none"
+                    className="group py-1.5 cursor-pointer focus-visible:outline-none"
                   >
                     <span className="relative block h-1.5 w-full overflow-hidden rounded-full bg-[#2A3D63] group-hover:bg-[#5B6B8C]/70 transition-colors">
                       {i < activeStep && <span className="block h-full w-full bg-[#F4C542]" />}
@@ -150,7 +150,7 @@ export function Hero() {
                 ))}
               </div>
 
-              <div className="flex items-center justify-between gap-4 border-b border-[#2A3D63] px-6 py-4">
+              <div className="flex items-center justify-between gap-3 sm:gap-4 border-b border-[#2A3D63] px-4 sm:px-6 py-4">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="flex size-9 shrink-0 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F36B32]">
                     <CalendarCheck className="size-4" aria-hidden="true" />
@@ -181,7 +181,7 @@ export function Hero() {
                       key={step.label}
                       type="button"
                       onClick={() => setActiveStep(i)}
-                      className={`w-full text-left transition-colors duration-200 px-6 py-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
+                      className={`w-full text-left transition-colors duration-200 px-4 sm:px-6 py-3.5 sm:py-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
                         isCurrent ? "bg-[#1A2A4A]" : "bg-[#101D35] hover:bg-[#1A2A4A]/55"
                       }`}
                     >
@@ -229,7 +229,7 @@ export function Hero() {
                 })}
               </div>
 
-              <div className="flex items-center justify-between border-t border-[#2A3D63] bg-[#1A2A4A]/60 px-6 py-3.5 text-xs text-[#B8C0D0]">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#2A3D63] bg-[#1A2A4A]/60 px-4 sm:px-6 py-3.5 text-xs text-[#B8C0D0]">
                 <span>Preços e horários reais vêm do seu espaço</span>
                 <span className="font-heading font-bold text-[#F36B32] tabular-nums">
                   0{activeStep + 1} / 04

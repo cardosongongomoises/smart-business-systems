@@ -215,12 +215,17 @@
   color: #101d35;
   border-radius: 999px;
   min-height: 44px;
-  padding: 12px 24px;
+  max-width: 100%;
+  text-align: center;
+  padding: 11px 18px;
   box-shadow: 0 4px 14px -2px rgba(243, 107, 50, 0.35);
   transition:
     background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  @media (min-width: 640px) {
+    padding: 12px 24px;
+  }
   &:hover {
     background-color: #d9531c;
     box-shadow: 0 8px 20px -4px rgba(217, 83, 28, 0.45);
@@ -243,11 +248,16 @@
   border: 1.5px solid #101d35;
   border-radius: 999px;
   min-height: 44px;
-  padding: 12px 24px;
+  max-width: 100%;
+  text-align: center;
+  padding: 11px 18px;
   transition:
     background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  @media (min-width: 640px) {
+    padding: 12px 24px;
+  }
   &:hover {
     background-color: #101d35;
     color: #f5f3ee;
@@ -270,11 +280,16 @@
   border: 1.5px solid #5b6b8c;
   border-radius: 999px;
   min-height: 44px;
-  padding: 12px 24px;
+  max-width: 100%;
+  text-align: center;
+  padding: 11px 18px;
   transition:
     background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  @media (min-width: 640px) {
+    padding: 12px 24px;
+  }
   &:hover {
     background-color: #1a2a4a;
     border-color: #f5f3ee;
@@ -296,10 +311,15 @@
   color: #101d35;
   border-radius: 999px;
   min-height: 44px;
-  padding: 12px 24px;
+  max-width: 100%;
+  text-align: center;
+  padding: 11px 18px;
   transition:
     background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
     transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  @media (min-width: 640px) {
+    padding: 12px 24px;
+  }
   &:hover {
     background-color: #d9a91f;
     transform: translateY(-1px);

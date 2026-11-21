@@ -56,11 +56,11 @@ export function Problem() {
   return (
     <section
       id="problema"
-      className="relative py-24 sm:py-32 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
+      className="relative py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div className="grid gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-end">
             <div>
               <p className="lume-eyebrow text-[#D9531C]">01 · O problema</p>
               <h2 className="mt-3 font-heading text-3xl leading-[1.14] font-bold text-[#101D35] sm:text-4xl text-balance">
@@ -91,7 +91,7 @@ export function Problem() {
               {recognitionItems.map((item, i) => (
                 <div
                   key={item.title}
-                  className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-6 sm:p-7 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
+                  className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-5 sm:p-6 lg:p-7 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -115,7 +115,7 @@ export function Problem() {
 
         {/* Section 3: O que está em jogo — Clean 2-column hairline ledger */}
         <Reveal delay={140}>
-          <div className="mt-16 pt-14 border-t border-[#E7E3D9] grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div className="mt-12 sm:mt-16 pt-10 sm:pt-14 border-t border-[#E7E3D9] grid gap-8 sm:gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-start">
             <div>
               <p className="lume-eyebrow text-[#D9531C]">O que está em jogo</p>
               <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-bold text-[#101D35] leading-[1.2] text-balance">

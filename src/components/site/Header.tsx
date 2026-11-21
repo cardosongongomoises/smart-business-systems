@@ -39,7 +39,7 @@ export function Header() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#F36B32] transition-transform duration-150"
         style={{ transform: `scaleX(${progress})` }}
       />
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:px-8">
+      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-4 sm:gap-8 px-4 sm:px-8">
         {/* Zone 1: Single-line Brand Wordmark */}
         <a
           href="/#topo"
@@ -96,17 +96,22 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile & Tablet Drawer */}
       {open && (
-        <div className="fixed inset-x-0 top-16 sm:top-[72px] bottom-0 bg-[#101D35]/50 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-start p-4">
-          <div className="w-full rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 shadow-[0_12px_32px_rgba(16,29,53,0.16)] flex flex-col gap-1 max-h-[85vh] overflow-y-auto overscroll-contain">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+          className="fixed inset-x-0 top-16 sm:top-[72px] bottom-0 bg-[#101D35]/50 backdrop-blur-sm z-50 lg:hidden flex flex-col justify-start p-4"
+        >
+          <div className="mx-auto w-full max-w-lg rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 shadow-[0_12px_32px_rgba(16,29,53,0.16)] flex flex-col gap-1 max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain">
             <nav className="flex flex-col divide-y divide-[#E7E3D9]" aria-label="Menu móvel">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="py-3.5 text-sm font-medium text-[#101D35] hover:text-[#D9531C] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
+                  className="min-h-[44px] py-3 text-sm font-medium text-[#101D35] hover:text-[#D9531C] flex items-center justify-between rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
                 >
                   <span>{l.label}</span>
                   <ArrowRight className="size-4 text-[#5B6B8C]" aria-hidden="true" />
@@ -118,15 +123,15 @@ export function Header() {
               <a
                 href="/#demonstracao-final"
                 onClick={() => setOpen(false)}
-                className="lume-btn-primary flex items-center justify-center gap-2 text-xs whitespace-nowrap"
+                className="lume-btn-primary flex items-center justify-center gap-2 text-xs sm:text-sm text-center"
               >
                 <span>{DEMO_CTA_LABEL}</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </a>
               <a
                 href="/#avaliacao-whatsapp"
                 onClick={() => setOpen(false)}
-                className="lume-btn-secondary-light flex items-center justify-center text-xs whitespace-nowrap"
+                className="lume-btn-secondary-light flex items-center justify-center text-xs sm:text-sm text-center"
               >
                 Avaliar o atendimento do meu WhatsApp
               </a>

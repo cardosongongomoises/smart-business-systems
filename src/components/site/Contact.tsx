@@ -50,9 +50,9 @@ export function Contact() {
   return (
     <section
       id="demonstracao-final"
-      className="py-20 sm:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
+      className="py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
           <div className="text-center max-w-3xl mx-auto">
             <p className="lume-eyebrow text-[#D9531C]">Demonstração de 7 minutos</p>
@@ -73,10 +73,10 @@ export function Contact() {
                 href={CTA.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                className="lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
               >
                 <span>{DEMO_CTA_LABEL}</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -89,7 +89,7 @@ export function Contact() {
         <Reveal delay={90}>
           <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px]">
             {/* Short 5-field Form Card */}
-            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] p-6 sm:p-9 shadow-[0_12px_36px_-12px_rgba(16,29,53,0.08)]">
+            <div className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] p-5 sm:p-7 lg:p-9 shadow-[0_12px_36px_-12px_rgba(16,29,53,0.08)]">
               <h3 className="font-heading text-xl font-bold text-[#101D35]">
                 Pedir demonstração para o meu espaço
               </h3>
@@ -120,15 +120,15 @@ export function Contact() {
                       href={buildWhatsAppSummaryUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                      className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
                     >
                       <span>Confirmar no WhatsApp</span>
-                      <ArrowRight className="size-4" aria-hidden="true" />
+                      <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                     </a>
                     <button
                       type="button"
                       onClick={() => setSubmitted(false)}
-                      className="lume-btn-secondary-light inline-flex items-center justify-center text-sm whitespace-nowrap cursor-pointer"
+                      className="lume-btn-secondary-light inline-flex items-center justify-center text-sm sm:whitespace-nowrap cursor-pointer"
                     >
                       Editar dados
                     </button>
@@ -252,11 +252,11 @@ export function Contact() {
 
                   <button
                     type="submit"
-                    className="lume-btn-secondary-light inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap cursor-pointer"
+                    className="lume-btn-secondary-light inline-flex w-full items-center justify-center gap-2 text-sm sm:whitespace-nowrap cursor-pointer"
                   >
-                    <CalendarCheck className="size-4" aria-hidden="true" />
+                    <CalendarCheck className="size-4 shrink-0" aria-hidden="true" />
                     <span>Pedir a minha demonstração</span>
-                    <ArrowRight className="size-4" aria-hidden="true" />
+                    <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                   </button>
                 </form>
               )}
@@ -289,16 +289,18 @@ export function Contact() {
                     <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#F36B32] shrink-0">
                       <Mail className="size-4" aria-hidden="true" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs text-[#B8C0D0]">Email</p>
-                      <p className="font-semibold text-[#F5F3EE]">{site.email}</p>
+                      <p className="font-semibold text-[#F5F3EE] break-all sm:break-normal">
+                        {site.email}
+                      </p>
                     </div>
                   </li>
                   <li className="flex items-center gap-3">
                     <div className="flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#101D35] text-[#F4C542] shrink-0">
                       <MapPin className="size-4" aria-hidden="true" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs text-[#B8C0D0]">Localização</p>
                       <p className="font-semibold text-[#F5F3EE]">{site.location}</p>
                     </div>
@@ -309,9 +311,9 @@ export function Contact() {
                   href={CTA.demo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="lume-btn-secondary-dark mt-6 inline-flex w-full items-center justify-center gap-2 text-sm whitespace-nowrap"
+                  className="lume-btn-secondary-dark mt-6 inline-flex w-full items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
                 >
-                  <MessageSquare className="size-4" aria-hidden="true" />
+                  <MessageSquare className="size-4 shrink-0" aria-hidden="true" />
                   <span>Abrir WhatsApp agora</span>
                 </a>
               </div>

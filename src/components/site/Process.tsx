@@ -54,9 +54,9 @@ export function Process() {
   return (
     <section
       id="como-funciona"
-      className="py-24 sm:py-32 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
+      className="py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         {/* Section 7: Como funciona */}
         <Reveal>
           <p className="lume-eyebrow text-[#D9531C]">04 · Como funciona</p>
@@ -66,11 +66,11 @@ export function Process() {
         </Reveal>
 
         <Reveal delay={80}>
-          <ol className="mt-12 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
+          <ol className="mt-10 sm:mt-12 grid gap-px bg-[#E7E3D9] rounded-[16px] border border-[#E7E3D9] overflow-hidden md:grid-cols-3">
             {steps.map((s) => (
               <li
                 key={s.n}
-                className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-7 sm:p-8 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
+                className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-5 sm:p-6 lg:p-8 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
               >
                 <div>
                   <div className="flex items-center justify-between gap-3">
@@ -102,11 +102,11 @@ export function Process() {
             </div>
             <a
               href="#demonstracao-final"
-              className="group lume-btn-primary shrink-0 inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+              className="group lume-btn-primary shrink-0 inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
             >
               <span>{DEMO_CTA_LABEL}</span>
               <ArrowRight
-                className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                className="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
                 aria-hidden="true"
               />
             </a>
@@ -115,7 +115,7 @@ export function Process() {
 
         {/* Section 8: Porque confiar na Agentes Digital */}
         <Reveal delay={150}>
-          <div className="mt-20 border-t border-[#E7E3D9] pt-16">
+          <div className="mt-14 sm:mt-20 border-t border-[#E7E3D9] pt-12 sm:pt-16">
             <p className="lume-eyebrow text-[#D9531C]">Porque confiar na Agentes Digital</p>
             <h3 className="mt-3 font-heading text-2xl sm:text-3xl font-extrabold text-[#101D35] text-balance">
               Mostramos antes de lhe pedir que contrate.
@@ -132,7 +132,7 @@ export function Process() {
                 return (
                   <div
                     key={pillar.title}
-                    className={`group flex flex-col justify-between bg-[#FFFFFF] p-6 sm:p-7 transition-colors duration-200 hover:bg-[#F5F3EE]/50 ${spanClass}`}
+                    className={`group flex flex-col justify-between bg-[#FFFFFF] p-5 sm:p-6 lg:p-7 transition-colors duration-200 hover:bg-[#F5F3EE]/50 ${spanClass}`}
                   >
                     <div>
                       <div className="flex items-center justify-between">

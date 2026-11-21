@@ -38,11 +38,11 @@ export function Pricing() {
   return (
     <section
       id="investimento"
-      className="py-24 sm:py-32 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
+      className="py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div className="grid gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
             <div>
               <p className="lume-eyebrow text-[#D9531C]">06 · Investimento</p>
               <h2 className="mt-3 font-heading text-3xl sm:text-4xl font-extrabold text-[#101D35] tracking-[-0.02em] text-balance">
@@ -59,8 +59,8 @@ export function Pricing() {
 
         {/* Interactive Arithmetic Estimator (Zero fake claims, purely user's own numbers) */}
         <Reveal delay={70}>
-          <div className="mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-6 sm:p-8">
-            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <div className="mt-8 sm:mt-10 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-7 lg:p-8">
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
                   <span className="flex size-9 items-center justify-center rounded-[8px] bg-[#101D35] text-[#F4C542] shrink-0">
@@ -165,7 +165,7 @@ export function Pricing() {
             {investmentPillars.map((item, i) => (
               <div
                 key={item.title}
-                className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-7 sm:p-8 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
+                className="group flex h-full flex-col justify-between bg-[#FFFFFF] p-5 sm:p-6 lg:p-8 transition-colors duration-200 hover:bg-[#F5F3EE]/50"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0 transition-transform duration-200 group-hover:scale-105">
@@ -187,13 +187,13 @@ export function Pricing() {
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="mt-8 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-7 sm:p-10 text-[#F5F3EE] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="mt-8 rounded-[16px] border border-[#2A3D63] bg-[#101D35] p-6 sm:p-8 lg:p-10 text-[#F5F3EE] flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="max-w-2xl">
               <p className="text-xs font-semibold text-[#F4C542]">
                 Quando há várias unidades, várias agendas ou integrações especiais, o valor é
                 ajustado.
               </p>
-              <h3 className="mt-2 font-heading text-2xl font-extrabold text-[#F5F3EE]">
+              <h3 className="mt-2 font-heading text-xl sm:text-2xl font-extrabold text-[#F5F3EE]">
                 Receba uma proposta com os valores para o seu espaço.
               </h3>
               <p className="mt-2.5 text-sm sm:text-base text-[#B8C0D0] leading-relaxed">
@@ -207,10 +207,10 @@ export function Pricing() {
               href={proposalHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="lume-btn-secondary-dark shrink-0 inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+              className="lume-btn-secondary-dark shrink-0 inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
             >
               <span>Pedir proposta para o meu espaço</span>
-              <ArrowRight className="size-4" aria-hidden="true" />
+              <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
             </a>
           </div>
         </Reveal>

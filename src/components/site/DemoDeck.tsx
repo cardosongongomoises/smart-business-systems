@@ -99,7 +99,7 @@ export function DemoDeck() {
               type="button"
               onClick={() => goTo(i)}
               aria-current={active ? "step" : undefined}
-              className={`flex items-center justify-center sm:justify-start gap-2.5 px-3 sm:px-5 py-3.5 text-left transition-colors duration-200 cursor-pointer border-b-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
+              className={`flex min-h-[44px] items-center justify-center sm:justify-start gap-2 px-2.5 sm:px-5 py-3 text-left transition-colors duration-200 cursor-pointer border-b-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
                 active
                   ? "border-[#F36B32] bg-[#1A2A4A] text-[#F5F3EE]"
                   : "border-transparent text-[#B8C0D0] hover:bg-[#1A2A4A]/50 hover:text-[#F5F3EE]"
@@ -121,10 +121,10 @@ export function DemoDeck() {
       </div>
 
       {/* Active Slide Content with directional transition */}
-      <div className="p-6 sm:p-9 overflow-hidden">
+      <div className="p-5 sm:p-8 lg:p-9 overflow-hidden">
         <div
           key={current.step}
-          className={`grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:items-center ${slideAnimClass}`}
+          className={`grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-center ${slideAnimClass}`}
         >
           <div>
             <div className="flex items-center gap-3 text-xs font-semibold text-[#F4C542]">
@@ -167,7 +167,7 @@ export function DemoDeck() {
                   type="button"
                   onClick={prev}
                   aria-label="Etapa anterior"
-                  className="inline-flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F5F3EE] transition-all duration-200 hover:border-[#F36B32] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
+                  className="inline-flex size-11 sm:size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F5F3EE] transition-all duration-200 hover:border-[#F36B32] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
                 >
                   <ChevronLeft className="size-4" aria-hidden="true" />
                 </button>
@@ -175,7 +175,7 @@ export function DemoDeck() {
                   type="button"
                   onClick={next}
                   aria-label="Próxima etapa"
-                  className="inline-flex size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F5F3EE] transition-all duration-200 hover:border-[#F36B32] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
+                  className="inline-flex size-11 sm:size-9 items-center justify-center rounded-[8px] border border-[#2A3D63] bg-[#1A2A4A] text-[#F5F3EE] transition-all duration-200 hover:border-[#F36B32] active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F36B32]"
                 >
                   <ChevronRight className="size-4" aria-hidden="true" />
                 </button>

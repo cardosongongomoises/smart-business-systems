@@ -50,10 +50,10 @@ export function TermsOfService() {
     >
       <Header />
 
-      <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 pt-24 sm:pt-28 pb-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Top Actions / Breadcrumb */}
-          <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-[#E7E3D9]">
+          <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mb-8 pb-4 border-b border-[#E7E3D9]">
             <Link
               to="/"
               className="inline-flex items-center gap-2 text-xs font-semibold text-[#5B6B8C] hover:text-[#D9531C] transition-colors"

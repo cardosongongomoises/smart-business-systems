@@ -128,8 +128,8 @@ export function EmpresaIAPillar() {
     <div className="relative min-h-screen bg-[#F5F3EE] text-[#101D35] antialiased selection:bg-[#F4C542] selection:text-[#101D35]">
       <Header />
 
-      <main id="main-content" className="pt-28 pb-24 sm:pt-36">
-        <article className="mx-auto w-full max-w-[1040px] px-5 sm:px-8">
+      <main id="main-content" className="pt-24 pb-16 sm:pt-28 sm:pb-24">
+        <article className="mx-auto w-full max-w-[1040px] px-4 sm:px-8">
           {/* Breadcrumb Navigation */}
           <nav
             aria-label="Navegação estrutural"
@@ -157,9 +157,9 @@ export function EmpresaIAPillar() {
           </nav>
 
           {/* Hero / Header Block */}
-          <header className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 sm:p-10">
+          <header className="rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-8 lg:p-10">
             <p className="lume-eyebrow text-[#D9531C]">Guia Técnico e Operacional · Angola</p>
-            <h1 className="mt-3 font-heading text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold leading-[1.1] tracking-[-0.025em] text-[#101D35] text-balance">
+            <h1 className="mt-3 font-heading text-2xl sm:text-4xl lg:text-[2.65rem] font-extrabold leading-[1.12] tracking-[-0.025em] text-[#101D35] text-balance">
               Implementação de IA para empresas em Angola
             </h1>
             <p className="mt-4 max-w-[66ch] text-base sm:text-lg leading-[1.65] text-[#5B6B8C] font-medium">
@@ -179,19 +179,19 @@ export function EmpresaIAPillar() {
               </span>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <a
                 href={CTA.enterpriseDiagnostic}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                className="lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
               >
                 <span>Pedir diagnóstico para a minha empresa</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </a>
               <Link
                 to="/"
-                className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                className="lume-btn-secondary-light inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
               >
                 <span>Ver solução para espaços de estética</span>
               </Link>
@@ -226,7 +226,7 @@ export function EmpresaIAPillar() {
           {/* Section 1: Snippet-ready Answer Definition */}
           <section
             id="o-que-e"
-            className="mt-10 scroll-mt-24 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 sm:p-10"
+            className="mt-8 sm:mt-10 scroll-mt-24 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-8 lg:p-10"
           >
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#101D35] leading-[1.2]">
               O que é a implementação de IA para empresas na prática?
@@ -255,7 +255,7 @@ export function EmpresaIAPillar() {
 
             <div className="mt-6 grid gap-px overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#E7E3D9] sm:grid-cols-2">
               {businessUseCases.map((item, idx) => (
-                <div key={item.title} className="bg-[#FFFFFF] p-7 sm:p-8 flex flex-col">
+                <div key={item.title} className="bg-[#FFFFFF] p-5 sm:p-7 lg:p-8 flex flex-col">
                   <div className="flex items-center justify-between gap-4">
                     <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542]">
                       <item.icon className="size-5" aria-hidden="true" />
@@ -287,10 +287,10 @@ export function EmpresaIAPillar() {
               </div>
               <Link
                 to="/"
-                className="lume-btn-secondary-dark inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap shrink-0"
+                className="lume-btn-secondary-dark inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap shrink-0"
               >
                 <span>Conhecer a Recepção Inteligente</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </Link>
             </div>
           </section>
@@ -298,7 +298,7 @@ export function EmpresaIAPillar() {
           {/* Section 3: Numbered List Snippet Target */}
           <section
             id="etapas"
-            className="mt-12 scroll-mt-24 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 sm:p-10"
+            className="mt-10 sm:mt-12 scroll-mt-24 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-8 lg:p-10"
           >
             <p className="lume-eyebrow text-[#D9531C]">Método de implementação</p>
             <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-bold text-[#101D35] leading-[1.18]">
@@ -333,7 +333,10 @@ export function EmpresaIAPillar() {
               </h2>
             </div>
 
-            <div className="mt-6 overflow-x-auto rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]">
+            <p className="mt-4 text-xs text-[#5B6B8C] sm:hidden">
+              Deslize lateralmente para comparar todas as colunas.
+            </p>
+            <div className="mt-2 sm:mt-6 overflow-x-auto rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]">
               <table className="w-full min-w-[640px] text-left border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-[#E7E3D9] bg-[#101D35] text-[#F5F3EE]">
@@ -379,8 +382,8 @@ export function EmpresaIAPillar() {
             id="escopo"
             className="mt-12 scroll-mt-24 overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35]"
           >
-            <div className="grid divide-y divide-[#E7E3D9] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
-              <div className="p-7 sm:p-10">
+            <div className="grid divide-y divide-[#E7E3D9] md:grid-cols-2 md:divide-x md:divide-y-0">
+              <div className="p-5 sm:p-8 lg:p-10">
                 <div className="flex items-center gap-2.5 text-[#D9531C]">
                   <ShieldCheck className="size-5 shrink-0" aria-hidden="true" />
                   <p className="lume-eyebrow text-[#D9531C]">Critério técnico e transparência</p>
@@ -395,7 +398,7 @@ export function EmpresaIAPillar() {
                 </p>
               </div>
 
-              <div className="bg-[#FFFFFF] p-7 sm:p-10">
+              <div className="bg-[#FFFFFF] p-5 sm:p-8 lg:p-10">
                 <ul className="space-y-4 text-sm text-[#101D35]">
                   <li className="flex items-start gap-3">
                     <CheckCircle2
@@ -485,7 +488,7 @@ export function EmpresaIAPillar() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="px-5 sm:px-6 pb-5 sm:pb-6 pl-12 sm:pl-14 text-sm sm:text-base leading-relaxed text-[#5B6B8C]">
+                        <div className="px-5 sm:px-6 sm:pl-14 pb-5 sm:pb-6 text-sm sm:text-base leading-relaxed text-[#5B6B8C]">
                           {faq.a}
                         </div>
                       </div>
@@ -497,7 +500,7 @@ export function EmpresaIAPillar() {
           </section>
 
           {/* Bottom Conversion CTA */}
-          <section className="mt-12 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-7 sm:p-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <section className="mt-10 sm:mt-12 rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF] p-5 sm:p-8 lg:p-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-xl">
               <p className="lume-eyebrow text-[#D9531C]">Próximo passo</p>
               <h2 className="mt-2 font-heading text-2xl font-bold text-[#101D35]">
@@ -508,19 +511,19 @@ export function EmpresaIAPillar() {
                 faz sentido estruturar para a sua realidade.
               </p>
             </div>
-            <div className="flex flex-col gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
               <a
                 href={CTA.enterpriseDiagnostic}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+                className="lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
               >
                 <span>Falar no WhatsApp</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
+                <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </a>
               <a
                 href="/#demonstracao-final"
-                className="lume-btn-secondary-light inline-flex items-center justify-center gap-2 text-xs whitespace-nowrap"
+                className="lume-btn-secondary-light inline-flex w-full sm:w-auto items-center justify-center gap-2 text-xs sm:whitespace-nowrap"
               >
                 <span>{DEMO_CTA_LABEL}</span>
               </a>

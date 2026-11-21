@@ -37,10 +37,10 @@ export function PrivacyPolicy() {
     >
       <Header />
 
-      <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 pt-24 sm:pt-28 pb-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Top Actions / Breadcrumb */}
-          <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-[#E7E3D9]">
+          <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 mb-8 pb-4 border-b border-[#E7E3D9]">
             <Link
               to="/"
               className="inline-flex items-center gap-2 text-xs font-semibold text-[#5B6B8C] hover:text-[#D9531C] transition-colors"
@@ -607,9 +607,9 @@ export function PrivacyPolicy() {
                   A Agência de Protecção de Dados confirma estes direitos no âmbito da Lei n.º
                   22/11.
                 </p>
-                <p>
+                <p className="break-words">
                   Para exercer os seus direitos, contacte:{" "}
-                  <strong className="text-[#D9531C] font-mono">{EMAIL}</strong>
+                  <strong className="text-[#D9531C] font-mono break-all">{EMAIL}</strong>
                 </p>
                 <p className="text-muted-foreground/90">Assunto: Pedido de Protecção de Dados</p>
               </div>
@@ -707,7 +707,7 @@ export function PrivacyPolicy() {
                 <p>
                   <strong className="text-[#F5F3EE]">Website:</strong> agentes-digital.com
                 </p>
-                <p>
+                <p className="break-words">
                   <strong className="text-[#F5F3EE]">E-mail:</strong> {EMAIL}
                 </p>
                 <p>

@@ -182,10 +182,10 @@ export function AIAgent() {
   return (
     <section
       id="agente-ia"
-      className="py-24 sm:py-32 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
+      className="py-14 sm:py-20 lg:py-28 bg-[#F5F3EE] text-[#101D35] border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
-        <div className="grid items-start gap-12 lg:gap-14 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
+        <div className="grid items-start gap-8 sm:gap-10 lg:gap-14 lg:grid-cols-[0.95fr_1.05fr]">
           {/* Left Column: Section 9 Veja como funciona */}
           <div>
             <Reveal>
@@ -252,7 +252,7 @@ export function AIAgent() {
 
                   <div
                     ref={chatViewportRef}
-                    className={`px-5 sm:px-6 py-5 h-[410px] sm:h-[430px] overflow-y-auto transition-opacity duration-300 ${
+                    className={`px-4 sm:px-6 py-4 sm:py-5 h-[360px] sm:h-[410px] lg:h-[430px] overflow-y-auto transition-opacity duration-300 ${
                       isResetting ? "opacity-0" : "opacity-100"
                     }`}
                   >
@@ -350,7 +350,7 @@ export function AIAgent() {
                     </div>
                   </div>
 
-                  <div className="border-t border-[#2A3D63] bg-[#1A2A4A]/60 px-5 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="border-t border-[#2A3D63] bg-[#1A2A4A]/60 px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
                     <button
                       type="button"
                       onClick={() => setCycleSeed((s) => s + 1)}
@@ -372,7 +372,7 @@ export function AIAgent() {
           <div id="avaliacao-whatsapp" className="scroll-mt-24">
             <Reveal delay={100}>
               <div className="overflow-hidden rounded-[16px] border border-[#E7E3D9] bg-[#FFFFFF]">
-                <div className="p-6 sm:p-8 border-b border-[#E7E3D9]">
+                <div className="p-5 sm:p-7 lg:p-8 border-b border-[#E7E3D9]">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3.5">
                       <span className="flex size-10 items-center justify-center rounded-[10px] bg-[#101D35] text-[#F4C542] shrink-0">
@@ -411,7 +411,7 @@ export function AIAgent() {
                           type="button"
                           onClick={() => toggleQuestion(idx)}
                           aria-pressed={checked}
-                          className={`w-full text-left px-6 py-4 transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
+                          className={`w-full text-left px-4 sm:px-6 py-3.5 sm:py-4 transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#F36B32] ${
                             checked ? "bg-[#F5F3EE]/85" : "bg-[#FFFFFF] hover:bg-[#F5F3EE]/45"
                           }`}
                         >
@@ -437,19 +437,19 @@ export function AIAgent() {
                   })}
                 </ul>
 
-                <div className="p-6 sm:px-8 border-t border-[#E7E3D9] bg-[#F5F3EE]/40 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                <div className="p-5 sm:p-7 lg:px-8 border-t border-[#E7E3D9] bg-[#F5F3EE]/40 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
                   <a
                     href="#demonstracao-final"
-                    className="lume-btn-primary inline-flex items-center justify-center gap-2 text-xs sm:text-sm whitespace-nowrap"
+                    className="lume-btn-primary inline-flex items-center justify-center gap-2 text-xs sm:text-sm sm:whitespace-nowrap"
                   >
                     <span>{DEMO_CTA_LABEL}</span>
-                    <ArrowRight className="size-4" aria-hidden="true" />
+                    <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
                   </a>
                   <a
                     href={buildDiagnosticWhatsAppUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="lume-btn-secondary-light inline-flex items-center justify-center text-xs whitespace-nowrap"
+                    className="lume-btn-secondary-light inline-flex items-center justify-center text-xs sm:whitespace-nowrap"
                   >
                     {checkedQuestions.length > 0
                       ? `Enviar ${checkedQuestions.length} no WhatsApp`

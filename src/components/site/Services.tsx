@@ -45,11 +45,11 @@ export function Services() {
   return (
     <section
       id="servicos"
-      className="relative bg-[#F5F3EE] text-[#101D35] py-24 sm:py-32 border-t border-[#E7E3D9] scroll-mt-20"
+      className="relative bg-[#F5F3EE] text-[#101D35] py-14 sm:py-20 lg:py-28 border-t border-[#E7E3D9] scroll-mt-20"
     >
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-8">
         <Reveal>
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div className="grid gap-5 sm:gap-6 md:grid-cols-[1.15fr_0.85fr] md:items-end">
             <div>
               <p className="lume-eyebrow text-[#D9531C]">03 · A solução</p>
               <h2 className="mt-3 font-heading text-3xl leading-[1.15] font-bold text-[#101D35] sm:text-4xl text-balance">
@@ -64,7 +64,7 @@ export function Services() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map((item, i) => {
             const isWideSafeguard = i === 4;
             return (
@@ -74,7 +74,7 @@ export function Services() {
                 className={isWideSafeguard ? "md:col-span-2" : ""}
               >
                 <div
-                  className={`group flex h-full flex-col justify-between rounded-[16px] border p-7 sm:p-8 transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 ${
+                  className={`group flex h-full flex-col justify-between rounded-[16px] border p-5 sm:p-7 lg:p-8 transition-[transform,border-color,background-color] duration-200 hover:-translate-y-0.5 ${
                     isWideSafeguard
                       ? "border-[#2A3D63] bg-[#101D35] text-[#F5F3EE] hover:border-[#F36B32]/70"
                       : "border-[#E7E3D9] bg-[#FFFFFF] text-[#101D35] hover:border-[#101D35]/50"
@@ -102,8 +102,8 @@ export function Services() {
                   <div
                     className={
                       isWideSafeguard
-                        ? "mt-6 lg:grid lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:items-center"
-                        : "mt-6"
+                        ? "mt-5 sm:mt-6 md:grid md:grid-cols-[0.9fr_1.1fr] md:gap-8 md:items-center"
+                        : "mt-5 sm:mt-6"
                     }
                   >
                     <h3
@@ -116,7 +116,7 @@ export function Services() {
 
                     <p
                       className={`mt-2.5 text-sm sm:text-base leading-relaxed ${
-                        isWideSafeguard ? "text-[#B8C0D0] lg:mt-0" : "text-[#5B6B8C]"
+                        isWideSafeguard ? "text-[#B8C0D0] md:mt-0" : "text-[#5B6B8C]"
                       }`}
                     >
                       {item.description}
@@ -129,13 +129,13 @@ export function Services() {
         </div>
 
         <Reveal delay={160}>
-          <div className="mt-12 flex justify-start">
+          <div className="mt-10 sm:mt-12 flex justify-start">
             <a
               href="#demonstracao-final"
-              className="lume-btn-primary inline-flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+              className="lume-btn-primary inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm sm:whitespace-nowrap"
             >
               <span>{DEMO_CTA_LABEL}</span>
-              <ArrowRight className="size-4" aria-hidden="true" />
+              <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
             </a>
           </div>
         </Reveal>
